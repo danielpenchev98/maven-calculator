@@ -10,8 +10,22 @@ import calculator.container.Pair;
 import calculator.inputControl.InputParser;
 import calculator.inputControl.InvalidTypeOfEquationComponent;
 
+/**
+ * Class which represents the calculator as a whole - uses the 3 main abstractions :
+ * InputParser - used as a input formatter,
+ * NumberSupplier - storage, used for calculating the equation,
+ * ComputationalMachine - used for calculation the operations
+ */
 class CalculatorApp {
 
+     /**
+     * Help function, which uses special Parses to format the input
+     * @param input - input to be formatted
+     * @param parser - object, which will format the input
+     * @return formatted input
+     * @throws InvalidTypeOfEquationComponent - if an invalid component of an equation is found
+     * @throws NullPointerException - if the input is the empty string
+     */
     private String[] parseInput(String input, InputParser parser) throws InvalidTypeOfEquationComponent, NullPointerException
     {
         String[] splitInput= parser.processInput(input);
@@ -22,6 +36,15 @@ class CalculatorApp {
         return splitInput;
     }
 
+     /**
+     * Help function which implements the logic of Reversed Polish Notation for calculating an eqiation
+     * @param splitInput - array of Strings, constisting of items, representing a component of an equation
+     * @param parser - used here for checking the types of components
+     * @param supplier - container which is crucial for the Reversed Polish Notation
+     * @param calculator - object, designed to calculate equations
+     * @return result of the equation
+     * @throws Exception
+     */
     private int getResultFromEquation(final String[] splitInput, final InputParser parser, final NumberSupplier supplier, final ComputationalMachine calculator) throws Exception
     {
         for (String component : splitInput) {
@@ -46,7 +69,10 @@ class CalculatorApp {
         return Integer.valueOf(supplier.getOneNumber());
     }
 
-
+    /**
+     * Functions which formats and calculates the equation
+     * @param equation - user input
+     */
     public void calculate(final String equation)
     {
         InputParser parser= InputParser.getInstance();
