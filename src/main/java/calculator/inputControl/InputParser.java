@@ -3,8 +3,18 @@ package calculator.inputControl;
 import calculator.computation.ComputationalMachine;
 import calculator.computation.MathComponentType;
 
+
+//TO DO - add algorithm for converting normal notation to reversed polish notation
+
+/**
+ * Class which requires for formatting of the user input and identifying the components of an equation
+ */
 public class InputParser {
     private static volatile InputParser uniqueInstance;
+
+    /**
+     * Used as an abstraction - increases the modifiability - if the algorithm for validation of the input changes, then InoutParser wont notice
+     */
     private InputValidator checkMechanism;
 
     private InputParser()
@@ -12,6 +22,10 @@ public class InputParser {
         checkMechanism=new InputValidator();
     }
 
+    /**
+     * Part of the Singleton pattern
+     * @return unique instance of InputParser class
+     */
     public static InputParser getInstance()
     {
         if(uniqueInstance==null)
@@ -28,7 +42,12 @@ public class InputParser {
         return uniqueInstance;
     }
 
-    // formatting the input
+    /**
+     * Function for formatting the input into a suitable for computing format
+     * @param input - unformatted input
+     * @return formatted input
+     * @throws InvalidTypeOfEquationComponent - if there exists and illegal component in the equation
+     */
     public String[] processInput(final String input) throws InvalidTypeOfEquationComponent
     {
         String[] splitInput=input.split(" ");
@@ -42,7 +61,10 @@ public class InputParser {
         return splitInput;
     }
 
-    //getting the type of the component of the equation - number or operator
+    /**
+     * @param component
+     * @return
+     */
     public MathComponentType getTypeOfComponent(final String component)
     {
         if(checkMechanism.isValidNumber(component))

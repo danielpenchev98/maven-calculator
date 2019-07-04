@@ -79,6 +79,6 @@ class CalculatorApp {
         catch(Exception logicalError) {
             System.out.println(logicalError.getMessage());
         }
-       
+
     }
 }

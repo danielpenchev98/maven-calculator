@@ -8,7 +8,7 @@ class InputValidator {
 
     public boolean isValidNumber(final String component)
     {
-        return component.matches("^[0-9]+$");
+        return component.matches("^-*[0-9]+$");
     }
     public boolean isValidOperator(final String component)
     {

@@ -1,8 +1,16 @@
 package calculator.computation;
 
-public class MathOperationFactory {
+/**
+ * Class which is responsible only for the creation of MathOperation objects.
+ */
+class MathOperationFactory {
+    /**
+     * @param operation - string which represents the symbol of the wanted operation
+     * @return a new object of that MathOperation class
+     */
     static MathOperation createOperation(String operation)
     {
+        //to change it - should return null as default???
         switch(operation)
         {
             case "+": return new Addition();

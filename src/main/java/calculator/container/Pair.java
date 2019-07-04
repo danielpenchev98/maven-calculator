@@ -1,5 +1,8 @@
 package calculator.container;
 
+/**
+ * Help class, which is responsible for wrapping 2 items into one
+ */
 //should switch to Java Generics, instead of using String, maybe
 public class Pair {
 
