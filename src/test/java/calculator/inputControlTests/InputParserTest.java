@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+//Dont know if these are all the tests.
 public class InputParserTest {
 
     private InputParser parser;

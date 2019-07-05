@@ -28,10 +28,10 @@ class CalculatorApp {
     private String[] parseInput(String input, InputParser parser) throws InvalidTypeOfEquationComponent//, NullPointerException
     {
         String[] splitInput= parser.processInput(input);
-        if(splitInput==null)
+     /*   if(splitInput==null)
         {
             throw new NullPointerException("The input consists of 0 or 1 components");
-        }
+        }*/
         return splitInput;
     }
 
@@ -78,15 +78,19 @@ class CalculatorApp {
         String[] splitInput;
         try {
             splitInput=parseInput(equation,parser);
+            if(splitInput.length<=2)
+            {
+                throw new Exception("Invalid equation. It should consists of 3 or more componenets");
+            }
         }
         catch(InvalidTypeOfEquationComponent invalidType)
         {
             System.out.println("Invalid equation. The input should consists of numbers and supported mathematical operations");
             return;
         }
-        catch(NullPointerException nullPtr)
+        catch(Exception exc)
         {
-            System.out.println(nullPtr.getMessage());
+            System.out.println(exc.getMessage());
             return;
         }
 
