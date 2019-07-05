@@ -3,7 +3,7 @@ package calculator.computation;
 /**
  * Class which is responsible only for the creation of MathOperation objects.
  */
-class MathOperationFactory {
+public class MathOperationFactory {
     /**
      * @param operation - string which represents the symbol of the wanted operation
      * @return a new object of that MathOperation class
