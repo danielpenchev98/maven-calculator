@@ -1,4 +1,4 @@
-package calculator.computationTests;
+package calculator.computation;
 
 /**
  * Class which is responsible only for the creation of MathOperation objects.
@@ -8,7 +8,7 @@ class MathOperationFactory {
      * @param operation - string which represents the symbol of the wanted operation
      * @return a new object of that MathOperation class
      */
-    static MathOperation createOperation(String operation)
+    public static MathOperation createOperation(String operation) throws InvalidParameterException
     {
         //to change it - should return null as default???
         switch(operation)
@@ -17,7 +17,7 @@ class MathOperationFactory {
             case "-":return new Subtraction();
             case "*": return new Multiplication();
             case "/":return new Division();
-            default:return null;
+            default: throw new InvalidParameterException("Unsupported operation");
         }
     }
 }

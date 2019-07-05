@@ -1,4 +1,4 @@
-package calculator.computationTests;
+package calculator.computation;
 
 public class Division implements MathOperation {
 

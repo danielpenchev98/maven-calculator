@@ -3,7 +3,7 @@ package calculator.container;
 import java.util.Stack;
 
 /**
- *  Class which represents the container, which helps for calculating the equation via Reversed Polish Notation
+ *  Class which represents the containerTests, which helps for calculating the equation via Reversed Polish Notation
  */
 public class NumberSupplier {
 
@@ -38,7 +38,7 @@ public class NumberSupplier {
     {
         if(numbers.size()==0)
         {
-            throw new OutOfItemsException("The operation requires more items in the container");
+            throw new OutOfItemsException("The operation requires more items in the containerTests");
         }
         String result= numbers.peek();
         numbers.pop();

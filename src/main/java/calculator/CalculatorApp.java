@@ -1,8 +1,8 @@
 package calculator;
 
 
-import calculator.computationTests.ComputationalMachine;
-import calculator.computationTests.MathComponentType;
+import calculator.computation.ComputationalMachine;
+import calculator.computation.MathComponentType;
 import calculator.container.NumberSupplier;
 import calculator.container.OutOfItemsException;
 import calculator.container.Pair;
@@ -25,7 +25,7 @@ class CalculatorApp {
      * @throws InvalidTypeOfEquationComponent - if an invalid component of an equation is found
      * @throws NullPointerException - if the input is the empty string
      */
-    private String[] parseInput(String input, InputParser parser) throws InvalidTypeOfEquationComponent, NullPointerException
+    private String[] parseInput(String input, InputParser parser) throws InvalidTypeOfEquationComponent//, NullPointerException
     {
         String[] splitInput= parser.processInput(input);
         if(splitInput==null)
@@ -39,7 +39,7 @@ class CalculatorApp {
      * Help function which implements the logic of Reversed Polish Notation for calculating an eqiation
      * @param splitInput - array of Strings, constisting of items, representing a component of an equation
      * @param parser - used here for checking the types of components
-     * @param supplier - container which is crucial for the Reversed Polish Notation
+     * @param supplier - containerTests which is crucial for the Reversed Polish Notation
      * @param calculator - object, designed to calculate equations
      * @return result of the equation
      * @throws Exception - error during the reverse polish notation calculation

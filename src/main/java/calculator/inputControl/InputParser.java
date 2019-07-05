@@ -1,7 +1,7 @@
 package calculator.inputControl;
 
-import calculator.computationTests.ComputationalMachine;
-import calculator.computationTests.MathComponentType;
+import calculator.computation.ComputationalMachine;
+import calculator.computation.MathComponentType;
 
 
 //TO DO - add algorithm for converting normal notation to reversed polish notation
