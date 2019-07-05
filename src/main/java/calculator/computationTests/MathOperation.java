@@ -1,4 +1,4 @@
-package calculator.computation;
+package calculator.computationTests;
 
 
 /**
@@ -10,7 +10,7 @@ public interface MathOperation {
       * @param first_number - the first parameter of the mathematical operation
       * @param second_number - the second parameter of the mathematical operation
       * @return the result of the mathematical operation
-      * @throws InvalidMathematicalOperationException - if some type of error occurs like division on zero
+      * @throws ArithmeticException - if some type of error occurs like division on zero
       */
-     int compute(final int first_number, final int second_number) throws InvalidMathematicalOperationException;
+     int compute(final int first_number, final int second_number) throws ArithmeticException;
 }

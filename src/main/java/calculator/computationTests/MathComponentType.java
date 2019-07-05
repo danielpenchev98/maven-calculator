@@ -1,4 +1,4 @@
-package calculator.computation;
+package calculator.computationTests;
 
 /**
  * Enum which is used to note the type of the equation component

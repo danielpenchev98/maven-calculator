@@ -1,4 +1,4 @@
-package calculator.computation;
+package calculator.computationTests;
 
 /**
  * Class which represents the computational logic of the calculator. It uses Singleton design patten
@@ -57,9 +57,9 @@ public class ComputationalMachine{
      * @param first_number - the first parameter of the operation
      * @param second_number - the second parameter of the operation
      * @return the result of the operation
-     * @throws InvalidMathematicalOperationException - a mathematical exception, which signalizes about a logical error - like division on zero
+     * @throws ArithmeticException - a mathematical exception, which signalizes about a logical error - like division on zero
      */
-    public int computeAction(final String action,final int first_number,final int second_number) throws InvalidMathematicalOperationException
+    public int computeAction(final String action,final int first_number,final int second_number) throws ArithmeticException
     {
         setMathematicalOperation(action);
         return operation.compute(first_number,second_number);

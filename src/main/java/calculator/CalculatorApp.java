@@ -1,9 +1,8 @@
 package calculator;
 
 
-import calculator.computation.ComputationalMachine;
-import calculator.computation.InvalidMathematicalOperationException;
-import calculator.computation.MathComponentType;
+import calculator.computationTests.ComputationalMachine;
+import calculator.computationTests.MathComponentType;
 import calculator.container.NumberSupplier;
 import calculator.container.OutOfItemsException;
 import calculator.container.Pair;
@@ -43,7 +42,7 @@ class CalculatorApp {
      * @param supplier - container which is crucial for the Reversed Polish Notation
      * @param calculator - object, designed to calculate equations
      * @return result of the equation
-     * @throws Exception
+     * @throws Exception - error during the reverse polish notation calculation
      */
     private int getResultFromEquation(final String[] splitInput, final InputParser parser, final NumberSupplier supplier, final ComputationalMachine calculator) throws Exception
     {
@@ -73,7 +72,7 @@ class CalculatorApp {
      * Functions which formats and calculates the equation
      * @param equation - user input
      */
-    public void calculate(final String equation)
+    void calculate(final String equation)
     {
         InputParser parser= InputParser.getInstance();
         String[] splitInput;

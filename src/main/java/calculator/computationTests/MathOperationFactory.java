@@ -1,4 +1,4 @@
-package calculator.computation;
+package calculator.computationTests;
 
 /**
  * Class which is responsible only for the creation of MathOperation objects.

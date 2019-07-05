@@ -1,7 +1,7 @@
 package calculator.inputControl;
 
-import calculator.computation.ComputationalMachine;
-import calculator.computation.MathComponentType;
+import calculator.computationTests.ComputationalMachine;
+import calculator.computationTests.MathComponentType;
 
 
 //TO DO - add algorithm for converting normal notation to reversed polish notation
@@ -62,8 +62,8 @@ public class InputParser {
     }
 
     /**
-     * @param component
-     * @return
+     * @param component - component of the equation
+     * @return the type of the component
      */
     public MathComponentType getTypeOfComponent(final String component)
     {
