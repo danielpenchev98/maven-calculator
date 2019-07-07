@@ -5,9 +5,10 @@ import calculator.computation.ComputationalMachine;
 import calculator.computation.MathComponentType;
 import calculator.container.NumberSupplier;
 import calculator.container.OutOfItemsException;
-import calculator.container.Pair;
 import calculator.inputControl.InputParser;
 import calculator.inputControl.InvalidTypeOfEquationComponent;
+
+import java.util.List;
 
 /**
  * Class which represents the calculator as a whole - uses the 3 main abstractions :
@@ -17,7 +18,7 @@ import calculator.inputControl.InvalidTypeOfEquationComponent;
  */
 class CalculatorApp {
 
-     /**
+    /**
      * Help function, which uses special Parses to format the input
      * @param input - input to be formatted
      * @param parser - object, which will format the input
@@ -27,7 +28,7 @@ class CalculatorApp {
      */
     private String[] parseInput(String input, InputParser parser) throws InvalidTypeOfEquationComponent//, NullPointerException
     {
-        String[] splitInput= parser.processInput(input);
+        String[] splitInput= parser.formatAndValidateInput(input);
         if(splitInput==null)
         {
             throw new NullPointerException("The input consists of 0 or 1 components");
@@ -35,44 +36,12 @@ class CalculatorApp {
         return splitInput;
     }
 
-     /**
-     * Help function which implements the logic of Reversed Polish Notation for calculating an eqiation
-     * @param splitInput - array of Strings, constisting of items, representing a component of an equation
-     * @param parser - used here for checking the types of components
-     * @param supplier - containerTests which is crucial for the Reversed Polish Notation
-     * @param calculator - object, designed to calculate equations
-     * @return result of the equation
-     * @throws Exception - error during the reverse polish notation calculation
-     */
-    private int getResultFromEquation(final String[] splitInput, final InputParser parser, final NumberSupplier supplier, final ComputationalMachine calculator) throws Exception
-    {
-        for (String component : splitInput) {
-            MathComponentType type = parser.getTypeOfComponent(component);
-            if (type == MathComponentType.NUMBER)
-            {
-                supplier.addNumber(component);
-            }
-            else
-            {
-                Pair numbers = supplier.getTwoNumbers();
-                int result = calculator.computeAction(component, Integer.valueOf(numbers.getFirstMember()), Integer.valueOf(numbers.getSecondMember()));
-                supplier.addNumber(String.valueOf(result));
-            }
-            //there shouldnt be a case where the tyoe is INVALID - maybe should check this case
-        }
-        if(supplier.getNumberOfItems()!=1)
-        {
-           throw new Exception("Invalid equation. Logical error. There arent enough operators");
-        }
-
-        return Integer.valueOf(supplier.getOneNumber());
-    }
 
     /**
      * Functions which formats and calculates the equation
      * @param equation - user input
      */
-    void calculate(final String equation)
+    void processEquationAndCalculateResult(final String equation)
     {
         InputParser parser= InputParser.getInstance();
         String[] splitInput;
@@ -91,15 +60,15 @@ class CalculatorApp {
         }
 
 
-        NumberSupplier supplier=new NumberSupplier();
         ComputationalMachine calculator= ComputationalMachine.getInstance();
+        ReversePolishCalculationAlgorithm algorithm=ReversePolishCalculationAlgorithm.getInstance(calculator,parser);
         try {
-            int finalResult=getResultFromEquation(splitInput,parser,supplier,calculator);
+            int finalResult=algorithm.calculateEquation(splitInput);
             System.out.printf("%d\n",finalResult);
         }
         catch (OutOfItemsException noItems)
         {
-             System.out.println("Invalid equation ");
+            System.out.println("Invalid equation ");
         }
         catch(Exception logicalError) {
             System.out.println(logicalError.getMessage());

@@ -5,14 +5,10 @@ package calculator.computation;
  */
 public class ComputationalMachine{
 
-    /**
-     * unique instance of ComputationalMachine class
-     */
+
     private static volatile ComputationalMachine uniqueInstance;
 
-    /**
-     * Reference to type derivative of MathOperation - If something in the implementation of the operation changes, then this class wont notice it
-     */
+
     private MathOperation operation;
 
     /**

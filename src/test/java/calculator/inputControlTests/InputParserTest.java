@@ -34,33 +34,35 @@ public class InputParserTest {
     public void processInput_ValidEquation_FormattedInput() throws InvalidTypeOfEquationComponent {
         String equation="15 7 1 1 * + -";
         String[] splitInput=equation.split(" ");
-        assertArrayEquals(splitInput,parser.processInput(equation));
+        assertArrayEquals(splitInput,parser.formatAndValidateInput(equation));
     }
 
     @Test(expected = InvalidTypeOfEquationComponent.class)
     public void processInput_InvalidEquation_InvalidTypeOfEquationComponentThrown() throws InvalidTypeOfEquationComponent
     {
         String equation="15 7 1 1 % + -";
-        parser.processInput(equation);
+        parser.formatAndValidateInput(equation);
     }
 
 
     @Test
-    public void getTypeOfComponent_StringRepresentingNumberAsParam_IdentifyAsNumber()
+    public void getTypeOfComponent_StringRepresentingNumberAsParam_IdentifyAsNumber() throws InvalidTypeOfEquationComponent
     {
           assertEquals(MathComponentType.NUMBER,parser.getTypeOfComponent("1234"));
     }
 
     @Test
-    public void getTypeOfComponent_StringRepresentingOperationAsParam_IdentifyAsOperation()
+    public void getTypeOfComponent_StringRepresentingOperationAsParam_IdentifyAsOperation() throws InvalidTypeOfEquationComponent
     {
         assertEquals(MathComponentType.OPERATOR,parser.getTypeOfComponent("*"));
     }
 
-    @Test
-    public void getTypeOfComponent_StringRepresentingIllegalComponentAsParam_IdentifyAsIllegal()
+    @Test(expected = InvalidTypeOfEquationComponent.class)
+    public void getTypeOfComponent_StringRepresentingIllegalComponentAsParam_InvalidTypeOfEquationComponentThrown() throws InvalidTypeOfEquationComponent
     {
-        assertEquals(MathComponentType.INVALID,parser.getTypeOfComponent("invalid"));
+        parser.getTypeOfComponent("illegal");
     }
+
+
 
 }

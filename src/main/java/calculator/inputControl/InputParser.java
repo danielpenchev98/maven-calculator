@@ -1,7 +1,11 @@
 package calculator.inputControl;
 
+import calculator.EquationComponent;
 import calculator.computation.ComputationalMachine;
 import calculator.computation.MathComponentType;
+
+import java.util.LinkedList;
+import java.util.List;
 
 
 //TO DO - add algorithm for converting normal notation to reversed polish notation
@@ -10,6 +14,7 @@ import calculator.computation.MathComponentType;
  * Class which requires for formatting of the user input and identifying the components of an equation
  */
 public class InputParser {
+
     private static volatile InputParser uniqueInstance;
 
     /**
@@ -30,7 +35,7 @@ public class InputParser {
     {
         if(uniqueInstance==null)
         {
-            synchronized (ComputationalMachine.class)
+            synchronized (InputParser.class)
             {
                 if(uniqueInstance==null)
                 {
@@ -43,20 +48,21 @@ public class InputParser {
     }
 
     /**
-     * Function for formatting the input into a suitable for computing format
      * @param input - unformatted input
      * @return formatted input
      * @throws InvalidTypeOfEquationComponent - if there exists and illegal component in the equation
      */
-    public String[] processInput(final String input) throws InvalidTypeOfEquationComponent
+    public /*List<EquationComponent>*/String[] formatAndValidateInput(final String input) throws InvalidTypeOfEquationComponent
     {
         String[] splitInput=input.split(" ");
+        //List<EquationComponent> components=new LinkedList<>();
         for(String item:splitInput)
         {
             if(!checkMechanism.validateComponent(item))
             {
                 throw new InvalidTypeOfEquationComponent("The input should contain only numbers and the supported operators");
             }
+          //  components.add();
         }
         return splitInput;
     }
@@ -65,7 +71,7 @@ public class InputParser {
      * @param component - component of the equation
      * @return the type of the component
      */
-    public MathComponentType getTypeOfComponent(final String component)
+    public MathComponentType getTypeOfComponent(final String component) throws InvalidTypeOfEquationComponent
     {
         if(checkMechanism.isValidNumber(component))
         {
@@ -75,6 +81,7 @@ public class InputParser {
         {
             return MathComponentType.OPERATOR;
         }
-        return MathComponentType.INVALID;
+        throw new InvalidTypeOfEquationComponent("Unsupported component has been found");
     }
+
 }

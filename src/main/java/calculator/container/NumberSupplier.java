@@ -1,69 +1,60 @@
 package calculator.container;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
 /**
  *  Class which represents the containerTests, which helps for calculating the equation via Reversed Polish Notation
  */
-public class NumberSupplier {
+public class NumberSupplier<T> {
 
     /**
      * storage for the items of type String. The type String is suitable for the purpose of representing different types of numbers
      */
-    private Stack<String> numbers;
+    private Stack<T> itemStorage;
 
-    /**
-     * Default constructor
-     */
+
     public NumberSupplier()
     {
-        numbers=new Stack<>();
+        itemStorage=new Stack<>();
     }
 
     /**
-     * This function supplies the storage with more items
      * @param number - item to be added in the storage
      */
-    public void addNumber(String number)
-    {
-        numbers.push(number);
+    public void addItem(T number) {
+        itemStorage.push(number);
     }
 
     /**
-     * This function is used mainly as a help function of getting two elements from the storage and for getting the result of the equation - at the end there should be only 1 item in the storage
-     * @return - the top item from the storage - Stack
-     * @throws OutOfItemsException - if the stack is empty
+     * @param numberOfItems - number of items to get
+     * @return wanted items
+     * @throws OutOfItemsException - not enough items in the container
      */
-    public String getOneNumber() throws OutOfItemsException
-    {
-        if(numbers.size()==0)
+    public List<T> receiveListOfItems(final int numberOfItems) throws OutOfItemsException {
+
+        if(numberOfItems>numberOfItemsAvailable())
         {
-            throw new OutOfItemsException("The operation requires more items in the containerTests");
+            throw new OutOfItemsException("The operation requires more items in the container");
         }
-        String result= numbers.peek();
-        numbers.pop();
-        return result;
+
+        List<T> items=new LinkedList<>();
+        for(int i=0;i<numberOfItems;i++)
+        {
+            items.add(0,itemStorage.peek());
+            itemStorage.pop();
+        }
+        return items;
     }
 
-    /**
-     * This function supplies the ComputationalMachine object with 2 arguments to compute the operation
-     * @return two items wrapped in the class Pair
-     * @throws OutOfItemsException if there arent enough items in the storage
-     */
-    public Pair getTwoNumbers() throws OutOfItemsException
-    {
-        String secondNum=getOneNumber();
-        String firstNum=getOneNumber();
-        return new Pair(firstNum,secondNum);
-    }
 
     /**
-     * Monitoring function
      * @return the current load of the storage
      */
-    public int getNumberOfItems()
+    public int numberOfItemsAvailable()
     {
-        return numbers.size();
+        return itemStorage.size();
     }
 
 }
