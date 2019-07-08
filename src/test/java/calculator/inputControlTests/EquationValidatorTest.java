@@ -1,18 +1,18 @@
 package calculator.inputControlTests;
 
-import calculator.inputControl.InputValidator;
+import calculator.inputControl.EquationValidator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class InputValidatorTest {
+public class EquationValidatorTest {
 
-    private InputValidator validator;
+    private EquationValidator validator;
     @Before
     public void setUp()  {
-        validator=new InputValidator();
+        validator=new EquationValidator();
     }
 
     @After
@@ -62,4 +62,23 @@ public class InputValidatorTest {
         assertFalse(validator.isValidOperator("+/-"));
     }
     //endregion
+
+    @Test
+    public void checkBrackets_EquationWithMissingBracket_InvalidEquation()
+    {
+        assertFalse(validator.checkBrackets("(10+20+(20)"));
+    }
+
+    @Test
+    public void checkBrackets_EquationWithoutMissingBrackets_ValidEquation()
+    {
+        assertTrue(validator.checkBrackets("((())()())"));
+    }
+
+    @Test
+    public void checkForSequentialOperator_TwoSequentialMathematicalOperators_InvalidEquation()
+    {
+        assertTrue(validator.checkForSequentialOperators("1 + 4 4* ( 2 * 7 )"));
+    }
+
 }

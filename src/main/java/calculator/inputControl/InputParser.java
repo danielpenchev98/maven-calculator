@@ -1,6 +1,6 @@
 package calculator.inputControl;
 
-import calculator.computation.ComputationalMachine;
+
 import calculator.computation.MathComponentType;
 
 
@@ -10,16 +10,17 @@ import calculator.computation.MathComponentType;
  * Class which requires for formatting of the user input and identifying the components of an equation
  */
 public class InputParser {
+
     private static volatile InputParser uniqueInstance;
 
     /**
      * Used as an abstraction - increases the modifiability - if the algorithm for validation of the input changes, then InoutParser wont notice
      */
-    private InputValidator checkMechanism;
+    private EquationValidator checkMechanism;
 
     private InputParser()
     {
-        checkMechanism=new InputValidator();
+        checkMechanism=new EquationValidator();
     }
 
     /**
@@ -30,7 +31,7 @@ public class InputParser {
     {
         if(uniqueInstance==null)
         {
-            synchronized (ComputationalMachine.class)
+            synchronized (InputParser.class)
             {
                 if(uniqueInstance==null)
                 {
@@ -43,13 +44,17 @@ public class InputParser {
     }
 
     /**
-     * Function for formatting the input into a suitable for computing format
      * @param input - unformatted input
      * @return formatted input
      * @throws InvalidTypeOfEquationComponent - if there exists and illegal component in the equation
      */
-    public String[] processInput(final String input) throws InvalidTypeOfEquationComponent
+    public String[] formatAndValidateInput(final String input) throws InvalidTypeOfEquationComponent
     {
+
+        /*if(!checkBrackets(input))
+        {
+            throw new MissingBracketException("Missing Bracket");
+        }*/
         String[] splitInput=input.split(" ");
         for(String item:splitInput)
         {
@@ -61,11 +66,27 @@ public class InputParser {
         return splitInput;
     }
 
+
+
+    public String removeJunkSpaces(String equation)
+    {
+
+        return equation.replaceAll("[ ]+"," ").replaceAll("^ | $","");
+    }
+    public String addSpaceAfterEveryComponent(String equation)
+    {
+        return equation.replaceAll("([0-9]+)","$1 ").replaceAll("([^0-9 ])","$1 ");
+    }
+
+    public String removeSpaceBetweenTheNumberAndItsSign(String equation)
+    {
+        return equation.replaceAll("[(] - ([0-9]+)","$1 -$2").replaceAll("^- ([0-9]+)","-$1");
+    }
     /**
      * @param component - component of the equation
      * @return the type of the component
      */
-    public MathComponentType getTypeOfComponent(final String component)
+    public MathComponentType getTypeOfComponent(final String component) throws InvalidTypeOfEquationComponent
     {
         if(checkMechanism.isValidNumber(component))
         {
@@ -75,6 +96,7 @@ public class InputParser {
         {
             return MathComponentType.OPERATOR;
         }
-        return MathComponentType.INVALID;
+        throw new InvalidTypeOfEquationComponent("Unsupported component has been found");
     }
+
 }

@@ -8,6 +8,6 @@ public class CalculatorAppTest {
         Scanner scan=new Scanner(System.in);
         String userInput=scan.nextLine();
         CalculatorApp application=new CalculatorApp();
-        application.calculate(userInput);
+        application.processEquationAndCalculateResult(userInput);
     }
 }

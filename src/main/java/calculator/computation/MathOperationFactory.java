@@ -10,7 +10,6 @@ public class MathOperationFactory {
      */
     public static MathOperation createOperation(String operation) throws InvalidParameterException
     {
-        //to change it - should return null as default???
         switch(operation)
         {
             case "+": return new Addition();
