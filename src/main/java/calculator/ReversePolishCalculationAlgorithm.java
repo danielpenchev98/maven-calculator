@@ -3,7 +3,7 @@ package calculator;
 import calculator.computation.ComputationalMachine;
 import calculator.computation.MathComponentType;
 import calculator.container.ComponentSupplier;
-import calculator.inputControl.InputParser;
+import calculator.inputControl.PrimalParser;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ public class ReversePolishCalculationAlgorithm {
      */
     private ComputationalMachine calculator;
 
-    private InputParser parser;
+    private PrimalParser parser;
 
-    private ReversePolishCalculationAlgorithm(final ComputationalMachine machine,final InputParser inputModificator)
+    private ReversePolishCalculationAlgorithm(final ComputationalMachine machine,final PrimalParser inputModificator)
     {
         calculator=machine;
         parser=inputModificator;
@@ -26,9 +26,9 @@ public class ReversePolishCalculationAlgorithm {
 
     /**
      * Part of the Singleton pattern
-     * @return unique instance of InputParser class
+     * @return unique instance of PrimalParser class
      */
-    public static ReversePolishCalculationAlgorithm getInstance(ComputationalMachine machine,InputParser parser)
+    public static ReversePolishCalculationAlgorithm getInstance(ComputationalMachine machine, PrimalParser parser)
     {
         if(uniqueInstance==null)
         {
@@ -53,7 +53,7 @@ public class ReversePolishCalculationAlgorithm {
     {
         ComponentSupplier supplier=new ComponentSupplier();
         for (String component : splitInput) {
-            MathComponentType type = parser.getTypeOfComponent(component);
+            MathComponentType type = MathComponentType.NUMBER;//parser.getTypeOfComponent(component);
             if (type == MathComponentType.NUMBER)
             {
                 supplier.addItem(component);

@@ -1,22 +1,42 @@
 package calculator.inputControl;
 
 
+import calculator.computation.MathComponentType;
+
 public class EquationValidator {
 
+    public boolean isValidEquation(final String equation)
+    {
+        String[] equationComponents=equation.split(" ");
+        for(String component:equationComponents)
+        {
+            if(!isValidComponent(component))
+            {
+                return false;
+            }
+        }
+
+        if(!hasBracketBalance(equation))
+        {
+            return false;
+        }
+
+        return !(hasNonOperatorBeforeBracket(equation)||hasNonOperatorAfterBracket(equation)||hasNonNumbersOnlyBetweenBrackets(equation)||hasSequentialOperators(equation));
+    }
     /**
      * @param component equation component
      * @return the validity of the component
      */
-    public boolean validateComponent(final String component)
+    private boolean isValidComponent(final String component)
     {
-        return isValidNumber(component)||isValidOperator(component);
+        return isValidNumber(component)||isValidOperator(component)||isBracket(component);
     }
 
     /**
      * @param component - equation component
      * @return - if "component" is a number
      */
-    public boolean isValidNumber(final String component) {
+    private boolean isValidNumber(final String component) {
         return component.matches("^[-+]?[0-9]+$");
     }
 
@@ -24,51 +44,66 @@ public class EquationValidator {
      * @param component - equation component
      * @return - if "component" is an operator
      */
-    public boolean isValidOperator(final String component) {
+    private boolean isValidOperator(final String component) {
         return component.matches("^[-+*/]$");
     }
 
-    public boolean checkBrackets(String input)
+    private boolean isBracket(final String component) { return component.matches("^[)(]$");}
+
+    public boolean hasBracketBalance(String input)
     {
         input.replaceAll("[^)(]","");
-        int checkFlag=0;
+        int bracketBalance=0;
         for(char item:input.toCharArray())
         {
             if(item=='(')
             {
-                checkFlag++;
+                bracketBalance++;
             }
-            else if(checkFlag==0)
+            else if(item==')')
             {
-                return false;
-            }
-            else
-            {
-                checkFlag--;
+                if(bracketBalance==0)
+                {
+                    return false;
+                }
+                bracketBalance--;
             }
         }
-        if(checkFlag!=0)
-        {
-            return false;
-        }
-        return true;
+       return bracketBalance==0;
     }
 
-    public boolean checkForSequentialOperators(String equation)
+    public boolean hasSequentialOperators(String equation)
     {
-        return equation.matches(".*([-+/*]+[ ]*[-+/*]+|[0-9]+[ ]+[0-9]).*");
+        return equation.matches(".*([-+/*]+[ ]*[-+/*]+|[0-9]+[ ]+[0-9]+).*");
     }
-    public boolean checkBetweenBrackets(String equation)
+    public boolean hasNonNumbersOnlyBetweenBrackets(String equation)
     {
-        return equation.matches("[(].*[0-9].*[)]");
+        return equation.matches(".*[(][^0-9]*[)].*");
     }
-    public boolean checkBeforeBracket(String equation)
+    public boolean hasNonOperatorBeforeBracket(String equation)
     {
-        return equation.matches("[^-+/*] [(]");
+        return equation.matches(".*[^-+/*)(] [(].*");
     }
-    public boolean checkAfterBracket(String equation)
+    public boolean hasNonOperatorAfterBracket(String equation)
     {
-        return equation.matches("[)] [^-+/*]");
+        return equation.matches(".*[)] [^-+/*)(].*");
+    }
+
+    /**
+     * @param component - component of the equation
+     * @return the type of the component
+     */
+    public MathComponentType getTypeOfComponent(final String component) throws InvalidTypeOfEquationComponent
+    {
+        if(isValidNumber(component))
+        {
+            return MathComponentType.NUMBER;
+        }
+        else if(isValidOperator(component))
+        {
+            return MathComponentType.OPERATOR;
+        }
+        throw new InvalidTypeOfEquationComponent("Unsupported component has been found");
     }
 
 }

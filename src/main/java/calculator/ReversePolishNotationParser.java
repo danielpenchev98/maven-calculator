@@ -1,5 +1,6 @@
 package calculator;
 
+import calculator.computation.MathComponentType;
 import calculator.inputControl.EquationValidator;
 
 import java.util.HashMap;
@@ -32,12 +33,12 @@ public class ReversePolishNotationParser {
         String[] components=getIndividualComponents(equation);
         for(String component:components)
         {
-            if(checker.isValidNumber(component))
+            if(checker.getTypeOfComponent(component)== MathComponentType.NUMBER)
             {
                 addComponentToReversedPolishEquation(component);
                 addSpaceToReversedPolishEquation();
             }
-            else if (checker.isValidOperator(component)){
+            else if (checker.getTypeOfComponent(component)==MathComponentType.OPERATOR){
 
                     //while the top item of the stack is a higher priority operator than the current one
                     while (!operators.isEmpty() &&priority.containsKey(operators.peek()) &&hasLowerPriority(operators.peek(),component)) {

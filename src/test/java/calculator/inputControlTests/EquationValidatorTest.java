@@ -22,63 +22,26 @@ public class EquationValidatorTest {
 
     //region validateComponentTests
     @Test
-    public void validateComponent_StringRepresentingNumberAsParam_Legal() {
-        assertTrue(validator.validateComponent("101"));
+    public void isValidEquation_EquationWithMissingOperatorBetweenNumberAndBracket_Legal() {
+        assertTrue(validator.hasNonOperatorBeforeBracket("1 + 2 ( ) * 5"));
     }
 
     @Test
-    public void validateComponent_StringRepresentingOperatorAsParam_Legal() {
-        assertTrue(validator.validateComponent("+"));
+    public void isValidEquation_EquationWithBracketsWithintBrackets_Legal() {
+        assertTrue(validator.hasBracketBalance("1 + ( ( 10 + 20 ) * ( -5 ) )"));
     }
 
     @Test
-    public void validateComponent_StringRepresentingIllegalComponentAsParam_Illegal() {
-        assertFalse(validator.validateComponent("**"));
+    public void isValidEquation_StringRepresentingIllegalComponentAsParam_Illegal() {
+        assertTrue(validator.isValidEquation("1 + 5 + ( -1 ) + 2"));
     }
     //endregion
-
-    //region isValidNumberTests
     @Test
-    public void isValidNumber_StringRepresentingNumberAsParam_Legal() {
-        assertTrue(validator.isValidNumber("777"));
-    }
-
-
-    @Test
-    public void isValidOperator_StringRepresentingNonNumberAsParam_Illegal() {
-        assertFalse(validator.isValidNumber("123ab"));
-    }
-    //endregion
-
-    //region isValidNumber
-    @Test
-    public void isValidNumber_StringRepresentingOperatorAsParam_Legal()
+    public void checkBracketBalance()
     {
-        assertTrue(validator.isValidOperator("/"));
-    }
+        assertTrue(validator.hasBracketBalance("( ())")); }
 
-    @Test
-    public void isValidOperator_StringRepresentingNonOperatorAsParam_Illegal() {
-        assertFalse(validator.isValidOperator("+/-"));
-    }
-    //endregion
 
-    @Test
-    public void checkBrackets_EquationWithMissingBracket_InvalidEquation()
-    {
-        assertFalse(validator.checkBrackets("(10+20+(20)"));
-    }
 
-    @Test
-    public void checkBrackets_EquationWithoutMissingBrackets_ValidEquation()
-    {
-        assertTrue(validator.checkBrackets("((())()())"));
-    }
-
-    @Test
-    public void checkForSequentialOperator_TwoSequentialMathematicalOperators_InvalidEquation()
-    {
-        assertTrue(validator.checkForSequentialOperators("1 + 4 4* ( 2 * 7 )"));
-    }
 
 }

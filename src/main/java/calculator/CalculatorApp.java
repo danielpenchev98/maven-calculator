@@ -3,36 +3,17 @@ package calculator;
 
 import calculator.computation.ComputationalMachine;
 import calculator.container.OutOfItemsException;
-import calculator.inputControl.InputParser;
+import calculator.inputControl.EquationValidator;
+import calculator.inputControl.PrimalParser;
 import calculator.inputControl.InvalidTypeOfEquationComponent;
-
-import java.util.List;
 
 /**
  * Class which represents the calculator as a whole - uses the 3 main abstractions :
- * InputParser - used as a input formatter,
+ * PrimalParser - used as a input formatter,
  * NumberSupplier - storage, used for calculating the equation,
  * ComputationalMachine - used for calculation the operations
  */
 class CalculatorApp {
-
-    /**
-     * Help function, which uses special Parses to format the input
-     * @param input - input to be formatted
-     * @param parser - object, which will format the input
-     * @return formatted input
-     * @throws InvalidTypeOfEquationComponent - if an invalid component of an equation is found
-     * @throws NullPointerException - if the input is the empty string
-     */
-    private String[] parseInput(String input, InputParser parser) throws InvalidTypeOfEquationComponent//, NullPointerException
-    {
-        String[] splitInput= parser.formatAndValidateInput(input);
-        if(splitInput==null)
-        {
-            throw new NullPointerException("The input consists of 0 or 1 components");
-        }
-        return splitInput;
-    }
 
 
     /**
@@ -41,9 +22,9 @@ class CalculatorApp {
      */
     void processEquationAndCalculateResult(final String equation)
     {
-        InputParser parser= InputParser.getInstance();
+        PrimalParser parser= PrimalParser.getInstance();
         String[] splitInput;
-        try {
+        /*try {
             splitInput=parseInput(equation,parser);
         }
         catch(InvalidTypeOfEquationComponent invalidType)
@@ -55,7 +36,16 @@ class CalculatorApp {
         {
             System.out.println(nullPtr.getMessage());
             return;
+        }*/
+
+        String formattedInput=parser.formatInput(equation);
+        EquationValidator validator=new EquationValidator();
+        if(!validator.isValidEquation(formattedInput))
+        {
+            System.out.println(" Invalid equation");
+            return;
         }
+        splitInput=formattedInput.split(" ");
 
 
         ComputationalMachine calculator= ComputationalMachine.getInstance();
