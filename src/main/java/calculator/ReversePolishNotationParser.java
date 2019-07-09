@@ -1,6 +1,5 @@
 package calculator;
 
-import calculator.computation.MathComponentType;
 import calculator.inputControl.EquationValidator;
 
 import java.util.HashMap;
@@ -9,7 +8,7 @@ import java.util.Stack;
 
 public class ReversePolishNotationParser {
 
-    private Map<String,Integer> priority;
+    private Map<String,Integer> priorityOfOperators;
 
     private Stack<String> operators;
     private StringBuilder reversedPolishEquation;
@@ -17,7 +16,7 @@ public class ReversePolishNotationParser {
 
     public ReversePolishNotationParser()
     {
-        priority=new HashMap<String,Integer>(){{
+        priorityOfOperators=new HashMap<String,Integer>(){{
             put("+", 1);
             put("-", 1);
             put("/", 2);
@@ -28,6 +27,19 @@ public class ReversePolishNotationParser {
         checker=new EquationValidator();
     }
 
+    /**
+     * Shunting yard algorithm
+     * Rules:
+     * 1) If it's a number - add to equation
+     * 2) If it's an opening bracket - add to operator stack
+     * 3) if it's an operator :
+     * 3.1) if the operator on the top of the stack has greater priority, add it to Equation and push the current operator
+     * 3.2) if the operator on the top of the stack has lower or equal priority, add current one to stack
+     * 4) if it's closing bracket - add everything from the stack to equation, till you find opening bracket in the stack
+     * 5) In the end add everything from the stack to equation
+     * @param equation infix notation
+     * @return reverse polish notation
+     */
     public String formatFromInfixToReversedPolishNotation(String equation)
     {
         String[] components=getIndividualComponents(equation);
@@ -40,20 +52,21 @@ public class ReversePolishNotationParser {
             }
             else if (checker.isValidOperator(component)){
 
-                    //while the top item of the stack is a higher priority operator than the current one
-                    while (!operators.isEmpty() &&priority.containsKey(operators.peek()) &&hasLowerPriority(operators.peek(),component)) {
+                    while (!operators.isEmpty() &&priorityOfOperators.containsKey(operators.peek()) &&hasLowerPriority(operators.peek(),component)) {
                         addComponentToReversedPolishEquation(operators.pop());
                         addSpaceToReversedPolishEquation();
                     }
+
                     operators.add(component);
             }
             else if(isClosingBracket(component))
             {
-                while(hasSpareOperators()&&!isOpeningBracket(component))
+                while(hasSpareOperators()&&!isOpeningBracket(operators.peek()))
                 {
                     addComponentToReversedPolishEquation(operators.pop());
                     addSpaceToReversedPolishEquation();
                 }
+
                 operators.pop();
             }
             else
@@ -83,7 +96,7 @@ public class ReversePolishNotationParser {
 
     private boolean hasLowerPriority(final String previousOperator,final String currentOperator)
     {
-        return priority.get(previousOperator) > priority.get(currentOperator);
+        return priorityOfOperators.get(previousOperator) > priorityOfOperators.get(currentOperator);
     }
 
     private boolean isOpeningBracket(final String item)

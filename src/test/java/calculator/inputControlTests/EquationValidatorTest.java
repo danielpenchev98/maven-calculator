@@ -20,6 +20,7 @@ public class EquationValidatorTest {
         validator=null;
     }
 
+    //region validateEquation
     @Test(expected = OperatorMisplacementException.class)
     public void validateEquation_EquationWithMissingOperatorBetweenNumberAndBracket_Illegal() throws Exception {
         validator.validateEquation("1 + 2 ( ) * 5");
@@ -65,4 +66,41 @@ public class EquationValidatorTest {
     {
         validator.validateEquation("");
     }
+    //endregion
+
+    //region isValidNumber
+    @Test
+    public void isValidNumber_ValidNumberAsParam_Legal()
+    {
+        assertTrue(validator.isValidNumber("-102"));
+    }
+
+    @Test
+    public void isValidNumber_InvalidNumberWithTwoSigns_Illegal()
+    {
+        assertFalse(validator.isValidNumber("--102"));
+    }
+
+    @Test
+    public void isValidNumber_InvalidNumberWithLettersInIt_Illegal()
+    {
+        assertFalse(validator.isValidNumber("132A231"));
+    }
+    //endregion
+
+    //region isValidOperation
+
+    @Test
+    public void isValidOperator_ValidOperatorAsParam_Legal()
+    {
+        assertTrue(validator.isValidOperator("+"));
+    }
+
+    @Test
+    public void IsValidOperator_InvalidOperatorAsParam_Illegal()
+    {
+        assertFalse(validator.isValidOperator("%"));
+    }
+    //endregion
+
 }

@@ -1,7 +1,7 @@
 package calculator.computation;
 
 /**
- * Class which represents the computational logic of the calculator. It uses Singleton design patten
+ * Class which represents the computational logic of the calculator. It uses Singleton design patten, because the calculator can have only one computing unit
  */
 public class ComputationalMachine{
 
@@ -38,11 +38,6 @@ public class ComputationalMachine{
         return uniqueInstance;
     }
 
-
-    /**
-     * This function changes the state of the ComputationalMachine object
-     * @param action - represents the operation we want to compute
-     */
     private void setMathematicalOperation(final String action) throws InvalidParameterException
     {
         operation= MathOperationFactory.createOperation(action);

@@ -1,16 +1,12 @@
 package calculator;
 
 import calculator.computation.ComputationalMachine;
-import calculator.computation.MathComponentType;
 import calculator.container.ComponentSupplier;
 import calculator.inputControl.EquationValidator;
-import calculator.inputControl.PrimalParser;
 
 import java.util.List;
 
 public class ReversePolishCalculationAlgorithm {
-
-    private static volatile ReversePolishCalculationAlgorithm uniqueInstance;
 
     /**
      * Used as an abstraction - increases the modifiability - if the algorithm for validation of the input changes, then InoutParser wont notice
@@ -20,31 +16,12 @@ public class ReversePolishCalculationAlgorithm {
     private EquationValidator validator;
 
     //TODO do i need to pass Equation validator?????
-    private ReversePolishCalculationAlgorithm(final ComputationalMachine machine,final EquationValidator validatingLogic)
+    public ReversePolishCalculationAlgorithm(final ComputationalMachine machine,final EquationValidator validatingLogic)
     {
         calculator=machine;
         validator=validatingLogic;
     }
 
-    /**
-     * Part of the Singleton pattern
-     * @return unique instance of PrimalParser class
-     */
-    public static ReversePolishCalculationAlgorithm getInstance(ComputationalMachine machine, EquationValidator validatingLogic)
-    {
-        if(uniqueInstance==null)
-        {
-            synchronized (ReversePolishCalculationAlgorithm.class)
-            {
-                if(uniqueInstance==null)
-                {
-                    uniqueInstance=new ReversePolishCalculationAlgorithm(machine,validatingLogic);
-                }
-
-            }
-        }
-        return uniqueInstance;
-    }
     /**
      * Help function which implements the logic of Reversed Polish Notation for calculating an eqiation
      * @param splitInput - array of Strings, constisting of items, representing a component of an equation

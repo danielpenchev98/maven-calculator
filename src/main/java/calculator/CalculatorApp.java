@@ -23,7 +23,7 @@ class CalculatorApp {
      */
     void processEquationAndCalculateResult(final String equation)
     {
-        PrimalParser parser= PrimalParser.getInstance();
+        PrimalParser parser= new PrimalParser();
         String formattedInput=parser.formatInput(equation);
         EquationValidator validator=new EquationValidator();
         try
@@ -34,13 +34,17 @@ class CalculatorApp {
         catch(Exception ex)
         {
             System.out.println(ex.getMessage());
+            return;
         }
 
         ReversePolishNotationParser specialParser=new ReversePolishNotationParser();
         String reversePolishFormatEquation=specialParser.formatFromInfixToReversedPolishNotation(formattedInput);
+
         String[] splitInput=reversePolishFormatEquation.split(" ");
+
         ComputationalMachine calculator= ComputationalMachine.getInstance();
-        ReversePolishCalculationAlgorithm algorithm=ReversePolishCalculationAlgorithm.getInstance(calculator,validator);
+        ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm(calculator,validator);
+
         try {
             int finalResult=algorithm.calculateEquation(splitInput);
             System.out.printf("%d\n",finalResult);
