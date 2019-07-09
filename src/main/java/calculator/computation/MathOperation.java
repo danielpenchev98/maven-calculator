@@ -13,4 +13,15 @@ public interface MathOperation {
       * @throws ArithmeticException - if some type of error occurs like division on zero
       */
      int compute(final int first_number, final int second_number) throws ArithmeticException;
+
+     /**
+      * @return the priority of the operator
+      */
+     int getPriority();
+
+
+     /**
+      * @return if the operator is left associative
+      */
+     boolean isLeftAssociative();
 }

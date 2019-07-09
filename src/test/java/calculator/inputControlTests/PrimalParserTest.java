@@ -1,9 +1,6 @@
 package calculator.inputControlTests;
 
-import calculator.computation.MathComponentType;
 import calculator.inputControl.PrimalParser;
-import calculator.inputControl.InvalidTypeOfEquationComponent;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,17 +14,7 @@ public class PrimalParserTest {
     @Before
     public void setUp()
     {
-      parser= PrimalParser.getInstance();
-    }
-    @After
-    public void tearDown()
-    {
-        parser=null;
-    }
-
-    @Test
-    public void getInstance_UniqueInstanceExist_ReferenceToThatUniqueInstance() {
-        assertSame(parser, PrimalParser.getInstance());
+      parser= new PrimalParser();
     }
 
     //region processInputTests

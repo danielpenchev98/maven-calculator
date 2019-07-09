@@ -1,5 +1,9 @@
 package calculator.inputControlTests;
 
+import calculator.exceptions.EmptyEquationException;
+import calculator.exceptions.InvalidTypeOfEquationComponent;
+import calculator.exceptions.MissingNumberException;
+import calculator.exceptions.OperatorMisplacementException;
 import calculator.inputControl.*;
 import org.junit.After;
 import org.junit.Before;

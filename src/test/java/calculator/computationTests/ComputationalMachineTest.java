@@ -1,9 +1,9 @@
 package calculator.computationTests;
 
 import calculator.computation.ComputationalMachine;
-import calculator.computation.InvalidParameterException;
-import calculator.computation.OverFlowException;
-import calculator.computation.UnderFlowException;
+import calculator.exceptions.InvalidParameterException;
+import calculator.exceptions.OverFlowException;
+import calculator.exceptions.UnderFlowException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

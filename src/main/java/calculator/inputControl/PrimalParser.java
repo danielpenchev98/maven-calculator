@@ -1,5 +1,7 @@
 package calculator.inputControl;
 
+import calculator.exceptions.InvalidTypeOfEquationComponent;
+
 /**
  * Class which requires for formatting of the user input and identifying the components of an equation
  */

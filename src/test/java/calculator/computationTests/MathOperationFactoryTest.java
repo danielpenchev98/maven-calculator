@@ -1,6 +1,7 @@
 package calculator.computationTests;
 
 import calculator.computation.*;
+import calculator.exceptions.InvalidParameterException;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -11,37 +12,29 @@ public class MathOperationFactoryTest {
     @Test
     public void CreateOperation_CreateAdditionObject_NoExceptionExpected() throws InvalidParameterException
     {
-        if(!(MathOperationFactory.createOperation("+") instanceof Addition))
-        {
-            fail("Couldn't create an object of type Addition");
-        }
+        MathOperation operation=MathOperationFactory.createOperation("+");
+        assertTrue(operation instanceof Addition);
     }
 
     @Test
     public void CreateOperation_CreateSubtractionObject_NoExceptionExpected() throws InvalidParameterException
     {
-        if(!(MathOperationFactory.createOperation("-") instanceof Subtraction))
-        {
-            fail("Couldn't create an object of type Subtraction");
-        }
+        MathOperation operation=MathOperationFactory.createOperation("-");
+        assertTrue(operation instanceof Subtraction);
     }
 
     @Test
     public void CreateOperation_CreateMultiplicationObject_NoExceptionExpected() throws InvalidParameterException
     {
-        if(!(MathOperationFactory.createOperation("*") instanceof Multiplication))
-        {
-            fail("Couldn't create an object of type Multiplication");
-        }
+        MathOperation operation=MathOperationFactory.createOperation("*");
+        assertTrue(operation instanceof Multiplication);
     }
 
     @Test
     public void CreateOperation_CreateDivisionObject_NoExceptionExpected() throws InvalidParameterException
     {
-        if(!(MathOperationFactory.createOperation("/") instanceof Division))
-        {
-            fail("Couldn't create an object of type Division");
-        }
+        MathOperation operation=MathOperationFactory.createOperation("/");
+        assertTrue(operation instanceof Division);
     }
 
     @Test (expected = InvalidParameterException.class)

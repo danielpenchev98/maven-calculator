@@ -1,8 +1,8 @@
 package calculator.computationTests.mathematicalOperationsTests;
 
 import calculator.computation.Addition;
-import calculator.computation.OverFlowException;
-import calculator.computation.UnderFlowException;
+import calculator.exceptions.OverFlowException;
+import calculator.exceptions.UnderFlowException;
 import org.junit.*;
 
 import static org.junit.Assert.*;

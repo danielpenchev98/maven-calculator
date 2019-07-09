@@ -2,17 +2,16 @@ package calculator;
 
 
 import calculator.computation.ComputationalMachine;
-import calculator.container.OutOfItemsException;
-import calculator.inputControl.EquationValidator;
-import calculator.inputControl.MissingNumberException;
-import calculator.inputControl.PrimalParser;
-import calculator.inputControl.InvalidTypeOfEquationComponent;
+import calculator.computation.ReversePolishCalculationAlgorithm;
+import calculator.exceptions.OutOfItemsException;
+import calculator.exceptions.ReversePolishNotationParser;
+import calculator.inputControl.*;
 
 /**
  * Class which represents the calculator as a whole - uses the 3 main abstractions :
  * PrimalParser - used as a input formatter,
- * NumberSupplier - storage, used for calculating the equation,
- * ComputationalMachine - used for calculation the operations
+
+ * ComputationalMachine - used for calculation the operations* NumberSupplier - storage, used for calculating the equation,
  */
 class CalculatorApp {
 

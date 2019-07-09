@@ -1,4 +1,4 @@
-package calculator.computation;
+package calculator.exceptions;
 
 /**
  * Exception, signalizing an arithmetic underflow

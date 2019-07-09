@@ -1,4 +1,4 @@
-package calculator.container;
+package calculator.exceptions;
 
 /**
  * Exception, which signalizes for the lack of items in the storage

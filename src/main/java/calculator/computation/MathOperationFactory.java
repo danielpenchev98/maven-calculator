@@ -1,5 +1,7 @@
 package calculator.computation;
 
+import calculator.exceptions.InvalidParameterException;
+
 /**
  * Class which is responsible only for the creation of MathOperation objects.
  */
@@ -16,6 +18,7 @@ public class MathOperationFactory {
             case "-":return new Subtraction();
             case "*": return new Multiplication();
             case "/":return new Division();
+            case "^":return new Power();
             default: throw new InvalidParameterException("Unsupported operation");
         }
     }

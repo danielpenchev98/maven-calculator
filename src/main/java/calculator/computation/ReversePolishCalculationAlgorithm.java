@@ -1,4 +1,4 @@
-package calculator;
+package calculator.computation;
 
 import calculator.computation.ComputationalMachine;
 import calculator.container.ComponentSupplier;
@@ -34,12 +34,10 @@ public class ReversePolishCalculationAlgorithm {
         for (String component : splitInput) {
             if (validator.isValidNumber(component))
             {
-                System.out.printf("Add %s\n",component);
                 supplier.addItem(component);
             }
             else
             {
-                System.out.printf("Operator %s\n",component);
                 List<String> numbers = supplier.receiveListOfItems(2);
                 int result = calculator.computeAction(component, Integer.valueOf(numbers.get(0)), Integer.valueOf(numbers.get(1)));
                 supplier.addItem(String.valueOf(result));

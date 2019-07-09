@@ -1,5 +1,7 @@
 package calculator.computation;
 
+import calculator.exceptions.InvalidParameterException;
+
 /**
  * Class which represents the computational logic of the calculator. It uses Singleton design patten, because the calculator can have only one computing unit
  */
@@ -48,7 +50,7 @@ public class ComputationalMachine{
      * @param first_number - the first parameter of the operation
      * @param second_number - the second parameter of the operation
      * @return the result of the operation
-     * @throws ArithmeticException - a mathematical exception, which signalizes about a logical error - like division on zero
+     * @throws ArithmeticException - a mathematical exceptions, which signalizes about a logical error - like division on zero
      */
     public int computeAction(final String action,final int first_number,final int second_number) throws ArithmeticException, InvalidParameterException
     {

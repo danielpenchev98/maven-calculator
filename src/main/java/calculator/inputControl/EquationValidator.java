@@ -1,13 +1,13 @@
 package calculator.inputControl;
 
-import calculator.MissingBracketException;
+import calculator.exceptions.*;
 
 /**
  * The main idea is to find the errors in the equation, which cannot be detected during the RPN calculation
  */
 public class EquationValidator {
 
-    public void validateEquation(final String equation) throws EmptyEquationException, InvalidTypeOfEquationComponent, MissingBracketException,OperatorMisplacementException, MissingNumberException
+    public void validateEquation(final String equation) throws EmptyEquationException, InvalidTypeOfEquationComponent, MissingBracketException, OperatorMisplacementException, MissingNumberException
     {
         String[] equationComponents=equation.split(" ");
         if(equationComponents.length<=1&&equation.equals(""))
@@ -17,8 +17,9 @@ public class EquationValidator {
 
         for(String component:equationComponents)
         {
-            if(!isValidNumber(component)||!isValidOperator(component)||!isBracket(component))
+            if(!isValidNumber(component)&&!isValidOperator(component)&&!isBracket(component))
             {
+                System.out.println(component);
                throw new InvalidTypeOfEquationComponent("An illegal equation component has been found");
             }
         }
@@ -45,7 +46,7 @@ public class EquationValidator {
     }
 
     public boolean isValidOperator(final String component) {
-        return component.matches("^[-+*/]$");
+        return component.matches("^[-+*/^]$");
     }
 
     private boolean isBracket(final String component) {
@@ -54,7 +55,7 @@ public class EquationValidator {
 
     private boolean hasSequentialOperatorsOrNumbers(String equation)
     {
-        return equation.matches(".*([-+/*]+[ ]*[-+/*]+|[0-9]+[ ]+[0-9]+).*");
+        return equation.matches(".*([-+/*^]+[ ]*[-+/*^]+|[0-9]+[ ]+[0-9]+).*");
     }
 
     private boolean hasNonNumbersOnlyBetweenBrackets(String equation)
@@ -64,12 +65,12 @@ public class EquationValidator {
 
     private boolean hasNonOperatorBeforeBracket(String equation)
     {
-        return equation.matches(".*[^-+/*(] [(].*");
+        return equation.matches(".*[^-+/*(^] [(].*");
     }
 
     private boolean hasNonOperatorAfterBracket(String equation)
     {
-        return equation.matches(".*[)] [^-+/*)].*");
+        return equation.matches(".*[)] [^-+/*)^].*");
     }
 
     private boolean hasBracketBalance(String input)

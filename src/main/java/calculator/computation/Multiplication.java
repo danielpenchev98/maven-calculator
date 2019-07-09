@@ -1,8 +1,12 @@
 package calculator.computation;
 
 
+import calculator.exceptions.OverFlowException;
+import calculator.exceptions.UnderFlowException;
+
 public class Multiplication implements MathOperation {
 
+    private final static int PRIORITY=2;
     /**
      * @param first_number - first argument of the mathematical operation *
      * @param second_number - second argument of the mathematical operation *
@@ -21,4 +25,21 @@ public class Multiplication implements MathOperation {
         }
         return first_number*second_number;
     }
+
+    /**
+     * @return the priority of the operator
+     */
+    @Override
+    public int getPriority() {
+        return Multiplication.PRIORITY;
+    }
+
+    /**
+     * @return if the operator is left associative
+     */
+    @Override
+    public boolean isLeftAssociative() {
+        return true;
+    }
+
 }

@@ -1,7 +1,11 @@
 package calculator.computation;
 
+import calculator.exceptions.OverFlowException;
+import calculator.exceptions.UnderFlowException;
+
 public class Subtraction implements MathOperation {
 
+    private final static int PRIORITY=1;
     /**
      * @param first_number - first argument of the mathematical operation -
      * @param second_number - second argument of the mathematical operation -
@@ -20,4 +24,21 @@ public class Subtraction implements MathOperation {
         }
         return first_number-second_number;
     }
+
+    /**
+     * @return the priority of the operator
+     */
+    @Override
+    public int getPriority() {
+        return Subtraction.PRIORITY;
+    }
+
+    /**
+     * @return if the operator is left associative
+     */
+    @Override
+    public boolean isLeftAssociative() {
+        return true;
+    }
+
 }
