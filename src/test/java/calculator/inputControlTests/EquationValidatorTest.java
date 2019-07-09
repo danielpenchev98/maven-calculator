@@ -74,9 +74,21 @@ public class EquationValidatorTest {
 
     //region isValidNumber
     @Test
-    public void isValidNumber_ValidNumberAsParam_Legal()
+    public void isValidNumber_NumberAsParam_Legal()
     {
-        assertTrue(validator.isValidNumber("-102"));
+        assertTrue(validator.isValidNumber("-102.1"));
+    }
+
+    @Test
+    public void isValidNumber_NumberWithoutDigitAfterFloatingPoint_Illegal()
+    {
+        assertFalse(validator.isValidNumber("-102."));
+    }
+
+    @Test
+    public void isValidNumber_NumberWith2FloatingPoints_Illegal()
+    {
+       assertFalse(validator.isValidNumber("12.24.4"));
     }
 
     @Test

@@ -12,13 +12,13 @@ public class Subtraction implements MathOperation {
      * @return the result of the mathematical operation -
      * */
     @Override
-    public int compute(int first_number, int second_number) throws ArithmeticException {
+    public double compute(final double first_number, final double second_number) throws ArithmeticException {
 
-        if((double) Integer.MAX_VALUE +second_number<first_number)
+        if(Double.MAX_VALUE +second_number<first_number)
         {
             throw new OverFlowException("The result from the operation + is greater than the max value of the type Integer");
         }
-        else if((double) Integer.MIN_VALUE + second_number>first_number)
+        else if(Double.MIN_VALUE + second_number>first_number)
         {
             throw new UnderFlowException("The result from the operation + is lesser than the min value of the type Integer");
         }

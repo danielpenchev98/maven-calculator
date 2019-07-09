@@ -12,13 +12,12 @@ public interface MathOperation {
       * @return the result of the mathematical operation
       * @throws ArithmeticException - if some type of error occurs like division on zero
       */
-     int compute(final int first_number, final int second_number) throws ArithmeticException;
+     double compute(final double first_number, final double second_number) throws ArithmeticException;
 
      /**
       * @return the priority of the operator
       */
      int getPriority();
-
 
      /**
       * @return if the operator is left associative

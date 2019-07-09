@@ -25,8 +25,8 @@ public class SubtractionTest {
 
     @Test
     public void Subtract_TwoPositiveIntegersAsParams_NoExceptionThrown() {
-        int realResult=sub.compute(-10,-12);
-        assertEquals(2,realResult);
+        double realResult=sub.compute(-10,-12);
+        assertEquals(2,realResult,0);
     }
 
     @Test(expected = OverFlowException.class)

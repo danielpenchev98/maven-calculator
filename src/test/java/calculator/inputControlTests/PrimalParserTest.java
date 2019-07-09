@@ -20,15 +20,15 @@ public class PrimalParserTest {
     //region processInputTests
     @Test
     public void formatInput_InputWithManyJunkSpaces_FormattedInput() {
-        String equation=" 1 +2    * (  -   1)/ 5";
-        assertEquals( "1 + 2 * ( -1 ) / 5",parser.formatInput(equation));
+        String equation=" 1.0 +2    * (  -   1)/ 5";
+        assertEquals( "1.0 + 2 * ( -1 ) / 5",parser.formatInput(equation));
     }
 
     @Test
     public void formatInput_InputWithoutAnySpaces_FormattedInput()
     {
-        String equation="1+2*(-1)/5";
-        assertEquals("1 + 2 * ( -1 ) / 5",parser.formatInput(equation));
+        String equation="1+2*(-1.059)/5";
+        assertEquals("1 + 2 * ( -1.059 ) / 5",parser.formatInput(equation));
     }
 
     @Test

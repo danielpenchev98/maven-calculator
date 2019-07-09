@@ -23,8 +23,8 @@ public class AdditionTest {
 
     @Test
     public void Addition_PositiveAndNegativeIntegersAsParams_NoExceptionThrown() {
-        int realResult=add.compute(10,-12);
-        assertEquals(-2,realResult);
+        double realResult=add.compute(10,-12);
+        assertEquals(-2,realResult,0);
     }
 
     @Test(expected = OverFlowException.class)

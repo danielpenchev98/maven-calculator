@@ -35,8 +35,8 @@ public class ComputationalMachineTest {
         int first_number=2;
         int second_number=0;
         String operation="*";
-        int result=machine.computeAction(operation,first_number,second_number);
-        assertEquals(0,result);
+        double result=machine.computeAction(operation,first_number,second_number);
+        assertEquals(0,result,0);
     }
 
     @Test(expected = OverFlowException.class)

@@ -42,7 +42,7 @@ public class EquationValidator {
     }
 
     public boolean isValidNumber(final String component) {
-        return component.matches("^[-+]?[0-9]+$");
+        return component.matches("^[-+]?[1-9][0-9]*([.][0-9]+)?$");
     }
 
     public boolean isValidOperator(final String component) {

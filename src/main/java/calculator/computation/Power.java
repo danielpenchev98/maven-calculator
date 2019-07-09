@@ -10,8 +10,8 @@ public class Power implements MathOperation {
 
     //TODO to change everything to double
     @Override
-    public int compute(int first_number, int second_number) throws ArithmeticException {
-        return (int) Math.pow(first_number,second_number);
+    public double compute(final double first_number, final double second_number) throws ArithmeticException {
+        return Math.pow(first_number,second_number);
     }
 
     /**

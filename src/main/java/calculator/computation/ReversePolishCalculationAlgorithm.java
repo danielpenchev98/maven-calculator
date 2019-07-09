@@ -28,7 +28,7 @@ public class ReversePolishCalculationAlgorithm {
      * @return result of the equation
      * @throws Exception - error during the reverse polish notation calculation
      */
-    public int calculateEquation(final String[] splitInput) throws Exception
+    public double calculateEquation(final String[] splitInput) throws Exception
     {
         ComponentSupplier supplier=new ComponentSupplier();
         for (String component : splitInput) {
@@ -39,7 +39,7 @@ public class ReversePolishCalculationAlgorithm {
             else
             {
                 List<String> numbers = supplier.receiveListOfItems(2);
-                int result = calculator.computeAction(component, Integer.valueOf(numbers.get(0)), Integer.valueOf(numbers.get(1)));
+                double result = calculator.computeAction(component, Integer.valueOf(numbers.get(0)), Integer.valueOf(numbers.get(1)));
                 supplier.addItem(String.valueOf(result));
             }
         }
@@ -48,7 +48,7 @@ public class ReversePolishCalculationAlgorithm {
             throw new Exception("Invalid equation. Logical error. There arent enough operators");
         }
 
-        return Integer.valueOf(supplier.receiveListOfItems(1).get(0));
+        return Double.valueOf(supplier.receiveListOfItems(1).get(0));
     }
 
 }

@@ -24,7 +24,7 @@ public class MultiplicationTest {
 
     @Test
     public void Multiplication_TwoPositiveAndNegativeIntegersAsParams_NoExceptionThrown() {
-        int realResult=mult.compute(10,-12);
+        double realResult=mult.compute(10,-12);
         assertEquals(-120,realResult);
     }
 

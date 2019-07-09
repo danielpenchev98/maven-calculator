@@ -52,7 +52,7 @@ public class ComputationalMachine{
      * @return the result of the operation
      * @throws ArithmeticException - a mathematical exceptions, which signalizes about a logical error - like division on zero
      */
-    public int computeAction(final String action,final int first_number,final int second_number) throws ArithmeticException, InvalidParameterException
+    public double computeAction(final String action,final double first_number,final double second_number) throws ArithmeticException, InvalidParameterException
     {
         setMathematicalOperation(action);
         return operation.compute(first_number,second_number);

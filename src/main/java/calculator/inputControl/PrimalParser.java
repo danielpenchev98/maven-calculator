@@ -25,7 +25,7 @@ public class PrimalParser {
 
     private String addSpaceAfterEveryComponent(String equation)
     {
-        return equation.replaceAll("([0-9]+|[^0-9 ])","$1 ");
+        return equation.replaceAll("([0-9]+([.][0-9]*)?|[^0-9 ])","$1 ");
     }
 
     private String removeSpaceBetweenTheNumberAndItsSign(String equation)

@@ -13,13 +13,13 @@ public class Multiplication implements MathOperation {
      * @return the result of the mathematical operation *
      * */
     @Override
-    public int compute(final int first_number,final int second_number) throws ArithmeticException
+    public double compute(final double first_number,final double second_number) throws ArithmeticException
     {
-        if(Integer.MAX_VALUE <(double)first_number*second_number)
+        if(Double.MAX_VALUE <first_number*second_number)
         {
             throw new OverFlowException("The result from the operation + is greater than the max value of the type Integer");
         }
-        else if(Integer.MIN_VALUE> (double)first_number*second_number)
+        else if(Double.MIN_VALUE> first_number*second_number)
         {
             throw new UnderFlowException("The result from the operation + is lesser than the min value of the type Integer");
         }

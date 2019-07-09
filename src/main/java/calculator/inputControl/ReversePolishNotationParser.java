@@ -1,6 +1,5 @@
-package calculator.exceptions;
+package calculator.inputControl;
 
-import calculator.inputControl.EquationValidator;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -4,7 +4,7 @@ package calculator;
 import calculator.computation.ComputationalMachine;
 import calculator.computation.ReversePolishCalculationAlgorithm;
 import calculator.exceptions.OutOfItemsException;
-import calculator.exceptions.ReversePolishNotationParser;
+import calculator.inputControl.ReversePolishNotationParser;
 import calculator.inputControl.*;
 
 /**
@@ -45,8 +45,8 @@ class CalculatorApp {
         ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm(calculator,validator);
 
         try {
-            int finalResult=algorithm.calculateEquation(splitInput);
-            System.out.printf("%d\n",finalResult);
+            double finalResult=algorithm.calculateEquation(splitInput);
+            System.out.println(finalResult);
         }
         catch (OutOfItemsException noItems)
         {
