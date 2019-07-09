@@ -1,6 +1,6 @@
 package calculator.inputControlTests;
 
-import calculator.inputControl.EquationValidator;
+import calculator.inputControl.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,28 +20,49 @@ public class EquationValidatorTest {
         validator=null;
     }
 
-    //region validateComponentTests
-    @Test
-    public void isValidEquation_EquationWithMissingOperatorBetweenNumberAndBracket_Legal() {
-        assertTrue(validator.hasNonOperatorBeforeBracket("1 + 2 ( ) * 5"));
+    @Test(expected = OperatorMisplacementException.class)
+    public void validateEquation_EquationWithMissingOperatorBetweenNumberAndBracket_Illegal() throws Exception {
+        validator.validateEquation("1 + 2 ( ) * 5");
     }
 
-    @Test
-    public void isValidEquation_EquationWithBracketsWithintBrackets_Legal() {
-        assertTrue(validator.hasBracketBalance("1 + ( ( 10 + 20 ) * ( -5 ) )"));
-    }
-
-    @Test
-    public void isValidEquation_StringRepresentingIllegalComponentAsParam_Illegal() {
-        assertTrue(validator.isValidEquation("1 + 5 + ( -1 ) + 2"));
-    }
-    //endregion
-    @Test
-    public void checkBracketBalance()
+    @Test(expected = OperatorMisplacementException.class)
+    public void validateEquation_EquationWithClosingBracketNextToOpeningBracket_Legal() throws Exception
     {
-        assertTrue(validator.hasBracketBalance("( ())")); }
+        validator.validateEquation("1 + ( ( 10 + 20 ) ( -5 ) )");
+    }
 
+    @Test
+    public void validateEquation_SimpleEquation_Illegal() throws Exception {
+        validator.validateEquation("( ( -1 + 5 + 2 ) )");
+    }
 
+    @Test(expected = MissingNumberException.class)
+    public void validateEquation_EquationOnlyWithOperatorInTheBrackets_Illegal() throws Exception
+    {
+        validator.validateEquation("( + ) + 1 * 2");
+    }
 
+    @Test(expected = OperatorMisplacementException.class)
+    public void validateEquation_EquationWithSequentialOperators_Illegal() throws Exception
+    {
+        validator.validateEquation("1 + 2 + + ");
+    }
 
+    @Test(expected = MissingNumberException.class)
+    public void validateEquation_EquationWithEmptyBrackets_Illegal() throws Exception
+    {
+        validator.validateEquation("( ) + 2");
+    }
+
+    @Test(expected = InvalidTypeOfEquationComponent.class)
+    public void validateEquation_EquationWithIllegalComponent_Illegal() throws Exception
+    {
+        validator.validateEquation(" 1ha + 2 + 3");
+    }
+
+    @Test(expected = EmptyEquationException.class)
+    public void validateEquation_EmptyEquation_Illegal() throws Exception
+    {
+        validator.validateEquation("");
+    }
 }

@@ -4,6 +4,7 @@ package calculator;
 import calculator.computation.ComputationalMachine;
 import calculator.container.OutOfItemsException;
 import calculator.inputControl.EquationValidator;
+import calculator.inputControl.MissingNumberException;
 import calculator.inputControl.PrimalParser;
 import calculator.inputControl.InvalidTypeOfEquationComponent;
 
@@ -23,40 +24,30 @@ class CalculatorApp {
     void processEquationAndCalculateResult(final String equation)
     {
         PrimalParser parser= PrimalParser.getInstance();
-        String[] splitInput;
-        /*try {
-            splitInput=parseInput(equation,parser);
-        }
-        catch(InvalidTypeOfEquationComponent invalidType)
-        {
-            System.out.println("Invalid equation. The input should consists of numbers and supported mathematical operations");
-            return;
-        }
-        catch(NullPointerException nullPtr)
-        {
-            System.out.println(nullPtr.getMessage());
-            return;
-        }*/
-
         String formattedInput=parser.formatInput(equation);
         EquationValidator validator=new EquationValidator();
-        if(!validator.isValidEquation(formattedInput))
+        try
         {
-            System.out.println(" Invalid equation");
-            return;
+            validator.validateEquation(formattedInput);
         }
-        splitInput=formattedInput.split(" ");
+        //TODO maybe multiple catches is better
+        catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
 
-
+        ReversePolishNotationParser specialParser=new ReversePolishNotationParser();
+        String reversePolishFormatEquation=specialParser.formatFromInfixToReversedPolishNotation(formattedInput);
+        String[] splitInput=reversePolishFormatEquation.split(" ");
         ComputationalMachine calculator= ComputationalMachine.getInstance();
-        ReversePolishCalculationAlgorithm algorithm=ReversePolishCalculationAlgorithm.getInstance(calculator,parser);
+        ReversePolishCalculationAlgorithm algorithm=ReversePolishCalculationAlgorithm.getInstance(calculator,validator);
         try {
             int finalResult=algorithm.calculateEquation(splitInput);
             System.out.printf("%d\n",finalResult);
         }
         catch (OutOfItemsException noItems)
         {
-            System.out.println("Invalid equation ");
+            System.out.println("Invalid equation. Not enough Numbers");
         }
         catch(Exception logicalError) {
             System.out.println(logicalError.getMessage());

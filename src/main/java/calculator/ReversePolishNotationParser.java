@@ -28,17 +28,17 @@ public class ReversePolishNotationParser {
         checker=new EquationValidator();
     }
 
-    public String formatFromInfixToReversedPolishNotation(String equation) throws Exception
+    public String formatFromInfixToReversedPolishNotation(String equation)
     {
         String[] components=getIndividualComponents(equation);
         for(String component:components)
         {
-            if(checker.getTypeOfComponent(component)== MathComponentType.NUMBER)
+            if(checker.isValidNumber(component))
             {
                 addComponentToReversedPolishEquation(component);
                 addSpaceToReversedPolishEquation();
             }
-            else if (checker.getTypeOfComponent(component)==MathComponentType.OPERATOR){
+            else if (checker.isValidOperator(component)){
 
                     //while the top item of the stack is a higher priority operator than the current one
                     while (!operators.isEmpty() &&priority.containsKey(operators.peek()) &&hasLowerPriority(operators.peek(),component)) {
@@ -54,15 +54,6 @@ public class ReversePolishNotationParser {
                     addComponentToReversedPolishEquation(operators.pop());
                     addSpaceToReversedPolishEquation();
                 }
-
-                /*
-                //if "(" hasnt been found
-                if(operators.isEmpty())
-                {
-                    throw new MissingBracketException("Missing Opening Bracket");
-                }
-                */
-
                 operators.pop();
             }
             else
@@ -72,10 +63,7 @@ public class ReversePolishNotationParser {
         }
         while(!operators.isEmpty())
         {
-            /*if(operators.peek().equals("("))
-            {
-                throw new MissingBracketException("Missing Closing Bracket");
-            }*/
+
             addComponentToReversedPolishEquation(operators.pop());
             addSpaceToReversedPolishEquation();
         }
@@ -83,34 +71,41 @@ public class ReversePolishNotationParser {
         return reversedPolishEquation.toString();
     }
 
-    private void addComponentToReversedPolishEquation(String component)
+    private void addComponentToReversedPolishEquation(final String component)
     {
         reversedPolishEquation.append(component);
     }
+
     private void addSpaceToReversedPolishEquation()
     {
         reversedPolishEquation.append(" ");
     }
-    private boolean hasLowerPriority(String previousOperator,String currentOperator)
+
+    private boolean hasLowerPriority(final String previousOperator,final String currentOperator)
     {
         return priority.get(previousOperator) > priority.get(currentOperator);
     }
-    private boolean isOpeningBracket(String item)
+
+    private boolean isOpeningBracket(final String item)
     {
         return item.equals("(");
     }
-    private boolean isClosingBracket(String item)
+
+    private boolean isClosingBracket(final String item)
     {
         return item.equals(")");
     }
+
     private boolean hasSpareOperators()
     {
         return operators.size()>0;
     }
-    private String[] getIndividualComponents(String equation)
+
+    private String[] getIndividualComponents(final String equation)
     {
         return equation.split(" ");
     }
+
     private void removeParasiteSpace()
     {
         reversedPolishEquation.deleteCharAt(reversedPolishEquation.lastIndexOf(" "));

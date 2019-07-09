@@ -3,6 +3,7 @@ package calculator;
 import calculator.computation.ComputationalMachine;
 import calculator.computation.MathComponentType;
 import calculator.container.ComponentSupplier;
+import calculator.inputControl.EquationValidator;
 import calculator.inputControl.PrimalParser;
 
 import java.util.List;
@@ -16,19 +17,20 @@ public class ReversePolishCalculationAlgorithm {
      */
     private ComputationalMachine calculator;
 
-    private PrimalParser parser;
+    private EquationValidator validator;
 
-    private ReversePolishCalculationAlgorithm(final ComputationalMachine machine,final PrimalParser inputModificator)
+    //TODO do i need to pass Equation validator?????
+    private ReversePolishCalculationAlgorithm(final ComputationalMachine machine,final EquationValidator validatingLogic)
     {
         calculator=machine;
-        parser=inputModificator;
+        validator=validatingLogic;
     }
 
     /**
      * Part of the Singleton pattern
      * @return unique instance of PrimalParser class
      */
-    public static ReversePolishCalculationAlgorithm getInstance(ComputationalMachine machine, PrimalParser parser)
+    public static ReversePolishCalculationAlgorithm getInstance(ComputationalMachine machine, EquationValidator validatingLogic)
     {
         if(uniqueInstance==null)
         {
@@ -36,7 +38,7 @@ public class ReversePolishCalculationAlgorithm {
             {
                 if(uniqueInstance==null)
                 {
-                    uniqueInstance=new ReversePolishCalculationAlgorithm(machine,parser);
+                    uniqueInstance=new ReversePolishCalculationAlgorithm(machine,validatingLogic);
                 }
 
             }
@@ -53,13 +55,14 @@ public class ReversePolishCalculationAlgorithm {
     {
         ComponentSupplier supplier=new ComponentSupplier();
         for (String component : splitInput) {
-            MathComponentType type = MathComponentType.NUMBER;//parser.getTypeOfComponent(component);
-            if (type == MathComponentType.NUMBER)
+            if (validator.isValidNumber(component))
             {
+                System.out.printf("Add %s\n",component);
                 supplier.addItem(component);
             }
             else
             {
+                System.out.printf("Operator %s\n",component);
                 List<String> numbers = supplier.receiveListOfItems(2);
                 int result = calculator.computeAction(component, Integer.valueOf(numbers.get(0)), Integer.valueOf(numbers.get(1)));
                 supplier.addItem(String.valueOf(result));

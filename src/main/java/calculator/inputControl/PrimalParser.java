@@ -1,11 +1,5 @@
 package calculator.inputControl;
 
-
-import calculator.computation.MathComponentType;
-
-
-//TO DO - add algorithm for converting normal notation to reversed polish notation
-
 /**
  * Class which requires for formatting of the user input and identifying the components of an equation
  */
