@@ -29,7 +29,7 @@ public class ReversePolishCalculationAlgorithm {
      */
     public double calculateEquation(final String[] splitInput) throws Exception
     {
-        ComponentSupplier supplier=new ComponentSupplier();
+        ComponentSupplier<String> supplier=new ComponentSupplier<>();
         for (String component : splitInput) {
             if (validator.isValidNumber(component))
             {
@@ -44,7 +44,6 @@ public class ReversePolishCalculationAlgorithm {
         }
         if(supplier.numberOfItemsAvailable()!=1)
         {
-            System.out.println("Fuck");
             throw new Exception("Invalid equation. Logical error. There aren't enough operators");
         }
 

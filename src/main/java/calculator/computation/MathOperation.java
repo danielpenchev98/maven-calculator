@@ -7,12 +7,12 @@ package calculator.computation;
 public interface MathOperation {
 
      /**
-      * @param first_number - the first parameter of the mathematical operation
-      * @param second_number - the second parameter of the mathematical operation
+      * @param firstNumber - the first parameter of the mathematical operation
+      * @param secondNumber - the second parameter of the mathematical operation
       * @return the result of the mathematical operation
       * @throws ArithmeticException - if some type of error occurs like division on zero
       */
-     double compute(final double first_number, final double second_number) throws ArithmeticException;
+     double compute(final double firstNumber, final double secondNumber) throws ArithmeticException;
 
      /**
       * @return the priority of the operator

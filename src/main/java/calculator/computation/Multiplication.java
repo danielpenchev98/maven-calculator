@@ -10,9 +10,9 @@ public class Multiplication implements MathOperation {
      * @return the result of the mathematical operation *
      * */
     @Override
-    public double compute(final double first_number,final double second_number) throws ArithmeticException
+    public double compute(final double firstNumber,final double secondNumber) throws ArithmeticException
     {
-        return first_number*second_number;
+        return firstNumber*secondNumber;
     }
 
     /**

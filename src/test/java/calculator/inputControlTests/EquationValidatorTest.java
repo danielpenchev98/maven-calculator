@@ -1,9 +1,6 @@
 package calculator.inputControlTests;
 
-import calculator.exceptions.EmptyEquationException;
-import calculator.exceptions.InvalidTypeOfEquationComponent;
-import calculator.exceptions.MissingNumberException;
-import calculator.exceptions.OperatorMisplacementException;
+import calculator.exceptions.*;
 import calculator.inputControl.*;
 import org.junit.After;
 import org.junit.Before;
@@ -70,6 +67,13 @@ public class EquationValidatorTest {
     {
         validator.validateEquation("");
     }
+
+    @Test(expected = MissingBracketException.class)
+    public void validateEquation_EquationWithMissingBracket_Illegal() throws Exception
+    {
+        validator.validateEquation("1 + ( ( 2 * ( -3 ) -5 ) ");
+    }
+
     //endregion
 
     //region isValidNumber
@@ -119,6 +123,12 @@ public class EquationValidatorTest {
     public void isValidNumber_InvalidNumberWithLettersInIt_Illegal()
     {
         assertFalse(validator.isValidNumber("132A231"));
+    }
+
+    @Test
+    public void isValidNumber_NumberBeginningWithZero_Illegal()
+    {
+        assertFalse(validator.isValidNumber("0123"));
     }
     //endregion
 

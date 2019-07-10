@@ -6,19 +6,19 @@ public class Division implements MathOperation {
 
     final static int PRIORITY=3;
     /**
-     * @param first_number - first argument of the mathematical operation /
-     * @param second_number - second argument of the mathematical operation /
+     * @param firstNumber - first argument of the mathematical operation /
+     * @param secondNumber - second argument of the mathematical operation /
      * @exception ArithmeticException - when a division on zero occurs
      * @return the result of the mathematical operation /
      * */
     @Override
-    public double compute(final double first_number, final double second_number) throws DivisionByZeroException
+    public double compute(final double firstNumber, final double secondNumber) throws DivisionByZeroException
     {
-        if(second_number==0)
+        if(secondNumber==0)
         {
             throw new DivisionByZeroException("It's illegal to divide on zero");
         }
-        return first_number/second_number;
+        return firstNumber/secondNumber;
     }
 
     /**

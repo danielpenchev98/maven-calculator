@@ -3,7 +3,7 @@ package calculator;
 
 import java.util.Scanner;
 
-public class CalculatorAppTest {
+public class CalculatorAppConsole {
     public static void main(String[] argc)
     {
        Scanner scan=new Scanner(System.in);

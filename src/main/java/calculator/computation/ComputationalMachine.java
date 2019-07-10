@@ -47,17 +47,17 @@ public class ComputationalMachine{
 
     /**
      * @param action - the operation the ComputationalMachine object should compute
-     * @param first_number - the first parameter of the operation
-     * @param second_number - the second parameter of the operation
+     * @param firstNumber - the first parameter of the operation
+     * @param secondNumber - the second parameter of the operation
      * @return the result of the operation
      * @throws ArithmeticException - a mathematical exceptions, which signalizes about a logical error - like division on zero
      */
 
     //TODO should i list all the different exceptions or just the Super class
-    public double computeAction(final String action,final double first_number,final double second_number) throws ArithmeticException, InvalidOperatorException
+    public double computeAction(final String action,final double firstNumber,final double secondNumber) throws ArithmeticException, InvalidOperatorException
     {
         setMathematicalOperation(action);
-        return operation.compute(first_number,second_number);
+        return operation.compute(firstNumber,secondNumber);
     }
 
 }

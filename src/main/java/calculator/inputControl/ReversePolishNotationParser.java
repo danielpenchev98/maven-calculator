@@ -15,6 +15,10 @@ public class ReversePolishNotationParser {
 
     private Map<String,OperatorSettings> priorityOfOperators;
 
+    private ComponentSupplier<String> operators;
+    private StringBuilder reversedPolishEquation;
+    private EquationValidator checker;
+
     private class OperatorSettings
     {
         public int priority;
@@ -27,9 +31,6 @@ public class ReversePolishNotationParser {
         }
     }
 
-    private /*Stack<String>*/ ComponentSupplier operators;
-    private StringBuilder reversedPolishEquation;
-    private EquationValidator checker;
 
     public ReversePolishNotationParser()
     {
@@ -40,8 +41,7 @@ public class ReversePolishNotationParser {
             put("*", new OperatorSettings(4,true));
             put("^",new OperatorSettings(4,false));
         }};
-       operators=new ComponentSupplier();
-       // operators=new Stack<>();
+       operators=new ComponentSupplier<>();
         reversedPolishEquation=new StringBuilder();
         checker=new EquationValidator();
     }
@@ -68,14 +68,11 @@ public class ReversePolishNotationParser {
             if(checker.isValidNumber(component))
             {
                 addComponentToReversedPolishEquation(component);
-                addSpaceToReversedPolishEquation();
             }
             else if (checker.isValidArithmeticOperator(component)){
 
-                // MathOperation currOperation = MathOperationFactory.createOperation(component);
                 while (!operators.isOutOfItems() && priorityOfOperators.containsKey(operators.viewNextItem()) && (hasLowerPriority(operators.viewNextItem(), component) || (hasEqualPriority(operators.viewNextItem(), component) && isLeftAssoiciative(operators.viewNextItem())))) {
                     addComponentToReversedPolishEquation(operators.receiveNextItem());
-                    addSpaceToReversedPolishEquation();
                 }
                 operators.addItem(component);
             }
@@ -84,9 +81,7 @@ public class ReversePolishNotationParser {
                 while(hasSpareOperators()&&!isOpeningBracket(operators.viewNextItem()))
                 {
                     addComponentToReversedPolishEquation(operators.receiveNextItem());
-                    addSpaceToReversedPolishEquation();
                 }
-
                operators.removeNextItem();
             }
             else
@@ -98,20 +93,35 @@ public class ReversePolishNotationParser {
         {
 
             addComponentToReversedPolishEquation(operators.receiveNextItem());
-            addSpaceToReversedPolishEquation();
         }
         removeParasiteSpace();
         return reversedPolishEquation.toString();
     }
 
-    private void addComponentToReversedPolishEquation(final String component)
+    private boolean isTopOperatorInTheStackWithLowerPriorityThanCurrent(final String currComponent)
     {
-        reversedPolishEquation.append(component);
+        if(operators.isOutOfItems())
+        {
+            return false;
+        }
+        String topElementInTheStack=operators.viewNextItem();
+        return priorityOfOperators.containsKey(topElementInTheStack)||hasLowerPriority(topElementInTheStack, currComponent)
     }
 
-    private void addSpaceToReversedPolishEquation()
+    private boolean isTopOperatorInTheStackWithEqualPriorityAsCurrent(final String currComponent)
     {
-        reversedPolishEquation.append(" ");
+        if(operators.isOutOfItems())
+        {
+            return false;
+        }
+        String topElementInTheStack=operators.viewNextItem();
+        return isLeftAssoiciative(operators.viewNextItem())
+    }
+
+
+    private void addComponentToReversedPolishEquation(final String component)
+    {
+        reversedPolishEquation.append(component).append(" ");
     }
 
     private boolean hasLowerPriority(final String previousOperator,final String currentOperator)

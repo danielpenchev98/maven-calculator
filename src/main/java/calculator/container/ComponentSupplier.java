@@ -9,12 +9,12 @@ import java.util.Stack;
 /**
  *  Class which represents the containerTests, which helps for calculating the equation via Reversed Polish Notation
  */
-public class ComponentSupplier {
+public class ComponentSupplier<T> {
 
     /**
      * storage for the items of type String. The type String is suitable for the purpose of representing different types of numbers
      */
-    private Stack<String> itemStorage;
+    private Stack<T> itemStorage;
 
 
     public ComponentSupplier()
@@ -25,7 +25,7 @@ public class ComponentSupplier {
     /**
      * @param number - item to be added in the storage
      */
-    public void addItem(String number) {
+    public void addItem(final T number) {
         itemStorage.push(number);
     }
 
@@ -34,14 +34,14 @@ public class ComponentSupplier {
      * @return wanted items
      * @throws OutOfItemsException - not enough items in the container
      */
-    public List<String> receiveListOfNextItems(final int numberOfItems) throws OutOfItemsException {
+    public List<T> receiveListOfNextItems(final int numberOfItems) throws OutOfItemsException {
 
         if(numberOfItems>numberOfItemsAvailable())
         {
             throw new OutOfItemsException("The operation requires more items in the container");
         }
 
-        List<String> items=new LinkedList<>();
+        List<T> items=new LinkedList<>();
         for(int i=0;i<numberOfItems;i++)
         {
             items.add(0,itemStorage.pop());
@@ -49,7 +49,7 @@ public class ComponentSupplier {
         return items;
     }
 
-    public String receiveNextItem() throws  OutOfItemsException
+    public T receiveNextItem() throws  OutOfItemsException
     {
         if(isOutOfItems())
         {
@@ -61,7 +61,7 @@ public class ComponentSupplier {
     /**
      * @return the top element of the Stack without removing it from it
      */
-    public String viewNextItem()
+    public T viewNextItem()
     {
         return itemStorage.peek();
     }
