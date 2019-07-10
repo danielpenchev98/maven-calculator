@@ -9,6 +9,7 @@ public class EquationValidator {
 
     public void validateEquation(final String equation) throws EmptyEquationException, InvalidTypeOfEquationComponent, MissingBracketException, OperatorMisplacementException, MissingNumberException
     {
+
         String[] equationComponents=equation.split(" ");
         if(equationComponents.length<=1&&equation.equals(""))
         {
@@ -17,9 +18,8 @@ public class EquationValidator {
 
         for(String component:equationComponents)
         {
-            if(!isValidNumber(component)&&!isValidOperator(component)&&!isBracket(component))
+            if(!isValidNumber(component)&&!isValidArithmeticOperator(component)&&!isBracket(component))
             {
-                System.out.println(component);
                throw new InvalidTypeOfEquationComponent("An illegal equation component has been found");
             }
         }
@@ -42,10 +42,10 @@ public class EquationValidator {
     }
 
     public boolean isValidNumber(final String component) {
-        return component.matches("^[-+]?[1-9][0-9]*([.][0-9]+)?$");
+       return component.matches("^[-+]?[1-9][0-9]*([.][0-9]+)?$");
     }
 
-    public boolean isValidOperator(final String component) {
+    public boolean isValidArithmeticOperator(final String component) {
         return component.matches("^[-+*/^]$");
     }
 

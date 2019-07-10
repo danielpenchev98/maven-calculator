@@ -3,6 +3,7 @@ package calculator;
 
 import calculator.computation.ComputationalMachine;
 import calculator.computation.ReversePolishCalculationAlgorithm;
+import calculator.exceptions.InvalidOperatorException;
 import calculator.exceptions.OutOfItemsException;
 import calculator.inputControl.ReversePolishNotationParser;
 import calculator.inputControl.*;
@@ -37,7 +38,18 @@ class CalculatorApp {
         }
 
         ReversePolishNotationParser specialParser=new ReversePolishNotationParser();
-        String reversePolishFormatEquation=specialParser.formatFromInfixToReversedPolishNotation(formattedInput);
+        String reversePolishFormatEquation;
+
+        try {
+            reversePolishFormatEquation = specialParser.formatFromInfixToReversedPolishNotation(formattedInput);
+        }
+        catch (OutOfItemsException problemWithReversePolishParser)
+        {
+            //should save it in log file for the developers
+            //this error should even happen at this point of the program
+            System.out.println("Please try again");
+            return;
+        }
 
         String[] splitInput=reversePolishFormatEquation.split(" ");
 

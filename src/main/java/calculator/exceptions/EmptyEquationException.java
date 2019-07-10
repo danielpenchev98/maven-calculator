@@ -1,7 +1,7 @@
 package calculator.exceptions;
 
 public class EmptyEquationException extends Exception {
-    public EmptyEquationException(String message)
+    public EmptyEquationException(final String message)
     {
         super(message);
     }

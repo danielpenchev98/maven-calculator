@@ -1,8 +1,6 @@
 package calculator.computationTests.mathematicalOperationsTests;
 
 import calculator.computation.Addition;
-import calculator.exceptions.OverFlowException;
-import calculator.exceptions.UnderFlowException;
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -10,6 +8,9 @@ import static org.junit.Assert.*;
 public class AdditionTest {
 
     private Addition add;
+
+    private final double DELTA=0.0001d;
+
     @Before
     public void setUp()
     {
@@ -24,20 +25,17 @@ public class AdditionTest {
     @Test
     public void Addition_PositiveAndNegativeIntegersAsParams_NoExceptionThrown() {
         double realResult=add.compute(10,-12);
-        assertEquals(-2,realResult,0);
+        assertEquals(-2,realResult,DELTA);
     }
 
-    @Test(expected = OverFlowException.class)
-    public void Addition_TwoPositiveIntegersAsParams_OverFlowExceptionThrown()
-    {
-        int temp=2000000000;
-        add.compute(temp, temp);
+    @Test
+    public void getPriority_RequestPriorityOfOperator_GetPriority() {
+        assertEquals(2,add.getPriority());
     }
 
-    @Test(expected = UnderFlowException.class)
-    public void Addition_TwoNegativeIntegersAsParams_UnderFlowExceptionThrown()
-    {
-        int temp=-2000000000;
-        add.compute(temp,temp);
+    @Test
+    public void isLeftAssociative_RequestAssociativity_RightAssociative() {
+        assertTrue(add.isLeftAssociative());
     }
+
 }

@@ -1,7 +1,7 @@
 package calculator.exceptions;
 
 public class MissingBracketException extends Exception {
-    public MissingBracketException(String message)
+    public MissingBracketException(final String message)
     {
         super(message);
     }

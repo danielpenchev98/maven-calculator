@@ -1,6 +1,12 @@
 package calculator.inputControl;
 
 
+import calculator.computation.MathOperation;
+import calculator.computation.MathOperationFactory;
+import calculator.container.ComponentSupplier;
+import calculator.exceptions.InvalidOperatorException;
+import calculator.exceptions.OutOfItemsException;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -21,7 +27,7 @@ public class ReversePolishNotationParser {
         }
     }
 
-    private Stack<String> operators;
+    private /*Stack<String>*/ ComponentSupplier operators;
     private StringBuilder reversedPolishEquation;
     private EquationValidator checker;
 
@@ -34,7 +40,8 @@ public class ReversePolishNotationParser {
             put("*", new OperatorSettings(4,true));
             put("^",new OperatorSettings(4,false));
         }};
-        operators=new Stack<>();
+       operators=new ComponentSupplier();
+       // operators=new Stack<>();
         reversedPolishEquation=new StringBuilder();
         checker=new EquationValidator();
     }
@@ -53,7 +60,7 @@ public class ReversePolishNotationParser {
      * @param equation infix notation
      * @return reverse polish notation
      */
-    public String formatFromInfixToReversedPolishNotation(String equation)
+    public String formatFromInfixToReversedPolishNotation(final String equation) throws OutOfItemsException
     {
         String[] components=getIndividualComponents(equation);
         for(String component:components)
@@ -63,34 +70,34 @@ public class ReversePolishNotationParser {
                 addComponentToReversedPolishEquation(component);
                 addSpaceToReversedPolishEquation();
             }
-            else if (checker.isValidOperator(component)){
+            else if (checker.isValidArithmeticOperator(component)){
 
-                    while (!operators.isEmpty() &&priorityOfOperators.containsKey(operators.peek())&&(hasLowerPriority(operators.peek(),component)||(hasEqualPriority(operators.peek(),component)&&isLeftAssoiciative(operators.peek()))))
-                    {
-                        addComponentToReversedPolishEquation(operators.pop());
-                        addSpaceToReversedPolishEquation();
-                    }
-                    operators.add(component);
+                // MathOperation currOperation = MathOperationFactory.createOperation(component);
+                while (!operators.isOutOfItems() && priorityOfOperators.containsKey(operators.viewNextItem()) && (hasLowerPriority(operators.viewNextItem(), component) || (hasEqualPriority(operators.viewNextItem(), component) && isLeftAssoiciative(operators.viewNextItem())))) {
+                    addComponentToReversedPolishEquation(operators.receiveNextItem());
+                    addSpaceToReversedPolishEquation();
+                }
+                operators.addItem(component);
             }
             else if(isClosingBracket(component))
             {
-                while(hasSpareOperators()&&!isOpeningBracket(operators.peek()))
+                while(hasSpareOperators()&&!isOpeningBracket(operators.viewNextItem()))
                 {
-                    addComponentToReversedPolishEquation(operators.pop());
+                    addComponentToReversedPolishEquation(operators.receiveNextItem());
                     addSpaceToReversedPolishEquation();
                 }
 
-                operators.pop();
+               operators.removeNextItem();
             }
             else
             {
-                operators.add(component);
+                operators.addItem(component);
             }
         }
-        while(!operators.isEmpty())
+        while(operators.numberOfItemsAvailable()!=0)
         {
 
-            addComponentToReversedPolishEquation(operators.pop());
+            addComponentToReversedPolishEquation(operators.receiveNextItem());
             addSpaceToReversedPolishEquation();
         }
         removeParasiteSpace();
@@ -134,7 +141,7 @@ public class ReversePolishNotationParser {
 
     private boolean hasSpareOperators()
     {
-        return operators.size()>0;
+        return operators.numberOfItemsAvailable()>0;
     }
 
     private String[] getIndividualComponents(final String equation)

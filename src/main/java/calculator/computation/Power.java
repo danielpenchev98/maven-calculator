@@ -1,6 +1,8 @@
 package calculator.computation;
 
 public class Power implements MathOperation {
+
+    private final static int PRIORITY=4;
     /**
      * @param first_number  - the first parameter of the mathematical operation
      * @param second_number - the second parameter of the mathematical operation
@@ -19,7 +21,7 @@ public class Power implements MathOperation {
      */
     @Override
     public int getPriority() {
-        return 4;
+        return Power.PRIORITY;
     }
 
     /**

@@ -1,6 +1,5 @@
 package calculator.computation;
 
-import calculator.computation.ComputationalMachine;
 import calculator.container.ComponentSupplier;
 import calculator.inputControl.EquationValidator;
 
@@ -38,17 +37,18 @@ public class ReversePolishCalculationAlgorithm {
             }
             else
             {
-                List<String> numbers = supplier.receiveListOfItems(2);
-                double result = calculator.computeAction(component, Integer.valueOf(numbers.get(0)), Integer.valueOf(numbers.get(1)));
+                List<String> numbers = supplier.receiveListOfNextItems(2);
+                double result = calculator.computeAction(component, Double.valueOf(numbers.get(0)), Double.valueOf(numbers.get(1)));
                 supplier.addItem(String.valueOf(result));
             }
         }
         if(supplier.numberOfItemsAvailable()!=1)
         {
-            throw new Exception("Invalid equation. Logical error. There arent enough operators");
+            System.out.println("Fuck");
+            throw new Exception("Invalid equation. Logical error. There aren't enough operators");
         }
 
-        return Double.valueOf(supplier.receiveListOfItems(1).get(0));
+        return Double.valueOf(supplier.receiveNextItem());
     }
 
 }

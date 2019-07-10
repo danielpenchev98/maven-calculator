@@ -1,8 +1,6 @@
 package calculator.computationTests.mathematicalOperationsTests;
 
 import calculator.computation.Multiplication;
-import calculator.exceptions.OverFlowException;
-import calculator.exceptions.UnderFlowException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +10,9 @@ import static org.junit.Assert.*;
 public class MultiplicationTest {
 
     private Multiplication mult;
+
+    private final double DELTA=0.0001d;
+
     @Before
     public void setUp() {
         mult=new Multiplication();
@@ -25,20 +26,18 @@ public class MultiplicationTest {
     @Test
     public void Multiplication_TwoPositiveAndNegativeIntegersAsParams_NoExceptionThrown() {
         double realResult=mult.compute(10,-12);
-        assertEquals(-120,realResult);
+        assertEquals(-120,realResult,DELTA);
     }
 
-    @Test(expected = OverFlowException.class)
-    public void Multiplication_TwoPositiveIntegersAsParams_OverFlowExceptionThrown()
-    {
-        int temp=2000000000;
-        mult.compute(temp, temp);
+    @Test
+    public void getPriority_RequestPriorityOfOperator_GetPriority() {
+        assertEquals(3,mult.getPriority());
     }
 
-    @Test(expected = UnderFlowException.class)
-    public void Multiplication_TwoNegativeIntegersAsParams_UnderFlowExceptionThrown()
-    {
-        int temp=-2000000000;
-        mult.compute(temp,-temp);
+    @Test
+    public void isLeftAssociative_RequestAssociativity_RightAssociative() {
+        assertTrue(mult.isLeftAssociative());
     }
+
+
 }

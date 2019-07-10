@@ -34,8 +34,10 @@ public class PrimalParserTest {
     @Test
     public void formatInput_InputWithSpaceBetweenNumberAndItsSign_FormattedInput()
     {
-        String equation="- 1 + ( - 1 * ( - 109 ) )";
-        assertEquals("-1 + ( -1 * ( -109 ) )",parser.formatInput(equation));
+        String equation="- 1.0 + ( - 1 * ( - 109 ) )";
+        assertEquals("-1.0 + ( -1 * ( -109 ) )",parser.formatInput(equation));
     }
+
+
 
 }

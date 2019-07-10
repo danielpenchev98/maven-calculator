@@ -1,7 +1,7 @@
 package calculator.exceptions;
 
 public class OperatorMisplacementException extends Exception {
-    public OperatorMisplacementException(String message)
+    public OperatorMisplacementException(final String message)
     {
         super(message);
     }

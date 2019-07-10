@@ -86,9 +86,27 @@ public class EquationValidatorTest {
     }
 
     @Test
-    public void isValidNumber_NumberWith2FloatingPoints_Illegal()
+    public void isValidNumber_NumberWithTwoFloatingPointsSeparatedByDigits_Illegal()
     {
        assertFalse(validator.isValidNumber("12.24.4"));
+    }
+
+    @Test
+    public void isValidNumber_NumberWithTwoSequentialFloatingPoints_Illegal()
+    {
+        assertFalse(validator.isValidNumber("12..2"));
+    }
+
+    @Test
+    public void isValidNumber_NumberStartingWithFloatingPoint_Illegal()
+    {
+        assertFalse(validator.isValidNumber(".1234"));
+    }
+
+    @Test
+    public void isValidNumber_NumberEndingWithFloatingPoint_Illegal()
+    {
+        assertFalse(validator.isValidNumber("1234."));
     }
 
     @Test
@@ -109,13 +127,13 @@ public class EquationValidatorTest {
     @Test
     public void isValidOperator_ValidOperatorAsParam_Legal()
     {
-        assertTrue(validator.isValidOperator("+"));
+        assertTrue(validator.isValidArithmeticOperator("+"));
     }
 
     @Test
     public void IsValidOperator_InvalidOperatorAsParam_Illegal()
     {
-        assertFalse(validator.isValidOperator("%"));
+        assertFalse(validator.isValidArithmeticOperator("%"));
     }
     //endregion
 

@@ -1,7 +1,7 @@
 package calculator.exceptions;
 
 public class InvalidTypeOfEquationComponent extends Exception {
-    public InvalidTypeOfEquationComponent(String message)
+    public InvalidTypeOfEquationComponent(final String message)
     {
         super(message);
     }

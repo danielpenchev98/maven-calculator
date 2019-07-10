@@ -34,7 +34,7 @@ public class ComponentSupplier {
      * @return wanted items
      * @throws OutOfItemsException - not enough items in the container
      */
-    public List<String> receiveListOfItems(final int numberOfItems) throws OutOfItemsException {
+    public List<String> receiveListOfNextItems(final int numberOfItems) throws OutOfItemsException {
 
         if(numberOfItems>numberOfItemsAvailable())
         {
@@ -44,12 +44,36 @@ public class ComponentSupplier {
         List<String> items=new LinkedList<>();
         for(int i=0;i<numberOfItems;i++)
         {
-            items.add(0,itemStorage.peek());
-            itemStorage.pop();
+            items.add(0,itemStorage.pop());
         }
         return items;
     }
 
+    public String receiveNextItem() throws  OutOfItemsException
+    {
+        if(isOutOfItems())
+        {
+            throw new OutOfItemsException("The operation requires more items in the container ");
+        }
+        return itemStorage.pop();
+    }
+
+    /**
+     * @return the top element of the Stack without removing it from it
+     */
+    public String viewNextItem()
+    {
+        return itemStorage.peek();
+    }
+
+    public void removeNextItem() throws OutOfItemsException
+    {
+        if(isOutOfItems())
+        {
+            throw new OutOfItemsException("The operation requires more items in the container ");
+        }
+        itemStorage.pop();
+    }
 
     /**
      * @return the current load of the storage
@@ -59,4 +83,8 @@ public class ComponentSupplier {
         return itemStorage.size();
     }
 
+    public boolean isOutOfItems()
+    {
+        return numberOfItemsAvailable()==0;
+    }
 }

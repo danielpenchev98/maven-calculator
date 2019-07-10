@@ -1,11 +1,8 @@
 package calculator.computation;
 
-import calculator.exceptions.OverFlowException;
-import calculator.exceptions.UnderFlowException;
-
 public class Subtraction implements MathOperation {
 
-    private final static int PRIORITY=1;
+    private final static int PRIORITY=2;
     /**
      * @param first_number - first argument of the mathematical operation -
      * @param second_number - second argument of the mathematical operation -
@@ -14,14 +11,6 @@ public class Subtraction implements MathOperation {
     @Override
     public double compute(final double first_number, final double second_number) throws ArithmeticException {
 
-        if(Double.MAX_VALUE +second_number<first_number)
-        {
-            throw new OverFlowException("The result from the operation + is greater than the max value of the type Integer");
-        }
-        else if(Double.MIN_VALUE + second_number>first_number)
-        {
-            throw new UnderFlowException("The result from the operation + is lesser than the min value of the type Integer");
-        }
         return first_number-second_number;
     }
 

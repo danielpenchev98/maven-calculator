@@ -1,6 +1,6 @@
 package calculator.computation;
 
-import calculator.exceptions.InvalidParameterException;
+import calculator.exceptions.InvalidOperatorException;
 
 /**
  * Class which is responsible only for the creation of MathOperation objects.
@@ -10,7 +10,7 @@ public class MathOperationFactory {
      * @param operation - string which represents the symbol of the wanted operation
      * @return a new object of that MathOperation class
      */
-    public static MathOperation createOperation(String operation) throws InvalidParameterException
+    public static MathOperation createOperation(String operation) throws InvalidOperatorException
     {
         switch(operation)
         {
@@ -19,7 +19,7 @@ public class MathOperationFactory {
             case "*": return new Multiplication();
             case "/":return new Division();
             case "^":return new Power();
-            default: throw new InvalidParameterException("Unsupported operation");
+            default: throw new InvalidOperatorException("Unsupported operation");
         }
     }
 }
