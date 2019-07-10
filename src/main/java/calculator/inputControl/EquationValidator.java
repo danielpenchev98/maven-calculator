@@ -20,6 +20,7 @@ public class EquationValidator {
         {
             if(!isValidNumber(component)&&!isValidArithmeticOperator(component)&&!isBracket(component))
             {
+                System.out.printf("|%s|\n",component);
                throw new InvalidTypeOfEquationComponent("An illegal equation component has been found");
             }
         }
