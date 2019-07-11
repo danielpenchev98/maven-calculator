@@ -32,11 +32,8 @@ public class ComputationalMachineTest {
     }
 
     @Test(expected = DivisionByZeroException.class)
-    public void computeAction_ComputeDivisionOfTwoIntegers_DivisionByZeroExceptionThrown() throws ArithmeticException, InvalidOperatorException {
-        double first_number=2;
-        double second_number=0;
-        String operation="/";
-        machine.computeAction(operation,first_number,second_number);
+    public void computeAction_ComputeDivisionOfTwoNumbers_DivisionByZeroExceptionThrown() throws ArithmeticException, InvalidOperatorException {
+        machine.computeAction("/",2.0,0);
     }
 
     @Test(expected= InvalidOperatorException.class)

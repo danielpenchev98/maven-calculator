@@ -10,7 +10,7 @@ public class MathArithmeticOperatorFactory {
      * @param operation - string which represents the symbol of the wanted operation
      * @return a new object of that MathArithmeticOperator class
      */
-    public static MathArithmeticOperator createOperation(String operation) throws InvalidOperatorException
+    public static MathArithmeticOperator createArithmeticOperation(String operation) throws InvalidOperatorException
     {
         switch(operation)
         {

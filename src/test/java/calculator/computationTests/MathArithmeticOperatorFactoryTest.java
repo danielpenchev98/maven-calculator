@@ -10,43 +10,43 @@ public class MathArithmeticOperatorFactoryTest {
 
 
     @Test
-    public void createOperation_CreateAdditionObject_NoExceptionExpected() throws InvalidOperatorException
+    public void createArithmeticOperation_CreateAdditionObject_NoExceptionExpected() throws InvalidOperatorException
     {
-        MathArithmeticOperator operation= MathArithmeticOperatorFactory.createOperation("+");
+        MathArithmeticOperator operation= MathArithmeticOperatorFactory.createArithmeticOperation("+");
         assertTrue(operation instanceof Addition);
     }
 
     @Test
-    public void createOperation_CreateSubtractionObject_NoExceptionExpected() throws InvalidOperatorException
+    public void createArithmeticOperation_CreateSubtractionObject_NoExceptionExpected() throws InvalidOperatorException
     {
-        MathArithmeticOperator operation= MathArithmeticOperatorFactory.createOperation("-");
+        MathArithmeticOperator operation= MathArithmeticOperatorFactory.createArithmeticOperation("-");
         assertTrue(operation instanceof Subtraction);
     }
 
     @Test
-    public void createOperation_CreateMultiplicationObject_NoExceptionExpected() throws InvalidOperatorException
+    public void createArithmeticOperation_CreateMultiplicationObject_NoExceptionExpected() throws InvalidOperatorException
     {
-        MathArithmeticOperator operation= MathArithmeticOperatorFactory.createOperation("*");
+        MathArithmeticOperator operation= MathArithmeticOperatorFactory.createArithmeticOperation("*");
         assertTrue(operation instanceof Multiplication);
     }
 
     @Test
-    public void createOperation_CreateDivisionObject_NoExceptionExpected() throws InvalidOperatorException
+    public void createArithmeticOperation_CreateDivisionObject_NoExceptionExpected() throws InvalidOperatorException
     {
-        MathArithmeticOperator operation= MathArithmeticOperatorFactory.createOperation("/");
+        MathArithmeticOperator operation= MathArithmeticOperatorFactory.createArithmeticOperation("/");
         assertTrue(operation instanceof Division);
     }
 
     @Test
-    public void createOperation_CreatePowerObject_NoExceptionThrown() throws InvalidOperatorException
+    public void createArithmeticOperation_CreatePowerObject_NoExceptionThrown() throws InvalidOperatorException
     {
-        MathArithmeticOperator operation= MathArithmeticOperatorFactory.createOperation("^");
+        MathArithmeticOperator operation= MathArithmeticOperatorFactory.createArithmeticOperation("^");
         assertTrue(operation instanceof  Power);
     }
 
     @Test (expected = InvalidOperatorException.class)
-    public void createOperation_CreateIllegalOperationObject_InvalidParameterExceptionThrown() throws InvalidOperatorException
+    public void createArithmeticOperation_CreateIllegalOperationObject_InvalidParameterExceptionThrown() throws InvalidOperatorException
     {
-        MathArithmeticOperatorFactory.createOperation("illegal");
+        MathArithmeticOperatorFactory.createArithmeticOperation("illegal");
     }
 }

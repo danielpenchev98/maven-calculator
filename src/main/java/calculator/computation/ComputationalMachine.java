@@ -42,7 +42,7 @@ public class ComputationalMachine{
 
     private void setMathematicalOperation(final String action) throws InvalidOperatorException
     {
-        operation= MathArithmeticOperatorFactory.createOperation(action);
+        operation= MathArithmeticOperatorFactory.createArithmeticOperation(action);
     }
 
     /**

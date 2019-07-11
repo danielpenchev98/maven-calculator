@@ -20,7 +20,6 @@ public class EquationValidator {
         {
             if(!isValidNumber(component)&&!isValidArithmeticOperator(component)&&!isBracket(component))
             {
-                System.out.printf("|%s|\n",component);
                throw new InvalidTypeOfEquationComponent("An illegal equation component has been found");
             }
         }
@@ -78,8 +77,6 @@ public class EquationValidator {
 
     private boolean hasBracketBalance(String input)
     {
-        input.replaceAll("[^)(]","");
-
         int bracketBalance=0;
 
         for(char item:input.toCharArray())

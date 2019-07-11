@@ -45,8 +45,7 @@ class CalculatorApp {
         }
         catch (OutOfItemsException problemWithReversePolishParser)
         {
-            //should save it in log file for the developers
-            //this error should even happen at this point of the program
+            //TODO should save it in log file for the developers - it shouldn't even happen at this point
             System.out.println("Please try again");
             return;
         }

@@ -17,7 +17,6 @@ public class PrimalParserTest {
       parser= new PrimalParser();
     }
 
-    //region processInputTests
     @Test
     public void formatInput_InputWithManyJunkSpaces_FormattedInput() {
         String equation=" 1.0 +2    * (  -   1)/ 5";

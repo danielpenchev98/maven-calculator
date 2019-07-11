@@ -10,7 +10,7 @@ public class MathOperatorFactory {
         {
             case "(": return new OpeningBracket();
             case ")": return new ClosingBracket();
-            default: return MathArithmeticOperatorFactory.createOperation(operation);
+            default: return MathArithmeticOperatorFactory.createArithmeticOperation(operation);
         }
     }
 }

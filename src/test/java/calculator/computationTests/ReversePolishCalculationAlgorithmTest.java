@@ -25,4 +25,5 @@ public class ReversePolishCalculationAlgorithmTest {
     public void calculateEquation() throws Exception {
         assertEquals(4.0,algorithm.calculateEquation("2.0 -1.5 * 7.0 +".split(" ")),0.0001);
     }
+
 }
