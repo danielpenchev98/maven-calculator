@@ -23,7 +23,7 @@ public class ReversePolishNotationParserTest {
         parserRPN=new ReversePolishNotationParser();
     }
 
-    @Test
+   /* @Test
     public void formatToReversedPolishNotation_SimpleEquationWithBrackets_RPNFormat() throws OutOfItemsException {
         String realResult=parserRPN.formatFromInfixToReversedPolishNotation("15 + 10 * 2");
         assertEquals("15 10 2 * +",realResult);
@@ -42,5 +42,5 @@ public class ReversePolishNotationParserTest {
         String result=parserRPN.formatFromInfixToReversedPolishNotation("3 + 4 * 2 / ( 1 − 5 ) ^ 2 ^ 3");
                 assertEquals("3 4 2 * 1 5 − 2 3 ^ ^ / +",result);
     }
-
+    */
 }

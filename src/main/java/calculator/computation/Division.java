@@ -2,9 +2,10 @@ package calculator.computation;
 
 import calculator.exceptions.DivisionByZeroException;
 
-public class Division implements MathOperation {
+public class Division implements MathArithmeticOperator {
 
     final static int PRIORITY=3;
+    private final static String SYMBOL="/";
     /**
      * @param firstNumber - first argument of the mathematical operation /
      * @param secondNumber - second argument of the mathematical operation /
@@ -36,5 +37,14 @@ public class Division implements MathOperation {
     public boolean isLeftAssociative() {
         return true;
     }
+
+    /**
+     * @return get the special symbol of operator
+     */
+    @Override
+    public String getSymbol() {
+        return Division.SYMBOL;
+    }
+
 
 }

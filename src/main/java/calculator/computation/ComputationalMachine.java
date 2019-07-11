@@ -11,7 +11,7 @@ public class ComputationalMachine{
     private static volatile ComputationalMachine uniqueInstance;
 
 
-    private MathOperation operation;
+    private MathArithmeticOperator operation;
 
     /**
      *  the constructor is private in order to maintain the Logic of Singleton - Single object of that class only
@@ -42,7 +42,7 @@ public class ComputationalMachine{
 
     private void setMathematicalOperation(final String action) throws InvalidOperatorException
     {
-        operation= MathOperationFactory.createOperation(action);
+        operation= MathArithmeticOperatorFactory.createOperation(action);
     }
 
     /**

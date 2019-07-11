@@ -1,12 +1,13 @@
 package calculator.computation;
 
 
-public class Multiplication implements MathOperation {
+public class Multiplication implements MathArithmeticOperator {
 
     private final static int PRIORITY=3;
+    private final static String SYMBOL="*";
     /**
-     * @param first_number - first argument of the mathematical operation *
-     * @param second_number - second argument of the mathematical operation *
+     * @param firstNumber - first argument of the mathematical operation *
+     * @param secondNumber - second argument of the mathematical operation *
      * @return the result of the mathematical operation *
      * */
     @Override
@@ -30,5 +31,14 @@ public class Multiplication implements MathOperation {
     public boolean isLeftAssociative() {
         return true;
     }
+
+    /**
+     * @return get the special symbol of operator
+     */
+    @Override
+    public String getSymbol() {
+        return Multiplication.SYMBOL;
+    }
+
 
 }

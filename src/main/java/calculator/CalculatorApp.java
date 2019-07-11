@@ -50,6 +50,13 @@ class CalculatorApp {
             System.out.println("Please try again");
             return;
         }
+        catch(InvalidOperatorException exc)
+        {
+            //should save it in log file for the developers
+            //this error should even happen at this point of the program
+            System.out.println("Please try again");
+            return;
+        }
 
         String[] splitInput=reversePolishFormatEquation.split(" ");
 

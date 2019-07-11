@@ -1,8 +1,9 @@
 package calculator.computation;
 
-public class Power implements MathOperation {
+public class Power implements MathArithmeticOperator {
 
     private final static int PRIORITY=4;
+    private final static String SYMBOL="^";
     /**
      * @param firstNumber  - the first parameter of the mathematical operation
      * @param secondnumber - the second parameter of the mathematical operation
@@ -31,4 +32,13 @@ public class Power implements MathOperation {
     public boolean isLeftAssociative() {
         return false;
     }
+
+    /**
+     * @return get the special symbol of operator
+     */
+    @Override
+    public String getSymbol() {
+        return Power.SYMBOL;
+    }
+
 }

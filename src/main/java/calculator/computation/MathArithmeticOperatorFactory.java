@@ -3,14 +3,14 @@ package calculator.computation;
 import calculator.exceptions.InvalidOperatorException;
 
 /**
- * Class which is responsible only for the creation of MathOperation objects.
+ * Class which is responsible only for the creation of MathArithmeticOperator objects.
  */
-public class MathOperationFactory {
+public class MathArithmeticOperatorFactory {
     /**
      * @param operation - string which represents the symbol of the wanted operation
-     * @return a new object of that MathOperation class
+     * @return a new object of that MathArithmeticOperator class
      */
-    public static MathOperation createOperation(String operation) throws InvalidOperatorException
+    public static MathArithmeticOperator createOperation(String operation) throws InvalidOperatorException
     {
         switch(operation)
         {

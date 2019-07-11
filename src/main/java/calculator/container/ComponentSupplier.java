@@ -61,8 +61,12 @@ public class ComponentSupplier<T> {
     /**
      * @return the top element of the Stack without removing it from it
      */
-    public T viewNextItem()
+    public T viewNextItem() throws OutOfItemsException
     {
+        if(isOutOfItems())
+        {
+            throw new OutOfItemsException("Cannot view the next element in the Container, because it's empty");
+        }
         return itemStorage.peek();
     }
 
