@@ -10,18 +10,15 @@ import java.util.List;
 
 public class ReversePolishCalculationAlgorithm {
 
-    /**
-     * Used as an abstraction - increases the modifiability - if the algorithm for validation of the input changes, then InoutParser wont notice
-     */
     private ComputationalMachine calculator;
-
     private EquationValidator validator;
+    private ComponentSupplier<String> supplier;
 
-    //TODO do i need to pass Equation validator?????
     public ReversePolishCalculationAlgorithm(final ComputationalMachine machine,final EquationValidator validatingLogic)
     {
         calculator=machine;
         validator=validatingLogic;
+        supplier=new ComponentSupplier<>();
     }
 
     /**
@@ -32,8 +29,6 @@ public class ReversePolishCalculationAlgorithm {
      */
     public double calculateEquation(final String[] splitInput) throws OutOfItemsException, MissingOperatorException, InvalidOperatorException
     {
-        ComponentSupplier<String> supplier=new ComponentSupplier<>();
-
         for (String component : splitInput) {
             if (validator.isValidNumber(component))
             {
@@ -41,9 +36,7 @@ public class ReversePolishCalculationAlgorithm {
             }
             else
             {
-                List<String> numbers = supplier.receiveListOfNextItems(2);
-                double result = calculator.computeAction(component, Double.valueOf(numbers.get(0)), Double.valueOf(numbers.get(1)));
-                supplier.addItem(String.valueOf(result));
+                ExecuteOperation(component);
             }
         }
 
@@ -53,6 +46,13 @@ public class ReversePolishCalculationAlgorithm {
         }
 
         return Double.valueOf(supplier.receiveNextItem());
+    }
+
+    private void ExecuteOperation(final String operator) throws InvalidOperatorException,OutOfItemsException
+    {
+        List<String> numbers = supplier.receiveListOfNextItems(2);
+        double result = calculator.computeAction(operator, Double.valueOf(numbers.get(0)), Double.valueOf(numbers.get(1)));
+        supplier.addItem(String.valueOf(result));
     }
 
 }
