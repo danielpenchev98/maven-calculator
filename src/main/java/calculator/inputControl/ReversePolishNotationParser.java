@@ -71,7 +71,7 @@ public class ReversePolishNotationParser {
             }
             else if (checker.isValidArithmeticOperator(component))
             {
-                addOperatorsFromContainerToEquationOnSpecialCondition(component);
+                addOperatorsFromContainerDependingOnPriorityAndAssociativity(component);
                 operatorContainer.addItem(component);
             }
             else if(isClosingBracket(component))
@@ -83,10 +83,7 @@ public class ReversePolishNotationParser {
                 operatorContainer.addItem(component);
             }
         }
-
         addAllOperatorsLeftInTheContainerToEquation();
-
-        removeParasiteSpace();
         return reversedPolishEquation.toString();
     }
 
@@ -108,7 +105,7 @@ public class ReversePolishNotationParser {
         operatorContainer.removeNextItem();
     }
 
-    private void addOperatorsFromContainerToEquationOnSpecialCondition(final String component) throws OutOfItemsException
+    private void addOperatorsFromContainerDependingOnPriorityAndAssociativity(final String component) throws OutOfItemsException
     {
         while (hasSpareOperators()&& checker.isValidArithmeticOperator(operatorContainer.viewNextItem())) {
 
@@ -163,8 +160,4 @@ public class ReversePolishNotationParser {
         return equation.split(" ");
     }
 
-    private void removeParasiteSpace()
-    {
-        reversedPolishEquation.deleteCharAt(reversedPolishEquation.lastIndexOf(" "));
-    }
 }

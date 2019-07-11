@@ -42,8 +42,10 @@ public class EquationValidator {
         }
     }
 
+
+    //^[-+]?[1-9][0-9]*([.][0-9]+)?$ - if numbers beginning with zero are illegal
     public boolean isValidNumber(final String component) {
-       return component.matches("^[-+]?[1-9][0-9]*([.][0-9]+)?$");
+       return component.matches("^[-+]?[0-9]+([.][0-9]+)?$");
     }
 
     public boolean isValidArithmeticOperator(final String component) {

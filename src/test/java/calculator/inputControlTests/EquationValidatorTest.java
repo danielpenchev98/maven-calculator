@@ -126,9 +126,9 @@ public class EquationValidatorTest {
     }
 
     @Test
-    public void isValidNumber_NumberBeginningWithZero_Illegal()
+    public void isValidNumber_NumberBeginningWithZero_Legal()
     {
-        assertFalse(validator.isValidNumber("0123"));
+        assertTrue(validator.isValidNumber("0123"));
     }
     //endregion
 
