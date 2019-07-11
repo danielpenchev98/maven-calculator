@@ -13,6 +13,7 @@ public class ComputationalMachineTest {
 
     private ComputationalMachine machine;
 
+    //should i mock somehow factory method
 
     @Before
     public void setUp()

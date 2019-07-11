@@ -9,6 +9,6 @@ public class CalculatorAppConsole {
         String userInput=scan.nextLine();
         CalculatorApp application=new CalculatorApp();
         application.processEquationAndCalculateResult(userInput);
-       //TODO Double.MAX_VALUE nqma da premine prez regeksa
+       //TODO Double.MAX_VALUE wont pass the regex because of the exponent symbol, fix it maybe
     }
 }
