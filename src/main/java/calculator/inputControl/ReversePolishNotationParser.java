@@ -38,8 +38,6 @@ public class ReversePolishNotationParser {
      */
     public String formatFromInfixToReversedPolishNotation(final String equation) throws OutOfItemsException, InvalidOperatorException
     {
-        System.out.println(equation);
-
         String[] components=getIndividualComponents(equation);
         for(String component:components)
         {
@@ -62,7 +60,6 @@ public class ReversePolishNotationParser {
             }
             else
             {
-                currOperation=MathOperatorFactory.createOperation(component);
                 operatorContainer.addItem(currOperation);
             }
         }

@@ -1,6 +1,9 @@
 package calculator.computation;
 
 import calculator.container.ComponentSupplier;
+import calculator.exceptions.InvalidOperatorException;
+import calculator.exceptions.MissingOperatorException;
+import calculator.exceptions.OutOfItemsException;
 import calculator.inputControl.EquationValidator;
 
 import java.util.List;
@@ -27,9 +30,10 @@ public class ReversePolishCalculationAlgorithm {
      * @return result of the equation
      * @throws Exception - error during the reverse polish notation calculation
      */
-    public double calculateEquation(final String[] splitInput) throws Exception
+    public double calculateEquation(final String[] splitInput) throws OutOfItemsException, MissingOperatorException, InvalidOperatorException
     {
         ComponentSupplier<String> supplier=new ComponentSupplier<>();
+
         for (String component : splitInput) {
             if (validator.isValidNumber(component))
             {
@@ -42,9 +46,10 @@ public class ReversePolishCalculationAlgorithm {
                 supplier.addItem(String.valueOf(result));
             }
         }
+
         if(supplier.numberOfItemsAvailable()!=1)
         {
-            throw new Exception("Invalid equation. Logical error. There aren't enough operators");
+            throw new MissingOperatorException("Invalid equation. Logical error. There aren't enough operators");
         }
 
         return Double.valueOf(supplier.receiveNextItem());
