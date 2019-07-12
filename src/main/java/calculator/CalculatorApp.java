@@ -59,7 +59,7 @@ class CalculatorApp {
 
         String[] splitInput=reversePolishFormatEquation.split(" ");
 
-        ComputationalMachine calculator= ComputationalMachine.getInstance();
+        ComputationalMachine calculator= new ComputationalMachine();
         ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm(calculator,validator);
 
         try {

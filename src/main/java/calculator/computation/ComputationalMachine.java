@@ -2,47 +2,14 @@ package calculator.computation;
 
 import calculator.exceptions.InvalidOperatorException;
 
-/**
- * Class which represents the computational logic of the calculator. It uses Singleton design patten, because the calculator can have only one computing unit
- */
+
 public class ComputationalMachine{
-
-
-    private static volatile ComputationalMachine uniqueInstance;
-
 
     private MathArithmeticOperator operation;
 
-    /**
-     *  the constructor is private in order to maintain the Logic of Singleton - Single object of that class only
-     */
-    private ComputationalMachine()
+    public ComputationalMachine()
     {
         operation=null;
-    }
-
-    /**
-     * @return a reference to the only object of type ComputationalMachine
-     */
-    public static ComputationalMachine getInstance()
-    {
-        if(uniqueInstance==null)
-        {
-            synchronized (ComputationalMachine.class)
-            {
-                if(uniqueInstance==null)
-                {
-                    uniqueInstance=new ComputationalMachine();
-                }
-
-            }
-        }
-        return uniqueInstance;
-    }
-
-    private void setMathematicalOperation(final String action) throws InvalidOperatorException
-    {
-        operation= MathArithmeticOperatorFactory.createArithmeticOperation(action);
     }
 
     /**
@@ -58,6 +25,11 @@ public class ComputationalMachine{
     {
         setMathematicalOperation(action);
         return operation.compute(firstNumber,secondNumber);
+    }
+
+    private void setMathematicalOperation(final String action) throws InvalidOperatorException
+    {
+        operation= MathArithmeticOperatorFactory.createArithmeticOperation(action);
     }
 
 }
