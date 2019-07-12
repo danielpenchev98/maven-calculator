@@ -18,7 +18,7 @@ public class ComputationalMachineTest {
     @Before
     public void setUp()
     {
-        machine=ComputationalMachine.getInstance();
+        machine=new ComputationalMachine();
     }
     @After
     public void tearDown()
@@ -26,11 +26,6 @@ public class ComputationalMachineTest {
         machine=null;
     }
 
-    @Test
-    public void getInstance_GetTheUniqueInstanceOfComputationalMachineClass_True() {
-        ComputationalMachine check=ComputationalMachine.getInstance();
-        assertSame(machine,check);
-    }
 
     @Test(expected = DivisionByZeroException.class)
     public void computeAction_ComputeDivisionOfTwoNumbers_DivisionByZeroExceptionThrown() throws ArithmeticException, InvalidOperatorException {

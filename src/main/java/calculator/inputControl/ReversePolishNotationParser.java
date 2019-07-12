@@ -91,10 +91,10 @@ public class ReversePolishNotationParser {
         while (hasSpareOperators()&& (operatorContainer.viewNextItem()) instanceof MathArithmeticOperator) {
 
             MathArithmeticOperator nextOperatorInContainer=(MathArithmeticOperator) operatorContainer.viewNextItem();
-            final boolean condition1=hasLowerPriority(nextOperatorInContainer, component);
-            final boolean condition2=hasEqualPriority(nextOperatorInContainer, component) && nextOperatorInContainer.isLeftAssociative();
+            final boolean lowerPriority=hasLowerPriority(nextOperatorInContainer, component);
+            final boolean equalPriorityAndLeftAssociative=hasEqualPriority(nextOperatorInContainer, component) && nextOperatorInContainer.isLeftAssociative();
 
-            if(condition1||condition2) {
+            if(lowerPriority||equalPriorityAndLeftAssociative) {
                 operatorContainer.removeNextItem();
                 addComponentToEquation(nextOperatorInContainer.getSymbol());
                 continue;

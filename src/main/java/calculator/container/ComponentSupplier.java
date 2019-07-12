@@ -12,7 +12,7 @@ import java.util.Stack;
 public class ComponentSupplier<T> {
 
     /**
-     * storage for the items of type String. The type String is suitable for the purpose of representing different types of numbers
+     * storage for the items of any Object type.
      */
     private Stack<T> itemStorage;
 
