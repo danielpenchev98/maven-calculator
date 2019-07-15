@@ -1,6 +1,7 @@
 package calculator.computationTests;
 
 import calculator.computation.ComputationalMachine;
+import calculator.computation.MathArithmeticOperatorFactory;
 import calculator.exceptions.DivisionByZeroException;
 import calculator.exceptions.InvalidOperatorException;
 import org.junit.After;
@@ -13,12 +14,15 @@ public class ComputationalMachineTest {
 
     private ComputationalMachine machine;
 
+    private MathArithmeticOperatorFactory factory;
+
     //should i mock somehow factory method
 
     @Before
     public void setUp()
     {
-        machine=new ComputationalMachine();
+        factory=new MathArithmeticOperatorFactory();
+        machine=new ComputationalMachine(factory);
     }
     @After
     public void tearDown()

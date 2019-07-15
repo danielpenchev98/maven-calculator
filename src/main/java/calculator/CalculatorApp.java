@@ -1,9 +1,7 @@
 package calculator;
 
 
-import calculator.computation.ComputationalMachine;
-import calculator.computation.MathOperatorFactory;
-import calculator.computation.ReversePolishCalculationAlgorithm;
+import calculator.computation.*;
 import calculator.exceptions.InvalidOperatorException;
 import calculator.exceptions.OutOfItemsException;
 import calculator.inputControl.ReversePolishNotationParser;
@@ -63,7 +61,8 @@ class CalculatorApp {
 
         String[] splitInput=reversePolishFormatEquation.split(" ");
 
-        ComputationalMachine calculator= new ComputationalMachine();
+        MathArithmeticOperatorFactory arithmeticOperatorFactory=new MathArithmeticOperatorFactory();
+        ComputationalMachine calculator= new ComputationalMachine(arithmeticOperatorFactory);
         ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm(calculator,validator);
 
         try {

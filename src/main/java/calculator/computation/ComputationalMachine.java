@@ -7,9 +7,12 @@ public class ComputationalMachine{
 
     private MathArithmeticOperator operation;
 
-    public ComputationalMachine()
+    private MathArithmeticOperatorFactory factory;
+
+    public ComputationalMachine(final MathArithmeticOperatorFactory operatorFactory )
     {
         operation=null;
+        factory=operatorFactory;
     }
 
     /**
