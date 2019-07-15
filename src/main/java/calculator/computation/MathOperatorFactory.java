@@ -4,7 +4,7 @@ import calculator.exceptions.InvalidOperatorException;
 
 public class MathOperatorFactory {
 
-    public static MathOperator createOperation(String operation) throws InvalidOperatorException
+    public MathOperator createOperation(String operation) throws InvalidOperatorException
     {
 
         MathArithmeticOperatorFactory factory=new MathArithmeticOperatorFactory();
