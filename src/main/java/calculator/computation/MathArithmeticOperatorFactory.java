@@ -11,7 +11,7 @@ public class MathArithmeticOperatorFactory {
      * @param operation - string which represents the symbol of the wanted operation
      * @return a new object of that MathArithmeticOperator class
      */
-    public MathArithmeticOperator createArithmeticOperation(String operation) throws InvalidOperatorException
+    public  MathArithmeticOperator createArithmeticOperation(String operation) throws InvalidOperatorException
     {
         switch(operation)
         {
