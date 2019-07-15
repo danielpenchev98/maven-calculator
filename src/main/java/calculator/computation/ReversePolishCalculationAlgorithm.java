@@ -14,11 +14,11 @@ public class ReversePolishCalculationAlgorithm {
     private EquationValidator validator;
     private ComponentSupplier<String> supplier;
 
-    public ReversePolishCalculationAlgorithm(final ComputationalMachine machine,final EquationValidator validatingLogic)
+    public ReversePolishCalculationAlgorithm(final ComputationalMachine machine,final EquationValidator validatingLogic,final ComponentSupplier<String> supp)
     {
         calculator=machine;
         validator=validatingLogic;
-        supplier=new ComponentSupplier<>();
+        supplier=supp;
     }
 
     /**
@@ -36,7 +36,7 @@ public class ReversePolishCalculationAlgorithm {
             }
             else
             {
-                ExecuteOperation(component);
+                executeOperation(component);
             }
         }
 
@@ -48,7 +48,7 @@ public class ReversePolishCalculationAlgorithm {
         return Double.valueOf(supplier.receiveNextItem());
     }
 
-    private void ExecuteOperation(final String operator) throws InvalidOperatorException,OutOfItemsException
+    private void executeOperation(final String operator) throws InvalidOperatorException,OutOfItemsException
     {
         List<String> numbers = supplier.receiveListOfNextItems(2);
         double result = calculator.computeAction(operator, Double.valueOf(numbers.get(0)), Double.valueOf(numbers.get(1)));
