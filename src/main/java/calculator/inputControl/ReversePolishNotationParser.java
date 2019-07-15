@@ -14,14 +14,15 @@ public class ReversePolishNotationParser {
     private Stack<MathOperator> operatorContainer;
     private StringBuilder reversedPolishEquation;
     private EquationValidator checker;
+    private MathOperatorFactory operatorFactory;
 
 
-    public ReversePolishNotationParser(final EquationValidator validator)
+    public ReversePolishNotationParser(final EquationValidator validator,final MathOperatorFactory factory)
     {
-
         operatorContainer=new Stack<>();
         reversedPolishEquation=new StringBuilder();
         checker=validator;
+        operatorFactory=factory;
     }
 
     /**
@@ -48,8 +49,7 @@ public class ReversePolishNotationParser {
                  continue;
             }
 
-            MathOperatorFactory factory=new MathOperatorFactory();
-            MathOperator currOperation=factory.createOperation(component);
+            MathOperator currOperation=operatorFactory.createOperation(component);
 
             if (currOperation instanceof MathArithmeticOperator)
             {

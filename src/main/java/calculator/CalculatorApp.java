@@ -2,6 +2,7 @@ package calculator;
 
 
 import calculator.computation.ComputationalMachine;
+import calculator.computation.MathOperatorFactory;
 import calculator.computation.ReversePolishCalculationAlgorithm;
 import calculator.exceptions.InvalidOperatorException;
 import calculator.exceptions.OutOfItemsException;
@@ -40,7 +41,8 @@ class CalculatorApp {
             return;
         }
 
-        ReversePolishNotationParser specialParser=new ReversePolishNotationParser(validator);
+        MathOperatorFactory operatorFactory=new MathOperatorFactory();
+        ReversePolishNotationParser specialParser=new ReversePolishNotationParser(validator,operatorFactory);
         String reversePolishFormatEquation;
         try {
             reversePolishFormatEquation = specialParser.formatFromInfixToReversedPolishNotation(formattedInput);
