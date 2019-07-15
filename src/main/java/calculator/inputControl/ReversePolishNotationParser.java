@@ -2,9 +2,7 @@ package calculator.inputControl;
 
 
 import calculator.computation.*;
-import calculator.container.ComponentSupplier;
 import calculator.exceptions.InvalidOperatorException;
-import calculator.exceptions.OutOfItemsException;
 
 import java.util.EmptyStackException;
 import java.util.Stack;

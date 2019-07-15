@@ -1,24 +1,25 @@
 package calculator.computation;
 
-import calculator.container.ComponentSupplier;
 import calculator.exceptions.InvalidOperatorException;
 import calculator.exceptions.MissingOperatorException;
 import calculator.exceptions.OutOfItemsException;
 import calculator.inputControl.EquationValidator;
 
+import java.util.EmptyStackException;
 import java.util.List;
+import java.util.Stack;
 
 public class ReversePolishCalculationAlgorithm {
 
     private ComputationalMachine calculator;
     private EquationValidator validator;
-    private ComponentSupplier<String> supplier;
+    private Stack<String> supplier;
 
-    public ReversePolishCalculationAlgorithm(final ComputationalMachine machine,final EquationValidator validatingLogic,final ComponentSupplier<String> supp)
+    public ReversePolishCalculationAlgorithm(final ComputationalMachine machine,final EquationValidator validatingLogic)
     {
         calculator=machine;
         validator=validatingLogic;
-        supplier=supp;
+        supplier=new Stack<>();
     }
 
     /**
@@ -27,12 +28,12 @@ public class ReversePolishCalculationAlgorithm {
      * @return result of the equation
      * @throws Exception - error during the reverse polish notation calculation
      */
-    public double calculateEquation(final String[] splitInput) throws OutOfItemsException, MissingOperatorException, InvalidOperatorException
+    public double calculateEquation(final String[] splitInput) throws EmptyStackException, MissingOperatorException, InvalidOperatorException
     {
         for (String component : splitInput) {
             if (validator.isValidNumber(component))
             {
-                supplier.addItem(component);
+                supplier.add(component);
             }
             else
             {
@@ -40,19 +41,20 @@ public class ReversePolishCalculationAlgorithm {
             }
         }
 
-        if(supplier.numberOfItemsAvailable()!=1)
+        if(supplier.size()!=1)
         {
             throw new MissingOperatorException("Invalid equation. Logical error. There aren't enough operators");
         }
 
-        return Double.valueOf(supplier.receiveNextItem());
+        return Double.valueOf(supplier.pop());
     }
 
-    private void executeOperation(final String operator) throws InvalidOperatorException,OutOfItemsException
+    private void executeOperation(final String operator) throws InvalidOperatorException, EmptyStackException
     {
-        List<String> numbers = supplier.receiveListOfNextItems(2);
-        double result = calculator.computeAction(operator, Double.valueOf(numbers.get(0)), Double.valueOf(numbers.get(1)));
-        supplier.addItem(String.valueOf(result));
+        double leftNumber = Double.valueOf(supplier.pop());
+        double rightNumber = Double.valueOf(supplier.pop());
+        double result = calculator.computeAction(operator,rightNumber,leftNumber);
+        supplier.add(String.valueOf(result));
     }
 
 }

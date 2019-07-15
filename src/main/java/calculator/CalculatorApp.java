@@ -2,9 +2,7 @@ package calculator;
 
 
 import calculator.computation.ComputationalMachine;
-import calculator.computation.MathOperator;
 import calculator.computation.ReversePolishCalculationAlgorithm;
-import calculator.container.ComponentSupplier;
 import calculator.exceptions.InvalidOperatorException;
 import calculator.exceptions.OutOfItemsException;
 import calculator.inputControl.ReversePolishNotationParser;
@@ -64,14 +62,13 @@ class CalculatorApp {
         String[] splitInput=reversePolishFormatEquation.split(" ");
 
         ComputationalMachine calculator= new ComputationalMachine();
-        ComponentSupplier<String> calculationContainer=new ComponentSupplier<>();
-        ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm(calculator,validator,calculationContainer);
+        ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm(calculator,validator);
 
         try {
             double finalResult=algorithm.calculateEquation(splitInput);
             System.out.println(finalResult);
         }
-        catch (OutOfItemsException noItems)
+        catch (EmptyStackException noItems)
         {
             System.out.println("Invalid equation. Not enough Numbers");
         }
