@@ -29,7 +29,8 @@ public class ComputationalMachine{
 
     private void setMathematicalOperation(final String action) throws InvalidOperatorException
     {
-        operation= MathArithmeticOperatorFactory.createArithmeticOperation(action);
+        MathArithmeticOperatorFactory factory = new MathArithmeticOperatorFactory();
+        operation= factory.createArithmeticOperation(action);
     }
 
 }

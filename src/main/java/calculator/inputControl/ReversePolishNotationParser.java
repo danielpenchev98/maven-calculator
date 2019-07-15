@@ -50,7 +50,8 @@ public class ReversePolishNotationParser {
                  continue;
             }
 
-            MathOperator currOperation= MathOperatorFactory.createOperation(component);
+            MathOperatorFactory factory=new MathOperatorFactory();
+            MathOperator currOperation=factory.createOperation(component);
 
             if (currOperation instanceof MathArithmeticOperator)
             {
@@ -74,7 +75,7 @@ public class ReversePolishNotationParser {
 
     private void addAllOperatorsLeftInTheContainerToEquation() {
 
-        while(hasSpareOperators())
+        while( hasSpareOperators() )
         {
             addComponentToEquation(((MathArithmeticOperator)operatorContainer.pop()).getSymbol());
         }
@@ -91,13 +92,13 @@ public class ReversePolishNotationParser {
 
     private void addOperatorsFromContainerDependingOnPriorityAndAssociativity(final MathArithmeticOperator component)
     {
-        while (hasSpareOperators()&& (operatorContainer.peek()) instanceof MathArithmeticOperator) {
+        while ( hasSpareOperators()&& (operatorContainer.peek()) instanceof MathArithmeticOperator ) {
 
-            MathArithmeticOperator nextOperatorInContainer=(MathArithmeticOperator) operatorContainer.peek();
+            MathArithmeticOperator nextOperatorInContainer =(MathArithmeticOperator) operatorContainer.peek();
             final boolean lowerPriority=hasLowerPriority(nextOperatorInContainer, component);
-            final boolean equalPriorityAndLeftAssociative=hasEqualPriority(nextOperatorInContainer, component) && nextOperatorInContainer.isLeftAssociative();
+            final boolean equalPriorityAndLeftAssociative = hasEqualPriority(nextOperatorInContainer, component) && nextOperatorInContainer.isLeftAssociative();
 
-            if(lowerPriority||equalPriorityAndLeftAssociative) {
+            if( lowerPriority || equalPriorityAndLeftAssociative ) {
                 operatorContainer.pop();
                 addComponentToEquation(nextOperatorInContainer.getSymbol());
                 continue;
