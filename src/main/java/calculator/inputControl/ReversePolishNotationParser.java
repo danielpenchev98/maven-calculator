@@ -15,12 +15,12 @@ public class ReversePolishNotationParser {
     private EquationValidator checker;
 
 
-    public ReversePolishNotationParser()
+    public ReversePolishNotationParser(final EquationValidator validator, final ComponentSupplier<MathOperator> container)
     {
 
-        operatorContainer=new ComponentSupplier<>();
+        operatorContainer=container;
         reversedPolishEquation=new StringBuilder();
-        checker=new EquationValidator();
+        checker=validator;
     }
 
     /**

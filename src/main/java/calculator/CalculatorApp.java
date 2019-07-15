@@ -39,8 +39,8 @@ class CalculatorApp {
             return;
         }
 
-        ComponentSupplier<MathOperator> parserContainer=new ComponentSupplier<>();
-        ReversePolishNotationParser specialParser=new ReversePolishNotationParser();
+        ComponentSupplier<MathOperator> parseContainer=new ComponentSupplier<>();
+        ReversePolishNotationParser specialParser=new ReversePolishNotationParser(validator,parseContainer);
         String reversePolishFormatEquation;
 
         try {
