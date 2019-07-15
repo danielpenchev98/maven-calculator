@@ -10,6 +10,8 @@ import calculator.exceptions.OutOfItemsException;
 import calculator.inputControl.ReversePolishNotationParser;
 import calculator.inputControl.*;
 
+import java.util.EmptyStackException;
+
 /**
  * Class which represents the calculator as a whole - uses the 3 main abstractions :
  * PrimalParser - used as a input formatter,
@@ -27,6 +29,7 @@ class CalculatorApp {
     {
         PrimalParser parser= new PrimalParser();
         String formattedInput=parser.formatInput(equation);
+
         EquationValidator validator=new EquationValidator();
         try
         {
@@ -39,14 +42,12 @@ class CalculatorApp {
             return;
         }
 
-        ComponentSupplier<MathOperator> parseContainer=new ComponentSupplier<>();
-        ReversePolishNotationParser specialParser=new ReversePolishNotationParser(validator,parseContainer);
+        ReversePolishNotationParser specialParser=new ReversePolishNotationParser(validator);
         String reversePolishFormatEquation;
-
         try {
             reversePolishFormatEquation = specialParser.formatFromInfixToReversedPolishNotation(formattedInput);
         }
-        catch (OutOfItemsException problemWithReversePolishParser)
+        catch (EmptyStackException problemWithReversePolishParser)
         {
             //TODO should save it in log file for the developers - it shouldn't even happen at this point
             System.out.println("Please try again");
@@ -79,4 +80,5 @@ class CalculatorApp {
         }
 
     }
+
 }
