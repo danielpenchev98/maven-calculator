@@ -1,9 +1,9 @@
 package calculator.inputControlTests;
 
-import calculator.computation.MathOperatorFactory;
 import calculator.exceptions.InvalidOperatorException;
 import calculator.inputControl.EquationValidator;
 import calculator.inputControl.ReversePolishNotationParser;
+import calculator.inputControl.triggers.ReversePolishComponentTriggerFactory;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.EmptyStackException;
@@ -18,13 +18,13 @@ public class ReversePolishNotationParserTest {
     //@Mock
     private EquationValidator validator;
 
-    private MathOperatorFactory operatorFactory;
+    private ReversePolishComponentTriggerFactory operatorFactory;
 
     @Before
     public void setUp()
     {
         validator=new EquationValidator();
-        operatorFactory=new MathOperatorFactory();
+        operatorFactory=new ReversePolishComponentTriggerFactory();
         parserRPN=new ReversePolishNotationParser(validator,operatorFactory);
     }
 

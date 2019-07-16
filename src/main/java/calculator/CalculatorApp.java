@@ -6,6 +6,8 @@ import calculator.exceptions.InvalidOperatorException;
 import calculator.exceptions.OutOfItemsException;
 import calculator.inputControl.ReversePolishNotationParser;
 import calculator.inputControl.*;
+import calculator.inputControl.triggers.ReversePolishComponentTrigger;
+import calculator.inputControl.triggers.ReversePolishComponentTriggerFactory;
 
 import java.util.EmptyStackException;
 
@@ -39,7 +41,7 @@ class CalculatorApp {
             return;
         }
 
-        MathOperatorFactory operatorFactory=new MathOperatorFactory();
+       ReversePolishComponentTriggerFactory operatorFactory=new ReversePolishComponentTriggerFactory();
         ReversePolishNotationParser specialParser=new ReversePolishNotationParser(validator,operatorFactory);
         String reversePolishFormatEquation;
         try {

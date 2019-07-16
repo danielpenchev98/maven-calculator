@@ -17,15 +17,15 @@ public class ReversePolishNotationParser {
     private Stack<ReversePolishComponentTrigger> operatorContainer;
     private StringBuilder reversedPolishEquation;
     private EquationValidator checker;
-    private MathOperatorFactory operatorFactory;
+    private ReversePolishComponentTriggerFactory triggerFactory;
 
 
-    public ReversePolishNotationParser(final EquationValidator validator,final MathOperatorFactory factory)
+    public ReversePolishNotationParser(final EquationValidator validator,final ReversePolishComponentTriggerFactory factory)
     {
         operatorContainer=new Stack<>();
         reversedPolishEquation=new StringBuilder();
         checker=validator;
-        operatorFactory=factory;
+        triggerFactory=factory;
     }
 
     /**
@@ -52,8 +52,7 @@ public class ReversePolishNotationParser {
                 continue;
             }
 
-            ReversePolishComponentTriggerFactory secondFactory=new ReversePolishComponentTriggerFactory();
-            ReversePolishComponentTrigger currOperation=secondFactory.createTrigger(component);
+            ReversePolishComponentTrigger currOperation=triggerFactory.createTrigger(component);
 
             currOperation.trigger(operatorContainer,reversedPolishEquation);
 

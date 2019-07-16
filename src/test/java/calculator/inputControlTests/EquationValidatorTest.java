@@ -120,7 +120,7 @@ public class EquationValidatorTest {
     }
 
     @Test
-    public void isValidNumber_InvalidNumberWithLettersInIt_Illegal()
+    public void isValidNumber_InvalidNumberContainingLetters_Illegal()
     {
         assertFalse(validator.isValidNumber("132A231"));
     }
