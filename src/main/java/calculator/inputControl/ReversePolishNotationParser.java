@@ -40,29 +40,16 @@ public class ReversePolishNotationParser {
      */
     public String formatFromInfixToReversedPolishNotation(final String equation) throws EmptyStackException, InvalidOperatorException
     {
-        String[] components=getIndividualComponents(equation);
+        String[] components = getIndividualComponents(equation);
         for(String component:components)
         {
             if(checker.isValidNumber(component))
             {
                 addComponentToEquation(component);
-                 continue;
-            }
-
-            MathOperator currOperation=operatorFactory.createOperation(component);
-
-            if (currOperation instanceof MathArithmeticOperator)
-            {
-                addOperatorsFromContainerDependingOnPriorityAndAssociativity((MathArithmeticOperator) currOperation);
-                operatorContainer.add(currOperation);
-            }
-            else if(currOperation instanceof ClosingBracket)
-            {
-                addOperatorsFromContainerToEquationTillOpeningBracketIsFound();
             }
             else
             {
-                operatorContainer.add(currOperation);
+                processOperator(component);
             }
         }
         addAllOperatorsLeftInTheContainerToEquation();
@@ -70,6 +57,24 @@ public class ReversePolishNotationParser {
         return reversedPolishEquation.toString().trim();
     }
 
+    private void processOperator(final String component) throws InvalidOperatorException, EmptyStackException
+    {
+        MathOperator currOperation = operatorFactory.createOperation(component);
+
+        if (currOperation instanceof MathArithmeticOperator)
+        {
+            addOperatorsFromContainerDependingOnPriorityAndAssociativity((MathArithmeticOperator) currOperation);
+            operatorContainer.add(currOperation);
+        }
+        else if(currOperation instanceof ClosingBracket)
+        {
+            addOperatorsFromContainerToEquationTillOpeningBracketIsFound();
+        }
+        else
+        {
+            operatorContainer.add(currOperation);
+        }
+    }
 
     private void addAllOperatorsLeftInTheContainerToEquation() {
 

@@ -1,33 +1,46 @@
 package calculator.inputControlTests;
 
-
+import calculator.computation.MathOperator;
 import calculator.computation.MathOperatorFactory;
 import calculator.exceptions.InvalidOperatorException;
-import calculator.exceptions.OutOfItemsException;
 import calculator.inputControl.EquationValidator;
 import calculator.inputControl.ReversePolishNotationParser;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+
 import java.util.EmptyStackException;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ReversePolishNotationParserTest {
 
-   //@InjectMocks
+   @InjectMocks
     private ReversePolishNotationParser parserRPN;
 
-    //@Mock
+    @Mock
     private EquationValidator validator;
 
+    @Mock
     private MathOperatorFactory operatorFactory;
 
+    @Mock
+    private MathOperator operator;
+
     @Before
-    public void setUp()
+    public void setUp() throws InvalidOperatorException
     {
-        validator=new EquationValidator();
-        operatorFactory=new MathOperatorFactory();
-        parserRPN=new ReversePolishNotationParser(validator,operatorFactory);
+        Mockito.when(operatorFactory.createOperation(anyString())).thenReturn(operator);
+        Mockito.when(validator.isValidNumber("15")).thenReturn(true);
+        Mockito.when(validator.isValidNumber("10")).thenReturn(true);
+        Mockito.when(validator.isValidNumber("2")).thenReturn(true);
+
     }
 
     @Test
@@ -40,8 +53,8 @@ public class ReversePolishNotationParserTest {
     @Test
     public void formatToReversedPolishNotation_EquationWithEqualPriorityLeftAssociativeOperators_RPNFormat()  throws EmptyStackException, InvalidOperatorException
     {
-        String realResult=parserRPN.formatFromInfixToReversedPolishNotation("1 / 2 * 3");
-        assertEquals("1 2 / 3 *",realResult);
+        String realResult=parserRPN.formatFromInfixToReversedPolishNotation("10 / 2 * 15");
+        assertEquals("10 2 / 15 *",realResult);
     }
 
     @Test
@@ -61,16 +74,16 @@ public class ReversePolishNotationParserTest {
     @Test
     public void formatToReversedPolishNotation_EquationProductOfTwoExpressionsEachInBracket_RPNFormat()  throws EmptyStackException, InvalidOperatorException
     {
-        String realResult=parserRPN.formatFromInfixToReversedPolishNotation("( 1 + 2 ) * ( 3 + 4 )");
-        assertEquals("1 2 + 3 4 + *",realResult);
+        String realResult=parserRPN.formatFromInfixToReversedPolishNotation("( 10 + 2 ) * ( 15 )");
+        assertEquals("10 2 + 15 *",realResult);
     }
 
 
     @Test
     public void formatToReversedPolishNotation_EquationWithLeftAndRightAssociativeOperators_RPNFormat() throws EmptyStackException, InvalidOperatorException
     {
-        String result=parserRPN.formatFromInfixToReversedPolishNotation("3 + 4 * 2 / 2 ^ ( 1 - 5 ) ^ 3");
-                assertEquals("3 4 2 * 2 1 5 - 3 ^ ^ / +",result);
+        String result=parserRPN.formatFromInfixToReversedPolishNotation("2 / 2 ^ 10");
+                assertEquals("2 2 10 ^ /",result);
     }
 
 }
