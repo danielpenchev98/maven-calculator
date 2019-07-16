@@ -8,20 +8,29 @@ import calculator.inputControl.ReversePolishNotationParser;
 import calculator.inputControl.RPParserTriggers.ReversePolishComponentTriggerFactory;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+
 import java.util.EmptyStackException;
 
 import static org.junit.Assert.assertEquals;
 
+//TODO to determine if i shouhld use mocks here
+
+//@RunWith(MockitoJUnitRunner.class)
 public class ReversePolishNotationParserTest {
 
     //@InjectMocks
     private ReversePolishNotationParser parserRPN;
 
-    //@Mock
+   // @Mock
     private EquationValidator validator;
 
+    //@Mock
     private ReversePolishComponentTriggerFactory operatorFactory;
-
     private MathArithmeticOperatorFactory arithmeticOperatorFactory;
 
     @Before

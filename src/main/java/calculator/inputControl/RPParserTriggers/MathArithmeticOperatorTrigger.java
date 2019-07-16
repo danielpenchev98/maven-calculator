@@ -43,6 +43,8 @@ public class MathArithmeticOperatorTrigger implements ReversePolishComponentTrig
         return wrappedOperator.getPriority()-toCompare.wrappedOperator.getPriority();
     }
 
+
+    //TODO should refactor it - maybe
     public String getSymbol()
     {
         return wrappedOperator.getSymbol();

@@ -58,6 +58,6 @@ public class ReversePolishComponentTriggerFactoryTest {
         triggerFactory.createTrigger("#");
     }
 
-    //TODO should i add test for LegalArightmeticOperatorSymbol
+    //TODO should i add test for LegalArithmeticOperatorSymbol
 
 }

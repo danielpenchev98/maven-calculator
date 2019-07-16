@@ -18,7 +18,6 @@ public class ReversePolishComponentTriggerFactory {
 
     public ReversePolishComponentTrigger createTrigger(final String component) throws InvalidOperatorException {
 
-
         if(checker.isValidNumber(component))
         {
             return new NumberTrigger(component);
