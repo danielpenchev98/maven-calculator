@@ -1,4 +1,4 @@
-package calculator.inputControl.triggers;
+package calculator.inputControl.RPParserTriggers;
 
 import calculator.computation.MathArithmeticOperator;
 
@@ -16,19 +16,20 @@ public class MathArithmeticOperatorTrigger implements ReversePolishComponentTrig
     @Override
     public void trigger(final Stack<ReversePolishComponentTrigger> container, final StringBuilder equation) {
 
-        while ( hasSpareOperators(container)&& (container.peek()) instanceof MathArithmeticOperatorTrigger ) {
+        while ( hasSpareOperators(container) && isMathArithmeticOperatorTrigger(container.peek())) {
 
-            MathArithmeticOperatorTrigger nextOperatorInContainer =(MathArithmeticOperatorTrigger) container.peek();
-            final boolean lowerPriority=hasLowerPriority(nextOperatorInContainer);
-            final boolean equalPriorityAndLeftAssociative = hasEqualPriority(nextOperatorInContainer) && nextOperatorInContainer.wrappedOperator.isLeftAssociative();
+            MathArithmeticOperatorTrigger nextTriggerInContainer = (MathArithmeticOperatorTrigger) container.peek();
+            final boolean lowerPriority = hasLowerPriority(nextTriggerInContainer);
+            final boolean equalPriorityAndLeftAssociative = hasEqualPriority(nextTriggerInContainer) && nextTriggerInContainer.wrappedOperator.isLeftAssociative();
 
             if( lowerPriority || equalPriorityAndLeftAssociative ) {
                 container.pop();
-                addComponentToEquation(nextOperatorInContainer.getSymbol(),equation);
+                addMathOperatorToEquation(nextTriggerInContainer,equation);
                 continue;
             }
             break;
         }
+
         container.add(this);
     }
 
@@ -47,6 +48,7 @@ public class MathArithmeticOperatorTrigger implements ReversePolishComponentTrig
         return wrappedOperator.getSymbol();
     }
 
+
     private boolean hasLowerPriority(final MathArithmeticOperatorTrigger previousOperator)
     {
         return this.compareTo(previousOperator)<0;
@@ -56,9 +58,16 @@ public class MathArithmeticOperatorTrigger implements ReversePolishComponentTrig
     {
         return this.compareTo(previousOperator)==0;
     }
-    private void addComponentToEquation(final String component,final StringBuilder equation)
+    private void addMathOperatorToEquation(final MathArithmeticOperatorTrigger operatorTrigger,final StringBuilder equation)
     {
-        equation.append(component).append(" ");
+        String operatorSymbol=operatorTrigger.getSymbol();
+        equation.append(operatorSymbol).append(" ");
     }
+
+    private boolean isMathArithmeticOperatorTrigger(final ReversePolishComponentTrigger trigger)
+    {
+        return trigger instanceof MathArithmeticOperatorTrigger;
+    }
+
 
 }

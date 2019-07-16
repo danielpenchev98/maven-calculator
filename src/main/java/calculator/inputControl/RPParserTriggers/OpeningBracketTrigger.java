@@ -1,4 +1,4 @@
-package calculator.inputControl.triggers;
+package calculator.inputControl.RPParserTriggers;
 
 import java.util.Stack;
 
