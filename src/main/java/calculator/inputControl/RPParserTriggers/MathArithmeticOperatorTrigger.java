@@ -24,7 +24,7 @@ public class MathArithmeticOperatorTrigger implements ReversePolishComponentTrig
 
             if( lowerPriority || equalPriorityAndLeftAssociative ) {
                 container.pop();
-                addMathOperatorToEquation(nextTriggerInContainer,equation);
+                addMathOperatorToEquation( nextTriggerInContainer, equation );
                 continue;
             }
             break;
