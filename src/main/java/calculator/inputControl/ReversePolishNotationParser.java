@@ -3,6 +3,9 @@ package calculator.inputControl;
 
 import calculator.computation.*;
 import calculator.exceptions.InvalidOperatorException;
+import calculator.inputControl.triggers.MathArithmeticOperatorTrigger;
+import calculator.inputControl.triggers.ReversePolishComponentTrigger;
+import calculator.inputControl.triggers.ReversePolishComponentTriggerFactory;
 
 import java.util.EmptyStackException;
 import java.util.Stack;
@@ -11,7 +14,7 @@ import java.util.Stack;
 
 public class ReversePolishNotationParser {
 
-    private Stack<MathOperator> operatorContainer;
+    private Stack<ReversePolishComponentTrigger> operatorContainer;
     private StringBuilder reversedPolishEquation;
     private EquationValidator checker;
     private MathOperatorFactory operatorFactory;
@@ -46,84 +49,35 @@ public class ReversePolishNotationParser {
             if(checker.isValidNumber(component))
             {
                 addComponentToEquation(component);
+                continue;
             }
-            else
-            {
-                processOperator(component);
-            }
+
+            ReversePolishComponentTriggerFactory secondFactory=new ReversePolishComponentTriggerFactory();
+            ReversePolishComponentTrigger currOperation=secondFactory.createTrigger(component);
+
+            currOperation.trigger(operatorContainer,reversedPolishEquation);
+
         }
         addAllOperatorsLeftInTheContainerToEquation();
 
         return reversedPolishEquation.toString().trim();
     }
 
-    private void processOperator(final String component) throws InvalidOperatorException, EmptyStackException
-    {
-        MathOperator currOperation = operatorFactory.createOperation(component);
-
-        if (currOperation instanceof MathArithmeticOperator)
-        {
-            addOperatorsFromContainerDependingOnPriorityAndAssociativity((MathArithmeticOperator) currOperation);
-            operatorContainer.add(currOperation);
-        }
-        else if(currOperation instanceof ClosingBracket)
-        {
-            addOperatorsFromContainerToEquationTillOpeningBracketIsFound();
-        }
-        else
-        {
-            operatorContainer.add(currOperation);
-        }
-    }
 
     private void addAllOperatorsLeftInTheContainerToEquation() {
 
         while( hasSpareOperators() )
         {
-            addComponentToEquation(((MathArithmeticOperator)operatorContainer.pop()).getSymbol());
+            addComponentToEquation(((MathArithmeticOperatorTrigger)operatorContainer.pop()).getSymbol());
         }
     }
 
-    private void addOperatorsFromContainerToEquationTillOpeningBracketIsFound(){
-
-        while(hasSpareOperators()&&!(operatorContainer.peek() instanceof OpeningBracket))
-        {
-            addComponentToEquation(((MathArithmeticOperator)operatorContainer.pop()).getSymbol());
-        }
-        operatorContainer.pop();
-    }
-
-    private void addOperatorsFromContainerDependingOnPriorityAndAssociativity(final MathArithmeticOperator component)
-    {
-        while ( hasSpareOperators()&& (operatorContainer.peek()) instanceof MathArithmeticOperator ) {
-
-            MathArithmeticOperator nextOperatorInContainer =(MathArithmeticOperator) operatorContainer.peek();
-            final boolean lowerPriority=hasLowerPriority(nextOperatorInContainer, component);
-            final boolean equalPriorityAndLeftAssociative = hasEqualPriority(nextOperatorInContainer, component) && nextOperatorInContainer.isLeftAssociative();
-
-            if( lowerPriority || equalPriorityAndLeftAssociative ) {
-                operatorContainer.pop();
-                addComponentToEquation(nextOperatorInContainer.getSymbol());
-                continue;
-            }
-            break;
-        }
-    }
 
     private void addComponentToEquation(final String component)
     {
         reversedPolishEquation.append(component).append(" ");
     }
 
-    private boolean hasLowerPriority(final MathArithmeticOperator previousOperator,final MathArithmeticOperator currentOperator)
-    {
-        return previousOperator.getPriority() > currentOperator.getPriority();
-    }
-
-    private boolean hasEqualPriority(final MathArithmeticOperator previousOperator,final MathArithmeticOperator currentOperator)
-    {
-        return previousOperator.getPriority() == currentOperator.getPriority();
-    }
 
     private boolean hasSpareOperators()
     {
