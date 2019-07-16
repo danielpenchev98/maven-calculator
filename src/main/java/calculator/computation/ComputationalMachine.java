@@ -32,7 +32,6 @@ public class ComputationalMachine{
 
     private void setMathematicalOperation(final String action) throws InvalidOperatorException
     {
-        MathArithmeticOperatorFactory factory = new MathArithmeticOperatorFactory();
         operation= factory.createArithmeticOperation(action);
     }
 
