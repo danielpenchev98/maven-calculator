@@ -1,11 +1,10 @@
 package calculator.inputControl;
 
 
-import calculator.computation.*;
 import calculator.exceptions.InvalidOperatorException;
-import calculator.inputControl.triggers.MathArithmeticOperatorTrigger;
-import calculator.inputControl.triggers.ReversePolishComponentTrigger;
-import calculator.inputControl.triggers.ReversePolishComponentTriggerFactory;
+import calculator.inputControl.RPParserTriggers.MathArithmeticOperatorTrigger;
+import calculator.inputControl.RPParserTriggers.ReversePolishComponentTrigger;
+import calculator.inputControl.RPParserTriggers.ReversePolishComponentTriggerFactory;
 
 import java.util.EmptyStackException;
 import java.util.Stack;
@@ -16,15 +15,13 @@ public class ReversePolishNotationParser {
 
     private Stack<ReversePolishComponentTrigger> operatorContainer;
     private StringBuilder reversedPolishEquation;
-    private EquationValidator checker;
     private ReversePolishComponentTriggerFactory triggerFactory;
 
 
-    public ReversePolishNotationParser(final EquationValidator validator,final ReversePolishComponentTriggerFactory factory)
+    public ReversePolishNotationParser(final ReversePolishComponentTriggerFactory factory)
     {
         operatorContainer=new Stack<>();
         reversedPolishEquation=new StringBuilder();
-        checker=validator;
         triggerFactory=factory;
     }
 
@@ -46,22 +43,13 @@ public class ReversePolishNotationParser {
         String[] components = getIndividualComponents(equation);
         for(String component:components)
         {
-            if(checker.isValidNumber(component))
-            {
-                addComponentToEquation(component);
-                continue;
-            }
-
             ReversePolishComponentTrigger currOperation=triggerFactory.createTrigger(component);
-
             currOperation.trigger(operatorContainer,reversedPolishEquation);
-
         }
         addAllOperatorsLeftInTheContainerToEquation();
 
         return reversedPolishEquation.toString().trim();
     }
-
 
     private void addAllOperatorsLeftInTheContainerToEquation() {
 

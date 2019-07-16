@@ -3,11 +3,9 @@ package calculator;
 
 import calculator.computation.*;
 import calculator.exceptions.InvalidOperatorException;
-import calculator.exceptions.OutOfItemsException;
 import calculator.inputControl.ReversePolishNotationParser;
 import calculator.inputControl.*;
-import calculator.inputControl.triggers.ReversePolishComponentTrigger;
-import calculator.inputControl.triggers.ReversePolishComponentTriggerFactory;
+import calculator.inputControl.RPParserTriggers.ReversePolishComponentTriggerFactory;
 
 import java.util.EmptyStackException;
 
@@ -41,8 +39,10 @@ class CalculatorApp {
             return;
         }
 
-       ReversePolishComponentTriggerFactory operatorFactory=new ReversePolishComponentTriggerFactory();
-        ReversePolishNotationParser specialParser=new ReversePolishNotationParser(validator,operatorFactory);
+        MathArithmeticOperatorFactory arithmeticOperatorFactory=new MathArithmeticOperatorFactory();
+
+        ReversePolishComponentTriggerFactory operatorFactory=new ReversePolishComponentTriggerFactory(validator,arithmeticOperatorFactory);
+        ReversePolishNotationParser specialParser=new ReversePolishNotationParser(operatorFactory);
         String reversePolishFormatEquation;
         try {
             reversePolishFormatEquation = specialParser.formatFromInfixToReversedPolishNotation(formattedInput);
@@ -63,7 +63,6 @@ class CalculatorApp {
 
         String[] splitInput=reversePolishFormatEquation.split(" ");
 
-        MathArithmeticOperatorFactory arithmeticOperatorFactory=new MathArithmeticOperatorFactory();
         ComputationalMachine calculator= new ComputationalMachine(arithmeticOperatorFactory);
         ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm(calculator,validator);
 
