@@ -17,15 +17,21 @@ public class EquationValidatorTest {
     }
 
     //region validateEquation
-    @Test(expected = OperatorMisplacementException.class)
+    @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithMissingOperatorBetweenNumberAndBracket_Illegal() throws Exception {
-        validator.validateEquation("1 + 2 ( ) * 5");
+        validator.validateEquation("2 ( )");
     }
 
-    @Test(expected = OperatorMisplacementException.class)
+    @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithClosingBracketNextToOpeningBracket_Legal() throws Exception
     {
         validator.validateEquation("1 + ( ( 10 + 20 ) ( -5 ) )");
+    }
+
+    @Test
+    public void validateEquation_EquationWithOnlyANumber_Legal() throws Exception
+    {
+        validator.validateEquation("1");
     }
 
     @Test
@@ -33,19 +39,19 @@ public class EquationValidatorTest {
         validator.validateEquation("( ( -1 + 5 + 2 ) )");
     }
 
-    @Test(expected = MissingNumberException.class)
+    @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationOnlyWithOperatorInTheBrackets_Illegal() throws Exception
     {
         validator.validateEquation("( + ) + 1 * 2");
     }
 
-    @Test(expected = OperatorMisplacementException.class)
+    @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithSequentialOperators_Illegal() throws Exception
     {
         validator.validateEquation("1 + 2 + + ");
     }
 
-    @Test(expected = MissingNumberException.class)
+    @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithEmptyBrackets_Illegal() throws Exception
     {
         validator.validateEquation("( ) + 2");
@@ -57,13 +63,13 @@ public class EquationValidatorTest {
         validator.validateEquation(" 1ha + 2 + 3");
     }
 
-    @Test(expected = EmptyEquationException.class)
+    @Test(expected = InvalidEquationException.class)
     public void validateEquation_EmptyEquation_Illegal() throws Exception
     {
         validator.validateEquation("");
     }
 
-    @Test(expected = MissingBracketException.class)
+    @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithMissingBracket_Illegal() throws Exception
     {
         validator.validateEquation("1 + ( ( 2 * ( -3 ) -5 ) ");

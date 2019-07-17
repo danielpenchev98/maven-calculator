@@ -7,6 +7,7 @@ import calculator.exceptions.InvalidTypeOfEquationComponent;
  */
 public class PrimalParser {
 
+    private final String splitSymbol=" ";
     /**
      * @param equation - unformatted input
      * @return formatted input

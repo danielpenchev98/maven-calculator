@@ -7,37 +7,53 @@ import calculator.exceptions.*;
  */
 public class EquationValidator {
 
-    public void validateEquation(final String equation) throws EmptyEquationException, InvalidTypeOfEquationComponent, MissingBracketException, OperatorMisplacementException, MissingNumberException
+   /* private PrimalParser formatter;
+
+    public EquationValidator()
+    {
+        this.formatter=new PrimalParser();
+    }
+
+    public EquationValidator(final PrimalParser formatter)
+    {
+        this.formatter=formatter;
+    }*/
+
+    public void validateEquation(final String equation) throws InvalidTypeOfEquationComponent, InvalidEquationException
     {
 
-        String[] equationComponents=equation.split(" ");
-        if(equationComponents.length<=1&&equation.equals(""))
+        //String[] equationComponents=formatter.formatInput(equation);
+        String[] splitInput=equation.split(" ");
+
+        if(equation.equals(""))
         {
-            throw new EmptyEquationException("Empty equation");
+            throw new InvalidEquationException("Empty equation");
         }
 
-        for(String component:equationComponents)
+        for(String component:splitInput)
         {
             if(!isValidNumber(component)&&!isValidArithmeticOperator(component)&&!isBracket(component))
             {
-               throw new InvalidTypeOfEquationComponent("An illegal equation component has been found");
+                throw new InvalidTypeOfEquationComponent("An illegal equation component has been found");
             }
         }
+
+
         if(!hasBracketBalance(equation))
         {
-            throw new MissingBracketException("The equation is missing brackets");
+            throw new InvalidEquationException("The equation is missing brackets");
         }
         else if(hasSequentialOperatorsOrNumbers(equation))
         {
-            throw new OperatorMisplacementException("Sequential operators has been found");
+            throw new InvalidEquationException("Sequential operators has been found");
         }
         else if(hasNonOperatorBeforeBracket(equation)||hasNonOperatorAfterBracket(equation))
         {
-            throw new OperatorMisplacementException("There should be a operator between a number and opening bracket or between a closing bracket and a number in that order");
+            throw new InvalidEquationException("There should be a operator between a number and opening bracket or between a closing bracket and a number in that order");
         }
         else if(hasNonNumbersOnlyBetweenBrackets(equation))
         {
-            throw new MissingNumberException("There should be at least one number in the brackets");
+            throw new InvalidEquationException("There should be at least one number in the brackets");
         }
     }
 

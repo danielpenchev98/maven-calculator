@@ -2,6 +2,7 @@ package calculator;
 
 
 import calculator.computation.*;
+import calculator.exceptions.EmptyEquationException;
 import calculator.exceptions.InvalidOperatorException;
 import calculator.inputControl.ReversePolishNotationParser;
 import calculator.inputControl.*;
@@ -17,27 +18,35 @@ import java.util.EmptyStackException;
  */
 class CalculatorApp {
 
+    private EquationValidator validator;
 
+    public CalculatorApp()
+    {
+        this.validator=new EquationValidator();
+    }
+
+     CalculatorApp(EquationValidator validator)
+     {
+         this.validator=validator;
+     }
     /**
      * Functions which formats and calculates the equation
      * @param equation - user input
      */
-    public void processEquationAndCalculateResult(final String equation)
-    {
-        PrimalParser parser= new PrimalParser();
+    public double calculateResult(final String equation) throws Exception {
+        if(equation.equals(""))
+        {
+            throw new EmptyEquationException("empty equation");
+        }
+
+
+        validator.validateEquation(equation);
+
+         return 0;
+     /*   PrimalParser parser= new PrimalParser();
         String formattedInput=parser.formatInput(equation);
 
-        EquationValidator validator=new EquationValidator();
-        try
-        {
-            validator.validateEquation(formattedInput);
-        }
-        //TODO maybe multiple catches is better
-        catch(Exception ex)
-        {
-            System.out.println(ex.getMessage());
-            return;
-        }
+
 
         MathArithmeticOperatorFactory arithmeticOperatorFactory=new MathArithmeticOperatorFactory();
 
@@ -75,7 +84,7 @@ class CalculatorApp {
         catch(Exception logicalError) {
             System.out.println(logicalError.getMessage());
         }
-
+*/
     }
 
 }
