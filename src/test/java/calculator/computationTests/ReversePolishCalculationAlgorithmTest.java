@@ -47,7 +47,7 @@ public class ReversePolishCalculationAlgorithmTest {
     public void calculationEquation_EquationWithMissingNumber_OutOfItemsExceptionThrown() throws Exception
     {
         Mockito.when(machine.computeAction("+",2.0,3)).thenReturn(5.0);
-        algorithm.calculateEquation("2.0 3.0 + +".split(" "));
+        algorithm.calculateEquation("2.0 3.0 + +");
     }
 
 
@@ -55,7 +55,7 @@ public class ReversePolishCalculationAlgorithmTest {
     public void calculationEquation_EquationWithMissingOperator_MissingOperatorExceptionThrown() throws Exception
     {
         Mockito.when(machine.computeAction("+",2.0,2.0)).thenReturn(4.0);
-        algorithm.calculateEquation("2.0 2.0 + 3.0".split(" "));
+        algorithm.calculateEquation("2.0 2.0 + 3.0");
     }
 
     @Test(expected = InvalidOperatorException.class)
@@ -64,7 +64,7 @@ public class ReversePolishCalculationAlgorithmTest {
         Mockito.when(validator.isValidNumber("#")).thenReturn(false);
         Mockito.when(machine.computeAction("#",2.0,3.0)).thenThrow(new InvalidOperatorException("Invalid operator"));
 
-        algorithm.calculateEquation("2.0 3.0 #".split(" "));
+        algorithm.calculateEquation("2.0 3.0 #");
     }
 
     @Test
@@ -75,7 +75,7 @@ public class ReversePolishCalculationAlgorithmTest {
 
         Mockito.when(validator.isValidNumber("^")).thenReturn(false);
 
-        assertEquals(30,algorithm.calculateEquation("3.0 3.0 3.0 ^ +".split(" ")),DELTA);
+        assertEquals(30,algorithm.calculateEquation("3.0 3.0 3.0 ^ +"),DELTA);
     }
 
 }

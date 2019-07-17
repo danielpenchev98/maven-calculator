@@ -31,27 +31,27 @@ public class ReversePolishCalculationAlgorithmIT {
     @Test(expected = EmptyStackException.class)
     public void calculationEquation_EquationWithMissingNumber_OutOfItemsExceptionThrown() throws Exception
     {
-        algorithm.calculateEquation("2.0 3.0 + +".split(" "));
+        algorithm.calculateEquation("2.0 3.0 + +");
     }
 
 
     @Test(expected = MissingOperatorException.class)
     public void calculationEquation_EquationWithMissingOperator_MissingOperatorExceptionThrown() throws Exception
     {
-        algorithm.calculateEquation("2.0 2.0 + 3.0".split(" "));
+        algorithm.calculateEquation("2.0 2.0 + 3.0");
     }
 
     @Test(expected = InvalidOperatorException.class)
     public void calculationEquation_EquationWithInvalidOperator_InvalidOperatorException() throws Exception
     {
-        algorithm.calculateEquation("2.0 3.0 #".split(" "));
+        algorithm.calculateEquation("2.0 3.0 #");
     }
 
     @Test
     public void calculationEquation_LegalEquation() throws Exception
     {
 
-        assertEquals(30,algorithm.calculateEquation("3.0 3.0 3.0 ^ +".split(" ")),DELTA);
+        assertEquals(30,algorithm.calculateEquation("3.0 3.0 3.0 ^ +"),DELTA);
     }
 
 }

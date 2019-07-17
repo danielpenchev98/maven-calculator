@@ -22,7 +22,7 @@ class CalculatorApp {
      * Functions which formats and calculates the equation
      * @param equation - user input
      */
-    void processEquationAndCalculateResult(final String equation)
+    public void processEquationAndCalculateResult(final String equation)
     {
         PrimalParser parser= new PrimalParser();
         String formattedInput=parser.formatInput(equation);
@@ -61,13 +61,11 @@ class CalculatorApp {
             return;
         }
 
-        String[] splitInput=reversePolishFormatEquation.split(" ");
-
         ComputationalMachine calculator= new ComputationalMachine(arithmeticOperatorFactory);
         ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm(calculator,validator);
 
         try {
-            double finalResult=algorithm.calculateEquation(splitInput);
+            double finalResult=algorithm.calculateEquation(reversePolishFormatEquation);
             System.out.println(finalResult);
         }
         catch (EmptyStackException noItems)

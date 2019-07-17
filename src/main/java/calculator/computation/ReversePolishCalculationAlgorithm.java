@@ -23,15 +23,16 @@ public class ReversePolishCalculationAlgorithm {
 
     /**
      * Help function which implements the logic of Reversed Polish Notation for calculating an eqiation
-     * @param splitInput - array of Strings, constisting of items, representing a component of an equation
+     * @param formattedEquation - array of Strings, constisting of items, representing a component of an equation
      * @return result of the equation
      * @throws Exception - error during the reverse polish notation calculation
      */
-    public double calculateEquation(final String[] splitInput) throws EmptyStackException, MissingOperatorException, InvalidOperatorException
+    public double calculateEquation(final String formattedEquation) throws EmptyStackException, MissingOperatorException, InvalidOperatorException
     {
+        String[] components=formattedEquation.split(" ");
 
         //TODO make polymorphism with Enums, maybe
-        handleComponents(splitInput);
+        handleComponents(components);
 
         if(supplier.size()!=1)
         {
