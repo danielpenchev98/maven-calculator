@@ -1,11 +1,10 @@
 package calculator.inputControlTests;
 
-import calculator.computation.MathArithmeticOperator;
 import calculator.computation.MathArithmeticOperatorFactory;
 import calculator.exceptions.InvalidOperatorException;
 import calculator.inputControl.EquationValidator;
 import calculator.inputControl.ReversePolishNotationParser;
-import calculator.inputControl.RPParserTriggers.ReversePolishComponentTriggerFactory;
+import calculator.inputControl.RPParserTriggersTest.ReversePolishComponentTriggerFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +13,7 @@ import java.util.EmptyStackException;
 import static org.junit.Assert.assertEquals;
 
 
-public class ReversePolishNotationParserTest {
+public class ReversePolishNotationParserIT {
 
     private ReversePolishNotationParser parserRPN;
 

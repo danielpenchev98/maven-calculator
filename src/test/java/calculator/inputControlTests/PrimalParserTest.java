@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-//Dont know if these are all the tests.
 public class PrimalParserTest {
 
     private PrimalParser parser;

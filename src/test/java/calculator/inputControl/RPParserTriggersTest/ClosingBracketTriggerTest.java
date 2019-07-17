@@ -1,14 +1,11 @@
-package calculator.inputControl.RPParserTriggers;
+package calculator.inputControl.RPParserTriggersTest;
 
-import calculator.computation.Addition;
 import calculator.computation.MathArithmeticOperator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Stack;

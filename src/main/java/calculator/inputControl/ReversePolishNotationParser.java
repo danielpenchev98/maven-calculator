@@ -2,9 +2,9 @@ package calculator.inputControl;
 
 
 import calculator.exceptions.InvalidOperatorException;
-import calculator.inputControl.RPParserTriggers.MathArithmeticOperatorTrigger;
-import calculator.inputControl.RPParserTriggers.ReversePolishComponentTrigger;
-import calculator.inputControl.RPParserTriggers.ReversePolishComponentTriggerFactory;
+import calculator.inputControl.RPParserTriggersTest.MathArithmeticOperatorTrigger;
+import calculator.inputControl.RPParserTriggersTest.ReversePolishComponentTrigger;
+import calculator.inputControl.RPParserTriggersTest.ReversePolishComponentTriggerFactory;
 
 import java.util.EmptyStackException;
 import java.util.Stack;
@@ -55,12 +55,12 @@ public class ReversePolishNotationParser {
 
         while( hasSpareOperators() )
         {
-            addComponentToEquation(((MathArithmeticOperatorTrigger)operatorContainer.pop()).getSymbol());
+            addOperatorToEquation(((MathArithmeticOperatorTrigger)operatorContainer.pop()).getSymbol());
         }
     }
 
 
-    private void addComponentToEquation(final String component)
+    private void addOperatorToEquation(final String component)
     {
         reversedPolishEquation.append(component).append(" ");
     }

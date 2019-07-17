@@ -13,8 +13,8 @@ public class PrimalParser {
      * @throws InvalidTypeOfEquationComponent - if there exists and illegal component in the equation
      */
     public String formatInput(final String equation) {
-        String firstStep=addSpaceAfterEveryComponent(equation);
-        String secondStep=removeJunkSpaces(firstStep);
+        String firstStep = addSpaceAfterEveryComponent(equation);
+        String secondStep = removeJunkSpaces(firstStep);
         return removeSpaceBetweenTheNumberAndItsSign(secondStep);
     }
 

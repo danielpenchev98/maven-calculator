@@ -1,10 +1,8 @@
-package calculator.inputControl.RPParserTriggers;
+package calculator.inputControl.RPParserTriggersTest;
 
-import calculator.computation.MathArithmeticOperator;
 import calculator.computation.MathArithmeticOperatorFactory;
 import calculator.exceptions.InvalidOperatorException;
 import calculator.inputControl.EquationValidator;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

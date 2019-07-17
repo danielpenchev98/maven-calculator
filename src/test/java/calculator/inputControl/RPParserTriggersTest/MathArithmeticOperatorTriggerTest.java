@@ -1,4 +1,4 @@
-package calculator.inputControl.RPParserTriggers;
+package calculator.inputControl.RPParserTriggersTest;
 
 import calculator.computation.*;
 
@@ -19,7 +19,7 @@ public class MathArithmeticOperatorTriggerTest {
 
     private MathArithmeticOperatorTrigger operatorAdditionTrigger;
 
-    private MathArithmeticOperatorTrigger operatorMultplicationTrigger;
+    private MathArithmeticOperatorTrigger operatorMultiplicationTrigger;
 
     private MathArithmeticOperatorTrigger operatorPowerTrigger;
 
@@ -41,7 +41,7 @@ public class MathArithmeticOperatorTriggerTest {
     public void setUp()
     {
         operatorAdditionTrigger=new MathArithmeticOperatorTrigger(addition);
-        operatorMultplicationTrigger=new MathArithmeticOperatorTrigger(multiplication);
+        operatorMultiplicationTrigger=new MathArithmeticOperatorTrigger(multiplication);
         operatorPowerTrigger=new MathArithmeticOperatorTrigger(power);
 
         container=new Stack<>();
@@ -64,7 +64,7 @@ public class MathArithmeticOperatorTriggerTest {
 
         StringBuilder equation=new StringBuilder();
 
-        operatorMultplicationTrigger.trigger(container,equation);
+        operatorMultiplicationTrigger.trigger(container,equation);
         assertEquals("^ ^ ",equation.toString());
         assertEquals(3,container.size());
     }
@@ -77,7 +77,7 @@ public class MathArithmeticOperatorTriggerTest {
 
         StringBuilder equation=new StringBuilder();
 
-        operatorMultplicationTrigger.trigger(container,equation);
+        operatorMultiplicationTrigger.trigger(container,equation);
         assertEquals("",equation.toString());
         assertEquals(5,container.size());
     }
@@ -90,23 +90,23 @@ public class MathArithmeticOperatorTriggerTest {
 
 
         container.push(operatorAdditionTrigger);
-        container.push(operatorMultplicationTrigger);
+        container.push(operatorMultiplicationTrigger);
 
         StringBuilder equation=new StringBuilder();
 
-        operatorMultplicationTrigger.trigger(container,equation);
+        operatorMultiplicationTrigger.trigger(container,equation);
         assertEquals("* ",equation.toString());
         assertEquals(4,container.size());
     }
 
     @Test
     public void compareTo_TwoEqualPriorityOperatorTriggers() {
-        assertEquals(0,operatorMultplicationTrigger.compareTo(operatorMultplicationTrigger));
+        assertEquals(0,operatorMultiplicationTrigger.compareTo(operatorMultiplicationTrigger));
     }
 
     @Test
     public void compareTo_TwoDifferentPriorityOperatorTriggers()
     {
-        assertEquals(-1,operatorMultplicationTrigger.compareTo(operatorPowerTrigger));
+        assertEquals(-1,operatorMultiplicationTrigger.compareTo(operatorPowerTrigger));
     }
 }

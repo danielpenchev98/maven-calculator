@@ -1,4 +1,4 @@
-package calculator.inputControl.RPParserTriggers;
+package calculator.inputControl.RPParserTriggersTest;
 
 import calculator.computation.MathArithmeticOperatorFactory;
 import calculator.exceptions.InvalidOperatorException;

@@ -2,11 +2,9 @@ package calculator.computation;
 
 import calculator.exceptions.InvalidOperatorException;
 import calculator.exceptions.MissingOperatorException;
-import calculator.exceptions.OutOfItemsException;
 import calculator.inputControl.EquationValidator;
 
 import java.util.EmptyStackException;
-import java.util.List;
 import java.util.Stack;
 
 public class ReversePolishCalculationAlgorithm {
@@ -14,6 +12,7 @@ public class ReversePolishCalculationAlgorithm {
     private ComputationalMachine calculator;
     private EquationValidator validator;
     private Stack<String> supplier;
+
 
     public ReversePolishCalculationAlgorithm(final ComputationalMachine machine,final EquationValidator validatingLogic)
     {
@@ -30,7 +29,21 @@ public class ReversePolishCalculationAlgorithm {
      */
     public double calculateEquation(final String[] splitInput) throws EmptyStackException, MissingOperatorException, InvalidOperatorException
     {
-        for (String component : splitInput) {
+
+        //TODO make polymorphism with Enums, maybe
+        handleComponents(splitInput);
+
+        if(supplier.size()!=1)
+        {
+            throw new MissingOperatorException("Invalid equation. Logical error. There aren't enough operators");
+        }
+
+        return Double.valueOf(supplier.pop());
+    }
+
+    private void handleComponents(final String[] components) throws InvalidOperatorException
+    {
+        for (String component : components) {
             if (validator.isValidNumber(component))
             {
                 supplier.add(component);
@@ -40,13 +53,6 @@ public class ReversePolishCalculationAlgorithm {
                 executeOperation(component);
             }
         }
-
-        if(supplier.size()!=1)
-        {
-            throw new MissingOperatorException("Invalid equation. Logical error. There aren't enough operators");
-        }
-
-        return Double.valueOf(supplier.pop());
     }
 
     private void executeOperation(final String operator) throws InvalidOperatorException, EmptyStackException

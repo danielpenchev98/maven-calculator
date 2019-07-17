@@ -16,11 +16,6 @@ public class EquationValidatorTest {
         validator=new EquationValidator();
     }
 
-    @After
-    public void tearDown() {
-        validator=null;
-    }
-
     //region validateEquation
     @Test(expected = OperatorMisplacementException.class)
     public void validateEquation_EquationWithMissingOperatorBetweenNumberAndBracket_Illegal() throws Exception {

@@ -5,7 +5,7 @@ import calculator.computation.*;
 import calculator.exceptions.InvalidOperatorException;
 import calculator.inputControl.ReversePolishNotationParser;
 import calculator.inputControl.*;
-import calculator.inputControl.RPParserTriggers.ReversePolishComponentTriggerFactory;
+import calculator.inputControl.RPParserTriggersTest.ReversePolishComponentTriggerFactory;
 
 import java.util.EmptyStackException;
 
