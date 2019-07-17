@@ -1,18 +1,12 @@
 package calculator;
 
 
-import calculator.computation.*;
-import calculator.exceptions.EmptyEquationException;
-import calculator.exceptions.InvalidOperatorException;
-import calculator.inputControl.ReversePolishNotationParser;
+import calculator.exceptions.InvalidEquationException;
 import calculator.inputControl.*;
-import calculator.inputControl.RPParserTriggersTest.ReversePolishComponentTriggerFactory;
-
-import java.util.EmptyStackException;
 
 /**
  * Class which represents the calculator as a whole - uses the 3 main abstractions :
- * PrimalParser - used as a input formatter,
+ * InputFormatter - used as a input formatter,
 
  * ComputationalMachine - used for calculation the operations* NumberSupplier - storage, used for calculating the equation,
  */
@@ -36,14 +30,18 @@ class CalculatorApp {
     public double calculateResult(final String equation) throws Exception {
         if(equation.equals(""))
         {
-            throw new EmptyEquationException("empty equation");
+            throw new InvalidEquationException("empty equation");
         }
 
+        InputFormatter parser= new InputFormatter();
+        String formattedInput=parser.doFormat(equation);
+        String separator=parser.getComponentSeparator();
 
-        validator.validateEquation(equation);
+
+        validator.validateEquation(formattedInput,separator);
 
          return 0;
-     /*   PrimalParser parser= new PrimalParser();
+     /*   InputFormatter parser= new InputFormatter();
         String formattedInput=parser.formatInput(equation);
 
 

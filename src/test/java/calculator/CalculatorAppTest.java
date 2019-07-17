@@ -1,6 +1,6 @@
 package calculator;
 
-import calculator.exceptions.EmptyEquationException;
+import calculator.exceptions.InvalidEquationException;
 import calculator.exceptions.InvalidTypeOfEquationComponent;
 import calculator.inputControl.EquationValidator;
 import org.junit.Before;
@@ -26,7 +26,7 @@ public class CalculatorAppTest {
         app=new CalculatorApp(validator);
     }
 
-    @Test(expected = EmptyEquationException.class)
+    @Test(expected = InvalidEquationException.class)
     public void testProcessEquationAndCalculateResult() throws Exception{
         app.calculateResult("");
     }
@@ -36,15 +36,21 @@ public class CalculatorAppTest {
     {
         double result=app.calculateResult("1");
         assertEquals(0.0,result);
-        Mockito.verify(validator).validateEquation("1");
+        Mockito.verify(validator).validateEquation("1", " ");
     }
 
     @Test(expected = InvalidTypeOfEquationComponent.class)
-    public void calculateResult_InvalidEquation_InvalidTypeOfEquationComponentThrown() throws Exception
-    {
-        Mockito.doThrow(new InvalidTypeOfEquationComponent("Invalid component")).when(validator).validateEquation("#");
-       app.calculateResult("#");
-
+    public void calculateResult_EquationUsingNonSupportedOperator_Illegal() throws Exception {
+        Mockito.doThrow(new InvalidTypeOfEquationComponent("Invalid component")).when(validator).validateEquation("#", " ");
+        app.calculateResult("#");
     }
+
+    @Test(expected = InvalidEquationException.class)
+    public void calculateResult_EquationWithMissingBracket_Illegal() throws Exception
+    {
+        Mockito.doThrow(new InvalidEquationException("Missing Bracket")).when(validator).validateEquation("( 1 + 2"," ");
+        app.calculateResult("( 1 + 2");
+    }
+
 
 }

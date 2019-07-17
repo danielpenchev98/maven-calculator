@@ -2,9 +2,9 @@ package calculator.inputControl;
 
 
 import calculator.exceptions.InvalidOperatorException;
-import calculator.inputControl.RPParserTriggersTest.MathArithmeticOperatorTrigger;
-import calculator.inputControl.RPParserTriggersTest.ReversePolishComponentTrigger;
-import calculator.inputControl.RPParserTriggersTest.ReversePolishComponentTriggerFactory;
+import calculator.inputControl.parserTriggers.MathArithmeticOperatorTrigger;
+import calculator.inputControl.parserTriggers.ReversePolishComponentTrigger;
+import calculator.inputControl.parserTriggers.ReversePolishComponentTriggerFactory;
 
 import java.util.EmptyStackException;
 import java.util.Stack;
