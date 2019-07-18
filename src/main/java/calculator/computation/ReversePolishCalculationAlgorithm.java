@@ -1,8 +1,8 @@
 package calculator.computation;
 
 import calculator.exceptions.InvalidEquationException;
-import calculator.exceptions.InvalidOperatorException;
-import calculator.inputControl.EquationValidator;
+import calculator.exceptions.InvalidParameterException;
+import calculator.inputcontrol.EquationValidator;
 
 import java.util.EmptyStackException;
 import java.util.Stack;
@@ -23,11 +23,11 @@ public class ReversePolishCalculationAlgorithm {
 
     /**
      * Help function which implements the logic of Reversed Polish Notation for calculating an eqiation
-     * @param formattedEquation - array of Strings, constisting of items, representing a component of an equation
+     * @param formattedEquation - array of Strings, consisting items, representing a component of an equation
      * @return result of the equation
      * @throws Exception - error during the reverse polish notation calculation
      */
-    public double calculateEquation(final String formattedEquation) throws EmptyStackException, InvalidEquationException, InvalidOperatorException
+    public double calculateEquation(final String formattedEquation) throws EmptyStackException, InvalidEquationException
     {
         String[] components=formattedEquation.split(" ");
 
@@ -42,7 +42,7 @@ public class ReversePolishCalculationAlgorithm {
         return Double.valueOf(supplier.pop());
     }
 
-    private void handleComponents(final String[] components) throws InvalidOperatorException
+    private void handleComponents(final String[] components) throws InvalidParameterException
     {
         for (String component : components) {
             if (validator.isValidNumber(component))
@@ -56,7 +56,7 @@ public class ReversePolishCalculationAlgorithm {
         }
     }
 
-    private void executeOperation(final String operator) throws InvalidOperatorException, EmptyStackException
+    private void executeOperation(final String operator) throws InvalidParameterException, EmptyStackException
     {
         double leftNumber = Double.valueOf(supplier.pop());
         double rightNumber = Double.valueOf(supplier.pop());

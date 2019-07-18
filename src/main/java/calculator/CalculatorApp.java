@@ -1,91 +1,43 @@
 package calculator;
 
-
-import calculator.computation.MathArithmeticOperatorFactory;
+import calculator.computation.*;
+import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidEquationException;
-import calculator.exceptions.InvalidOperatorException;
-import calculator.inputControl.*;
-import calculator.inputControl.parserTriggers.ReversePolishComponentTriggerFactory;
-
-import java.util.EmptyStackException;
+import calculator.inputcontrol.ReversePolishNotationParser;
+import calculator.inputcontrol.*;
 
 /**
  * Class which represents the calculator as a whole - uses the 3 main abstractions :
- * InputFormatter - used as a input formatter,
-
+ * PrimalParser - used as a input formatter,
  * ComputationalMachine - used for calculation the operations* NumberSupplier - storage, used for calculating the equation,
  */
+
 class CalculatorApp {
 
-    private EquationValidator validator;
-
-    private InputFormatter formatter;
-
-    public CalculatorApp()
-    {
-        this.formatter=new InputFormatter();
-        this.validator=new EquationValidator();
-    }
-
-     CalculatorApp(final InputFormatter formatter,final EquationValidator validator)
-     {
-         this.formatter=formatter;
-         this.validator=validator;
-     }
     /**
      * Functions which formats and calculates the equation
      * @param equation - user input
      */
-    public double calculateResult(final String equation) throws Exception {
-        if(equation.equals(""))
-        {
-            throw new InvalidEquationException("empty equation");
-        }
-
-        String[] formattedInput = formatter.doFormat(equation);
-
+    double calculateResult(final String equation) throws InvalidEquationException, InvalidComponentException
+    {
+        InputFormatter formatter = new InputFormatter();
+        String formattedInput = formatter.doFormat(equation);
+        EquationValidator validator=new EquationValidator();
 
         validator.validateEquation(formattedInput);
 
-        MathArithmeticOperatorFactory arithmeticOperatorFactory=new MathArithmeticOperatorFactory();
 
-        ReversePolishComponentTriggerFactory operatorFactory=new ReversePolishComponentTriggerFactory(validator,arithmeticOperatorFactory);
-        ReversePolishNotationParser specialParser=new ReversePolishNotationParser(operatorFactory);
+        MathOperatorFactory operatorFactory=new MathOperatorFactory();
+        ReversePolishNotationParser specialParser=new ReversePolishNotationParser(validator,operatorFactory);
         String reversePolishFormatEquation;
-        try {
-            reversePolishFormatEquation = specialParser.formatFromInfixToReversedPolishNotation(formattedInput);
-        }
-        catch (EmptyStackException problemWithReversePolishParser)
-        {
-            //TODO should save it in log file for the developers - it shouldn't even happen at this point
-            System.out.println("Please try again");
-        }
-        catch(InvalidOperatorException exc)
-        {
-            //should save it in log file for the developers
-            //this error should even happen at this point of the program
-            System.out.println("Please try again");
-        }
+        reversePolishFormatEquation = specialParser.formatFromInfixToReversedPolishNotation(formattedInput);
 
-         return 0;
-     /*
-
-
+        MathArithmeticOperatorFactory arithmeticOperatorFactory=new MathArithmeticOperatorFactory();
         ComputationalMachine calculator= new ComputationalMachine(arithmeticOperatorFactory);
         ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm(calculator,validator);
 
-        try {
-            double finalResult=algorithm.calculateEquation(reversePolishFormatEquation);
-            System.out.println(finalResult);
-        }
-        catch (EmptyStackException noItems)
-        {
-            System.out.println("Invalid equation. Not enough Numbers");
-        }
-        catch(Exception logicalError) {
-            System.out.println(logicalError.getMessage());
-        }
-*/
-    }
+        double finalResult=algorithm.calculateEquation(reversePolishFormatEquation);
+        return finalResult;
 
+    }
 }

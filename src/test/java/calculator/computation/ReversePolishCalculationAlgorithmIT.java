@@ -1,8 +1,8 @@
 package calculator.computation;
 
 import calculator.exceptions.InvalidEquationException;
-import calculator.exceptions.InvalidOperatorException;
-import calculator.inputControl.EquationValidator;
+import calculator.exceptions.InvalidParameterException;
+import calculator.inputcontrol.EquationValidator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,7 +38,7 @@ public class ReversePolishCalculationAlgorithmIT {
         algorithm.calculateEquation("2.0 2.0 + 3.0");
     }
 
-    @Test(expected = InvalidOperatorException.class)
+    @Test(expected = InvalidParameterException.class)
     public void calculationEquation_EquationWithInvalidOperator_InvalidOperatorException() throws Exception
     {
         algorithm.calculateEquation("2.0 3.0 #");

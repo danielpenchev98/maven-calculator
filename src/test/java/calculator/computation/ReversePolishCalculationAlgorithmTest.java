@@ -1,8 +1,8 @@
 package calculator.computation;
 
 import calculator.exceptions.InvalidEquationException;
-import calculator.exceptions.InvalidOperatorException;
-import calculator.inputControl.EquationValidator;
+import calculator.exceptions.InvalidParameterException;
+import calculator.inputcontrol.EquationValidator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,11 +55,11 @@ public class ReversePolishCalculationAlgorithmTest {
         algorithm.calculateEquation("2.0 2.0 + 3.0");
     }
 
-    @Test(expected = InvalidOperatorException.class)
+    @Test(expected = InvalidParameterException.class)
     public void calculationEquation_EquationWithInvalidOperator_InvalidOperatorException() throws Exception
     {
         Mockito.when(validator.isValidNumber("#")).thenReturn(false);
-        Mockito.when(machine.computeAction("#",2.0,3.0)).thenThrow(new InvalidOperatorException("Invalid operator"));
+        Mockito.when(machine.computeAction("#",2.0,3.0)).thenThrow(new InvalidParameterException("Invalid operator"));
 
         algorithm.calculateEquation("2.0 3.0 #");
     }

@@ -1,8 +1,6 @@
-package calculator.inputControl;
+package calculator.inputcontrol;
 
 import calculator.exceptions.*;
-
-import java.util.Arrays;
 
 
 /**
@@ -11,7 +9,7 @@ import java.util.Arrays;
 public class EquationValidator {
 
 
-    public void validateEquation(final String[] formattedEquation) throws InvalidComponentException, InvalidEquationException
+    public void validateEquation(final String formattedEquation) throws InvalidComponentException, InvalidEquationException
     {
         validateEquationStructure(formattedEquation);
         validateComponents(formattedEquation);
@@ -27,9 +25,9 @@ public class EquationValidator {
     }
 
 
-    private void validateComponents(final String[] formattedEquation) throws InvalidComponentException
+    private void validateComponents(final String formattedEquation) throws InvalidComponentException
     {
-        String[] components=formattedEquation;
+        String[] components=formattedEquation.split(" ");
         for(String component:components)
         {
             if(!isValidNumber(component)&&!isValidArithmeticOperator(component)&&!isBracket(component))
@@ -39,10 +37,11 @@ public class EquationValidator {
         }
     }
 
-    private void validateEquationStructure(final String[] formattedEquation) throws InvalidEquationException
+    private void validateEquationStructure(final String formattedEquation) throws InvalidEquationException
     {
+        //String equation= Arrays.toString(formattedEquation).replaceAll("\\[|\\]|,","");
 
-        String equation= Arrays.toString(formattedEquation).replaceAll("\\[|\\]|,","");
+        String equation=formattedEquation;
 
         String message=null;
         if(equation.equals(""))

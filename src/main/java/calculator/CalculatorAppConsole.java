@@ -9,13 +9,8 @@ public class CalculatorAppConsole {
        Scanner scan=new Scanner(System.in);
         String userInput=scan.nextLine();
         CalculatorApp application=new CalculatorApp();
-        try {
-            application.calculateResult("1");
-        }
-        catch (Exception exp)
-        {
-            System.out.println("noooo");
-        }
+       //application.calculateResult(userInput);
+
             // application.processEquationAndCalculateResult();
         //application.printResult(String)
 

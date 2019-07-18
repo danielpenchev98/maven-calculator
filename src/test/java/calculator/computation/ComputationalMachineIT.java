@@ -1,7 +1,7 @@
 package calculator.computation;
 
 import calculator.exceptions.DivisionByZeroException;
-import calculator.exceptions.InvalidOperatorException;
+import calculator.exceptions.InvalidParameterException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,19 +19,19 @@ public class ComputationalMachineIT {
     }
 
     @Test(expected = DivisionByZeroException.class)
-    public void computeAction_ComputeDivisionOfTwoNumbers_DivisionByZeroExceptionThrown() throws ArithmeticException, InvalidOperatorException {
+    public void computeAction_ComputeDivisionOfTwoNumbers_DivisionByZeroExceptionThrown() throws ArithmeticException, InvalidParameterException {
         machine.computeAction("/",2.0,0);
     }
 
-    @Test(expected= InvalidOperatorException.class)
-    public void computeAction_ComputeNotSupportedOperation_InvalidParameterExceptionThrown() throws InvalidOperatorException
+    @Test(expected= InvalidParameterException.class)
+    public void computeAction_ComputeNotSupportedOperation_InvalidParameterExceptionThrown() throws InvalidParameterException
     {
 
         machine.computeAction("+/-",1,1);
     }
 
     @Test
-    public void computeAction_ComputeSupportedOperation_ExpectedResult() throws InvalidOperatorException
+    public void computeAction_ComputeSupportedOperation_ExpectedResult() throws InvalidParameterException
     {
         double result=machine.computeAction("^",2,3);
         assertEquals(8, result,DELTA);

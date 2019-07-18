@@ -1,4 +1,4 @@
-package calculator.inputControl;
+package calculator.inputcontrol;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,25 +15,22 @@ public class InputFormatterTest {
       parser= new InputFormatter();
     }
 
-
+    // TODO refactor tests
     @Test
     public void formatInput_InputWithManyJunkSpaces_FormattedInput() {
-        String equation=" 1.0 +2    * (  -   1)/ 5";
-        assertArrayEquals( "1.0 + 2 * ( -1 ) / 5".split(" "),parser.doFormat(equation));
+        assertEquals( "1.0 + 2",parser.doFormat("1.0 +     2"));
     }
 
     @Test
     public void formatInput_InputWithoutAnySpaces_FormattedInput()
     {
-        String equation="1+2*(-1.059)/5";
-        assertArrayEquals("1 + 2 * ( -1.059 ) / 5".split(" "),parser.doFormat(equation));
+        assertEquals("( 1 + 2 )",parser.doFormat("(1+2)"));
     }
 
     @Test
     public void formatInput_InputWithSpaceBetweenNumberAndItsSign_FormattedInput()
     {
-        String equation="- 1.0 + ( - 1 * ( - 109 ) )";
-        assertArrayEquals("-1.0 + ( -1 * ( -109 ) )".split(" "),parser.doFormat(equation));
+        assertEquals("-1.0 + ( -1 )",parser.doFormat("-1.0 + ( -1 )"));
     }
 
 }

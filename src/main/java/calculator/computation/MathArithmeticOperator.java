@@ -4,7 +4,7 @@ package calculator.computation;
 /**
  * Interface which increases the modifiability of the system, new operators could be added easily or removed without changing other classes
  */
-public interface MathArithmeticOperator {
+public interface MathArithmeticOperator extends MathOperator {
 
      /**
       * @param firstNumber - the first parameter of the mathematical operation
