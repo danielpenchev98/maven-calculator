@@ -5,18 +5,23 @@ import calculator.exceptions.InvalidTypeOfEquationComponent;
 /**
  * Class which requires for formatting of the user input and identifying the components of an equation
  */
-public class PrimalParser {
+public class InputFormatter {
 
-    private final String splitSymbol=" ";
+    private final String COMPONENTSEPARATOR=" ";
     /**
      * @param equation - unformatted input
      * @return formatted input
      * @throws InvalidTypeOfEquationComponent - if there exists and illegal component in the equation
      */
-    public String formatInput(final String equation) {
+    public String doFormat(final String equation) {
         String firstStep = addSpaceAfterEveryComponent(equation);
         String secondStep = removeJunkSpaces(firstStep);
         return removeSpaceBetweenTheNumberAndItsSign(secondStep);
+    }
+
+    public String getComponentSeparator()
+    {
+        return COMPONENTSEPARATOR;
     }
 
     private String removeJunkSpaces(String equation)

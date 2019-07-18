@@ -1,10 +1,8 @@
-package calculator.inputControlTests;
+package calculator.inputControl;
 
 import calculator.computation.MathArithmeticOperatorFactory;
 import calculator.exceptions.InvalidOperatorException;
-import calculator.inputControl.EquationValidator;
-import calculator.inputControl.ReversePolishNotationParser;
-import calculator.inputControl.RPParserTriggersTest.ReversePolishComponentTriggerFactory;
+import calculator.inputControl.parserTriggers.ReversePolishComponentTriggerFactory;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package calculator.inputControlTests;
+package calculator.inputControl;
 
 import calculator.exceptions.*;
 import calculator.inputControl.*;
@@ -19,60 +19,60 @@ public class EquationValidatorTest {
     //region validateEquation
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithMissingOperatorBetweenNumberAndBracket_Illegal() throws Exception {
-        validator.validateEquation("2 ( )");
+        validator.validateEquation("2 ("," ");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithClosingBracketNextToOpeningBracket_Legal() throws Exception
     {
-        validator.validateEquation("1 + ( ( 10 + 20 ) ( -5 ) )");
+        validator.validateEquation("( 10 + 20 ) ( -5 )", " ");
     }
 
     @Test
     public void validateEquation_EquationWithOnlyANumber_Legal() throws Exception
     {
-        validator.validateEquation("1");
+        validator.validateEquation("1", " ");
     }
 
     @Test
     public void validateEquation_SimpleEquation_Illegal() throws Exception {
-        validator.validateEquation("( ( -1 + 5 + 2 ) )");
+        validator.validateEquation("( ( -1 + 2 ) )", " ");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationOnlyWithOperatorInTheBrackets_Illegal() throws Exception
     {
-        validator.validateEquation("( + ) + 1 * 2");
+        validator.validateEquation("( + ) + 1", " ");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithSequentialOperators_Illegal() throws Exception
     {
-        validator.validateEquation("1 + 2 + + ");
+        validator.validateEquation("2 + + 1", " ");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithEmptyBrackets_Illegal() throws Exception
     {
-        validator.validateEquation("( ) + 2");
+        validator.validateEquation("( ) + 2"," ");
     }
 
     @Test(expected = InvalidTypeOfEquationComponent.class)
     public void validateEquation_EquationWithIllegalComponent_Illegal() throws Exception
     {
-        validator.validateEquation(" 1ha + 2 + 3");
+        validator.validateEquation(" 1ha + 3", " ");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EmptyEquation_Illegal() throws Exception
     {
-        validator.validateEquation("");
+        validator.validateEquation("", " ");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithMissingBracket_Illegal() throws Exception
     {
-        validator.validateEquation("1 + ( ( 2 * ( -3 ) -5 ) ");
+        validator.validateEquation("( ( 2 * ( -3 ) -5 ) ", " ");
     }
 
     //endregion

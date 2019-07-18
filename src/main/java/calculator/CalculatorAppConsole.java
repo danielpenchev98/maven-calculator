@@ -1,5 +1,6 @@
 package calculator;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class CalculatorAppConsole {
@@ -9,7 +10,7 @@ public class CalculatorAppConsole {
         String userInput=scan.nextLine();
         CalculatorApp application=new CalculatorApp();
 
-        System.out.println("1".split(" ").length);
+        System.out.println(Arrays.toString("1 + 2".split(" ")));
        // application.processEquationAndCalculateResult();
         //application.printResult(String)
 

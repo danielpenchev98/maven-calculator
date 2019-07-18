@@ -1,41 +1,38 @@
-package calculator.inputControlTests;
+package calculator.inputControl;
 
-import calculator.inputControl.PrimalParser;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class PrimalParserTest {
+public class InputFormatterTest {
 
-    private PrimalParser parser;
+    private InputFormatter parser;
 
     @Before
     public void setUp()
     {
-      parser= new PrimalParser();
+      parser= new InputFormatter();
     }
 
     @Test
     public void formatInput_InputWithManyJunkSpaces_FormattedInput() {
         String equation=" 1.0 +2    * (  -   1)/ 5";
-        assertEquals( "1.0 + 2 * ( -1 ) / 5",parser.formatInput(equation));
+        assertEquals( "1.0 + 2 * ( -1 ) / 5",parser.doFormat(equation));
     }
 
     @Test
     public void formatInput_InputWithoutAnySpaces_FormattedInput()
     {
         String equation="1+2*(-1.059)/5";
-        assertEquals("1 + 2 * ( -1.059 ) / 5",parser.formatInput(equation));
+        assertEquals("1 + 2 * ( -1.059 ) / 5",parser.doFormat(equation));
     }
 
     @Test
     public void formatInput_InputWithSpaceBetweenNumberAndItsSign_FormattedInput()
     {
         String equation="- 1.0 + ( - 1 * ( - 109 ) )";
-        assertEquals("-1.0 + ( -1 * ( -109 ) )",parser.formatInput(equation));
+        assertEquals("-1.0 + ( -1 * ( -109 ) )",parser.doFormat(equation));
     }
-
-
 
 }

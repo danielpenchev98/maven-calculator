@@ -1,8 +1,9 @@
-package calculator.computationTests;
+package calculator.computation;
 
 import calculator.computation.ComputationalMachine;
 import calculator.computation.MathArithmeticOperatorFactory;
 import calculator.computation.ReversePolishCalculationAlgorithm;
+import calculator.exceptions.InvalidEquationException;
 import calculator.exceptions.InvalidOperatorException;
 import calculator.exceptions.MissingOperatorException;
 import calculator.inputControl.EquationValidator;
@@ -35,7 +36,7 @@ public class ReversePolishCalculationAlgorithmIT {
     }
 
 
-    @Test(expected = MissingOperatorException.class)
+    @Test(expected = InvalidEquationException.class)
     public void calculationEquation_EquationWithMissingOperator_MissingOperatorExceptionThrown() throws Exception
     {
         algorithm.calculateEquation("2.0 2.0 + 3.0");

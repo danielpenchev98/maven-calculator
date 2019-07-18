@@ -1,4 +1,4 @@
-package calculator.computationTests;
+package calculator.computation;
 
 import calculator.computation.*;
 import calculator.exceptions.InvalidOperatorException;
