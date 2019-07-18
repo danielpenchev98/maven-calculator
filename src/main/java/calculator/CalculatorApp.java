@@ -1,8 +1,13 @@
 package calculator;
 
 
+import calculator.computation.MathArithmeticOperatorFactory;
 import calculator.exceptions.InvalidEquationException;
+import calculator.exceptions.InvalidOperatorException;
 import calculator.inputControl.*;
+import calculator.inputControl.parserTriggers.ReversePolishComponentTriggerFactory;
+
+import java.util.EmptyStackException;
 
 /**
  * Class which represents the calculator as a whole - uses the 3 main abstractions :
@@ -14,13 +19,17 @@ class CalculatorApp {
 
     private EquationValidator validator;
 
+    private InputFormatter formatter;
+
     public CalculatorApp()
     {
+        this.formatter=new InputFormatter();
         this.validator=new EquationValidator();
     }
 
-     CalculatorApp(EquationValidator validator)
+     CalculatorApp(final InputFormatter formatter,final EquationValidator validator)
      {
+         this.formatter=formatter;
          this.validator=validator;
      }
     /**
@@ -33,18 +42,10 @@ class CalculatorApp {
             throw new InvalidEquationException("empty equation");
         }
 
-        InputFormatter parser= new InputFormatter();
-        String formattedInput=parser.doFormat(equation);
-        String separator=parser.getComponentSeparator();
+        String[] formattedInput = formatter.doFormat(equation);
 
 
-        validator.validateEquation(formattedInput,separator);
-
-         return 0;
-     /*   InputFormatter parser= new InputFormatter();
-        String formattedInput=parser.formatInput(equation);
-
-
+        validator.validateEquation(formattedInput);
 
         MathArithmeticOperatorFactory arithmeticOperatorFactory=new MathArithmeticOperatorFactory();
 
@@ -58,15 +59,17 @@ class CalculatorApp {
         {
             //TODO should save it in log file for the developers - it shouldn't even happen at this point
             System.out.println("Please try again");
-            return;
         }
         catch(InvalidOperatorException exc)
         {
             //should save it in log file for the developers
             //this error should even happen at this point of the program
             System.out.println("Please try again");
-            return;
         }
+
+         return 0;
+     /*
+
 
         ComputationalMachine calculator= new ComputationalMachine(arithmeticOperatorFactory);
         ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm(calculator,validator);

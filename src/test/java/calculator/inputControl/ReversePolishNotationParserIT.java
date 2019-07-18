@@ -26,44 +26,49 @@ public class ReversePolishNotationParserIT {
 
     @Test
     public void formatToReversedPolishNotation_EquationWithoutBrackets_RPNFormat() throws EmptyStackException, InvalidOperatorException {
-
-        String realResult=parserRPN.formatFromInfixToReversedPolishNotation("15 + 10 * 2");
+        String[] formattedInput={"15","+","10","*","2"};
+        String realResult=parserRPN.formatFromInfixToReversedPolishNotation(formattedInput);
         assertEquals("15 10 2 * +",realResult);
     }
 
     @Test
     public void formatToReversedPolishNotation_EquationWithEqualPriorityLeftAssociativeOperators_RPNFormat()  throws EmptyStackException, InvalidOperatorException
     {
-        String realResult=parserRPN.formatFromInfixToReversedPolishNotation("1 / 2 * 3");
+        String[] formattedInput={"1","/","2","*","3"};
+        String realResult=parserRPN.formatFromInfixToReversedPolishNotation(formattedInput);
         assertEquals("1 2 / 3 *",realResult);
     }
 
     @Test
     public void formatToReversedPolishNotation_EquationWithBrackets_RPNFormat() throws EmptyStackException, InvalidOperatorException
     {
-        String realResult=parserRPN.formatFromInfixToReversedPolishNotation("( 15 + 10 ) * 2");
+        String[] formattedInput={"(","15","+","10",")","*","2"};
+        String realResult=parserRPN.formatFromInfixToReversedPolishNotation(formattedInput);
         assertEquals("15 10 + 2 *",realResult);
     }
 
     @Test
     public void formatToReversedPolishNotation_EquationWithMultipleNestedBrackets_RPNFormat() throws EmptyStackException, InvalidOperatorException
     {
-        String realResult=parserRPN.formatFromInfixToReversedPolishNotation("( ( ( 15 + 10 * 2 ) ) )");
+        String[] formattedInput={"(","(","(","15","+","10","*","2",")",")",")"};
+        String realResult=parserRPN.formatFromInfixToReversedPolishNotation(formattedInput);
         assertEquals("15 10 2 * +",realResult);
     }
 
     @Test
     public void formatToReversedPolishNotation_EquationProductOfTwoExpressionsEachInBracket_RPNFormat()  throws EmptyStackException, InvalidOperatorException
     {
-        String realResult=parserRPN.formatFromInfixToReversedPolishNotation("( 1 + 2 ) * ( 3 + 4 )");
+        String[] formattedInput={"(","1","+","2",")","*","(","3","+","4",")"};
+        String realResult=parserRPN.formatFromInfixToReversedPolishNotation(formattedInput);
         assertEquals("1 2 + 3 4 + *",realResult);
     }
 
     @Test
     public void formatToReversedPolishNotation_EquationWithLeftAndRightAssociativeOperators_RPNFormat() throws EmptyStackException, InvalidOperatorException
     {
-        String result=parserRPN.formatFromInfixToReversedPolishNotation("3 + 4 * 2 / 2 ^ ( 1 - 5 ) ^ 3");
-        assertEquals("3 4 2 * 2 1 5 - 3 ^ ^ / +",result);
+        String[] formattedInput={"2","/","2","^","2"};
+        String result=parserRPN.formatFromInfixToReversedPolishNotation(formattedInput);
+        assertEquals("2 2 2 ^ /",result);
     }
 
 

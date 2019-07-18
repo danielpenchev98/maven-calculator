@@ -1,11 +1,7 @@
 package calculator.computation;
 
-import calculator.computation.ComputationalMachine;
-import calculator.computation.ReversePolishCalculationAlgorithm;
-
 import calculator.exceptions.InvalidEquationException;
 import calculator.exceptions.InvalidOperatorException;
-import calculator.exceptions.MissingOperatorException;
 import calculator.inputControl.EquationValidator;
 import org.junit.Before;
 import org.junit.Test;

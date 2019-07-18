@@ -9,9 +9,14 @@ public class CalculatorAppConsole {
        Scanner scan=new Scanner(System.in);
         String userInput=scan.nextLine();
         CalculatorApp application=new CalculatorApp();
-
-        System.out.println(Arrays.toString("1 + 2".split(" ")));
-       // application.processEquationAndCalculateResult();
+        try {
+            application.calculateResult("1");
+        }
+        catch (Exception exp)
+        {
+            System.out.println("noooo");
+        }
+            // application.processEquationAndCalculateResult();
         //application.printResult(String)
 
         //application.processEquationAndCalculateResult(userInput);

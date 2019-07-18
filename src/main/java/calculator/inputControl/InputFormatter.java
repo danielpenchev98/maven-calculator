@@ -1,6 +1,6 @@
 package calculator.inputControl;
 
-import calculator.exceptions.InvalidTypeOfEquationComponent;
+import calculator.exceptions.InvalidComponentException;
 
 /**
  * Class which requires for formatting of the user input and identifying the components of an equation
@@ -11,18 +11,14 @@ public class InputFormatter {
     /**
      * @param equation - unformatted input
      * @return formatted input
-     * @throws InvalidTypeOfEquationComponent - if there exists and illegal component in the equation
+     * @throws InvalidComponentException - if there exists and illegal component in the equation
      */
-    public String doFormat(final String equation) {
+    public String[] doFormat(final String equation) {
         String firstStep = addSpaceAfterEveryComponent(equation);
         String secondStep = removeJunkSpaces(firstStep);
-        return removeSpaceBetweenTheNumberAndItsSign(secondStep);
+        return removeSpaceBetweenTheNumberAndItsSign(secondStep).split(COMPONENTSEPARATOR);
     }
 
-    public String getComponentSeparator()
-    {
-        return COMPONENTSEPARATOR;
-    }
 
     private String removeJunkSpaces(String equation)
     {

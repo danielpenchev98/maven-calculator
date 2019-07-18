@@ -15,24 +15,25 @@ public class InputFormatterTest {
       parser= new InputFormatter();
     }
 
+
     @Test
     public void formatInput_InputWithManyJunkSpaces_FormattedInput() {
         String equation=" 1.0 +2    * (  -   1)/ 5";
-        assertEquals( "1.0 + 2 * ( -1 ) / 5",parser.doFormat(equation));
+        assertArrayEquals( "1.0 + 2 * ( -1 ) / 5".split(" "),parser.doFormat(equation));
     }
 
     @Test
     public void formatInput_InputWithoutAnySpaces_FormattedInput()
     {
         String equation="1+2*(-1.059)/5";
-        assertEquals("1 + 2 * ( -1.059 ) / 5",parser.doFormat(equation));
+        assertArrayEquals("1 + 2 * ( -1.059 ) / 5".split(" "),parser.doFormat(equation));
     }
 
     @Test
     public void formatInput_InputWithSpaceBetweenNumberAndItsSign_FormattedInput()
     {
         String equation="- 1.0 + ( - 1 * ( - 109 ) )";
-        assertEquals("-1.0 + ( -1 * ( -109 ) )",parser.doFormat(equation));
+        assertArrayEquals("-1.0 + ( -1 * ( -109 ) )".split(" "),parser.doFormat(equation));
     }
 
 }

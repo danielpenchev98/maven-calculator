@@ -1,8 +1,6 @@
 package calculator.inputControl;
 
 import calculator.exceptions.*;
-import calculator.inputControl.*;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,60 +17,70 @@ public class EquationValidatorTest {
     //region validateEquation
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithMissingOperatorBetweenNumberAndBracket_Illegal() throws Exception {
-        validator.validateEquation("2 ("," ");
+        String[] formattedEquation={"2","("};
+        validator.validateEquation(formattedEquation);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithClosingBracketNextToOpeningBracket_Legal() throws Exception
     {
-        validator.validateEquation("( 10 + 20 ) ( -5 )", " ");
+        String[] formattedEquation={"(","10","+","20",")","(","-5",")"};
+        validator.validateEquation(formattedEquation);
     }
 
     @Test
     public void validateEquation_EquationWithOnlyANumber_Legal() throws Exception
     {
-        validator.validateEquation("1", " ");
+        String[] formattedEquation={"1"};
+        validator.validateEquation(formattedEquation);
     }
 
     @Test
     public void validateEquation_SimpleEquation_Illegal() throws Exception {
-        validator.validateEquation("( ( -1 + 2 ) )", " ");
+        String[] formattedEquation={"(","(","-1","+","2",")",")"};
+        validator.validateEquation(formattedEquation);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationOnlyWithOperatorInTheBrackets_Illegal() throws Exception
     {
-        validator.validateEquation("( + ) + 1", " ");
+        String[] formattedEquation={"(","+",")","+","1"};
+        validator.validateEquation(formattedEquation);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithSequentialOperators_Illegal() throws Exception
     {
-        validator.validateEquation("2 + + 1", " ");
+        String[] formattedEquation={"2","+","+","1"};
+        validator.validateEquation(formattedEquation);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithEmptyBrackets_Illegal() throws Exception
     {
-        validator.validateEquation("( ) + 2"," ");
+        String[] formattedEquation={"(",")","+","2"};
+        validator.validateEquation(formattedEquation);
     }
 
-    @Test(expected = InvalidTypeOfEquationComponent.class)
+    @Test(expected = InvalidComponentException.class)
     public void validateEquation_EquationWithIllegalComponent_Illegal() throws Exception
     {
-        validator.validateEquation(" 1ha + 3", " ");
+        String[] formattedEquation={"1ha"};
+        validator.validateEquation(formattedEquation);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EmptyEquation_Illegal() throws Exception
     {
-        validator.validateEquation("", " ");
+        String[] formattedEquation={""};
+        validator.validateEquation(formattedEquation);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithMissingBracket_Illegal() throws Exception
     {
-        validator.validateEquation("( ( 2 * ( -3 ) -5 ) ", " ");
+        String[] formattedEquation={"(","(","2","*","(","-3",")","-5",")"};
+        validator.validateEquation(formattedEquation);
     }
 
     //endregion

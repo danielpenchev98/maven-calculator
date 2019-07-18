@@ -2,7 +2,6 @@ package calculator.computation;
 
 import calculator.exceptions.InvalidEquationException;
 import calculator.exceptions.InvalidOperatorException;
-import calculator.exceptions.MissingOperatorException;
 import calculator.inputControl.EquationValidator;
 
 import java.util.EmptyStackException;

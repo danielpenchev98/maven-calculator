@@ -2,6 +2,8 @@ package calculator.inputControl;
 
 import calculator.exceptions.*;
 
+import java.util.Arrays;
+
 
 /**
  * The main idea is to find the errors in the equation, which cannot be detected during the RPN calculation
@@ -9,10 +11,10 @@ import calculator.exceptions.*;
 public class EquationValidator {
 
 
-    public void validateEquation(final String formattedEquation,final String separator) throws InvalidTypeOfEquationComponent, InvalidEquationException
+    public void validateEquation(final String[] formattedEquation) throws InvalidComponentException, InvalidEquationException
     {
         validateEquationStructure(formattedEquation);
-        validateComponents(formattedEquation,separator);
+        validateComponents(formattedEquation);
     }
 
     //If if-else in RPAlgorithm is replaced with polymorphism then these two functions will be private
@@ -25,38 +27,41 @@ public class EquationValidator {
     }
 
 
-    private void validateComponents(final String formattedEquation,final String separator) throws InvalidTypeOfEquationComponent
+    private void validateComponents(final String[] formattedEquation) throws InvalidComponentException
     {
-        String[] components=formattedEquation.split(separator);
+        String[] components=formattedEquation;
         for(String component:components)
         {
             if(!isValidNumber(component)&&!isValidArithmeticOperator(component)&&!isBracket(component))
             {
-                throw new InvalidTypeOfEquationComponent("An illegal equation component has been found");
+                throw new InvalidComponentException("An illegal equation component has been found");
             }
         }
     }
 
-    private void validateEquationStructure(final String formattedEquation) throws InvalidEquationException
+    private void validateEquationStructure(final String[] formattedEquation) throws InvalidEquationException
     {
+
+        String equation= Arrays.toString(formattedEquation).replaceAll("\\[|\\]|,","");
+
         String message=null;
-        if(formattedEquation.equals(""))
+        if(equation.equals(""))
         {
             message = "Empty equation";
         }
-        else if(!hasBracketBalance(formattedEquation))
+        else if(!hasBracketBalance(equation))
         {
             message = "The equation is missing brackets";
         }
-        else if(hasSequentialOperatorsOrNumbers(formattedEquation))
+        else if(hasSequentialOperatorsOrNumbers(equation))
         {
             message = "Sequential operators has been found";
         }
-        else if(hasNonOperatorBeforeBracket(formattedEquation)||hasNonOperatorAfterBracket(formattedEquation))
+        else if(hasNonOperatorBeforeBracket(equation)||hasNonOperatorAfterBracket(equation))
         {
             message = "There should be a operator between a number and opening bracket or between a closing bracket and a number in that order";
         }
-        else if(hasNonNumbersOnlyBetweenBrackets(formattedEquation))
+        else if(hasNonNumbersOnlyBetweenBrackets(equation))
         {
             message = "There should be at least one number in the brackets";
         }

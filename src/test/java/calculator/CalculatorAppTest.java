@@ -1,8 +1,10 @@
 package calculator;
 
 import calculator.exceptions.InvalidEquationException;
-import calculator.exceptions.InvalidTypeOfEquationComponent;
+import calculator.exceptions.InvalidOperatorException;
+import calculator.exceptions.InvalidComponentException;
 import calculator.inputControl.EquationValidator;
+import calculator.inputControl.InputFormatter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +22,13 @@ public class CalculatorAppTest {
     @Mock
     private EquationValidator validator;
 
+    @Mock
+    private InputFormatter formatter;
+
     @Before
     public void setUp()
     {
-        app=new CalculatorApp(validator);
+        app=new CalculatorApp(formatter,validator);
     }
 
     @Test(expected = InvalidEquationException.class)
@@ -34,23 +39,39 @@ public class CalculatorAppTest {
     @Test
     public void calculateResult_NonEmptyEquation_ReturnZero() throws  Exception
     {
+        String[] formattedInput={"1"};
+        Mockito.when(formatter.doFormat("1")).thenReturn(formattedInput);
+
         double result=app.calculateResult("1");
         assertEquals(0.0,result);
-        Mockito.verify(validator).validateEquation("1", " ");
+        Mockito.verify(validator).validateEquation(formattedInput);
     }
 
-    @Test(expected = InvalidTypeOfEquationComponent.class)
+    @Test(expected = InvalidComponentException.class)
     public void calculateResult_EquationUsingNonSupportedOperator_Illegal() throws Exception {
-        Mockito.doThrow(new InvalidTypeOfEquationComponent("Invalid component")).when(validator).validateEquation("#", " ");
+        String[] formattedInput={"#"};
+        Mockito.when(formatter.doFormat("#")).thenReturn(formattedInput);
+        Mockito.doThrow(new InvalidComponentException("Invalid component")).when(validator).validateEquation(formattedInput);
         app.calculateResult("#");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void calculateResult_EquationWithMissingBracket_Illegal() throws Exception
     {
-        Mockito.doThrow(new InvalidEquationException("Missing Bracket")).when(validator).validateEquation("( 1 + 2"," ");
+        String[] formattedInput={"(","1","+","2",};
+        Mockito.when(formatter.doFormat("( 1 + 2")).thenReturn(formattedInput);
+        Mockito.doThrow(new InvalidEquationException("Missing Bracket")).when(validator).validateEquation(formattedInput);
         app.calculateResult("( 1 + 2");
     }
 
+    @Test(expected = InvalidOperatorException.class)
+    public void calculateResult_InfixNotationEquation_RPNEquation() throws Exception
+    {
+        String[] formattedInput={"1","+","2"};
+        Mockito.when(formatter.doFormat("1+2")).thenReturn(formattedInput);
+
+
+        Mockito.verify(validator).validateEquation(formattedInput);
+    }
 
 }

@@ -1,6 +1,5 @@
 package calculator.computation;
 
-import calculator.computation.*;
 import calculator.exceptions.InvalidOperatorException;
 import org.junit.Before;
 import org.junit.Test;
