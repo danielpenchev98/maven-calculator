@@ -18,43 +18,64 @@ public class EquationComponentFactoryTest {
 
 
     @Test
-    public void createArithmeticOperation_CreateAdditionObject_NoExceptionExpected() throws InvalidParameterException
+    public void createComponent_CreateAdditionObject_ObjectCreated() throws InvalidParameterException
     {
-        EquationComponent operation = factory.createOperation("+");
-        assertTrue(operation instanceof Addition);
+        EquationComponent component = factory.createComponent("+");
+        assertTrue(component instanceof Addition);
     }
 
     @Test
-    public void createArithmeticOperation_CreateSubtractionObject_NoExceptionExpected() throws InvalidParameterException
+    public void createComponent_CreateSubtractionObject_ObjectCreated() throws InvalidParameterException
     {
-        EquationComponent operation = factory.createOperation("-");
-        assertTrue(operation instanceof Subtraction);
+        EquationComponent component = factory.createComponent("-");
+        assertTrue(component instanceof Subtraction);
     }
 
     @Test
-    public void createArithmeticOperation_CreateMultiplicationObject_NoExceptionExpected() throws InvalidParameterException
+    public void createComponent_CreateMultiplicationObject_ObjectCreated() throws InvalidParameterException
     {
-        EquationComponent operation = factory.createOperation("*");
-        assertTrue(operation instanceof Multiplication);
+        EquationComponent component = factory.createComponent("*");
+        assertTrue(component instanceof Multiplication);
     }
 
     @Test
-    public void createArithmeticOperation_CreateDivisionObject_NoExceptionExpected() throws InvalidParameterException
+    public void createComponent_CreateDivisionObject_ObjectCreated() throws InvalidParameterException
     {
-        EquationComponent operation = factory.createOperation("/");
-        assertTrue(operation instanceof Division);
+        EquationComponent component = factory.createComponent("/");
+        assertTrue(component instanceof Division);
     }
 
     @Test
-    public void createArithmeticOperation_CreatePowerObject_NoExceptionThrown() throws InvalidParameterException
+    public void createComponent_CreatePowerObject_ObjectCreated() throws InvalidParameterException
     {
-        EquationComponent operation = factory.createOperation("^");
-        assertTrue(operation instanceof  Power);
+        EquationComponent component = factory.createComponent("^");
+        assertTrue(component instanceof Power);
+    }
+
+    @Test
+    public void createComponent_CreateOpeningBracketObject_ObjectCreated() throws InvalidParameterException
+    {
+        EquationComponent component = factory.createComponent("(");
+        assertTrue(component instanceof OpeningBracket);
+    }
+
+    @Test
+    public void createComponent_CreateClosingBracketObject_ObjectCreated() throws InvalidParameterException
+    {
+        EquationComponent component = factory.createComponent(")");
+        assertTrue(component instanceof ClosingBracket);
+    }
+
+    @Test
+    public void createComponent_CreateNumberComponentObject_ObjectCreated() throws InvalidParameterException
+    {
+        EquationComponent component=factory.createComponent("101.101");
+        assertTrue(component instanceof NumberComponent);
     }
 
     @Test (expected = InvalidParameterException.class)
-    public void createArithmeticOperation_CreateIllegalOperationObject_InvalidParameterExceptionThrown() throws InvalidParameterException
+    public void createComponent_CreateIllegalOperationObject_InvalidParameterExceptionThrown() throws InvalidParameterException
     {
-        factory.createOperation("illegal");
+        factory.createComponent("illegal");
     }
 }

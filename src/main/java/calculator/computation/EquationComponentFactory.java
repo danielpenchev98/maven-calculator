@@ -4,7 +4,7 @@ import calculator.exceptions.InvalidParameterException;
 
 public class EquationComponentFactory {
 
-    public EquationComponent createOperation(final String operation)
+    public EquationComponent createComponent(final String operation)
     {
         if(operation.matches("-?[0-9]+(.[0-9]+)?"))
         {

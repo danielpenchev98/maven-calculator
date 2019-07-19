@@ -10,6 +10,14 @@ import java.util.List;
  */
 public class InputFormatter {
 
+    private EquationStructureValidator structureValidator;
+    private ComponentValidator componentValidator;
+
+    public InputFormatter()
+    {
+        structureValidator=new EquationStructureValidator();
+        componentValidator=new ComponentValidator();
+    }
     /**
      * @param equation - unformatted input
      * @return formatted input

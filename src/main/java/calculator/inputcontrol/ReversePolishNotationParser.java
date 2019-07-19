@@ -1,12 +1,12 @@
 package calculator.inputcontrol;
 
 import calculator.computation.*;
+
 import java.util.EmptyStackException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-//TODO shorten the names of functions - the beginning of several functions is the same "addOperatorFromContainer...."
 public class ReversePolishNotationParser {
 
     private Stack<EquationComponent> operatorContainer;
@@ -48,7 +48,8 @@ public class ReversePolishNotationParser {
                 addComponentToEquation(component);
                 continue;
             }
-            EquationComponent currOperation= operatorFactory.createOperation(component);
+
+            EquationComponent currOperation= operatorFactory.createComponent(component);
 
             if (currOperation instanceof MathArithmeticOperator)
             {

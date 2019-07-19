@@ -32,7 +32,7 @@ public class ComputationalMachine{
 
     private void setMathematicalOperation(final String action) throws InvalidParameterException
     {
-        operation=(MathArithmeticOperator)factory.createOperation(action);
+        operation=(MathArithmeticOperator)factory.createComponent(action);
     }
 
 }
