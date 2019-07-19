@@ -7,9 +7,9 @@ public class ComputationalMachine{
 
     private MathArithmeticOperator operation;
 
-    private MathOperatorFactory factory;
+    private EquationComponentFactory factory;
 
-    public ComputationalMachine(final MathOperatorFactory operatorFactory )
+    public ComputationalMachine(final EquationComponentFactory operatorFactory )
     {
         operation=null;
         factory=operatorFactory;

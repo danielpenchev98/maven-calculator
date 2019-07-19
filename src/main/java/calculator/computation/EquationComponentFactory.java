@@ -2,10 +2,15 @@ package calculator.computation;
 
 import calculator.exceptions.InvalidParameterException;
 
-public class MathOperatorFactory {
+public class EquationComponentFactory {
 
-    public MathOperator createOperation(String operation)
+    public EquationComponent createOperation(final String operation)
     {
+        if(operation.matches("-?[0-9]+(.[0-9]+)?"))
+        {
+            return new NumberComponent(operation);
+        }
+
         switch(operation)
         {
             case OpeningBracket.SYMBOL: return new OpeningBracket();

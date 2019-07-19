@@ -1,7 +1,6 @@
 package calculator.inputcontrol;
 
 import calculator.exceptions.*;
-import net.bytebuddy.dynamic.scaffold.MethodGraph;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -103,6 +102,21 @@ public class EquationValidatorTest {
         List<String> input=new LinkedList<>(Arrays.asList("(","(","2","+","1",")"));
         validator.validateEquation(input);
     }
+
+    @Test(expected = InvalidEquationException.class)
+    public void validateEquation_OperatorAfterOpeningBracket_Illegal() throws Exception
+    {
+        List<String> input=new LinkedList<>(Arrays.asList("(","+","1",")"));
+        validator.validateEquation(input);
+    }
+
+    @Test(expected = InvalidEquationException.class)
+    public void validateEquation_OperatorBeforeClosingBracket_Illegal() throws Exception
+    {
+        List<String> input=new LinkedList<>(Arrays.asList("(","1","+",")"));
+        validator.validateEquation(input);
+    }
+
 
     //endregion
 

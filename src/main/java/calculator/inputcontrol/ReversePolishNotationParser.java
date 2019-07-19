@@ -9,15 +9,15 @@ import java.util.Stack;
 //TODO shorten the names of functions - the beginning of several functions is the same "addOperatorFromContainer...."
 public class ReversePolishNotationParser {
 
-    private Stack<MathOperator> operatorContainer;
+    private Stack<EquationComponent> operatorContainer;
 
     private List<String> reversedPolishEquation;
 
     private EquationValidator checker;
 
-    private MathOperatorFactory operatorFactory;
+    private EquationComponentFactory operatorFactory;
 
-    public ReversePolishNotationParser(final EquationValidator validator,final MathOperatorFactory factory)
+    public ReversePolishNotationParser(final EquationValidator validator,final EquationComponentFactory factory)
     {
         operatorContainer=new Stack<>();
         reversedPolishEquation=new LinkedList<>();
@@ -48,12 +48,12 @@ public class ReversePolishNotationParser {
                 addComponentToEquation(component);
                 continue;
             }
-            MathOperator currOperation=operatorFactory.createOperation(component);
+            EquationComponent currOperation= operatorFactory.createOperation(component);
 
             if (currOperation instanceof MathArithmeticOperator)
             {
                 addOperatorsFromContainerDependingOnPriorityAndAssociativity((MathArithmeticOperator) currOperation);
-                operatorContainer.add(currOperation);
+                operatorContainer.add( currOperation);
             }
             else if(currOperation instanceof ClosingBracket)
             {
