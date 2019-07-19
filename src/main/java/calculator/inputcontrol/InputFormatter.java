@@ -2,21 +2,25 @@ package calculator.inputcontrol;
 
 import calculator.exceptions.InvalidComponentException;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Class which requires for formatting of the user input and identifying the components of an equation
  */
 public class InputFormatter {
 
-    //static final String COMPONENTSEPARATOR=" ";
+    private final String COMPONENTSEPARATOR=" ";
     /**
      * @param equation - unformatted input
      * @return formatted input
-     * @throws InvalidComponentException - if there exists and illegal component in the equation
      */
-    public String doFormat(final String equation) {
+    public List<String> doFormat(final String equation) {
         String firstStep = addSpaceAfterEveryComponent(equation);
         String secondStep = removeJunkSpaces(firstStep);
-        return removeSpaceBetweenTheNumberAndItsSign(secondStep);
+        String[] components = removeSpaceBetweenTheNumberAndItsSign(secondStep).split(COMPONENTSEPARATOR);
+        return new LinkedList<>(Arrays.asList(components));
     }
 
 
@@ -27,7 +31,7 @@ public class InputFormatter {
 
     private String addSpaceAfterEveryComponent(String equation)
     {
-        return equation.replaceAll("([0-9]+([.][0-9]*)?|[^0-9 ])","$1 ");
+        return equation.replaceAll("([0-9]+([.][0-9]*)?|[^0-9a-zA-Z ]|[a-zA-Z]+)","$1 ");
     }
 
     private String removeSpaceBetweenTheNumberAndItsSign(String equation)

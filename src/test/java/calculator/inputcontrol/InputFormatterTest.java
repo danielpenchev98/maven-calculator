@@ -3,6 +3,9 @@ package calculator.inputcontrol;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class InputFormatterTest {
@@ -18,19 +21,38 @@ public class InputFormatterTest {
     // TODO refactor tests
     @Test
     public void formatInput_InputWithManyJunkSpaces_FormattedInput() {
-        assertEquals( "1.0 + 2",parser.doFormat("1.0 +     2"));
+        List<String> expected=new LinkedList<>();
+        expected.add("1.0");
+        expected.add("+");
+        expected.add("2");
+
+        assertEquals( expected,parser.doFormat("1.0 +     2"));
     }
 
     @Test
     public void formatInput_InputWithoutAnySpaces_FormattedInput()
     {
-        assertEquals("( 1 + 2 )",parser.doFormat("(1+2)"));
+        List<String> expected=new LinkedList<>();
+        expected.add("(");
+        expected.add("1");
+        expected.add("+");
+        expected.add("2");
+        expected.add(")");
+
+        assertEquals(expected,parser.doFormat("(1+2)"));
     }
 
     @Test
     public void formatInput_InputWithSpaceBetweenNumberAndItsSign_FormattedInput()
     {
-        assertEquals("-1.0 + ( -1 )",parser.doFormat("-1.0 + ( -1 )"));
+        List<String> expected=new LinkedList<>();
+        expected.add("-1.0");
+        expected.add("+");
+        expected.add("(");
+        expected.add("-1");
+        expected.add(")");
+
+        assertEquals(expected,parser.doFormat("-1.0 + ( -1 )"));
     }
 
 }
