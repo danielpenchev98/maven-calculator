@@ -3,10 +3,10 @@ package calculator.computation;
 public class Power implements MathArithmeticOperator {
 
     private final static int PRIORITY=4;
-    private final static String SYMBOL="^";
+    final static String SYMBOL="^";
     /**
      * @param firstNumber  - the first parameter of the mathematical operation
-     * @param secondnumber - the second parameter of the mathematical operation
+     * @param secondNumber - the second parameter of the mathematical operation
      * @return the result of the mathematical operation
      * @throws ArithmeticException - if some type of error occurs like division on zero
      */

@@ -3,7 +3,7 @@ package calculator.computation;
 public class Subtraction implements MathArithmeticOperator {
 
     private final static int PRIORITY=2;
-    private final static String SYMBOL="-";
+    final static String SYMBOL="-";
     /**
      * @param firstNumber - first argument of the mathematical operation -
      * @param secondNumber - second argument of the mathematical operation -

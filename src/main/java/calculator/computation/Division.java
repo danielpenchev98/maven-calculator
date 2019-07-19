@@ -4,8 +4,8 @@ import calculator.exceptions.DivisionByZeroException;
 
 public class Division implements MathArithmeticOperator {
 
-    final static int PRIORITY=3;
-    private final static String SYMBOL="/";
+    private final static int PRIORITY=3;
+    final static String SYMBOL="/";
     /**
      * @param firstNumber - first argument of the mathematical operation /
      * @param secondNumber - second argument of the mathematical operation /
