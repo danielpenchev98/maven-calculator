@@ -1,8 +1,13 @@
 package calculator.inputcontrol;
 
 import calculator.exceptions.*;
+import net.bytebuddy.dynamic.scaffold.MethodGraph;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -24,60 +29,79 @@ public class EquationValidatorTest {
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithMissingOperatorBetweenNumberAndBracket_Illegal() throws Exception {
-        validator.validateEquation("2 ( -5 )");
+
+        List<String> input=new LinkedList<>(Arrays.asList("2","(","-5",")"));
+        input.add("2");
+        input.add("(");
+        input.add("-5");
+        input.add(")");
+
+        validator.validateEquation(input);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithClosingBracketNextToOpeningBracket_Legal() throws Exception
     {
-        validator.validateEquation("( ( 10 + 20 ) ( -5 ) )");
+        List<String> input=new LinkedList<>(Arrays.asList("(","(","10","+","20",")","(","-5",")",")"));
+        validator.validateEquation(input);
     }
 
     @Test
     public void validateEquation_EquationWithOnlyANumber_Legal() throws Exception
     {
-        validator.validateEquation("1");
+        List<String> input=new LinkedList<>();
+        input.add("1");
+        validator.validateEquation(input);
     }
 
     @Test
     public void validateEquation_SimpleEquation_Illegal() throws Exception {
-        validator.validateEquation("( ( -1 + 5 + 2 ) )");
+        List<String> input=new LinkedList<>(Arrays.asList("(","(","-1","+","5","+","2",")",")"));
+        validator.validateEquation(input);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationOnlyWithOperatorInTheBrackets_Illegal() throws Exception
     {
-        validator.validateEquation("( + ) + 1");
+        List<String> input=new LinkedList<>(Arrays.asList("(","+",")","+","1"));
+        validator.validateEquation(input);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithSequentialOperators_Illegal() throws Exception
     {
-        validator.validateEquation("2 + + 1");
+        List<String> input=new LinkedList<>(Arrays.asList("2","+","+","1"));
+        validator.validateEquation(input);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithEmptyBrackets_Illegal() throws Exception
     {
-        validator.validateEquation("( ) + 2");
+        List<String> input=new LinkedList<>(Arrays.asList("(",")","+","2"));
+        validator.validateEquation(input);
     }
 
     @Test(expected = InvalidComponentException.class)
     public void validateEquation_EquationWithIllegalComponent_Illegal() throws Exception
     {
-        validator.validateEquation("1ha");
+        List<String> input=new LinkedList<>();
+        input.add("1ha");
+        validator.validateEquation(input);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EmptyEquation_Illegal() throws Exception
     {
-        validator.validateEquation("");
+        List<String> input=new LinkedList<>();
+        input.add("");
+        validator.validateEquation(input);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithMissingBracket_Illegal() throws Exception
     {
-        validator.validateEquation("( ( 2 * ( -3 ) )");
+        List<String> input=new LinkedList<>(Arrays.asList("(","(","2","+","1",")"));
+        validator.validateEquation(input);
     }
 
     //endregion

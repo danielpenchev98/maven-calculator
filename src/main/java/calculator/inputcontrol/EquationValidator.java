@@ -2,6 +2,9 @@ package calculator.inputcontrol;
 
 import calculator.exceptions.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 
 /**
  * The main idea is to find the errors in the equation, which cannot be detected during the RPN calculation
@@ -9,7 +12,7 @@ import calculator.exceptions.*;
 public class EquationValidator {
 
 
-    public void validateEquation(final String formattedEquation) throws InvalidComponentException, InvalidEquationException
+    public void validateEquation(final List<String> formattedEquation) throws InvalidComponentException, InvalidEquationException
     {
         validateEquationStructure(formattedEquation);
         validateComponents(formattedEquation);
@@ -25,9 +28,8 @@ public class EquationValidator {
     }
 
 
-    private void validateComponents(final String formattedEquation) throws InvalidComponentException
+    private void validateComponents(final List<String> components) throws InvalidComponentException
     {
-        String[] components=formattedEquation.split(" ");
         for(String component:components)
         {
             if(!isValidNumber(component)&&!isValidArithmeticOperator(component)&&!isBracket(component))
@@ -37,11 +39,9 @@ public class EquationValidator {
         }
     }
 
-    private void validateEquationStructure(final String formattedEquation) throws InvalidEquationException
+    private void validateEquationStructure(final List<String> formattedEquation) throws InvalidEquationException
     {
-        //String equation= Arrays.toString(formattedEquation).replaceAll("\\[|\\]|,","");
-
-        String equation=formattedEquation;
+        String equation= Arrays.toString(formattedEquation.toArray()).replaceAll("\\[|\\]|,","");
 
         String message=null;
         if(equation.equals(""))
@@ -56,7 +56,7 @@ public class EquationValidator {
         {
             message = "Sequential operators has been found";
         }
-        else if(hasNonOperatorBeforeBracket(equation)||hasNonOperatorAfterBracket(equation))
+        else if(hasNumberBeforeBracket(equation)||hasNumberAfterBracket(equation))
         {
             message = "There should be a operator between a number and opening bracket or between a closing bracket and a number in that order";
         }
@@ -83,17 +83,17 @@ public class EquationValidator {
 
     private boolean hasNonNumbersOnlyBetweenBrackets(String equation)
     {
-        return equation.matches(".*[(][^0-9]*[)].*");
+        return equation.matches(".*[(][^0-9a-zA-Z]*[)].*");
     }
 
-    private boolean hasNonOperatorBeforeBracket(String equation)
+    private boolean hasNumberBeforeBracket(String equation)
     {
-        return equation.matches(".*[^-+/*(^] [(].*");
+        return equation.matches(".*[0-9)] [(].*");
     }
 
-    private boolean hasNonOperatorAfterBracket(String equation)
+    private boolean hasNumberAfterBracket(String equation)
     {
-        return equation.matches(".*[)] [^-+/*)^].*");
+        return equation.matches(".*[)] [0-9(].*");
     }
 
     private boolean hasBracketBalance(String input)
