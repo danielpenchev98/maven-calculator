@@ -1,6 +1,5 @@
 package calculator;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class CalculatorAppConsole {

@@ -1,9 +1,12 @@
 package calculator;
 
 import calculator.exceptions.DivisionByZeroException;
+import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidEquationException;
 import org.junit.Before;
 import org.junit.Test;
+
+import static junit.framework.TestCase.assertEquals;
 
 public class CalculatorAppIT {
 
@@ -13,6 +16,12 @@ public class CalculatorAppIT {
     public void setUp()
     {
         app=new CalculatorApp();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void calculateResult_NullReference_Illegal() throws Exception
+    {
+        app.calculateResult(null);
     }
 
     @Test(expected = InvalidEquationException.class)
@@ -51,10 +60,48 @@ public class CalculatorAppIT {
         app.calculateResult("");
     }
 
-    @Test
+    @Test(expected = InvalidEquationException.class)
     public void calculateResult_BracketsOnly_Illegal() throws Exception
     {
         app.calculateResult("(()()(()))");
     }
 
+    @Test(expected = InvalidComponentException.class)
+    public void calculateResult_EquationWithInvalidNumber_Illegal() throws Exception
+    {
+        app.calculateResult("PI/2 * 6*(K)*PI");
+    }
+
+    @Test(expected = InvalidComponentException.class)
+    public void calculateResult_EquationWithUnsupportedOperator_Illegal() throws Exception
+    {
+        app.calculateResult("(( 100 - 99) & (199))");
+    }
+
+    @Test(expected = InvalidComponentException.class)
+    public void calculateResult_EquationWithUnsupportedTypeOfBrackets_Illegal() throws Exception
+    {
+        app.calculateResult("[ (10 +7) ] / {20^100}");
+    }
+
+    @Test
+    public void calculateResult_EquationForTestingPriority() throws Exception
+    {
+        double result=app.calculateResult("100/0^0");
+        assertEquals(100.0,result);
+    }
+
+    @Test
+    public void calculateResult_EquationForTestingAccuracy() throws Exception
+    {
+        double result=app.calculateResult("22/7");
+        assertEquals(3.14285,result,0.0001);
+    }
+
+    @Test
+    public void calculateResult_LongEquation() throws Exception
+    {
+        double result=app.calculateResult("((8^2/18)-(100*100)/1500)^10");
+        assertEquals(84948.4030,result,0.001);
+    }
 }

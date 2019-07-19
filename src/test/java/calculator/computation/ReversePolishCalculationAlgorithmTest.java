@@ -12,7 +12,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 
+import java.util.Arrays;
 import java.util.EmptyStackException;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -29,8 +32,6 @@ public class ReversePolishCalculationAlgorithmTest {
     public EquationValidator validator;
 
 
-    private final double DELTA=0.0001;
-
     @Before
     public void setUp()
     {
@@ -44,7 +45,8 @@ public class ReversePolishCalculationAlgorithmTest {
     public void calculationEquation_EquationWithMissingNumber_OutOfItemsExceptionThrown() throws Exception
     {
         Mockito.when(machine.computeAction("+",2.0,3)).thenReturn(5.0);
-        algorithm.calculateEquation("2.0 3.0 + +");
+        List<String> input=new LinkedList<>(Arrays.asList("2.0","3.0","+","+"));
+        algorithm.calculateEquation(input);
     }
 
 
@@ -52,7 +54,8 @@ public class ReversePolishCalculationAlgorithmTest {
     public void calculationEquation_EquationWithMissingOperator_MissingOperatorExceptionThrown() throws Exception
     {
         Mockito.when(machine.computeAction("+",2.0,2.0)).thenReturn(4.0);
-        algorithm.calculateEquation("2.0 2.0 + 3.0");
+        List<String> input=new LinkedList<>(Arrays.asList("2.0","2.0","+","3.0"));
+        algorithm.calculateEquation(input);
     }
 
     @Test(expected = InvalidParameterException.class)
@@ -61,7 +64,8 @@ public class ReversePolishCalculationAlgorithmTest {
         Mockito.when(validator.isValidNumber("#")).thenReturn(false);
         Mockito.when(machine.computeAction("#",2.0,3.0)).thenThrow(new InvalidParameterException("Invalid operator"));
 
-        algorithm.calculateEquation("2.0 3.0 #");
+        List<String> input=new LinkedList<>(Arrays.asList("2.0","3.0","#"));
+        algorithm.calculateEquation(input);
     }
 
     @Test
@@ -72,7 +76,8 @@ public class ReversePolishCalculationAlgorithmTest {
 
         Mockito.when(validator.isValidNumber("^")).thenReturn(false);
 
-        assertEquals(30,algorithm.calculateEquation("3.0 3.0 3.0 ^ +"),DELTA);
+        List<String> input=new LinkedList<>(Arrays.asList("3.0","3.0","3.0","^","+"));
+        assertEquals(30,algorithm.calculateEquation(input),0.001);
     }
 
 }

@@ -23,8 +23,6 @@ public class ComputationalMachineTest {
     @Mock
     private MathArithmeticOperator operation;
 
-    private final double DELTA=0.01;
-
 
     @Test(expected = DivisionByZeroException.class)
     public void computeAction_ComputeDivisionOfTwoNumbers_DivisionByZeroExceptionThrown() throws ArithmeticException, InvalidParameterException {
@@ -49,7 +47,7 @@ public class ComputationalMachineTest {
         Mockito.when(factory.createArithmeticOperation("^")).thenReturn(operation);
         Mockito.when(operation.compute(2,3)).thenReturn(8.0);
         double result=machine.computeAction("^",2,3);
-        assertEquals(8, result,DELTA);
+        assertEquals(8, result,0.001);
     }
 
 

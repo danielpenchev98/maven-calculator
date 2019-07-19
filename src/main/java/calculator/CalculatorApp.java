@@ -1,10 +1,17 @@
 package calculator;
 
-import calculator.computation.*;
+
+import calculator.computation.ComputationalMachine;
+import calculator.computation.MathArithmeticOperatorFactory;
+import calculator.computation.MathOperatorFactory;
+import calculator.computation.ReversePolishCalculationAlgorithm;
 import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidEquationException;
+import calculator.inputcontrol.EquationValidator;
+import calculator.inputcontrol.InputFormatter;
 import calculator.inputcontrol.ReversePolishNotationParser;
-import calculator.inputcontrol.*;
+
+import java.util.List;
 
 /**
  * Class which represents the calculator as a whole - uses the 3 main abstractions :
@@ -21,23 +28,18 @@ class CalculatorApp {
     double calculateResult(final String equation) throws InvalidEquationException, InvalidComponentException
     {
         InputFormatter formatter = new InputFormatter();
-        String formattedInput = formatter.doFormat(equation);
+        List<String> formattedInput = formatter.doFormat(equation);
         EquationValidator validator=new EquationValidator();
 
         validator.validateEquation(formattedInput);
 
 
-        MathOperatorFactory operatorFactory=new MathOperatorFactory();
-        ReversePolishNotationParser specialParser=new ReversePolishNotationParser(validator,operatorFactory);
-        String reversePolishFormatEquation;
-        reversePolishFormatEquation = specialParser.formatFromInfixToReversedPolishNotation(formattedInput);
+        ReversePolishNotationParser specialParser=new ReversePolishNotationParser(validator,new MathOperatorFactory());
+        List<String> reversePolishFormatEquation = specialParser.formatFromInfixToReversedPolishNotation(formattedInput);
 
-        MathArithmeticOperatorFactory arithmeticOperatorFactory=new MathArithmeticOperatorFactory();
-        ComputationalMachine calculator= new ComputationalMachine(arithmeticOperatorFactory);
+        ComputationalMachine calculator= new ComputationalMachine(new MathArithmeticOperatorFactory());
         ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm(calculator,validator);
 
-        double finalResult=algorithm.calculateEquation(reversePolishFormatEquation);
-        return finalResult;
-
+        return algorithm.calculateEquation(reversePolishFormatEquation);
     }
 }
