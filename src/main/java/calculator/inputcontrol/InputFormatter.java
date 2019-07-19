@@ -1,6 +1,5 @@
 package calculator.inputcontrol;
 
-import calculator.exceptions.InvalidComponentException;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -11,22 +10,22 @@ import java.util.List;
  */
 public class InputFormatter {
 
-    private final String COMPONENTSEPARATOR=" ";
     /**
      * @param equation - unformatted input
      * @return formatted input
      */
     public List<String> doFormat(final String equation) {
+        final String componentSeparator=" ";
         String firstStep = addSpaceAfterEveryComponent(equation);
         String secondStep = removeJunkSpaces(firstStep);
-        String[] components = removeSpaceBetweenTheNumberAndItsSign(secondStep).split(COMPONENTSEPARATOR);
+        String[] components = removeSpaceBetweenTheNumberAndItsSign(secondStep).split(componentSeparator);
         return new LinkedList<>(Arrays.asList(components));
     }
 
 
     private String removeJunkSpaces(String equation)
     {
-        return equation.replaceAll("[ ]+"," ").replaceAll("^ | $","");
+        return equation.replaceAll("[ ]+"," ").trim();
     }
 
     private String addSpaceAfterEveryComponent(String equation)

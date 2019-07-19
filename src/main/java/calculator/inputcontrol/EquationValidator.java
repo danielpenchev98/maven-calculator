@@ -18,7 +18,6 @@ public class EquationValidator {
         validateComponents(formattedEquation);
     }
 
-    //If if-else in RPAlgorithm is replaced with polymorphism then these two functions will be private
     public boolean isValidNumber(final String component) {
         return component.matches("^[-+]?[0-9]+([.][0-9]+)?$");
     }
@@ -52,11 +51,11 @@ public class EquationValidator {
         {
             message = "The equation is missing brackets";
         }
-        else if(hasSequentialOperatorsOrNumbers(equation))
+        else if(hasSequentialTypeOfComponents(equation))
         {
             message = "Sequential operators has been found";
         }
-        else if(hasNumberBeforeBracket(equation)||hasNumberAfterBracket(equation))
+        else if(hasNonOperatorBeforeBracket(equation)||hasNonOperatorAfterBracket(equation))
         {
             message = "There should be a operator between a number and opening bracket or between a closing bracket and a number in that order";
         }
@@ -76,9 +75,9 @@ public class EquationValidator {
         return component.matches("^[)(]$");
     }
 
-    private boolean hasSequentialOperatorsOrNumbers(String equation)
+    private boolean hasSequentialTypeOfComponents(String equation)
     {
-        return equation.matches(".*([-+/*^]+[ ]*[-+/*^]+|[0-9]+[ ]+[0-9]+).*");
+        return equation.matches(".*([-+/*^]+[ ]*[-+/*^]+|[0-9a-zA-Z]+[ ]+[0-9a-zA-Z]+).*");
     }
 
     private boolean hasNonNumbersOnlyBetweenBrackets(String equation)
@@ -86,14 +85,14 @@ public class EquationValidator {
         return equation.matches(".*[(][^0-9a-zA-Z]*[)].*");
     }
 
-    private boolean hasNumberBeforeBracket(String equation)
+    private boolean hasNonOperatorBeforeBracket(String equation)
     {
-        return equation.matches(".*[0-9)] [(].*");
+        return equation.matches(".*[0-9a-zA-Z)] [(].*");
     }
 
-    private boolean hasNumberAfterBracket(String equation)
+    private boolean hasNonOperatorAfterBracket(String equation)
     {
-        return equation.matches(".*[)] [0-9(].*");
+        return equation.matches(".*[)] [0-9a-zA-Z(].*");
     }
 
     private boolean hasBracketBalance(String input)
