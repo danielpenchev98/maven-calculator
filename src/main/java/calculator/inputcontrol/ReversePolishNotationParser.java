@@ -2,6 +2,8 @@ package calculator.inputcontrol;
 
 import calculator.computation.*;
 import java.util.EmptyStackException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
 //TODO shorten the names of functions - the beginning of several functions is the same "addOperatorFromContainer...."
@@ -9,7 +11,7 @@ public class ReversePolishNotationParser {
 
     private Stack<MathOperator> operatorContainer;
 
-    private StringBuilder reversedPolishEquation;
+    private List<String> reversedPolishEquation;
 
     private EquationValidator checker;
 
@@ -18,7 +20,7 @@ public class ReversePolishNotationParser {
     public ReversePolishNotationParser(final EquationValidator validator,final MathOperatorFactory factory)
     {
         operatorContainer=new Stack<>();
-        reversedPolishEquation=new StringBuilder();
+        reversedPolishEquation=new LinkedList<>();
         checker=validator;
         operatorFactory=factory;
     }
@@ -37,10 +39,8 @@ public class ReversePolishNotationParser {
      * @return reverse polish notation
      */
 
-    public String formatFromInfixToReversedPolishNotation(final String equation) throws EmptyStackException
+    public List<String> formatFromInfixToReversedPolishNotation(final List<String> components) throws EmptyStackException
     {
-        String[] components=getIndividualComponents(equation);
-
         for(String component:components)
         {
             if(checker.isValidNumber(component))
@@ -66,7 +66,7 @@ public class ReversePolishNotationParser {
         }
         addAllOperatorsLeftInTheContainerToEquation();
 
-        return reversedPolishEquation.toString().trim();
+        return reversedPolishEquation;
     }
 
     private void addAllOperatorsLeftInTheContainerToEquation() {
@@ -105,7 +105,7 @@ public class ReversePolishNotationParser {
 
     private void addComponentToEquation(final String component)
     {
-        reversedPolishEquation.append(component).append(" ");
+        reversedPolishEquation.add(component);
     }
 
     private boolean hasLowerPriority(final MathArithmeticOperator previousOperator,final MathArithmeticOperator currentOperator)
@@ -121,9 +121,5 @@ public class ReversePolishNotationParser {
     private boolean hasSpareOperators()
     {
         return operatorContainer.size()>0;
-    }
-
-    private String[] getIndividualComponents(final String equation) {
-        return equation.split(" ");
     }
 }

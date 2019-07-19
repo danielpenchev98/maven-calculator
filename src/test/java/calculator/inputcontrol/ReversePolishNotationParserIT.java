@@ -5,67 +5,78 @@ import org.junit.Before;
 import org.junit.Test;
 
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 
 public class ReversePolishNotationParserIT {
 
     private ReversePolishNotationParser parserRPN;
-    private EquationValidator validator;
-    private MathOperatorFactory operatorFactory;
 
 
     @Before
     public void setUp()
     {
-        validator=new EquationValidator();
-        operatorFactory=new MathOperatorFactory();
-        parserRPN=new ReversePolishNotationParser(validator,operatorFactory);
+        EquationValidator validator = new EquationValidator();
+        MathOperatorFactory operatorFactory = new MathOperatorFactory();
+        parserRPN=new ReversePolishNotationParser(validator, operatorFactory);
     }
 
 
 
     @Test
     public void formatToReversedPolishNotation_EquationWithoutBrackets_RPNFormat() {
-        String expected = "15 10 2 * +";
-        String realResult=parserRPN.formatFromInfixToReversedPolishNotation("15 + 10 * 2");
+        List<String> input=new LinkedList<>(Arrays.asList("15","+","10","*","2"));
+        List<String> expected=new LinkedList<>(Arrays.asList("15","10","2","*","+"));
+        List<String> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
         assertEquals(expected,realResult);
     }
 
     @Test
     public void formatToReversedPolishNotation_EquationWithEqualPriorityLeftAssociativeOperators_RPNFormat()
     {
-        String expected = "1 2 / 3 *";
-        String realResult = parserRPN.formatFromInfixToReversedPolishNotation("1 / 2 * 3");
+        List<String> input=new LinkedList<>(Arrays.asList("1","/","2","*","3"));
+        List<String> expected=new LinkedList<>(Arrays.asList("1","2","/","3","*"));
+        List<String> realResult = parserRPN.formatFromInfixToReversedPolishNotation(input);
         assertEquals(expected,realResult);
     }
 
     @Test
     public void formatToReversedPolishNotation_EquationWithBrackets_RPNFormat()
     {
-        String realResult=parserRPN.formatFromInfixToReversedPolishNotation("( 15 + 10 ) * 2");
-        assertEquals("15 10 + 2 *",realResult);
+        List<String> input=new LinkedList<>(Arrays.asList("(","15","+","10",")","*","2"));
+        List<String> expected=new LinkedList<>(Arrays.asList("15","10","+","2","*"));
+        List<String> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
+        assertEquals(expected,realResult);
     }
 
     @Test
     public void formatToReversedPolishNotation_EquationWithMultipleNestedBrackets_RPNFormat()
     {
-        String realResult=parserRPN.formatFromInfixToReversedPolishNotation("( ( ( 15 + 10 * 2 ) ) )");
-        assertEquals("15 10 2 * +",realResult);
+        List<String> input=new LinkedList<>(Arrays.asList("(","(","(","15","+","10","*","2",")",")",")"));
+        List<String> expected=new LinkedList<>(Arrays.asList("15","10","2","*","+"));
+        List<String> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
+        assertEquals(expected,realResult);
     }
 
     @Test
     public void formatToReversedPolishNotation_EquationProductOfTwoExpressionsEachInBracket_RPNFormat()
     {
-        String realResult=parserRPN.formatFromInfixToReversedPolishNotation("( 1 + 2 ) * ( 3 + 4 )");
-        assertEquals("1 2 + 3 4 + *",realResult);
+        List<String> input=new LinkedList<>(Arrays.asList("(","1","+","2",")","*","(","3","+","4",")"));
+        List<String> expected=new LinkedList<>(Arrays.asList("1","2","+","3","4","+","*"));
+        List<String> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
+        assertEquals(expected,realResult);
     }
 
     @Test
     public void formatToReversedPolishNotation_EquationWithLeftAndRightAssociativeOperators_RPNFormat()
     {
-        String expected="2 2 2 ^ /";
-        String result=parserRPN.formatFromInfixToReversedPolishNotation("2 / 2 ^ 2");
+        List<String> input=new LinkedList<>(Arrays.asList("2","/","2","^","2"));
+        List<String> expected=new LinkedList<>(Arrays.asList("2","2","2","^","/"));
+        List<String> result=parserRPN.formatFromInfixToReversedPolishNotation(input);
         assertEquals(expected,result);
     }
 
