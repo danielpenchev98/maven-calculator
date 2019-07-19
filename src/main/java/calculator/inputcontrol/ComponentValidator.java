@@ -4,7 +4,7 @@ import calculator.exceptions.InvalidComponentException;
 
 import java.util.List;
 
-public class EquationComponentValidator {
+public class ComponentValidator {
 
     public void validateComponents(final List<String> components) throws InvalidComponentException
     {
@@ -21,8 +21,11 @@ public class EquationComponentValidator {
         return component.matches("^[-+]?[0-9]+([.][0-9]+)?$");
     }
 
-    public boolean isValidArithmeticOperator(final String component) {
-        return component.matches("^[-+*/^]$");
+    //TODO should determine whether the Factory method will check if its a valid operator - supported, or to have
+    // the method isValidArithmetic Operator, because if i have then, every time i add new operators, i should change the regex
+    public boolean isValidArithmeticOperator(final String component)
+    {
+        return component.matches("^[-+/*^]$");
     }
 
     private boolean isBracket(final String component) {
