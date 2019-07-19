@@ -35,7 +35,7 @@ public class ReversePolishNotationParser {
      * 3.2) if the operator on the top of the stack has lower or equal priority and is left associative, add current one to stack
      * 4) if it's closing bracket - add operators from the stack to equation, till you find opening bracket in the stack
      * 5) In the end add everything from the stack to equation
-     * @param equation infix notation
+     * @param components infix notation
      * @return reverse polish notation
      */
 
