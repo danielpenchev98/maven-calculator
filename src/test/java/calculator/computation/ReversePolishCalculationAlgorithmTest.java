@@ -2,7 +2,7 @@ package calculator.computation;
 
 import calculator.exceptions.InvalidEquationException;
 import calculator.exceptions.InvalidParameterException;
-import calculator.inputcontrol.EquationValidator;
+import calculator.inputcontrol.ComponentValidator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +29,7 @@ public class ReversePolishCalculationAlgorithmTest {
     @Mock
     public ComputationalMachine machine;
     @Mock
-    public EquationValidator validator;
+    public ComponentValidator validator;
 
 
     @Before

@@ -2,7 +2,7 @@ package calculator.computation;
 
 import calculator.exceptions.InvalidEquationException;
 import calculator.exceptions.InvalidParameterException;
-import calculator.inputcontrol.EquationValidator;
+import calculator.inputcontrol.ComponentValidator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,8 +21,8 @@ public class ReversePolishCalculationAlgorithmIT {
     @Before
     public void setUp()
     {
-        ComputationalMachine machine=new ComputationalMachine(new MathArithmeticOperatorFactory());
-        EquationValidator validator=new EquationValidator();
+        ComputationalMachine machine=new ComputationalMachine(new EquationComponentFactory());
+        ComponentValidator validator=new ComponentValidator();
         algorithm=new ReversePolishCalculationAlgorithm(machine,validator);
     }
 

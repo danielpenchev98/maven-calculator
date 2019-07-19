@@ -1,6 +1,6 @@
 package calculator.inputcontrol;
 
-import calculator.computation.MathOperatorFactory;
+import calculator.computation.EquationComponentFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,8 +20,8 @@ public class ReversePolishNotationParserIT {
     @Before
     public void setUp()
     {
-        EquationValidator validator = new EquationValidator();
-        MathOperatorFactory operatorFactory = new MathOperatorFactory();
+        ComponentValidator validator = new ComponentValidator();
+        EquationComponentFactory operatorFactory = new EquationComponentFactory();
         parserRPN=new ReversePolishNotationParser(validator, operatorFactory);
     }
 

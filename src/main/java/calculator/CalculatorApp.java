@@ -6,9 +6,7 @@ import calculator.computation.EquationComponentFactory;
 import calculator.computation.ReversePolishCalculationAlgorithm;
 import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidEquationException;
-import calculator.inputcontrol.EquationValidator;
-import calculator.inputcontrol.InputFormatter;
-import calculator.inputcontrol.ReversePolishNotationParser;
+import calculator.inputcontrol.*;
 
 import java.util.List;
 
@@ -28,16 +26,17 @@ class CalculatorApp {
     {
         InputFormatter formatter = new InputFormatter();
         List<String> formattedInput = formatter.doFormat(equation);
-        EquationValidator validator=new EquationValidator();
+        ComponentValidator componentValidator=new ComponentValidator();
+        EquationStructureValidator structureValidator=new EquationStructureValidator();
 
-        validator.validateEquation(formattedInput);
+        componentValidator.validateComponents(formattedInput);
+        structureValidator.validateEquationStructure(formattedInput);
 
-
-        ReversePolishNotationParser specialParser=new ReversePolishNotationParser(validator,new EquationComponentFactory());
+        ReversePolishNotationParser specialParser=new ReversePolishNotationParser(componentValidator,new EquationComponentFactory());
         List<String> reversePolishFormatEquation = specialParser.formatFromInfixToReversedPolishNotation(formattedInput);
 
         ComputationalMachine calculator= new ComputationalMachine(new EquationComponentFactory());
-        ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm(calculator,validator);
+        ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm(calculator,componentValidator);
 
         return algorithm.calculateEquation(reversePolishFormatEquation);
     }

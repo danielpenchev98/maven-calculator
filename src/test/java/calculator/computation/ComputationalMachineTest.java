@@ -18,7 +18,7 @@ public class ComputationalMachineTest {
     private ComputationalMachine machine;
 
     @Mock
-    private MathOperatorFactory factory;
+    private EquationComponentFactory factory;
 
     @Mock
     private MathArithmeticOperator operation;

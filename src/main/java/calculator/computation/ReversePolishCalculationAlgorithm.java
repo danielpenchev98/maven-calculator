@@ -2,7 +2,7 @@ package calculator.computation;
 
 import calculator.exceptions.InvalidEquationException;
 import calculator.exceptions.InvalidParameterException;
-import calculator.inputcontrol.EquationValidator;
+import calculator.inputcontrol.ComponentValidator;
 
 import java.util.EmptyStackException;
 import java.util.List;
@@ -11,11 +11,11 @@ import java.util.Stack;
 public class ReversePolishCalculationAlgorithm {
 
     private ComputationalMachine calculator;
-    private EquationValidator validator;
+    private ComponentValidator validator;
     private Stack<String> supplier;
 
 
-    public ReversePolishCalculationAlgorithm(final ComputationalMachine machine,final EquationValidator validatingLogic)
+    public ReversePolishCalculationAlgorithm(final ComputationalMachine machine,final ComponentValidator validatingLogic)
     {
         calculator=machine;
         validator=validatingLogic;

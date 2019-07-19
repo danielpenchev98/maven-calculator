@@ -25,6 +25,8 @@ public class InputFormatterTest {
         expected.add("1.0");
         expected.add("+");
         expected.add("2");
+        //List<MathOperator> expected=new LinkedList<>();
+        //expected.add()
 
         assertEquals( expected,parser.doFormat("1.0 +     2"));
     }
