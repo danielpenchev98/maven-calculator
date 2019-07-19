@@ -2,8 +2,8 @@ package calculator.computation;
 
 public class Addition implements MathArithmeticOperator {
 
-    private final static int PRIORITY=2;
-    private final static String SYMBOL="+";
+    final static int PRIORITY=2;
+    final static String SYMBOL="+";
     /**
      * @param firstNumber - first argument of the mathematical operation +
      * @param secondNumber - second argument of the mathematical operation +

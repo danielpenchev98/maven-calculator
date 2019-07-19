@@ -7,9 +7,9 @@ public class ComputationalMachine{
 
     private MathArithmeticOperator operation;
 
-    private MathArithmeticOperatorFactory factory;
+    private MathOperatorFactory factory;
 
-    public ComputationalMachine(final MathArithmeticOperatorFactory operatorFactory )
+    public ComputationalMachine(final MathOperatorFactory operatorFactory )
     {
         operation=null;
         factory=operatorFactory;
@@ -32,7 +32,7 @@ public class ComputationalMachine{
 
     private void setMathematicalOperation(final String action) throws InvalidParameterException
     {
-        operation= factory.createArithmeticOperation(action);
+        operation=(MathArithmeticOperator)factory.createOperation(action);
     }
 
 }

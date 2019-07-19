@@ -15,7 +15,7 @@ public class ComputationalMachineIT {
 
     @Before
     public void setUp(){
-        machine=new ComputationalMachine(new MathArithmeticOperatorFactory());
+        machine=new ComputationalMachine(new MathOperatorFactory());
     }
 
     @Test(expected = DivisionByZeroException.class)
