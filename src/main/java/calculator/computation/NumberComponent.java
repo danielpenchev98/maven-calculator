@@ -13,4 +13,14 @@ public class NumberComponent implements EquationComponent {
     {
         return value;
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj instanceof NumberComponent){
+
+            return value.equals(((NumberComponent) obj).value);
+        }
+        return false;
+    }
 }

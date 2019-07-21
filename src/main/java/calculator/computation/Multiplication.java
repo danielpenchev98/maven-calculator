@@ -40,5 +40,10 @@ public class Multiplication implements MathArithmeticOperator {
         return Multiplication.SYMBOL;
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        return obj instanceof Multiplication;
+    }
 
 }

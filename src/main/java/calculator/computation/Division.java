@@ -46,5 +46,9 @@ public class Division implements MathArithmeticOperator {
         return Division.SYMBOL;
     }
 
-
+    @Override
+    public boolean equals(Object obj)
+    {
+        return obj instanceof Division;
+    }
 }

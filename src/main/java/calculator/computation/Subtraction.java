@@ -39,5 +39,10 @@ public class Subtraction implements MathArithmeticOperator {
         return Subtraction.SYMBOL;
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        return obj instanceof Subtraction;
+    }
 
 }

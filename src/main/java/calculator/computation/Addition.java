@@ -39,4 +39,10 @@ public class Addition implements MathArithmeticOperator {
     public String getSymbol() {
         return Addition.SYMBOL;
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        return obj instanceof Addition;
+    }
 }

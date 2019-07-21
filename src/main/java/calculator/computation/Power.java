@@ -41,4 +41,9 @@ public class Power implements MathArithmeticOperator {
         return Power.SYMBOL;
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        return obj instanceof Power;
+    }
 }
