@@ -1,6 +1,7 @@
 package calculator.inputcontrol;
 
 import calculator.computation.*;
+import calculator.exceptions.InvalidComponentException;
 
 import java.util.EmptyStackException;
 import java.util.LinkedList;
@@ -39,7 +40,7 @@ public class ReversePolishNotationParser {
      * @return reverse polish notation
      */
 
-    public List<String> formatFromInfixToReversedPolishNotation(final List<String> components) throws EmptyStackException
+    public List<String> formatFromInfixToReversedPolishNotation(final List<String> components) throws EmptyStackException, InvalidComponentException
     {
         for(String component:components)
         {

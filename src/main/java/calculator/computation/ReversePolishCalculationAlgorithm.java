@@ -1,5 +1,6 @@
 package calculator.computation;
 
+import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidEquationException;
 import calculator.exceptions.InvalidParameterException;
 import calculator.inputcontrol.ComponentValidator;
@@ -28,7 +29,7 @@ public class ReversePolishCalculationAlgorithm {
      * @return result of the equation
      * @throws Exception - error during the reverse polish notation calculation
      */
-    public double calculateEquation(final List<String> components) throws EmptyStackException, InvalidEquationException
+    public double calculateEquation(final List<String> components) throws EmptyStackException, InvalidEquationException,InvalidComponentException
     {
 
         //TODO make polymorphism with Enums, maybe
@@ -42,7 +43,7 @@ public class ReversePolishCalculationAlgorithm {
         return Double.valueOf(supplier.pop());
     }
 
-    private void handleComponents(final List<String> components) throws InvalidParameterException
+    private void handleComponents(final List<String> components) throws InvalidComponentException
     {
         for (String component : components) {
             if (validator.isValidNumber(component))
@@ -56,7 +57,7 @@ public class ReversePolishCalculationAlgorithm {
         }
     }
 
-    private void executeOperation(final String operator) throws InvalidParameterException, EmptyStackException
+    private void executeOperation(final String operator) throws InvalidComponentException, EmptyStackException
     {
         double leftNumber = Double.valueOf(supplier.pop());
         double rightNumber = Double.valueOf(supplier.pop());

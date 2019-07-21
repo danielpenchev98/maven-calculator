@@ -1,6 +1,7 @@
 package calculator.computation;
 
 import calculator.exceptions.DivisionByZeroException;
+import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidParameterException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,7 @@ public class ComputationalMachineTest {
 
 
     @Test(expected = DivisionByZeroException.class)
-    public void computeAction_ComputeDivisionOfTwoNumbers_DivisionByZeroExceptionThrown() throws ArithmeticException, InvalidParameterException {
+    public void computeAction_ComputeDivisionOfTwoNumbers_DivisionByZeroExceptionThrown() throws ArithmeticException, InvalidComponentException {
 
         Mockito.when(factory.createComponent("/")).thenReturn(operation);
         Mockito.when(operation.compute(2.0,0)).thenThrow(new DivisionByZeroException("Division on zero"));
@@ -34,7 +35,7 @@ public class ComputationalMachineTest {
     }
 
     @Test(expected= InvalidParameterException.class)
-    public void computeAction_ComputeNotSupportedOperation_InvalidParameterExceptionThrown() throws InvalidParameterException
+    public void computeAction_ComputeNotSupportedOperation_InvalidParameterExceptionThrown() throws InvalidComponentException
     {
 
         Mockito.when(factory.createComponent("+/-")).thenThrow(new InvalidParameterException("invalid operation"));
@@ -42,7 +43,7 @@ public class ComputationalMachineTest {
     }
 
     @Test
-    public void computeAction_ComputeSupportedOperation_ExpectedResult() throws InvalidParameterException
+    public void computeAction_ComputeSupportedOperation_ExpectedResult() throws InvalidComponentException
     {
         Mockito.when(factory.createComponent("^")).thenReturn(operation);
         Mockito.when(operation.compute(2,3)).thenReturn(8.0);

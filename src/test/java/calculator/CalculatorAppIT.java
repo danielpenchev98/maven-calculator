@@ -101,7 +101,7 @@ public class CalculatorAppIT {
     @Test
     public void calculateResult_LongEquation() throws Exception
     {
-        double result=app.calculateResult("((8^2/18)-(100*100)/1500)^10");
+        double result=app.calculateResult("((8^2/18)-(100*100)/1500)^((10))");
         assertEquals(84948.4030,result,0.001);
     }
 }

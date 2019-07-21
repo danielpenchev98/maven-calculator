@@ -24,13 +24,10 @@ class CalculatorApp {
      */
     double calculateResult(final String equation) throws InvalidEquationException, InvalidComponentException
     {
-        InputFormatter formatter = new InputFormatter();
-        List<String> formattedInput = formatter.doFormat(equation);
         ComponentValidator componentValidator=new ComponentValidator();
         EquationStructureValidator structureValidator=new EquationStructureValidator();
-
-        componentValidator.validateComponents(formattedInput);
-        structureValidator.validateEquationStructure(formattedInput);
+        InputFormatter formatter = new InputFormatter(structureValidator,componentValidator);
+        List<String> formattedInput = formatter.doFormat(equation);
 
         ReversePolishNotationParser specialParser=new ReversePolishNotationParser(componentValidator,new EquationComponentFactory());
         List<String> reversePolishFormatEquation = specialParser.formatFromInfixToReversedPolishNotation(formattedInput);

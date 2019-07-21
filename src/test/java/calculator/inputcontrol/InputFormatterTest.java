@@ -1,5 +1,7 @@
 package calculator.inputcontrol;
 
+import calculator.exceptions.InvalidComponentException;
+import calculator.exceptions.InvalidEquationException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,19 +22,17 @@ public class InputFormatterTest {
 
     // TODO refactor tests
     @Test
-    public void formatInput_InputWithManyJunkSpaces_FormattedInput() {
+    public void doFormat_InputWithManyJunkSpaces_FormattedInput() throws Exception {
         List<String> expected=new LinkedList<>();
         expected.add("1.0");
         expected.add("+");
         expected.add("2");
-        //List<MathOperator> expected=new LinkedList<>();
-        //expected.add()
 
         assertEquals( expected,parser.doFormat("1.0 +     2"));
     }
 
     @Test
-    public void formatInput_InputWithoutAnySpaces_FormattedInput()
+    public void doFormat_InputWithoutAnySpaces_FormattedInput() throws Exception
     {
         List<String> expected=new LinkedList<>();
         expected.add("(");
@@ -45,7 +45,7 @@ public class InputFormatterTest {
     }
 
     @Test
-    public void formatInput_InputWithSpaceBetweenNumberAndItsSign_FormattedInput()
+    public void doFormat_InputWithSpaceBetweenNumberAndItsSign_FormattedInput() throws Exception
     {
         List<String> expected=new LinkedList<>();
         expected.add("-1.0");
@@ -55,6 +55,18 @@ public class InputFormatterTest {
         expected.add(")");
 
         assertEquals(expected,parser.doFormat("-1.0 + ( -1 )"));
+    }
+
+    @Test(expected = InvalidComponentException.class)
+    public void doFormat_InputWithIllegalComponent_ExceptionThrown() throws Exception
+    {
+        parser.doFormat("-1.0+127.0.0.1");
+    }
+
+    @Test(expected = InvalidEquationException.class)
+    public void doFormat_EquationWithIllegalStructure__ExceptionThrown() throws Exception
+    {
+        parser.doFormat("-1.0 2.0 +");
     }
 
 }

@@ -1,5 +1,6 @@
 package calculator.computation;
 
+import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidParameterException;
 
 
@@ -24,13 +25,13 @@ public class ComputationalMachine{
      */
 
     //TODO should i list all the different exceptions or just the Super class
-    public double computeAction(final String action,final double firstNumber,final double secondNumber) throws ArithmeticException
+    public double computeAction(final String action,final double firstNumber,final double secondNumber) throws ArithmeticException,InvalidComponentException
     {
         setMathematicalOperation(action);
         return operation.compute(firstNumber,secondNumber);
     }
 
-    private void setMathematicalOperation(final String action) throws InvalidParameterException
+    private void setMathematicalOperation(final String action) throws InvalidComponentException
     {
         operation=(MathArithmeticOperator)factory.createComponent(action);
     }

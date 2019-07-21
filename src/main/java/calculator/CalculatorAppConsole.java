@@ -8,8 +8,13 @@ public class CalculatorAppConsole {
        Scanner scan=new Scanner(System.in);
         String userInput=scan.nextLine();
         CalculatorApp application=new CalculatorApp();
-       //application.calculateResult(userInput);
+        try {
+            System.out.println(application.calculateResult(userInput));
+        }
+        catch (Exception ex)
+        {
 
+        }
             // application.processEquationAndCalculateResult();
         //application.printResult(String)
 
