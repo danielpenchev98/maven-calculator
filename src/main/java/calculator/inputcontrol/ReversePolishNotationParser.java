@@ -12,7 +12,7 @@ public class ReversePolishNotationParser {
 
     private Stack<EquationComponent> operatorContainer;
 
-    private List<String> reversedPolishEquation;
+    private List<EquationComponent> reversedPolishEquation;
 
     private ComponentValidator checker;
 
@@ -40,30 +40,26 @@ public class ReversePolishNotationParser {
      * @return reverse polish notation
      */
 
-    public List<String> formatFromInfixToReversedPolishNotation(final List<String> components) throws EmptyStackException, InvalidComponentException
+    public List<EquationComponent> formatFromInfixToReversedPolishNotation(final List<EquationComponent> components) throws EmptyStackException, InvalidComponentException
     {
-        for(String component:components)
+        for(EquationComponent component:components)
         {
-            if(checker.isValidNumber(component))
+            if(component instanceof NumberComponent)
             {
                 addComponentToEquation(component);
-                continue;
             }
-
-            EquationComponent currOperation= operatorFactory.createComponent(component);
-
-            if (currOperation instanceof MathArithmeticOperator)
+            else if (component instanceof MathArithmeticOperator)
             {
-                addOperatorsFromContainerDependingOnPriorityAndAssociativity((MathArithmeticOperator) currOperation);
-                operatorContainer.add( currOperation);
+                addOperatorsFromContainerDependingOnPriorityAndAssociativity((MathArithmeticOperator) component);
+                operatorContainer.add( component);
             }
-            else if(currOperation instanceof ClosingBracket)
+            else if(component instanceof ClosingBracket)
             {
                 addOperatorsFromContainerToEquationTillOpeningBracketIsFound();
             }
             else
             {
-                operatorContainer.add(currOperation);
+                operatorContainer.add(component);
             }
         }
         addAllOperatorsLeftInTheContainerToEquation();
@@ -75,7 +71,7 @@ public class ReversePolishNotationParser {
 
         while( hasSpareOperators() )
         {
-            addComponentToEquation(((MathArithmeticOperator)operatorContainer.pop()).getSymbol());
+            addComponentToEquation(operatorContainer.pop());
         }
     }
 
@@ -83,7 +79,7 @@ public class ReversePolishNotationParser {
 
         while(hasSpareOperators()&&!(operatorContainer.peek() instanceof OpeningBracket))
         {
-            addComponentToEquation(((MathArithmeticOperator)operatorContainer.pop()).getSymbol());
+            addComponentToEquation(operatorContainer.pop());
         }
         operatorContainer.pop();
     }
@@ -98,14 +94,14 @@ public class ReversePolishNotationParser {
 
             if( lowerPriority || equalPriorityAndLeftAssociative ) {
                 operatorContainer.pop();
-                addComponentToEquation(nextOperatorInContainer.getSymbol());
+                addComponentToEquation(nextOperatorInContainer);
                 continue;
             }
             break;
         }
     }
 
-    private void addComponentToEquation(final String component)
+    private void addComponentToEquation(final EquationComponent component)
     {
         reversedPolishEquation.add(component);
     }

@@ -1,6 +1,6 @@
 package calculator.inputcontrol;
 
-import calculator.computation.EquationComponentFactory;
+import calculator.computation.*;
 import calculator.exceptions.InvalidComponentException;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,54 +30,143 @@ public class ReversePolishNotationParserIT {
 
     @Test
     public void formatToReversedPolishNotation_EquationWithoutBrackets_RPNFormat() throws InvalidComponentException {
-        List<String> input=new LinkedList<>(Arrays.asList("15","+","10","*","2"));
-        List<String> expected=new LinkedList<>(Arrays.asList("15","10","2","*","+"));
-        List<String> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
+        List<EquationComponent> input=new LinkedList<>();
+        input.add(new NumberComponent("15"));
+        input.add(new Addition());
+        input.add(new NumberComponent("10"));
+        input.add(new Multiplication());
+        input.add(new NumberComponent("2"));
+
+        List<EquationComponent> expected=new LinkedList<>();
+        expected.add(new NumberComponent("15"));
+        expected.add(new NumberComponent("10"));
+        expected.add(new NumberComponent("2"));
+        expected.add(new Multiplication());
+        expected.add(new Addition());
+
+        List<EquationComponent> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
         assertEquals(expected,realResult);
     }
 
     @Test
     public void formatToReversedPolishNotation_EquationWithEqualPriorityLeftAssociativeOperators_RPNFormat() throws InvalidComponentException
     {
-        List<String> input=new LinkedList<>(Arrays.asList("1","/","2","*","3"));
-        List<String> expected=new LinkedList<>(Arrays.asList("1","2","/","3","*"));
-        List<String> realResult = parserRPN.formatFromInfixToReversedPolishNotation(input);
+        List<EquationComponent> input=new LinkedList<>();
+        input.add(new NumberComponent("15"));
+        input.add(new Division());
+        input.add(new NumberComponent("2"));
+        input.add(new Multiplication());
+        input.add(new NumberComponent("10"));
+
+        List<EquationComponent> expected=new LinkedList<>();
+        expected.add(new NumberComponent("15"));
+        expected.add(new NumberComponent("2"));
+        expected.add(new Division());
+        expected.add(new NumberComponent("10"));
+        expected.add(new Multiplication());
+
+        List<EquationComponent> realResult = parserRPN.formatFromInfixToReversedPolishNotation(input);
         assertEquals(expected,realResult);
     }
 
     @Test
     public void formatToReversedPolishNotation_EquationWithBrackets_RPNFormat() throws InvalidComponentException
     {
-        List<String> input=new LinkedList<>(Arrays.asList("(","15","+","10",")","*","2"));
-        List<String> expected=new LinkedList<>(Arrays.asList("15","10","+","2","*"));
-        List<String> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
+        List<EquationComponent> input=new LinkedList<>();
+        input.add(new OpeningBracket());
+        input.add(new NumberComponent("15"));
+        input.add(new Addition());
+        input.add(new NumberComponent("10"));
+        input.add(new ClosingBracket());
+        input.add(new Multiplication());
+        input.add(new NumberComponent("2"));
+
+        List<EquationComponent> expected=new LinkedList<>();
+        expected.add(new NumberComponent("15"));
+        expected.add(new NumberComponent("10"));
+        expected.add(new Addition());
+        expected.add(new NumberComponent("2"));
+        expected.add(new Multiplication());
+
+        List<EquationComponent> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
         assertEquals(expected,realResult);
     }
 
     @Test
     public void formatToReversedPolishNotation_EquationWithMultipleNestedBrackets_RPNFormat() throws InvalidComponentException
     {
-        List<String> input=new LinkedList<>(Arrays.asList("(","(","(","15","+","10","*","2",")",")",")"));
-        List<String> expected=new LinkedList<>(Arrays.asList("15","10","2","*","+"));
-        List<String> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
+        List<EquationComponent> input=new LinkedList<>();
+        input.add(new OpeningBracket());
+        input.add(new OpeningBracket());
+        input.add(new OpeningBracket());
+        input.add(new NumberComponent("15"));
+        input.add(new Addition());
+        input.add(new NumberComponent("10"));
+        input.add(new Multiplication());
+        input.add(new NumberComponent("2"));
+        input.add(new ClosingBracket());
+        input.add(new ClosingBracket());
+        input.add(new ClosingBracket());
+
+        List<EquationComponent> expected=new LinkedList<>();
+        expected.add(new NumberComponent("15"));
+        expected.add(new NumberComponent("10"));
+        expected.add(new NumberComponent("2"));
+        expected.add(new Multiplication());
+        expected.add(new Addition());
+
+        List<EquationComponent> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
         assertEquals(expected,realResult);
     }
 
     @Test
     public void formatToReversedPolishNotation_EquationProductOfTwoExpressionsEachInBracket_RPNFormat() throws InvalidComponentException
     {
-        List<String> input=new LinkedList<>(Arrays.asList("(","1","+","2",")","*","(","3","+","4",")"));
-        List<String> expected=new LinkedList<>(Arrays.asList("1","2","+","3","4","+","*"));
-        List<String> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
+        List<EquationComponent> input=new LinkedList<>();
+        input.add(new OpeningBracket());
+        input.add(new NumberComponent("10"));
+        input.add(new Addition());
+        input.add(new NumberComponent("15"));
+        input.add(new ClosingBracket());
+        input.add(new Multiplication());
+        input.add(new OpeningBracket());
+        input.add(new NumberComponent("2"));
+        input.add(new Addition());
+        input.add(new NumberComponent("10"));
+        input.add(new ClosingBracket());
+
+        List<EquationComponent> expected=new LinkedList<>();
+        expected.add(new NumberComponent("10"));
+        expected.add(new NumberComponent("15"));
+        expected.add(new Addition());
+        expected.add(new NumberComponent("2"));
+        expected.add(new NumberComponent("10"));
+        expected.add(new Addition());
+        expected.add(new Multiplication());
+
+        List<EquationComponent> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
         assertEquals(expected,realResult);
     }
 
     @Test
     public void formatToReversedPolishNotation_EquationWithLeftAndRightAssociativeOperators_RPNFormat() throws InvalidComponentException
     {
-        List<String> input=new LinkedList<>(Arrays.asList("2","/","2","^","2"));
-        List<String> expected=new LinkedList<>(Arrays.asList("2","2","2","^","/"));
-        List<String> result=parserRPN.formatFromInfixToReversedPolishNotation(input);
+        List<EquationComponent> input=new LinkedList<>();
+        NumberComponent number = new NumberComponent("2");
+        input.add(number);
+        input.add(new Division());
+        input.add(number);
+        input.add(new Power());
+        input.add(number);
+
+        List<EquationComponent> expected=new LinkedList<>();//Arrays.asList("2","2","2","^","/"));
+        expected.add(number);
+        expected.add(number);
+        expected.add(number);
+        expected.add(new Power());
+        expected.add(new Division());
+
+        List<EquationComponent> result=parserRPN.formatFromInfixToReversedPolishNotation(input);
         assertEquals(expected,result);
     }
 
