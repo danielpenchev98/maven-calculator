@@ -34,13 +34,13 @@ public class InputFormatter {
      * @param equation - unformatted input
      * @return formatted input
      */
-    public List<String> doFormat(final String equation) throws InvalidComponentException, InvalidEquationException {
+    public List<EquationComponent> doFormat(final String equation) throws InvalidComponentException, InvalidEquationException {
 
         List<String> stringComponents= new LinkedList<>(Arrays.asList(getComponentsAsStrings(equation)));
 
         validateInput(stringComponents);
 
-        return stringComponents;
+        return covertToEquationComponents(stringComponents);
     }
 
     private String[] getComponentsAsStrings(final String equation)

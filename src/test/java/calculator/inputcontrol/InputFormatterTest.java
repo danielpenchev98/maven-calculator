@@ -1,5 +1,6 @@
 package calculator.inputcontrol;
 
+import calculator.computation.*;
 import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidEquationException;
 import org.junit.Before;
@@ -23,10 +24,10 @@ public class InputFormatterTest {
     // TODO refactor tests
     @Test
     public void doFormat_InputWithManyJunkSpaces_FormattedInput() throws Exception {
-        List<String> expected=new LinkedList<>();
-        expected.add("1.0");
-        expected.add("+");
-        expected.add("2");
+        List<EquationComponent> expected=new LinkedList<>();
+        expected.add(new NumberComponent("1.0"));
+        expected.add(new Addition());
+        expected.add(new NumberComponent("2"));
 
         assertEquals( expected,parser.doFormat("1.0 +     2"));
     }
@@ -34,12 +35,12 @@ public class InputFormatterTest {
     @Test
     public void doFormat_InputWithoutAnySpaces_FormattedInput() throws Exception
     {
-        List<String> expected=new LinkedList<>();
-        expected.add("(");
-        expected.add("1");
-        expected.add("+");
-        expected.add("2");
-        expected.add(")");
+        List<EquationComponent> expected=new LinkedList<>();
+        expected.add(new OpeningBracket());
+        expected.add(new NumberComponent("1"));
+        expected.add(new Addition());
+        expected.add(new NumberComponent("2"));
+        expected.add(new ClosingBracket());
 
         assertEquals(expected,parser.doFormat("(1+2)"));
     }
@@ -47,12 +48,12 @@ public class InputFormatterTest {
     @Test
     public void doFormat_InputWithSpaceBetweenNumberAndItsSign_FormattedInput() throws Exception
     {
-        List<String> expected=new LinkedList<>();
-        expected.add("-1.0");
-        expected.add("+");
-        expected.add("(");
-        expected.add("-1");
-        expected.add(")");
+        List<EquationComponent> expected=new LinkedList<>();
+        expected.add(new NumberComponent("-1.0"));
+        expected.add(new Addition());
+        expected.add(new OpeningBracket());
+        expected.add(new NumberComponent("-1"));
+        expected.add(new ClosingBracket());
 
         assertEquals(expected,parser.doFormat("-1.0 + ( -1 )"));
     }
