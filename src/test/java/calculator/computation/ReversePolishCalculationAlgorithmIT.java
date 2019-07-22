@@ -17,17 +17,18 @@ public class ReversePolishCalculationAlgorithmIT {
 
     private ReversePolishCalculationAlgorithm algorithm;
 
-    private final NumberComponent firstNumber=new NumberComponent("2.0");
-
-    private final NumberComponent secondNumber=new NumberComponent("3.0");
-
-    private final Addition addition=new Addition();
+    private NumberComponent firstNumber;
+    private NumberComponent secondNumber;
+    private Addition addition;
 
 
     @Before
     public void setUp()
     {
         algorithm=new ReversePolishCalculationAlgorithm();
+        firstNumber=new NumberComponent("2.0");
+        secondNumber=new NumberComponent("3.0");
+        addition=new Addition();
     }
 
 

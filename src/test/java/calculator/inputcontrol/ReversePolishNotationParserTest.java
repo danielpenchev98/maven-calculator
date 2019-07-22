@@ -3,6 +3,7 @@ package calculator.inputcontrol;
 import calculator.computation.*;
 import calculator.exceptions.InvalidComponentException;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -20,15 +21,15 @@ public class ReversePolishNotationParserTest {
 
     private ReversePolishNotationParser parserRPN;
 
-    private final NumberComponent firstNumber=new NumberComponent("15");
+    private NumberComponent firstNumber;
 
-    private final NumberComponent secondNumber=new NumberComponent("10");
+    private NumberComponent secondNumber;
 
-    private final NumberComponent thirdNumber=new NumberComponent("2");
+    private NumberComponent thirdNumber;
 
-    private final OpeningBracket openingBracket=new OpeningBracket();
+    private OpeningBracket openingBracket;
 
-    private final ClosingBracket closingBracket=new ClosingBracket();
+    private ClosingBracket closingBracket;
 
     @Mock
     private Multiplication multiplication;
@@ -43,10 +44,15 @@ public class ReversePolishNotationParserTest {
     public void setUp()
     {
         parserRPN=new ReversePolishNotationParser();
+        firstNumber=new NumberComponent("15");
+        secondNumber=new NumberComponent("10");
+        thirdNumber=new NumberComponent("2");
+        openingBracket=new OpeningBracket();
+        closingBracket=new ClosingBracket();
     }
 
     @Test
-    public void formatToReversedPolishNotation_EquationWithoutBrackets_RPNFormat() throws InvalidComponentException {
+    public void formatToReversedPolishNotation_EquationWithoutBrackets_RPNFormat()  {
 
         Mockito.when(addition.getPriority()).thenReturn(2);
         Mockito.when(multiplication.getPriority()).thenReturn(3);
@@ -59,7 +65,7 @@ public class ReversePolishNotationParserTest {
     }
 
     @Test
-    public void formatToReversedPolishNotation_EquationWithEqualPriorityLeftAssociativeOperators_RPNFormat() throws InvalidComponentException
+    public void formatToReversedPolishNotation_EquationWithEqualPriorityLeftAssociativeOperators_RPNFormat()
     {
         Mockito.when(multiplication.getPriority()).thenReturn(3);
         Mockito.when(multiplication.isLeftAssociative()).thenReturn(true);
@@ -72,7 +78,7 @@ public class ReversePolishNotationParserTest {
     }
 
     @Test
-    public void formatToReversedPolishNotation_EquationWithBrackets_RPNFormat() throws InvalidComponentException
+    public void formatToReversedPolishNotation_EquationWithBrackets_RPNFormat()
     {
 
         List<EquationComponent> input=new LinkedList<>(Arrays.asList(openingBracket,firstNumber,addition,secondNumber,closingBracket,multiplication,thirdNumber));
@@ -83,7 +89,7 @@ public class ReversePolishNotationParserTest {
     }
 
     @Test
-    public void formatToReversedPolishNotation_EquationWithLeftAndRightAssociativeOperators_RPNFormat() throws InvalidComponentException
+    public void formatToReversedPolishNotation_EquationWithLeftAndRightAssociativeOperators_RPNFormat()
     {
         Mockito.when(multiplication.getPriority()).thenReturn(3);
         Mockito.when(power.getPriority()).thenReturn(4);

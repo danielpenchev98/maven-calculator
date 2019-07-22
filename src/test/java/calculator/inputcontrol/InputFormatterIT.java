@@ -17,20 +17,21 @@ public class InputFormatterIT {
 
     private InputFormatter parser;
 
-    private final NumberComponent firstNumber=new NumberComponent("-1.0");
-
-    private final NumberComponent secondNumber=new NumberComponent("2.0");
-
-    private final Addition addition=new Addition();
-
-    private final OpeningBracket openingBracket=new OpeningBracket();
-
-    private final ClosingBracket closingBracket=new ClosingBracket();
+    private NumberComponent firstNumber;
+    private NumberComponent secondNumber;
+    private Addition addition;
+    private OpeningBracket openingBracket;
+    private ClosingBracket closingBracket;
 
     @Before
     public void setUp()
     {
         parser= new InputFormatter(new EquationStructureValidator(),new EquationComponentFactory());
+        firstNumber=new NumberComponent("-1.0");
+        secondNumber=new NumberComponent("2.0");
+        addition=new Addition();
+        openingBracket=new OpeningBracket();
+        closingBracket=new ClosingBracket();
     }
 
     @Test

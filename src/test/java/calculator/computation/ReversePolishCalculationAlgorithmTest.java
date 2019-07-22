@@ -33,8 +33,6 @@ public class ReversePolishCalculationAlgorithmTest {
     @Mock
     Power power;
 
-
-
     @Before
     public void setUp() {
         algorithm=new ReversePolishCalculationAlgorithm();
