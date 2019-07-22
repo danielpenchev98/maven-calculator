@@ -6,6 +6,6 @@ public class OpeningBracket implements EquationComponent {
     @Override
     public boolean equals(Object obj)
     {
-        return obj instanceof OpeningBracket;
+        return obj!=null&&getClass()==obj.getClass();
     }
 }

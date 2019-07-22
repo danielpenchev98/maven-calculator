@@ -42,7 +42,7 @@ public class Subtraction implements MathArithmeticOperator {
     @Override
     public boolean equals(Object obj)
     {
-        return obj instanceof Subtraction;
+        return obj!=null&&getClass()==obj.getClass();
     }
 
 }

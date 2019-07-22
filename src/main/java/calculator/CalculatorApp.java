@@ -2,6 +2,7 @@ package calculator;
 
 
 import calculator.computation.EquationComponent;
+import calculator.computation.EquationComponentFactory;
 import calculator.computation.ReversePolishCalculationAlgorithm;
 import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidEquationException;
@@ -25,9 +26,9 @@ class CalculatorApp {
      */
     double calculateResult(final String equation) throws InvalidEquationException, InvalidComponentException
     {
-
         EquationStructureValidator structureValidator=new EquationStructureValidator();
-        InputFormatter formatter = new InputFormatter(structureValidator);
+        EquationComponentFactory factory=new EquationComponentFactory();
+        InputFormatter formatter = new InputFormatter(structureValidator,factory);
         List<EquationComponent> formattedInput = formatter.doFormat(equation);
 
         ReversePolishNotationParser specialParser=new ReversePolishNotationParser();

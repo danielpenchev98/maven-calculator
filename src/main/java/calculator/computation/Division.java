@@ -49,6 +49,6 @@ public class Division implements MathArithmeticOperator {
     @Override
     public boolean equals(Object obj)
     {
-        return obj instanceof Division;
+        return obj!=null&&getClass()==obj.getClass();
     }
 }

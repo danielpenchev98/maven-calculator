@@ -43,7 +43,7 @@ public class Multiplication implements MathArithmeticOperator {
     @Override
     public boolean equals(Object obj)
     {
-        return obj instanceof Multiplication;
+        return obj!=null&&getClass()==obj.getClass();
     }
 
 }

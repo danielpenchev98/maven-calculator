@@ -6,6 +6,6 @@ public class ClosingBracket implements EquationComponent {
    @Override
    public boolean equals(Object obj)
    {
-      return obj instanceof ClosingBracket;
+      return obj!=null&&getClass()==obj.getClass();
    }
 }

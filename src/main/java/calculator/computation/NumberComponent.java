@@ -17,9 +17,8 @@ public class NumberComponent implements EquationComponent {
     @Override
     public boolean equals(Object obj)
     {
-        if(obj instanceof NumberComponent){
-
-            return value.equals(((NumberComponent) obj).value);
+        if(obj!=null&&getClass()==obj.getClass()) {
+          return  value.equals(((NumberComponent) obj).value);
         }
         return false;
     }
