@@ -25,34 +25,19 @@ public class InputFormatter {
         componentFactory=factory;
     }
 
-    /**
-     * @param equation - unformatted input
-     * @return formatted input
-     */
     public List<EquationComponent> doFormat(final String equation) throws InvalidComponentException, InvalidEquationException {
 
-        List<String> stringComponents= new LinkedList<>(Arrays.asList(getComponentsAsStrings(equation)));
-        structureValidator.validateEquationStructure(stringComponents);
-        return covertToEquationComponents(stringComponents);
+        List<String> components= new LinkedList<>(Arrays.asList(extractComponents(equation)));
+        structureValidator.validateEquationStructure(components);
+        return convertToEquationComponentObjects(components);
     }
 
-    private String[] getComponentsAsStrings(final String equation)
+    private String[] extractComponents(final String equation)
     {
         final String componentSeparator=" ";
         String firstStep = addSpaceAfterEveryComponent(equation);
         String secondStep = removeJunkSpaces(firstStep);
         return removeSpaceBetweenTheNumberAndItsSign(secondStep).split(componentSeparator);
-    }
-
-
-    private List<EquationComponent> covertToEquationComponents(final List<String> stringComponents) throws InvalidComponentException
-    {
-        List<EquationComponent> components=new LinkedList<>();
-        for(String component:stringComponents)
-        {
-            components.add(componentFactory.createComponent(component));
-        }
-        return components;
     }
 
     private String removeJunkSpaces(String equation)
@@ -69,5 +54,16 @@ public class InputFormatter {
     {
         return equation.replaceAll("([(] |^)- ([0-9]+)","$1-$2");
     }
+
+    private List<EquationComponent> convertToEquationComponentObjects(final List<String> components) throws InvalidComponentException
+    {
+        List<EquationComponent> formattedComponents=new LinkedList<>();
+        for(String component:components)
+        {
+            formattedComponents.add(componentFactory.createComponent(component));
+        }
+        return formattedComponents;
+    }
+
 
 }

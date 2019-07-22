@@ -43,7 +43,6 @@ public class EquationStructureValidator {
         }
     }
 
-
     private boolean hasSequentialTypeOfComponents(final String equation)
     {
         return equation.matches(".*([^0-9.a-zA-Z() ]+[ ]*[^0-9.a-zA-Z() ]+|[0-9.a-zA-Z]+[ ]+[0-9.a-zA-Z]+).*");
