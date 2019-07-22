@@ -57,8 +57,8 @@ public class ReversePolishCalculationAlgorithm {
 
     private void executeOperation(final EquationComponent operator) throws EmptyStackException
     {
-        double leftNumber = Double.valueOf(((NumberComponent)supplier.pop()).getValue());
         double rightNumber = Double.valueOf(((NumberComponent)supplier.pop()).getValue());
+        double leftNumber = Double.valueOf(((NumberComponent)supplier.pop()).getValue());
         double result = ((MathArithmeticOperator)operator).compute(leftNumber,rightNumber);
         supplier.add(new NumberComponent(String.valueOf(result)));
     }
