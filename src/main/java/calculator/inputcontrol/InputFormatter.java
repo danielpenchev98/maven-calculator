@@ -17,16 +17,14 @@ public class InputFormatter {
 
     private EquationStructureValidator structureValidator;
 
+    private EquationComponentFactory componentFactory;
 
-    public InputFormatter()
+    public InputFormatter(final EquationStructureValidator validator, final EquationComponentFactory factory)
     {
-        structureValidator=new EquationStructureValidator();
+        structureValidator=validator;
+        componentFactory=factory;
     }
 
-    public InputFormatter(final EquationStructureValidator structureValidator)
-    {
-        this.structureValidator=structureValidator;
-    }
     /**
      * @param equation - unformatted input
      * @return formatted input
@@ -34,9 +32,7 @@ public class InputFormatter {
     public List<EquationComponent> doFormat(final String equation) throws InvalidComponentException, InvalidEquationException {
 
         List<String> stringComponents= new LinkedList<>(Arrays.asList(getComponentsAsStrings(equation)));
-
         structureValidator.validateEquationStructure(stringComponents);
-
         return covertToEquationComponents(stringComponents);
     }
 
@@ -52,10 +48,9 @@ public class InputFormatter {
     private List<EquationComponent> covertToEquationComponents(final List<String> stringComponents) throws InvalidComponentException
     {
         List<EquationComponent> components=new LinkedList<>();
-        EquationComponentFactory factory=new EquationComponentFactory();
         for(String component:stringComponents)
         {
-            components.add(factory.createComponent(component));
+            components.add(componentFactory.createComponent(component));
         }
         return components;
     }
