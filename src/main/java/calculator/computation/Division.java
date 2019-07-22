@@ -4,7 +4,7 @@ import calculator.exceptions.DivisionByZeroException;
 
 public class Division implements MathArithmeticOperator {
 
-    private final static int PRIORITY=3;
+    final static int PRIORITY=3;
     final static String SYMBOL="/";
     /**
      * @param firstNumber - first argument of the mathematical operation /
@@ -36,14 +36,6 @@ public class Division implements MathArithmeticOperator {
     @Override
     public boolean isLeftAssociative() {
         return true;
-    }
-
-    /**
-     * @return get the special symbol of operator
-     */
-    @Override
-    public String getSymbol() {
-        return Division.SYMBOL;
     }
 
     @Override

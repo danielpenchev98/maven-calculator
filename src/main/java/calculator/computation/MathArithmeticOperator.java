@@ -24,8 +24,4 @@ public interface MathArithmeticOperator extends EquationComponent {
       */
      boolean isLeftAssociative();
 
-     /**
-      * @return get the special symbol of operator
-      */
-     String getSymbol();
 }

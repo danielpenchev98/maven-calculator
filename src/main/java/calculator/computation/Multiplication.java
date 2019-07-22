@@ -3,7 +3,7 @@ package calculator.computation;
 
 public class Multiplication implements MathArithmeticOperator {
 
-    private final static int PRIORITY=3;
+    final static int PRIORITY=3;
     final static String SYMBOL="*";
     /**
      * @param firstNumber - first argument of the mathematical operation *
@@ -32,13 +32,6 @@ public class Multiplication implements MathArithmeticOperator {
         return true;
     }
 
-    /**
-     * @return get the special symbol of operator
-     */
-    @Override
-    public String getSymbol() {
-        return Multiplication.SYMBOL;
-    }
 
     @Override
     public boolean equals(Object obj)

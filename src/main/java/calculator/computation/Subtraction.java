@@ -2,7 +2,7 @@ package calculator.computation;
 
 public class Subtraction implements MathArithmeticOperator {
 
-    private final static int PRIORITY=2;
+    final static int PRIORITY=2;
     final static String SYMBOL="-";
     /**
      * @param firstNumber - first argument of the mathematical operation -
@@ -29,14 +29,6 @@ public class Subtraction implements MathArithmeticOperator {
     @Override
     public boolean isLeftAssociative() {
         return true;
-    }
-
-    /**
-     * @return get the special symbol of operator
-     */
-    @Override
-    public String getSymbol() {
-        return Subtraction.SYMBOL;
     }
 
     @Override

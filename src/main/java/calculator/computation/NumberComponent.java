@@ -2,7 +2,7 @@ package calculator.computation;
 
 public class NumberComponent implements EquationComponent {
 
-    private final String value;
+    private String value;
 
     public NumberComponent(final String value)
     {

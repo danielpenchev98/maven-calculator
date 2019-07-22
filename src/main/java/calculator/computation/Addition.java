@@ -2,7 +2,7 @@ package calculator.computation;
 
 public class Addition implements MathArithmeticOperator {
 
-    private final static int PRIORITY=2;
+    final static int PRIORITY=2;
     final static String SYMBOL="+";
     /**
      * @param firstNumber - first argument of the mathematical operation +
@@ -30,14 +30,6 @@ public class Addition implements MathArithmeticOperator {
     @Override
     public boolean isLeftAssociative() {
         return true;
-    }
-
-    /**
-     * @return get the special symbol of operator
-     */
-    @Override
-    public String getSymbol() {
-        return Addition.SYMBOL;
     }
 
     @Override
