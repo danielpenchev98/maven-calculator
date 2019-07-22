@@ -9,19 +9,13 @@ import java.util.Stack;
 
 public class ReversePolishCalculationAlgorithm {
 
-    private Stack<EquationComponent> supplier;
+    private Stack<NumberComponent> supplier;
 
     public ReversePolishCalculationAlgorithm()
     {
         supplier=new Stack<>();
     }
 
-    /**
-     * Help function which implements the logic of Reversed Polish Notation for calculating an eqiation
-     * @param components - array of Strings, consisting items, representing a component of an equation
-     * @return result of the equation
-     * @throws Exception - error during the reverse polish notation calculation
-     */
     public double calculateEquation(final List<EquationComponent> components) throws EmptyStackException, InvalidEquationException,InvalidComponentException
     {
 
@@ -32,7 +26,7 @@ public class ReversePolishCalculationAlgorithm {
             throw new InvalidEquationException("Invalid equation. Logical error. There aren't enough operators");
         }
 
-        return Double.valueOf(((NumberComponent)supplier.pop()).getValue());
+        return getNextNumberFromSupplier();
     }
 
     private void handleComponents(final List<EquationComponent> components) throws InvalidComponentException
@@ -40,26 +34,30 @@ public class ReversePolishCalculationAlgorithm {
         for (EquationComponent component : components) {
             if (component instanceof NumberComponent)
             {
-                supplier.add(component);
+                supplier.add((NumberComponent) component);
             }
             else if (component instanceof MathArithmeticOperator)
             {
-                executeOperation(component);
+                executeOperation((MathArithmeticOperator)component);
             }
             else
             {
-                throw new InvalidComponentException("Invalid component of RPN found during execution of the algorithm");
+                throw new InvalidComponentException("Error. There shouldn't be any components different from numbers and math arithmetic operators");
             }
         }
     }
 
-    //TODO i dont need computational machine - i can use the operator method directly
-
-    private void executeOperation(final EquationComponent operator) throws EmptyStackException
+    private void executeOperation(final MathArithmeticOperator operator) throws EmptyStackException
     {
-        double rightNumber = Double.valueOf(((NumberComponent)supplier.pop()).getValue());
-        double leftNumber = Double.valueOf(((NumberComponent)supplier.pop()).getValue());
-        double result = ((MathArithmeticOperator)operator).compute(leftNumber,rightNumber);
+        double rightNumber = getNextNumberFromSupplier();
+        double leftNumber = getNextNumberFromSupplier();
+        double result = operator.compute(leftNumber,rightNumber);
         supplier.add(new NumberComponent(String.valueOf(result)));
+    }
+
+    private double getNextNumberFromSupplier()
+    {
+        String number=supplier.pop().getValue();
+        return Double.valueOf(number);
     }
 }
