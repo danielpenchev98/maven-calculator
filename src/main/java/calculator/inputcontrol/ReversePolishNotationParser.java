@@ -1,7 +1,6 @@
 package calculator.inputcontrol;
 
 import calculator.computation.*;
-import calculator.exceptions.InvalidComponentException;
 
 import java.util.EmptyStackException;
 import java.util.LinkedList;
@@ -33,41 +32,82 @@ public class ReversePolishNotationParser {
      * @param components infix notation
      * @return reverse polish notation
      */
-
-    public List<EquationComponent> formatFromInfixToReversedPolishNotation(final List<EquationComponent> components) throws EmptyStackException, InvalidComponentException
+    public List<EquationComponent> formatFromInfixToReversedPolishNotation(final List<EquationComponent> components) throws EmptyStackException
     {
         for(EquationComponent component:components)
         {
-            if(component instanceof NumberComponent)
-            {
-                addComponentToEquation(component);
-            }
-            else if (component instanceof MathArithmeticOperator)
-            {
-                addOperatorsFromContainerDependingOnPriorityAndAssociativity((MathArithmeticOperator) component);
-                operatorContainer.add( component);
-            }
-            else if(component instanceof ClosingBracket)
-            {
-                addOperatorsFromContainerToEquationTillOpeningBracketIsFound();
-            }
-            else
-            {
-                operatorContainer.add(component);
-            }
+           processComponent(component);
         }
         addAllOperatorsLeftInTheContainerToEquation();
 
         return reversedPolishEquation;
     }
 
-    private void addAllOperatorsLeftInTheContainerToEquation() {
-
-        while( hasSpareOperators() )
+    private void processComponent(final EquationComponent component)
+    {
+        if(component instanceof NumberComponent)
         {
-            addComponentToEquation(operatorContainer.pop());
+            addComponentToEquation(component);
+        }
+        else if (component instanceof MathArithmeticOperator)
+        {
+            addOperatorsFromContainerDependingOnPriorityAndAssociativity((MathArithmeticOperator) component);
+            addComponentToContainer(component);
+        }
+        else if(component instanceof ClosingBracket)
+        {
+            addOperatorsFromContainerToEquationTillOpeningBracketIsFound();
+        }
+        else
+        {
+            addComponentToContainer(component);
         }
     }
+
+    private void addComponentToEquation(final EquationComponent component)
+    {
+        reversedPolishEquation.add(component);
+    }
+
+    private void addComponentToContainer(final EquationComponent component)
+    {
+        operatorContainer.push(component);
+    }
+
+    private boolean hasSpareOperators()
+    {
+        return operatorContainer.size()>0;
+    }
+
+    private void addOperatorsFromContainerDependingOnPriorityAndAssociativity(final MathArithmeticOperator component)
+    {
+        while ( hasSpareOperators()&& shouldTransferOperatorsFromContainerToEquation(component)) {
+
+            addComponentToEquation( operatorContainer.pop());
+
+        }
+    }
+
+    private boolean shouldTransferOperatorsFromContainerToEquation(final MathArithmeticOperator component)
+    {
+        if(operatorContainer.peek() instanceof OpeningBracket)
+        {
+            return false;
+        }
+
+        MathArithmeticOperator nextOperatorInContainer =(MathArithmeticOperator) operatorContainer.peek();
+        int differenceInPriority = calculateDifferenceInPriority(nextOperatorInContainer,component);
+        final boolean firstCondition = differenceInPriority<0;
+        final boolean secondCondition = differenceInPriority==0 && nextOperatorInContainer.isLeftAssociative();
+
+        return firstCondition || secondCondition;
+    }
+
+    private int calculateDifferenceInPriority(final MathArithmeticOperator leftOperator,final MathArithmeticOperator rightOperator)
+    {
+        return leftOperator.getPriority() - rightOperator.getPriority();
+    }
+
 
     private void addOperatorsFromContainerToEquationTillOpeningBracketIsFound(){
 
@@ -78,40 +118,11 @@ public class ReversePolishNotationParser {
         operatorContainer.pop();
     }
 
-    private void addOperatorsFromContainerDependingOnPriorityAndAssociativity(final MathArithmeticOperator component)
-    {
-        while ( hasSpareOperators()&& (operatorContainer.peek()) instanceof MathArithmeticOperator ) {
+    private void addAllOperatorsLeftInTheContainerToEquation() {
 
-            MathArithmeticOperator nextOperatorInContainer =(MathArithmeticOperator) operatorContainer.peek();
-            final boolean lowerPriority=hasLowerPriority(nextOperatorInContainer, component);
-            final boolean equalPriorityAndLeftAssociative = hasEqualPriority(nextOperatorInContainer, component) && nextOperatorInContainer.isLeftAssociative();
-
-            if( lowerPriority || equalPriorityAndLeftAssociative ) {
-                operatorContainer.pop();
-                addComponentToEquation(nextOperatorInContainer);
-                continue;
-            }
-            break;
+        while( hasSpareOperators() )
+        {
+            addComponentToEquation(operatorContainer.pop());
         }
-    }
-
-    private void addComponentToEquation(final EquationComponent component)
-    {
-        reversedPolishEquation.add(component);
-    }
-
-    private boolean hasLowerPriority(final MathArithmeticOperator previousOperator,final MathArithmeticOperator currentOperator)
-    {
-        return previousOperator.getPriority() > currentOperator.getPriority();
-    }
-
-    private boolean hasEqualPriority(final MathArithmeticOperator previousOperator,final MathArithmeticOperator currentOperator)
-    {
-        return previousOperator.getPriority() == currentOperator.getPriority();
-    }
-
-    private boolean hasSpareOperators()
-    {
-        return operatorContainer.size()>0;
     }
 }
