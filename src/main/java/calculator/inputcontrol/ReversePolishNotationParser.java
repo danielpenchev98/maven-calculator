@@ -18,7 +18,6 @@ public class ReversePolishNotationParser {
     {
         operatorContainer=new Stack<>();
         reversedPolishEquation=new LinkedList<>();
-
     }
 
     /**
