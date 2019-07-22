@@ -14,16 +14,11 @@ public class ReversePolishNotationParser {
 
     private List<EquationComponent> reversedPolishEquation;
 
-    private ComponentValidator checker;
-
-    private EquationComponentFactory operatorFactory;
-
-    public ReversePolishNotationParser(final ComponentValidator validator,final EquationComponentFactory factory)
+    public ReversePolishNotationParser()
     {
         operatorContainer=new Stack<>();
         reversedPolishEquation=new LinkedList<>();
-        checker=validator;
-        operatorFactory=factory;
+
     }
 
     /**

@@ -20,7 +20,7 @@ public class EquationComponentFactory {
             case Multiplication.SYMBOL: return new Multiplication();
             case Division.SYMBOL:return new Division();
             case Power.SYMBOL:return new Power();
-            default: throw new InvalidComponentException("Unsupported operation");
+            default: throw new InvalidComponentException("Unsupported component :"+operation);
         }
     }
 }

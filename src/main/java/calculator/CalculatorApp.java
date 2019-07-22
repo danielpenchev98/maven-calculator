@@ -1,12 +1,13 @@
 package calculator;
 
 
-import calculator.computation.ComputationalMachine;
-import calculator.computation.EquationComponentFactory;
+import calculator.computation.EquationComponent;
 import calculator.computation.ReversePolishCalculationAlgorithm;
 import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidEquationException;
-import calculator.inputcontrol.*;
+import calculator.inputcontrol.EquationStructureValidator;
+import calculator.inputcontrol.InputFormatter;
+import calculator.inputcontrol.ReversePolishNotationParser;
 
 import java.util.List;
 
@@ -24,16 +25,15 @@ class CalculatorApp {
      */
     double calculateResult(final String equation) throws InvalidEquationException, InvalidComponentException
     {
-        ComponentValidator componentValidator=new ComponentValidator();
+
         EquationStructureValidator structureValidator=new EquationStructureValidator();
-        InputFormatter formatter = new InputFormatter(structureValidator,componentValidator);
-        List<String> formattedInput = formatter.doFormat(equation);
+        InputFormatter formatter = new InputFormatter(structureValidator);
+        List<EquationComponent> formattedInput = formatter.doFormat(equation);
 
-        ReversePolishNotationParser specialParser=new ReversePolishNotationParser(componentValidator,new EquationComponentFactory());
-        List<String> reversePolishFormatEquation = specialParser.formatFromInfixToReversedPolishNotation(formattedInput);
+        ReversePolishNotationParser specialParser=new ReversePolishNotationParser();
+        List<EquationComponent> reversePolishFormatEquation = specialParser.formatFromInfixToReversedPolishNotation(formattedInput);
 
-        ComputationalMachine calculator= new ComputationalMachine(new EquationComponentFactory());
-        ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm(calculator,componentValidator);
+        ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm();
 
         return algorithm.calculateEquation(reversePolishFormatEquation);
     }

@@ -16,19 +16,16 @@ import java.util.List;
 public class InputFormatter {
 
     private EquationStructureValidator structureValidator;
-    private ComponentValidator componentValidator;
 
 
     public InputFormatter()
     {
         structureValidator=new EquationStructureValidator();
-        componentValidator=new ComponentValidator();
     }
 
-    public InputFormatter(final EquationStructureValidator structureValidator,final ComponentValidator componentValidator)
+    public InputFormatter(final EquationStructureValidator structureValidator)
     {
         this.structureValidator=structureValidator;
-        this.componentValidator=componentValidator;
     }
     /**
      * @param equation - unformatted input
@@ -38,7 +35,7 @@ public class InputFormatter {
 
         List<String> stringComponents= new LinkedList<>(Arrays.asList(getComponentsAsStrings(equation)));
 
-        validateInput(stringComponents);
+        structureValidator.validateEquationStructure(stringComponents);
 
         return covertToEquationComponents(stringComponents);
     }
@@ -51,13 +48,6 @@ public class InputFormatter {
         return removeSpaceBetweenTheNumberAndItsSign(secondStep).split(componentSeparator);
     }
 
-    private void validateInput(final List<String> unformattedComponents) throws InvalidEquationException,InvalidComponentException
-    {
-        //to Replace componentValidator
-        componentValidator.validateComponents(unformattedComponents);
-
-        structureValidator.validateEquationStructure(unformattedComponents);
-    }
 
     private List<EquationComponent> covertToEquationComponents(final List<String> stringComponents) throws InvalidComponentException
     {
@@ -77,7 +67,7 @@ public class InputFormatter {
 
     private String addSpaceAfterEveryComponent(String equation)
     {
-        return equation.replaceAll("([0-9]+([.][0-9]*)?|[^0-9a-zA-Z ]|[a-zA-Z]+)","$1 ");
+        return equation.replaceAll("([0-9]+([.][0-9]*)*|[^0-9.a-zA-Z ]|[a-zA-Z]+)","$1 ");
     }
 
     private String removeSpaceBetweenTheNumberAndItsSign(String equation)

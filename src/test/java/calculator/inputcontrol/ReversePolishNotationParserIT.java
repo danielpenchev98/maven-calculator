@@ -21,9 +21,7 @@ public class ReversePolishNotationParserIT {
     @Before
     public void setUp()
     {
-        ComponentValidator validator = new ComponentValidator();
-        EquationComponentFactory operatorFactory = new EquationComponentFactory();
-        parserRPN=new ReversePolishNotationParser(validator, operatorFactory);
+        parserRPN=new ReversePolishNotationParser();
     }
 
 
@@ -159,8 +157,7 @@ public class ReversePolishNotationParserIT {
         input.add(new Power());
         input.add(number);
 
-        List<EquationComponent> expected=new LinkedList<>();//Arrays.asList("2","2","2","^","/"));
-        expected.add(number);
+        List<EquationComponent> expected=new LinkedList<>();
         expected.add(number);
         expected.add(number);
         expected.add(new Power());

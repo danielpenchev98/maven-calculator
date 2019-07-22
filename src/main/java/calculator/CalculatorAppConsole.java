@@ -13,7 +13,7 @@ public class CalculatorAppConsole {
         }
         catch (Exception ex)
         {
-
+            System.out.println(ex.getMessage());
         }
             // application.processEquationAndCalculateResult();
         //application.printResult(String)

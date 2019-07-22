@@ -2,8 +2,6 @@ package calculator.computation;
 
 import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidEquationException;
-import calculator.exceptions.InvalidParameterException;
-import calculator.inputcontrol.ComponentValidator;
 
 import java.util.EmptyStackException;
 import java.util.List;
@@ -11,15 +9,10 @@ import java.util.Stack;
 
 public class ReversePolishCalculationAlgorithm {
 
-    private ComputationalMachine calculator;
-    private ComponentValidator validator;
-    private Stack<String> supplier;
+    private Stack<EquationComponent> supplier;
 
-
-    public ReversePolishCalculationAlgorithm(final ComputationalMachine machine,final ComponentValidator validatingLogic)
+    public ReversePolishCalculationAlgorithm()
     {
-        calculator=machine;
-        validator=validatingLogic;
         supplier=new Stack<>();
     }
 
@@ -29,10 +22,9 @@ public class ReversePolishCalculationAlgorithm {
      * @return result of the equation
      * @throws Exception - error during the reverse polish notation calculation
      */
-    public double calculateEquation(final List<String> components) throws EmptyStackException, InvalidEquationException,InvalidComponentException
+    public double calculateEquation(final List<EquationComponent> components) throws EmptyStackException, InvalidEquationException,InvalidComponentException
     {
 
-        //TODO make polymorphism with Enums, maybe
         handleComponents(components);
 
         if(supplier.size()!=1)
@@ -40,29 +32,34 @@ public class ReversePolishCalculationAlgorithm {
             throw new InvalidEquationException("Invalid equation. Logical error. There aren't enough operators");
         }
 
-        return Double.valueOf(supplier.pop());
+        return Double.valueOf(((NumberComponent)supplier.pop()).getValue());
     }
 
-    private void handleComponents(final List<String> components) throws InvalidComponentException
+    private void handleComponents(final List<EquationComponent> components) throws InvalidComponentException
     {
-        for (String component : components) {
-            if (validator.isValidNumber(component))
+        for (EquationComponent component : components) {
+            if (component instanceof NumberComponent)
             {
                 supplier.add(component);
             }
-            else
+            else if (component instanceof MathArithmeticOperator)
             {
                 executeOperation(component);
+            }
+            else
+            {
+                throw new InvalidComponentException("Invalid component of RPN found during execution of the algorithm");
             }
         }
     }
 
-    private void executeOperation(final String operator) throws InvalidComponentException, EmptyStackException
-    {
-        double leftNumber = Double.valueOf(supplier.pop());
-        double rightNumber = Double.valueOf(supplier.pop());
-        double result = calculator.computeAction(operator,rightNumber,leftNumber);
-        supplier.add(String.valueOf(result));
-    }
+    //TODO i dont need computational machine - i can use the operator method directly
 
+    private void executeOperation(final EquationComponent operator) throws EmptyStackException
+    {
+        double leftNumber = Double.valueOf(((NumberComponent)supplier.pop()).getValue());
+        double rightNumber = Double.valueOf(((NumberComponent)supplier.pop()).getValue());
+        double result = ((MathArithmeticOperator)operator).compute(leftNumber,rightNumber);
+        supplier.add(new NumberComponent(String.valueOf(result)));
+    }
 }
