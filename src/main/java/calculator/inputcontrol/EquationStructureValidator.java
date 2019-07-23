@@ -7,26 +7,29 @@ import java.util.List;
 
 public class EquationStructureValidator {
 
+
+    //Every character different from digit, brackets and letters are assumed to be operators
     public  void validateEquationStructure(final List<String> formattedEquation) throws InvalidEquationException
     {
+        String message=null;
+        if(hasBracketDisbalance(formattedEquation))
+        {
+            message = "The equation is missing brackets";
+        }
+
         String equation= Arrays.toString(formattedEquation.toArray()).replaceAll("\\[|\\]|,","");
 
-        String message=null;
         if(equation.equals(""))
         {
             message = "Empty equation";
-        }
-        else if(!hasBracketBalance(equation))
-        {
-            message = "The equation is missing brackets";
         }
         else if(hasSequentialTypeOfComponents(equation))
         {
             message = "Sequential operators has been found";
         }
-        else if(hasNonOperatorBeforeBracket(equation)||hasNonOperatorAfterBracket(equation))
+        else if(hasNonOperatorBeforeOrAfterBracket(equation))
         {
-            message = "There should be a operator between a number and opening bracket or between a closing bracket and a number in that order";
+            message = "There should be an operator between a number and an opening bracket or between a closing bracket and a number in that order";
         }
         else if(hasEmptyBrackets(equation))
         {
@@ -53,9 +56,9 @@ public class EquationStructureValidator {
         return equation.matches(".*[(] [)].*");
     }
 
-    private boolean hasNonOperatorBeforeBracket(final String equation)
+    private boolean hasNonOperatorBeforeOrAfterBracket(final String equation)
     {
-        return equation.matches(".*[0-9.a-zA-Z)] [(].*");
+        return equation.matches(".*[0-9.a-zA-Z)] [(].*|.*[)] [0-9.a-zA-Z(].*");
     }
 
     private boolean hasOperatorAfterOpeningOrBeforeClosingBracket(final String equation)
@@ -63,31 +66,26 @@ public class EquationStructureValidator {
         return equation.matches(".* [^0-9.a-zA-Z)(] [)].*|.*[(] [^0-9.a-zA-Z)(] .*");
     }
 
-    private boolean hasNonOperatorAfterBracket(final String equation)
-    {
-        return equation.matches(".*[)] [0-9.a-zA-Z(].*");
-    }
-
-    private boolean hasBracketBalance(String input)
+    private boolean hasBracketDisbalance(final List<String> equation)
     {
         int bracketBalance=0;
 
-        for(char item:input.toCharArray())
+        for(String item:equation)
         {
-            if(item=='(')
+            if(item.equals("("))
             {
                 bracketBalance++;
             }
-            else if(item==')')
+            else if(item.equals(")"))
             {
                 if(bracketBalance==0)
                 {
-                    return false;
+                    return true;
                 }
                 bracketBalance--;
             }
         }
-        return bracketBalance==0;
+        return bracketBalance!=0;
     }
 
 }
