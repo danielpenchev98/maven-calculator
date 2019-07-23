@@ -4,6 +4,7 @@ import calculator.computation.*;
 import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidEquationException;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -11,7 +12,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -33,6 +33,9 @@ public class InputFormatterTest {
     private OpeningBracket openingBracket;
     private ClosingBracket closingBracket;
 
+    @BeforeClass
+
+
     @Before
     public void setUp()
     {
@@ -51,7 +54,7 @@ public class InputFormatterTest {
         Mockito.when(factory.createComponent("2.0")).thenReturn(secondNumber);
         Mockito.when(factory.createComponent("+")).thenReturn(addition);
 
-        List<EquationComponent> expected=new LinkedList<>(Arrays.asList(firstNumber,addition,secondNumber));
+        List<EquationComponent> expected=Arrays.asList(firstNumber,addition,secondNumber);
         assertEquals( expected,parser.doFormat("-1.0 +     2.0"));
     }
 
@@ -64,7 +67,7 @@ public class InputFormatterTest {
         Mockito.when(factory.createComponent("2.0")).thenReturn(secondNumber);
         Mockito.when(factory.createComponent(")")).thenReturn(closingBracket);
 
-        List<EquationComponent> expected=new LinkedList<>(Arrays.asList(openingBracket,firstNumber,addition,secondNumber,closingBracket));
+        List<EquationComponent> expected=Arrays.asList(openingBracket,firstNumber,addition,secondNumber,closingBracket);
         assertEquals(expected,parser.doFormat("(-1.0+2.0)"));
     }
 
@@ -77,7 +80,7 @@ public class InputFormatterTest {
         Mockito.when(factory.createComponent("-1.0")).thenReturn(firstNumber);
         Mockito.when(factory.createComponent(")")).thenReturn(closingBracket);
 
-        List<EquationComponent> expected=new LinkedList<>(Arrays.asList(secondNumber,addition,openingBracket,firstNumber,closingBracket));
+        List<EquationComponent> expected=Arrays.asList(secondNumber,addition,openingBracket,firstNumber,closingBracket);
         assertEquals(expected,parser.doFormat("2.0 + ( - 1.0 )"));
     }
 

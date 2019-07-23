@@ -38,7 +38,7 @@ public class EquationStructureValidatorTest {
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_EquationWithClosingBracketNextToOpeningBracket_Legal() throws Exception
     {
-        List<String> input=new LinkedList<>(Arrays.asList("(","(","10","+","20",")","(","-5",")",")"));
+        List<String> input=Arrays.asList("(","(","10","+","20",")","(","-5",")",")");
         validator.validateEquationStructure(input);
     }
 
@@ -52,28 +52,28 @@ public class EquationStructureValidatorTest {
 
     @Test
     public void validateEquationStructure_SimpleEquation_Illegal() throws Exception {
-        List<String> input=new LinkedList<>(Arrays.asList("(","(","-1","+","5","+","2",")",")"));
+        List<String> input=Arrays.asList("(","(","-1","+","5","+","2",")",")");
         validator.validateEquationStructure(input);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_EquationOnlyWithOperatorInTheBrackets_Illegal() throws Exception
     {
-        List<String> input=new LinkedList<>(Arrays.asList("(","+",")","+","1"));
+        List<String> input=Arrays.asList("(","+",")","+","1");
         validator.validateEquationStructure(input);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_EquationWithSequentialOperators_Illegal() throws Exception
     {
-        List<String> input=new LinkedList<>(Arrays.asList("2","+","+","1"));
+        List<String> input=Arrays.asList("2","+","+","1");
         validator.validateEquationStructure(input);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_EquationWithEmptyBrackets_Illegal() throws Exception
     {
-        List<String> input=new LinkedList<>(Arrays.asList("(",")","+","2"));
+        List<String> input=Arrays.asList("(",")","+","2");
         validator.validateEquationStructure(input);
     }
 
@@ -88,21 +88,21 @@ public class EquationStructureValidatorTest {
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_EquationWithMissingBracket_Illegal() throws Exception
     {
-        List<String> input=new LinkedList<>(Arrays.asList("(","(","2.0","+","1",")"));
+        List<String> input=Arrays.asList("(","(","2.0","+","1",")");
         validator.validateEquationStructure(input);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_OperatorAfterOpeningBracket_Illegal() throws Exception
     {
-        List<String> input=new LinkedList<>(Arrays.asList("(","+","1",")"));
+        List<String> input=Arrays.asList("(","+","1",")");
         validator.validateEquationStructure(input);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_OperatorBeforeClosingBracket_Illegal() throws Exception
     {
-        List<String> input=new LinkedList<>(Arrays.asList("(","1","+",")"));
+        List<String> input=Arrays.asList("(","1","+",")");
         validator.validateEquationStructure(input);
     }
 
