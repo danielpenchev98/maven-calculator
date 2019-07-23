@@ -27,30 +27,31 @@ public class InputFormatter {
 
     public List<EquationComponent> doFormat(final String equation) throws InvalidComponentException, InvalidEquationException {
 
-        List<String> components= new LinkedList<>(Arrays.asList(extractComponents(equation)));
+        List<String> components= extractComponents(equation);
         structureValidator.validateEquationStructure(components);
         return convertToEquationComponentObjects(components);
     }
 
-    private String[] extractComponents(final String equation)
+    private List<String> extractComponents(final String equation)
     {
         final String componentSeparator=" ";
-        String firstStep = addSpaceAfterEveryComponent(equation);
-        String secondStep = removeJunkSpaces(firstStep);
-        return removeSpaceBetweenTheNumberAndItsSign(secondStep).split(componentSeparator);
+        String equationWithPaddingBetweenComponents = addSpaceAfterEveryComponent(equation);
+        String[] components = removeSpaceBetweenTheNumberAndItsSign(equationWithPaddingBetweenComponents).split(componentSeparator);
+        return Arrays.asList(components);
     }
 
-    private String removeJunkSpaces(String equation)
+    private String removeJunkSpaces(final String equation)
     {
         return equation.replaceAll("[ ]+"," ").trim();
     }
 
-    private String addSpaceAfterEveryComponent(String equation)
+    private String addSpaceAfterEveryComponent(final String equation)
     {
-        return equation.replaceAll("([0-9]+([.][0-9]*)*|[^0-9.a-zA-Z ]|[a-zA-Z]+)","$1 ");
+        String equationWithPossiblyJunkSpaces = equation.replaceAll("([0-9]+([.][0-9]*)*|[^0-9.a-zA-Z ]|[a-zA-Z]+)","$1 ");
+        return removeJunkSpaces(equationWithPossiblyJunkSpaces);
     }
 
-    private String removeSpaceBetweenTheNumberAndItsSign(String equation)
+    private String removeSpaceBetweenTheNumberAndItsSign(final String equation)
     {
         return equation.replaceAll("([(] |^)- ([0-9]+)","$1-$2");
     }
