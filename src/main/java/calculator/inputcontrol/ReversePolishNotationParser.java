@@ -42,14 +42,22 @@ public class ReversePolishNotationParser {
     }
 
     private void processComponent(final EquationComponent component) {
-        if (component instanceof NumberComponent) {
+
+        if (component instanceof NumberComponent)
+        {
             addComponentToEquation(component);
-        } else if (component instanceof MathArithmeticOperator) {
+        }
+        else if (component instanceof MathArithmeticOperator)
+        {
             addOperatorsFromContainerDependingOnPriorityAndAssociativity((MathArithmeticOperator) component);
             addComponentToContainer(component);
-        } else if (component instanceof ClosingBracket) {
+        }
+        else if (component instanceof ClosingBracket)
+        {
             addOperatorsFromContainerToEquationTillOpeningBracketIsFound();
-        } else {
+        }
+        else
+        {
             addComponentToContainer(component);
         }
     }
