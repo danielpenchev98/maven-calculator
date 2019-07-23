@@ -8,36 +8,57 @@ import java.util.List;
 
 public class EquationStructureValidator {
 
-    public void validateEquationStructure(final List<String> formatterEquation) throws InvalidEquationException
+    public void validateEquationStructure(final List<String> formattedEquation) throws InvalidEquationException
     {
-        if(formatterEquation==null)
+        if(formattedEquation==null) {
+            throw new InvalidParameterException("validateEquation has received invalid parameter");
+        }
+        else if(formattedEquation.size()==0) {
+            throw new InvalidEquationException("Empty equation");
+        }
+        else if(hasBracketDisbalance(formattedEquation))
         {
-            throw new InvalidParameterException("validateEquationStructure has receive null reference");
+            throw new InvalidEquationException("Equation with missing or misplaced brackets");
         }
 
-        int flag=0;
-        for(String component:formatterEquation)
+        String equation= Arrays.toString(formattedEquation.toArray()).replaceAll("\\[|\\]|,","");
+        if(equation.matches(".*([0-9]+(\\.[0-9]+)? [0-9]+(\\.[0-9]+)?|.*[-+/*^] [-+/*^]).*"))
         {
-            if(component.matches("[0-9.]*$"))
-            {
-                if(flag==1)
-                {
-                    throw new InvalidEquationException("Invalid equation");
-                }
-                flag=0;
-            }
-            else if(component.matches("^[-+/*^]$"))
-            {
-                if(flag==0)
-                {
-                    throw new InvalidEquationException("Invalid equation");
-                }
-                flag=1;
-            }
+            throw new InvalidEquationException("Sequential components of the same type");
+        }
+        else if(equation.matches("^[-+/*^].*|.*[-+/*^]$"))
+        {
+            throw new InvalidEquationException("Equation ending or beginning with operator");
+        }
+        else if(equation.matches(".*\\( \\).*"))
+        {
+            throw new InvalidEquationException("Empty brackets");
         }
     }
-    /*
-    public  void validateEquationStructure(final List<String> formattedEquation) throws InvalidEquationException
+
+
+    private boolean hasBracketDisbalance(final List<String> components)
+    {
+        int bracketBalance=0;
+        for(String component:components)
+        {
+            if(component.equals("("))
+            {
+                bracketBalance++;
+            }
+            else if(component.equals(")"))
+            {
+                if(bracketBalance==0)
+                {
+                    return true;
+                }
+                bracketBalance--;
+            }
+        }
+
+        return bracketBalance!=0;
+    }
+    /*public  void validateEquationStructure(final List<String> formattedEquation) throws InvalidEquationException
     {
         String message=null;
         if(hasBracketDisbalance(formattedEquation))
@@ -114,6 +135,6 @@ public class EquationStructureValidator {
             }
         }
         return bracketBalance!=0;
-    }
-    */
+    }*/
+
 }

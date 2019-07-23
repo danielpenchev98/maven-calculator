@@ -28,41 +28,83 @@ public class EquationStructureValidatorTest {
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_EmptyEquation_Illegal() throws Exception
     {
-        List<String> input=new LinkedList<>();
-        input.add("");
+        List<String> input = new LinkedList<>();
+        validator.validateEquationStructure(input);
+    }
+
+    @Test
+    public void validateEquationStructure_EquationWithANumberOnly_Legal() throws Exception
+    {
+        List<String> input = new LinkedList<>();
+        input.add("10.02");
         validator.validateEquationStructure(input);
     }
 
     @Test(expected = InvalidEquationException.class)
-    public void validateEquationStructure_EquationWithOnlyAnOperator_Illegal() throws Exception
+    public void validateEquationStructure_SequentialNumbers_Illegal() throws Exception
+    {
+        List<String> input = Arrays.asList("1","2");
+        validator.validateEquationStructure(input);
+    }
+
+    @Test(expected = InvalidEquationException.class)
+    public void validateEquationStructure_SequentialOperators_Illegal() throws Exception
+    {
+        List<String> input=Arrays.asList("+","*");
+        validator.validateEquationStructure(input);
+    }
+
+    @Test(expected = InvalidEquationException.class)
+    public void validateEquationStructure_EquationEndingWithOperator_Illegal() throws Exception
+    {
+        List<String> input=Arrays.asList("10","+");
+        validator.validateEquationStructure(input);
+    }
+
+    @Test(expected = InvalidEquationException.class)
+    public void validateEquationStructure_EquationBeginningWIthOperator_Illegal() throws Exception
+    {
+        List<String> input=Arrays.asList("+","10");
+        validator.validateEquationStructure(input);
+    }
+
+    @Test(expected = InvalidEquationException.class)
+    public void validateEquation_EquationWithEmptyBracket_Illegal() throws Exception
+    {
+        List<String> input=Arrays.asList("1","+","(",")");
+        validator.validateEquationStructure(input);
+    }
+
+    @Test(expected = InvalidEquationException.class)
+    public void validateEquation_EquationWithMisplacedBracket_Illegal() throws Exception
+    {
+        List<String> input=Arrays.asList("1","+",")","(");
+        validator.validateEquationStructure(input);
+    }
+
+    @Test(expected = InvalidEquationException.class)
+    public void validateEquation_EquationWithMissingBracket() throws Exception
+    {
+        List<String> input=Arrays.asList("(","1","+","2");
+        validator.validateEquationStructure(input);
+    }
+
+   /* @Test(expected = InvalidEquationException.class)
+    public void validateEquationStructure_EquationWithAnOperatorOnly_Illegal() throws Exception
     {
         List<String> input=new LinkedList<>();
         input.add("+");
         validator.validateEquationStructure(input);
     }
 
-    @Test
-    public void validateEquationStructure_EquationWithOnlyANumber_Legal() throws Exception
-    {
-        List<String> input=new LinkedList<>();
-        input.add("3.14");
-        validator.validateEquationStructure(input);
-    }
-
-    @Test
-    public void validateEquationStructure_OperationWithTwoNumbers_Illegal() throws Exception
-    {
-        List<String> input=Arrays.asList("1","+","2");
-        validator.validateEquationStructure(input);
-    }
-    /*
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_NumberAndOperator_Illegal() throws Exception
     {
         List<String> input = Arrays.asList("2","+");
         validator.validateEquationStructure(input);
     }*/
-    /*private EquationStructureValidator validator;
+    /*
+ //   private EquationStructureValidator validator;
 
     @Before
     public void setUp(){
@@ -157,6 +199,12 @@ public class EquationStructureValidatorTest {
         List<String> input=Arrays.asList("(","1","+",")");
         validator.validateEquationStructure(input);
     }
-    */
+
+    @Test(expected = InvalidEquationException.class)
+    public void validateEquationStrucure_EquationEndingWithOperator_Illegal() throws Exception
+    {
+        List<String> input=Arrays.asList("1","+");
+        validator.validateEquationStructure(input);
+    }*/
 
 }

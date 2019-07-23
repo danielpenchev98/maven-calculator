@@ -34,6 +34,10 @@ public class InputFormatter {
 
     private List<String> extractComponents(final String equation)
     {
+        if(equation.equals(""))
+        {
+            return new LinkedList<>();
+        }
         final String componentSeparator=" ";
         String equationWithPaddingBetweenComponents = addSpaceAfterEveryComponent(equation);
         String[] components = removeSpaceBetweenTheNumberAndItsSign(equationWithPaddingBetweenComponents).split(componentSeparator);
