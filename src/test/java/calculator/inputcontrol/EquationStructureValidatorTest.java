@@ -1,6 +1,7 @@
 package calculator.inputcontrol;
 
 import calculator.exceptions.InvalidEquationException;
+import calculator.exceptions.InvalidParameterException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,6 +12,57 @@ import java.util.List;
 public class EquationStructureValidatorTest {
 
     private EquationStructureValidator validator;
+
+    @Before
+    public void setUp()
+    {
+        validator=new EquationStructureValidator();
+    }
+
+    @Test(expected = InvalidParameterException.class)
+    public void validateEquationStructure_NullReference_Illegal() throws Exception
+    {
+        validator.validateEquationStructure(null);
+    }
+
+    @Test(expected = InvalidEquationException.class)
+    public void validateEquationStructure_EmptyEquation_Illegal() throws Exception
+    {
+        List<String> input=new LinkedList<>();
+        input.add("");
+        validator.validateEquationStructure(input);
+    }
+
+    @Test(expected = InvalidEquationException.class)
+    public void validateEquationStructure_EquationWithOnlyAnOperator_Illegal() throws Exception
+    {
+        List<String> input=new LinkedList<>();
+        input.add("+");
+        validator.validateEquationStructure(input);
+    }
+
+    @Test
+    public void validateEquationStructure_EquationWithOnlyANumber_Legal() throws Exception
+    {
+        List<String> input=new LinkedList<>();
+        input.add("3.14");
+        validator.validateEquationStructure(input);
+    }
+
+    @Test
+    public void validateEquationStructure_OperationWithTwoNumbers_Illegal() throws Exception
+    {
+        List<String> input=Arrays.asList("1","+","2");
+        validator.validateEquationStructure(input);
+    }
+    /*
+    @Test(expected = InvalidEquationException.class)
+    public void validateEquationStructure_NumberAndOperator_Illegal() throws Exception
+    {
+        List<String> input = Arrays.asList("2","+");
+        validator.validateEquationStructure(input);
+    }*/
+    /*private EquationStructureValidator validator;
 
     @Before
     public void setUp(){
@@ -105,6 +157,6 @@ public class EquationStructureValidatorTest {
         List<String> input=Arrays.asList("(","1","+",")");
         validator.validateEquationStructure(input);
     }
-
+    */
 
 }

@@ -1,14 +1,42 @@
 package calculator.inputcontrol;
 
 import calculator.exceptions.InvalidEquationException;
+import calculator.exceptions.InvalidParameterException;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class EquationStructureValidator {
 
+    public void validateEquationStructure(final List<String> formatterEquation) throws InvalidEquationException
+    {
+        if(formatterEquation==null)
+        {
+            throw new InvalidParameterException("validateEquationStructure has receive null reference");
+        }
 
-    //Every character different from digit, brackets and letters are assumed to be operators
+        int flag=0;
+        for(String component:formatterEquation)
+        {
+            if(component.matches("[0-9.]*$"))
+            {
+                if(flag==1)
+                {
+                    throw new InvalidEquationException("Invalid equation");
+                }
+                flag=0;
+            }
+            else if(component.matches("^[-+/*^]$"))
+            {
+                if(flag==0)
+                {
+                    throw new InvalidEquationException("Invalid equation");
+                }
+                flag=1;
+            }
+        }
+    }
+    /*
     public  void validateEquationStructure(final List<String> formattedEquation) throws InvalidEquationException
     {
         String message=null;
@@ -87,5 +115,5 @@ public class EquationStructureValidator {
         }
         return bracketBalance!=0;
     }
-
+    */
 }
