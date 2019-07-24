@@ -4,22 +4,24 @@ import calculator.computation.*;
 import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidEquationException;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InputFormatterTest {
 
-    private InputFormatter parser;
+    private InputFormatter formatter;
 
     @Mock
     private EquationStructureValidator validator;
@@ -33,18 +35,23 @@ public class InputFormatterTest {
     private OpeningBracket openingBracket;
     private ClosingBracket closingBracket;
 
-    @BeforeClass
-
 
     @Before
     public void setUp()
     {
-        parser= new InputFormatter(validator,factory);
+        formatter= new InputFormatter(validator,factory);
         firstNumber=new NumberComponent("-1.0");
         secondNumber=new NumberComponent("2.0");
         addition=new Addition();
         openingBracket=new OpeningBracket();
         closingBracket=new ClosingBracket();
+    }
+
+    @Test(expected = InvalidEquationException.class)
+    public void doFormat_EmptyInput_Illegal() throws Exception
+    {
+        Mockito.doThrow(new InvalidEquationException("Empty equation")).when(validator).validateEquationStructure(new LinkedList<>());
+        formatter.doFormat("");
     }
 
     @Test
@@ -55,7 +62,10 @@ public class InputFormatterTest {
         Mockito.when(factory.createComponent("+")).thenReturn(addition);
 
         List<EquationComponent> expected=Arrays.asList(firstNumber,addition,secondNumber);
-        assertEquals( expected,parser.doFormat("-1.0 +     2.0"));
+        assertEquals( expected,formatter.doFormat("-1.0 +     2.0"));
+
+        Mockito.verify(factory,times(3)).createComponent(ArgumentMatchers.anyString());
+        Mockito.verify(validator,times(1)).validateEquationStructure(ArgumentMatchers.anyList());
     }
 
     @Test
@@ -68,7 +78,10 @@ public class InputFormatterTest {
         Mockito.when(factory.createComponent(")")).thenReturn(closingBracket);
 
         List<EquationComponent> expected=Arrays.asList(openingBracket,firstNumber,addition,secondNumber,closingBracket);
-        assertEquals(expected,parser.doFormat("(-1.0+2.0)"));
+        assertEquals(expected,formatter.doFormat("(-1.0+2.0)"));
+
+        Mockito.verify(factory,times(5)).createComponent(ArgumentMatchers.anyString());
+        Mockito.verify(validator,times(1)).validateEquationStructure(ArgumentMatchers.anyList());
     }
 
     @Test
@@ -81,7 +94,10 @@ public class InputFormatterTest {
         Mockito.when(factory.createComponent(")")).thenReturn(closingBracket);
 
         List<EquationComponent> expected=Arrays.asList(secondNumber,addition,openingBracket,firstNumber,closingBracket);
-        assertEquals(expected,parser.doFormat("2.0 + ( - 1.0 )"));
+        assertEquals(expected,formatter.doFormat("2.0 + ( - 1.0 )"));
+
+        Mockito.verify(factory,times(5)).createComponent(ArgumentMatchers.anyString());
+        Mockito.verify(validator,times(1)).validateEquationStructure(ArgumentMatchers.anyList());
     }
 
     @Test(expected = InvalidComponentException.class)
@@ -91,13 +107,19 @@ public class InputFormatterTest {
         Mockito.when(factory.createComponent("+")).thenReturn(addition);
         Mockito.when(factory.createComponent("127.0.0.1")).thenThrow(new InvalidComponentException("Invalid component"));
 
-        parser.doFormat("-1.0+127.0.0.1");
+        formatter.doFormat("-1.0+127.0.0.1");
+
+        Mockito.verify(factory,times(3)).createComponent(ArgumentMatchers.anyString());
+        Mockito.verify(validator,times(1)).validateEquationStructure(ArgumentMatchers.anyList());
     }
 
     @Test(expected = InvalidEquationException.class)
     public void doFormat_EquationWithIllegalStructure__ExceptionThrown() throws Exception
     {
         Mockito.doThrow(new InvalidEquationException("Invalid equation")).when(validator).validateEquationStructure(Arrays.asList("-1.0","2.0","+"));
-        parser.doFormat("-1.0 2.0 +");
+        formatter.doFormat("-1.0 2.0 +");
+
+        Mockito.verify(factory,Mockito.never()).createComponent(ArgumentMatchers.anyString());
+        Mockito.verify(validator,times(1)).validateEquationStructure(ArgumentMatchers.anyList());
     }
 }
