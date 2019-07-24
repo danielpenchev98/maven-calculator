@@ -126,6 +126,13 @@ public class EquationStructureValidatorTest {
         validator.validateEquationStructure(input);
     }
 
+    @Test(expected = InvalidEquationException.class)
+    public void validateEquation_EquationWithMisplacedBrackets_Illegal() throws Exception
+    {
+        List<String> input=Arrays.asList("1",")","*","2","(");
+        validator.validateEquationStructure(input);
+    }
+
 
 
 }
