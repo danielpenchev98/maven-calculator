@@ -1,8 +1,8 @@
 package calculator;
 
 import calculator.computation.ReversePolishCalculationAlgorithm;
-import calculator.inputcontrol.InputFormatter;
-import calculator.inputcontrol.ReversePolishNotationParser;
+import calculator.inputprocessing.InputFormatter;
+import calculator.inputprocessing.ReversePolishNotationParser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;

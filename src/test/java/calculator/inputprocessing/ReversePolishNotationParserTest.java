@@ -1,9 +1,7 @@
-package calculator.inputcontrol;
+package calculator.inputprocessing;
 
 import calculator.computation.*;
-import calculator.exceptions.InvalidComponentException;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -11,7 +9,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;

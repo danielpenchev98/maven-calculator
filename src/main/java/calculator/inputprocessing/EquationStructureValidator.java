@@ -1,4 +1,4 @@
-package calculator.inputcontrol;
+package calculator.inputprocessing;
 
 import calculator.exceptions.InvalidEquationException;
 import calculator.exceptions.InvalidParameterException;

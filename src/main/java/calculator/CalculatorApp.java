@@ -6,9 +6,9 @@ import calculator.computation.EquationComponentFactory;
 import calculator.computation.ReversePolishCalculationAlgorithm;
 import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidEquationException;
-import calculator.inputcontrol.EquationStructureValidator;
-import calculator.inputcontrol.InputFormatter;
-import calculator.inputcontrol.ReversePolishNotationParser;
+import calculator.inputprocessing.EquationStructureValidator;
+import calculator.inputprocessing.InputFormatter;
+import calculator.inputprocessing.ReversePolishNotationParser;
 
 import java.util.List;
 
