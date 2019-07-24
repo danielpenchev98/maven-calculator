@@ -6,9 +6,9 @@ import calculator.computation.EquationComponentFactory;
 import calculator.computation.ReversePolishCalculationAlgorithm;
 import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidEquationException;
-import calculator.inputcontrol.EquationStructureValidator;
-import calculator.inputcontrol.InputFormatter;
-import calculator.inputcontrol.ReversePolishNotationParser;
+import calculator.inputprocessing.EquationStructureValidator;
+import calculator.inputprocessing.InputFormatter;
+import calculator.inputprocessing.ReversePolishNotationParser;
 
 import java.util.List;
 
@@ -20,22 +20,39 @@ import java.util.List;
 
 class CalculatorApp {
 
+    private EquationStructureValidator structureValidator;
+    private EquationComponentFactory factory;
+    private InputFormatter formatter;
+    private ReversePolishNotationParser parser;
+    private ReversePolishCalculationAlgorithm algorithm;
+
+
+    public CalculatorApp(final EquationStructureValidator structureValidator,final EquationComponentFactory factory,final InputFormatter formatter,final ReversePolishNotationParser parser,final ReversePolishCalculationAlgorithm algorithm)
+    {
+        this.structureValidator=structureValidator;
+        this.factory=factory;
+        this.formatter=formatter;
+        this.parser=parser;
+        this.algorithm=algorithm;
+    }
+
+    public CalculatorApp()
+    {
+        this.structureValidator=new EquationStructureValidator();
+        this.factory=new EquationComponentFactory();
+        this.formatter=new InputFormatter(structureValidator,factory);
+        this.parser=new ReversePolishNotationParser();
+        this.algorithm=new ReversePolishCalculationAlgorithm();
+    }
+
     /**
      * Functions which formats and calculates the equation
      * @param equation - user input
      */
     double calculateResult(final String equation) throws InvalidEquationException, InvalidComponentException
     {
-        EquationStructureValidator structureValidator=new EquationStructureValidator();
-        EquationComponentFactory factory=new EquationComponentFactory();
-        InputFormatter formatter = new InputFormatter(structureValidator,factory);
         List<EquationComponent> formattedInput = formatter.doFormat(equation);
-
-        ReversePolishNotationParser specialParser=new ReversePolishNotationParser();
-        List<EquationComponent> reversePolishFormatEquation = specialParser.formatFromInfixToReversedPolishNotation(formattedInput);
-
-        ReversePolishCalculationAlgorithm algorithm=new ReversePolishCalculationAlgorithm();
-
+        List<EquationComponent> reversePolishFormatEquation = parser.formatFromInfixToReversedPolishNotation(formattedInput);
         return algorithm.calculateEquation(reversePolishFormatEquation);
     }
 }

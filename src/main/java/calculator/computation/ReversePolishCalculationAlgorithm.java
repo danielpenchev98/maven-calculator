@@ -1,7 +1,7 @@
 package calculator.computation;
 
-import calculator.exceptions.InvalidComponentException;
 import calculator.exceptions.InvalidEquationException;
+import calculator.exceptions.InvalidParameterException;
 
 import java.util.EmptyStackException;
 import java.util.List;
@@ -16,9 +16,8 @@ public class ReversePolishCalculationAlgorithm {
         supplier=new Stack<>();
     }
 
-    public double calculateEquation(final List<EquationComponent> components) throws EmptyStackException, InvalidEquationException,InvalidComponentException
+    public double calculateEquation(final List<EquationComponent> components) throws EmptyStackException, InvalidEquationException
     {
-
         handleComponents(components);
 
         if(supplier.size()!=1)
@@ -29,21 +28,26 @@ public class ReversePolishCalculationAlgorithm {
         return getNextNumberFromSupplier();
     }
 
-    private void handleComponents(final List<EquationComponent> components) throws InvalidComponentException
+    private void handleComponents(final List<EquationComponent> components)
     {
         for (EquationComponent component : components) {
-            if (component instanceof NumberComponent)
-            {
-                supplier.add((NumberComponent) component);
-            }
-            else if (component instanceof MathArithmeticOperator)
-            {
-                executeOperation((MathArithmeticOperator)component);
-            }
-            else
-            {
-                throw new InvalidComponentException("Error. There shouldn't be any components different from numbers and math arithmetic operators");
-            }
+          process(component);
+        }
+    }
+
+    private void process(final EquationComponent component)
+    {
+        if (component instanceof NumberComponent)
+        {
+            supplier.add((NumberComponent) component);
+        }
+        else if (component instanceof MathArithmeticOperator)
+        {
+            executeOperation((MathArithmeticOperator)component);
+        }
+        else
+        {
+            throw new InvalidParameterException("Error. There shouldn't be any components different from numbers and math arithmetic operators");
         }
     }
 
