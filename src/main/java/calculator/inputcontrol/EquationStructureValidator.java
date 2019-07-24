@@ -21,7 +21,7 @@ public class EquationStructureValidator {
         checkIfHasSequentialNonBracketComponentsOfTheSameType(equation);
         checkIfHasAnOperatorAsBeginningOrEndingOfEquationScope(equation);
         checkIfHasEmptyBrackets(equation);
-        checkIfHasMissingOperatorBetweenNumberAndBracket(equation);
+        checkIfHasMissingOperatorBeforeOrAfterBracket(equation);
     }
 
     private void checkIfHasBracketImbalance(final List<String> components) throws InvalidEquationException
@@ -77,7 +77,7 @@ public class EquationStructureValidator {
 
     private boolean hasSequentialNonBracketComponentsOfTheSameType(final String equation)
     {
-        return equation.matches(".*([0-9]+(\\.[0-9]+)? [0-9]+(\\.[0-9]+)?|.*[-+/*^] [-+/*^]).*");
+        return equation.matches(".*([0-9a-zA-Z.]+ [0-9a-zA-Z.]+|.*[^0-9a-zA-Z.)( ] [^0-9a-zA-Z.)( ]).*");
     }
 
     private void checkIfHasAnOperatorAsBeginningOrEndingOfEquationScope(final String equation) throws InvalidEquationException
@@ -90,7 +90,7 @@ public class EquationStructureValidator {
 
     private boolean hasAnOperatorAsBeginningOrEndingOfEquationScope(final String equation)
     {
-        return equation.matches("(^|.*\\( )[-+/*^] .*|.*[-+/*^]( \\)|$)");
+        return equation.matches("(^|.*\\( )[^0-9a-zA-Z.)( ] .*|.*[^0-9a-zA-Z.)( ]( \\)|$)");
     }
 
     private void checkIfHasEmptyBrackets(final String equation) throws InvalidEquationException
@@ -106,17 +106,17 @@ public class EquationStructureValidator {
         return equation.matches(".*\\( \\).*");
     }
 
-    private void checkIfHasMissingOperatorBetweenNumberAndBracket(final String equation) throws InvalidEquationException
+    private void checkIfHasMissingOperatorBeforeOrAfterBracket(final String equation) throws InvalidEquationException
     {
-        if(hasMissingOperatorBetweenNumberAndBracket(equation))
+        if(hasMissingOperatorBeforeOrAfterBracket(equation))
         {
             throw new InvalidEquationException("Missing operator between a number and an opening bracket or a closing bracket and a number");
         }
     }
 
-    private boolean hasMissingOperatorBetweenNumberAndBracket(final String equation)
+    private boolean hasMissingOperatorBeforeOrAfterBracket(final String equation)
     {
-        return equation.matches(".*[^-+/*^(] \\(.*|.*\\) [^-+/*^)].*");
+        return equation.matches(".*[0-9a-zA-Z.)] \\(.*|.*\\) [0-9a-zA-Z.(].*");
     }
 
 }
