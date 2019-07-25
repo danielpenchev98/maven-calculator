@@ -78,7 +78,9 @@ public class CalculatorAppIT {
         app.calculateResult("(( 100 - 99) & (199))");
     }
 
-    @Test(expected = InvalidComponentException.class)
+    //TODO dont know if it should be InvalidEquationException or InvalidComponentException, because in the structure validator
+    // i assume that everything except numbers/letters/normal brackets are possible operators and the factory method checks their validity
+    @Test(expected = InvalidEquationException.class)
     public void calculateResult_EquationWithUnsupportedTypeOfBrackets_Illegal() throws Exception
     {
         app.calculateResult("[ (10 +7) ] / {20^100}");

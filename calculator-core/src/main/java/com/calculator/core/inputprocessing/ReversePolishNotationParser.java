@@ -41,25 +41,19 @@ public class ReversePolishNotationParser {
         return reversedPolishEquation;
     }
 
+    //TODO eventually to find a way to get rid out of code duplication
     private void processComponent(final EquationComponent component) {
-
-        if (component instanceof NumberComponent)
-        {
+        if (component instanceof NumberComponent) {
             addComponentToEquation(component);
-        }
-        else if (component instanceof MathArithmeticOperator)
-        {
+        } else if (component instanceof ClosingBracket) {
+            addOperatorsFromContainerToEquationTillOpeningBracketIsFound();
+        } else if (component instanceof MathArithmeticOperator) {
             addOperatorsFromContainerDependingOnPriorityAndAssociativity((MathArithmeticOperator) component);
             addComponentToContainer(component);
-        }
-        else if (component instanceof ClosingBracket)
-        {
-            addOperatorsFromContainerToEquationTillOpeningBracketIsFound();
-        }
-        else
-        {
+        } else {
             addComponentToContainer(component);
         }
+
     }
 
     private void addComponentToEquation(final EquationComponent component) {
@@ -76,29 +70,27 @@ public class ReversePolishNotationParser {
 
     private void addOperatorsFromContainerDependingOnPriorityAndAssociativity(final MathArithmeticOperator component) {
         while (hasSpareOperators() && shouldTransferOperatorsFromContainerToEquation(component)) {
-
             addComponentToEquation(operatorContainer.pop());
-
         }
     }
 
     private boolean shouldTransferOperatorsFromContainerToEquation(final MathArithmeticOperator component) {
+
         if (operatorContainer.peek() instanceof OpeningBracket) {
             return false;
         }
-
         MathArithmeticOperator nextOperatorInContainer = (MathArithmeticOperator) operatorContainer.peek();
-        int differenceInPriority = calculateDifferenceInPriority(nextOperatorInContainer, component);
-        final boolean firstCondition = differenceInPriority > 0;
-        final boolean secondCondition = differenceInPriority == 0 && nextOperatorInContainer.isLeftAssociative();
 
-        return firstCondition || secondCondition;
+        int differenceInPriority = calculateDifferenceInPriority(nextOperatorInContainer, component);
+        final boolean currOperatorHasLowerPriority = differenceInPriority > 0;
+        final boolean nextOperatorInContainerEqualPriorityAndLeftAssociative = differenceInPriority == 0 && nextOperatorInContainer.isLeftAssociative();
+
+        return currOperatorHasLowerPriority || nextOperatorInContainerEqualPriorityAndLeftAssociative;
     }
 
     private int calculateDifferenceInPriority(final MathArithmeticOperator leftOperator, final MathArithmeticOperator rightOperator) {
         return leftOperator.getPriority() - rightOperator.getPriority();
     }
-
 
     private void addOperatorsFromContainerToEquationTillOpeningBracketIsFound() {
 
@@ -107,7 +99,6 @@ public class ReversePolishNotationParser {
         }
         operatorContainer.pop();
     }
-
 
     private boolean isNotOpeningBracket(final EquationComponent component)
     {
