@@ -27,20 +27,22 @@ public class InputFormatter {
 
     public List<EquationComponent> doFormat(final String equation) throws InvalidComponentException, InvalidEquationException {
 
-        List<String> components= extractComponents(equation);
-        structureValidator.validateEquationStructure(components);
+        String reformattedEquation=fixFormatOfEquation(equation);
+        structureValidator.validateEquationStructure(reformattedEquation);
+        List<String> components = extractComponents(reformattedEquation);
         return convertToEquationComponentObjects(components);
+    }
+
+    private String fixFormatOfEquation(final String equation)
+    {
+        String equationWithPaddingBetweenComponents = addSpaceAfterEveryComponent(equation);
+        return removeSpaceBetweenTheNumberAndItsSign(equationWithPaddingBetweenComponents);
     }
 
     private List<String> extractComponents(final String equation)
     {
-        if(equation.equals(""))
-        {
-            return new LinkedList<>();
-        }
-        final String componentSeparator=" ";
-        String equationWithPaddingBetweenComponents = addSpaceAfterEveryComponent(equation);
-        String[] components = removeSpaceBetweenTheNumberAndItsSign(equationWithPaddingBetweenComponents).split(componentSeparator);
+        final String componentSeparator = " ";
+        String[] components = equation.split(componentSeparator);
         return Arrays.asList(components);
     }
 
@@ -62,7 +64,7 @@ public class InputFormatter {
 
     private List<EquationComponent> convertToEquationComponentObjects(final List<String> components) throws InvalidComponentException
     {
-        List<EquationComponent> formattedComponents=new LinkedList<>();
+        List<EquationComponent> formattedComponents = new LinkedList<>();
         for(String component:components)
         {
             formattedComponents.add(componentFactory.createComponent(component));

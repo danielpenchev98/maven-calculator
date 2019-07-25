@@ -3,20 +3,15 @@ package com.calculator.core.inputprocessing;
 import com.calculator.core.exceptions.InvalidEquationException;
 import com.calculator.core.exceptions.InvalidParameterException;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class EquationStructureValidator {
 
-    public void validateEquationStructure(final List<String> formattedEquation) throws InvalidEquationException
+    public void validateEquationStructure(final String equation) throws InvalidEquationException
     {
-        if(formattedEquation==null) {
+        if(equation==null) {
            throw new InvalidParameterException("validateEquation has received invalid parameter");
         }
-        checkIfHasBracketImbalance(formattedEquation);
 
-        String equation=convertToWholeStringFormat(formattedEquation);
-
+        checkIfHasBracketImbalance(equation);
         checkIfEmptyEquation(equation);
         checkIfHasSequentialNonBracketComponentsOfTheSameType(equation);
         checkIfHasAnOperatorAsBeginningOrEndingOfEquationScope(equation);
@@ -24,17 +19,17 @@ public class EquationStructureValidator {
         checkIfHasMissingOperatorBeforeOrAfterBracket(equation);
     }
 
-    private void checkIfHasBracketImbalance(final List<String> components) throws InvalidEquationException
+    private void checkIfHasBracketImbalance(final String equation) throws InvalidEquationException
     {
         int bracketBalance = 0;
         boolean hasError = false;
-        for(String component:components)
+        for(char symbol:equation.toCharArray())
         {
-            if(component.equals("("))
+            if (symbol == '(')
             {
                 bracketBalance++;
             }
-            else if(component.equals(")"))
+            else if (symbol == ')')
             {
                 if(bracketBalance == 0)
                 {
@@ -47,11 +42,6 @@ public class EquationStructureValidator {
         {
             throw new InvalidEquationException("Equation with missing or misplaced brackets");
         }
-    }
-
-    private String convertToWholeStringFormat(final List<String> formattedEquation)
-    {
-       return Arrays.toString(formattedEquation.toArray()).replaceAll("\\[|\\]|,","");
     }
 
     private void checkIfEmptyEquation(final String equation) throws InvalidEquationException

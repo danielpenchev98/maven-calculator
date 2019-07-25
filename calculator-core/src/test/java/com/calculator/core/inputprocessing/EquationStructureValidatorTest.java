@@ -28,111 +28,86 @@ public class EquationStructureValidatorTest {
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_EmptyEquation_Illegal() throws Exception
     {
-        List<String> input = new LinkedList<>();
-        validator.validateEquationStructure(input);
+        validator.validateEquationStructure("");
     }
 
     @Test(expected = InvalidEquationException.class  )
     public void validateEquation_EquationWithAnOperatorOnly_Illegal() throws Exception
     {
-        List<String> input =new LinkedList<>();
-        input.add("+");
-        validator.validateEquationStructure(input);
+        validator.validateEquationStructure("+");
     }
 
     @Test
     public void validateEquationStructure_EquationWithANumberOnly_Legal() throws Exception
     {
-        List<String> input = new LinkedList<>();
-        input.add("10.02");
-        validator.validateEquationStructure(input);
+        validator.validateEquationStructure("10.02");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_SequentialNumbers_Illegal() throws Exception
     {
-        List<String> input = Arrays.asList("1","2");
-        validator.validateEquationStructure(input);
+        validator.validateEquationStructure("1 2");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_SequentialOperators_Illegal() throws Exception
     {
-        List<String> input=Arrays.asList("+","*");
-        validator.validateEquationStructure(input);
+        validator.validateEquationStructure("+ *");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_EquationEndingWithOperator_Illegal() throws Exception
     {
-        List<String> input=Arrays.asList("10","+");
-        validator.validateEquationStructure(input);
+        validator.validateEquationStructure("10 +");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_EquationBeginningWIthOperator_Illegal() throws Exception
     {
-        List<String> input=Arrays.asList("+","10");
-        validator.validateEquationStructure(input);
+        validator.validateEquationStructure("+ 10");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithEmptyBracket_Illegal() throws Exception
     {
-        List<String> input=Arrays.asList("1","+","(",")");
-        validator.validateEquationStructure(input);
-    }
-
-    @Test(expected = InvalidEquationException.class)
-    public void validateEquation_EquationWithMisplacedBracket_Illegal() throws Exception
-    {
-        List<String> input=Arrays.asList("(","1",")","(");
-        validator.validateEquationStructure(input);
+        validator.validateEquationStructure("1 +( )");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithMissingBracket_Illegal() throws Exception
     {
-        List<String> input=Arrays.asList("(","1","+","2");
-        validator.validateEquationStructure(input);
+        validator.validateEquationStructure("( 1 + 2");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithOperatorBeforeClosingBracket_Illegal() throws Exception
     {
-        List<String> input=Arrays.asList("(","1","+",")");
-        validator.validateEquationStructure(input);
+        validator.validateEquationStructure("( 1 + )");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithMissingOperatorBetweenNumberAndBracket_Illegal() throws Exception
     {
-        List<String> input=Arrays.asList("1","(","2",")");
-        validator.validateEquationStructure(input);
+        validator.validateEquationStructure("-1 ( 2 )");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithMissingOperatorBetweenClosingAndOpeningBracket_Illegal() throws Exception
     {
-        List<String> input=Arrays.asList("(","1",")","(","1",")");
-        validator.validateEquationStructure(input);
-
+        validator.validateEquationStructure("( 1 ) ( 1 )");
     }
 
     @Test
     public void validateEquation_EquationWithMultipleLayersOfBrackets_Legal() throws Exception
     {
-        List<String> input=Arrays.asList("(","(","1","+","2",")",")");
-        validator.validateEquationStructure(input);
+        validator.validateEquationStructure("( ( 1 + 2 ) )");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithMisplacedBrackets_Illegal() throws Exception
     {
-        List<String> input=Arrays.asList("1",")","*","2","(");
-        validator.validateEquationStructure(input);
+        validator.validateEquationStructure("1 ) * 2 ( ");
     }
-
 
 
 }
