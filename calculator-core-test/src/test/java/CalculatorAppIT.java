@@ -36,7 +36,6 @@ public class CalculatorAppIT {
                               {"PI/2 * 6","Unsupported component :PI"}};
     }
 
-
     private Process executeJarInNewProcess(final String equation) throws Exception
     {
         final ProcessBuilder pBuilder = new ProcessBuilder("java","-jar","calculator-core.jar",equation);
@@ -50,9 +49,7 @@ public class CalculatorAppIT {
         final Process process = executeJarInNewProcess(equation);
         BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String result = in.readLine();
-
-        //TODO what to do with that status
-        int status = process.waitFor();
+        process.waitFor();
         assertEquals(expectedResult,Double.valueOf(result),DELTA);
     }
 
@@ -63,7 +60,7 @@ public class CalculatorAppIT {
         final Process process = executeJarInNewProcess(equation);
         BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String result = in.readLine();
-        int status = process.waitFor();
+        process.waitFor();
         assertEquals(exceptionMessage, result);
     }
 
