@@ -17,7 +17,7 @@ public class Division implements MathArithmeticOperator {
     {
         if(secondNumber==0)
         {
-            throw new DivisionByZeroException("It's illegal to divide on zero");
+            throw new DivisionByZeroException("Division on zero");
         }
         return firstNumber/secondNumber;
     }
