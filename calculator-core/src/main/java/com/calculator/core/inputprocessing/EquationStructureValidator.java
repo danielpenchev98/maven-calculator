@@ -23,23 +23,17 @@ public class EquationStructureValidator {
     {
         int bracketBalance = 0;
         boolean hasError = false;
-        for(char symbol:equation.toCharArray())
-        {
-            if (symbol == '(')
-            {
+        for (char symbol : equation.toCharArray()) {
+            if (symbol == '(') {
                 bracketBalance++;
-            }
-            else if (symbol == ')')
-            {
-                if(bracketBalance == 0)
-                {
+            } else if (symbol == ')') {
+                if (bracketBalance == 0) {
                     hasError = true;
                 }
                 bracketBalance--;
             }
         }
-        if(hasError || bracketBalance != 0)
-        {
+        if (hasError || bracketBalance != 0) {
             throw new InvalidEquationException("Missing or misplaced brackets");
         }
     }

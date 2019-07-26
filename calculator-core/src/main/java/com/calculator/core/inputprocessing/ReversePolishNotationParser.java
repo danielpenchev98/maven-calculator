@@ -41,15 +41,13 @@ public class ReversePolishNotationParser {
         return reversedPolishEquation;
     }
 
-    //TODO eventually to find a way to get rid out of code duplication
     private void processComponent(final EquationComponent component) {
         if (component instanceof NumberComponent) {
             addComponentToEquation(component);
         } else if (component instanceof ClosingBracket) {
             addOperatorsFromContainerToEquationTillOpeningBracketIsFound();
         } else if (component instanceof MathArithmeticOperator) {
-            addOperatorsFromContainerDependingOnPriorityAndAssociativity((MathArithmeticOperator) component);
-            addComponentToContainer(component);
+            addOperatorsToEquationDependingOnPriorityAndAssociativity((MathArithmeticOperator) component);
         } else {
             addComponentToContainer(component);
         }
@@ -68,10 +66,11 @@ public class ReversePolishNotationParser {
         return operatorContainer.size() > 0;
     }
 
-    private void addOperatorsFromContainerDependingOnPriorityAndAssociativity(final MathArithmeticOperator component) {
+    private void addOperatorsToEquationDependingOnPriorityAndAssociativity(final MathArithmeticOperator component) {
         while (hasSpareOperators() && shouldTransferOperatorsFromContainerToEquation(component)) {
             addComponentToEquation(operatorContainer.pop());
         }
+        addComponentToContainer(component);
     }
 
     private boolean shouldTransferOperatorsFromContainerToEquation(final MathArithmeticOperator component) {

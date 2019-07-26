@@ -32,33 +32,25 @@ public class ReversePolishCalculationAlgorithm {
         }
     }
 
-    private void process(final EquationComponent component)
-    {
-        if (component instanceof NumberComponent)
-        {
+    private void process(final EquationComponent component) {
+        if (component instanceof NumberComponent) {
             supplier.add((NumberComponent) component);
-        }
-        else if (component instanceof MathArithmeticOperator)
-        {
-            executeOperation((MathArithmeticOperator)component);
-        }
-        else
-        {
+        } else if (component instanceof MathArithmeticOperator) {
+            executeOperation((MathArithmeticOperator) component);
+        } else {
             throw new InvalidParameterException("Error. There shouldn't be any components different from numbers and math arithmetic operators");
         }
     }
 
-    private void executeOperation(final MathArithmeticOperator operator) throws EmptyStackException
-    {
+    private void executeOperation(final MathArithmeticOperator operator) throws EmptyStackException {
         double rightNumber = getNextNumberFromSupplier();
         double leftNumber = getNextNumberFromSupplier();
-        double result = operator.compute(leftNumber,rightNumber);
+        double result = operator.compute(leftNumber, rightNumber);
         supplier.add(new NumberComponent(String.valueOf(result)));
     }
 
-    private double getNextNumberFromSupplier()
-    {
-        String number=supplier.pop().getValue();
+    private double getNextNumberFromSupplier() {
+        String number = supplier.pop().getValue();
         return Double.valueOf(number);
     }
 }

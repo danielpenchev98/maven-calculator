@@ -1,6 +1,5 @@
 package com.calculator.core;
 
-import com.calculator.core.computation.Division;
 import com.calculator.core.computation.EquationComponentFactory;
 import com.calculator.core.computation.ReversePolishCalculationAlgorithm;
 import com.calculator.core.exceptions.DivisionByZeroException;
