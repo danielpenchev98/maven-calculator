@@ -40,7 +40,7 @@ public class EquationStructureValidator {
         }
         if(hasError || bracketBalance != 0)
         {
-            throw new InvalidEquationException("Equation with missing or misplaced brackets");
+            throw new InvalidEquationException("Missing or misplaced brackets");
         }
     }
 

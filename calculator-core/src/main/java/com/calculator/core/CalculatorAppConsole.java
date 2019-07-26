@@ -1,7 +1,9 @@
 package com.calculator.core;
 
+import com.calculator.core.computation.Division;
 import com.calculator.core.computation.EquationComponentFactory;
 import com.calculator.core.computation.ReversePolishCalculationAlgorithm;
+import com.calculator.core.exceptions.DivisionByZeroException;
 import com.calculator.core.exceptions.InvalidComponentException;
 import com.calculator.core.exceptions.InvalidEquationException;
 import com.calculator.core.inputprocessing.EquationStructureValidator;
@@ -24,6 +26,10 @@ public class CalculatorAppConsole {
         catch(InvalidComponentException ex)
         {
             System.out.print("Problem with a component of equation :"+ex.getMessage());
+        }
+        catch(DivisionByZeroException ex)
+        {
+            System.out.print("Arithmetic error :"+ex.getMessage());
         }
         catch (Exception sysError)
         {

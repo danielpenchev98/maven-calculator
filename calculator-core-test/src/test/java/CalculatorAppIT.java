@@ -24,44 +24,41 @@ public class CalculatorAppIT {
 
     @DataProvider
     public static Object[][] illegalExpressionSupplier(){
-        return new Object[][]{{"1+(( 23*4) - (-11)","Equation with missing or misplaced brackets"},
-                              {"1 / ( 5-(-2 3 + 5)/10)","Sequential components of the same type"},
-                              {"( 1 + 2 *( 10/5/2/1 ) ^^3)","Sequential components of the same type"},
-                              {"8/ (((10 - 11/2 )))( -1 / 3 )","Missing operator between a number and an opening bracket or a closing bracket and a number"},
-                              {"\"\"","Empty equation"},
-                              {"(()()(()))","Empty brackets"},
-                              {"[ (10 +7) ] (20^100)","Scope of equation ending or beginning with an operator"},
-                              {"(10-10)*(10+10)/(10-10)","Division on zero"},
-                              {"(( 100 - 99) & (199))","Unsupported component :&"},
-                              {"PI/2 * 6","Unsupported component :PI"}};
+        return new Object[][]{{"1+(( 23*4) - (-11)","Problem with the structure of equation :Missing or misplaced brackets"},
+                              {"1 / ( 5-(-2 3 + 5)/10)","Problem with the structure of equation :Sequential components of the same type"},
+                              {"( 1 + 2 *( 10/5/2/1 ) ^^3)","Problem with the structure of equation :Sequential components of the same type"},
+                              {"8/ (((10 - 11/2 )))( -1 / 3 )","Problem with the structure of equation :Missing operator between a number and an opening bracket or a closing bracket and a number"},
+                              {"\"\"","Problem with the structure of equation :Empty equation"},
+                              {"(()()(()))","Problem with the structure of equation :Empty brackets"},
+                              {"[ (10 +7) ] (20^100)","Problem with the structure of equation :Scope of equation ending or beginning with an operator"},
+                              {"(10-10)*(10+10)/(10-10)","Arithmetic error :Division on zero"},
+                              {"(( 100 - 99) & (199))","Problem with a component of equation :Unsupported component :&"},
+                              {"PI/2 * 6","Problem with a component of equation :Unsupported component :PI"}};
     }
 
-    private Process executeJarInNewProcess(final String equation) throws Exception
+    private String executeJarInNewProcess(final String equation) throws Exception
     {
         final ProcessBuilder pBuilder = new ProcessBuilder("java","-jar","calculator-core.jar",equation);
         pBuilder.directory(new File("../calculator-core/classes/artifacts/calculator_core_jar"));
-        return pBuilder.start();
+        final Process process = pBuilder.start();
+        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String result = in.readLine();
+        process.waitFor();
+        return result;
     }
 
     @Test
     @UseDataProvider("correctExpressionSupplier")
-    public void calculate_ReturnCorrectResultOfEquation(final String equation,final Double expectedResult) throws Exception {
-        final Process process = executeJarInNewProcess(equation);
-        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String result = in.readLine();
-        process.waitFor();
-        assertEquals(expectedResult,Double.valueOf(result),DELTA);
+    public void calculate_ReturnCorrectResultOfEquation(final String equation, final Double expectedResult) throws Exception {
+        String actualResult = executeJarInNewProcess(equation);
+        assertEquals(expectedResult, Double.valueOf(actualResult), DELTA);
     }
 
     @Test
     @UseDataProvider("illegalExpressionSupplier")
-    public void calculate_WrongStructuredExpression(final String equation,final String exceptionMessage) throws Exception
-    {
-        final Process process = executeJarInNewProcess(equation);
-        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String result = in.readLine();
-        process.waitFor();
-        assertEquals(exceptionMessage, result);
+    public void calculate_WrongStructuredExpression(final String equation, final String exceptionMessage) throws Exception {
+        String actualResult = executeJarInNewProcess(equation);
+        assertEquals(exceptionMessage, actualResult);
     }
 
 
