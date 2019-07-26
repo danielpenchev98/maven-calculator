@@ -38,15 +38,4 @@ public class CalculateAppTest
         inorder.verify(algorithm).calculateEquation(ArgumentMatchers.anyList());
     }
 
-    @Test
-    public void calculateResult_TimesBeingCalled() throws Exception
-    {
-        app.calculateResult("1+1");
-
-        Mockito.verify(formatter,times(1)).doFormat(ArgumentMatchers.anyString());
-        Mockito.verify(parser,times(1)).formatFromInfixToReversedPolishNotation(ArgumentMatchers.anyList());
-        Mockito.verify(algorithm,times(1)).calculateEquation(ArgumentMatchers.anyList());
-    }
-
-
 }

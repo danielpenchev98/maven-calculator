@@ -4,9 +4,11 @@ import com.calculator.core.exceptions.InvalidComponentException;
 
 public class EquationComponentFactory {
 
+    private static String validNumberRegex = "-?[0-9]+(.[0-9]+)?";
+
     public EquationComponent createComponent(final String operation) throws InvalidComponentException
     {
-        if(operation.matches("-?[0-9]+(.[0-9]+)?"))
+        if(operation.matches(validNumberRegex))
         {
             return new NumberComponent(operation);
         }

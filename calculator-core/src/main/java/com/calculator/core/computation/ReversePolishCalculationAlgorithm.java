@@ -17,19 +17,15 @@ public class ReversePolishCalculationAlgorithm {
     }
 
     public double calculateEquation(final List<EquationComponent> components) throws EmptyStackException, InvalidEquationException {
-        handleComponents(components);
+        for (EquationComponent component : components) {
+            process(component);
+        }
+
         if (supplier.size() != 1) {
             throw new InvalidEquationException("Invalid equation. Logical error. There aren't enough operators");
         }
 
         return getNextNumberFromSupplier();
-    }
-
-    private void handleComponents(final List<EquationComponent> components)
-    {
-        for (EquationComponent component : components) {
-          process(component);
-        }
     }
 
     private void process(final EquationComponent component) {

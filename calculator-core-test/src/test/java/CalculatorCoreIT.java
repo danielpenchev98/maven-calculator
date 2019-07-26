@@ -11,9 +11,9 @@ import java.io.InputStreamReader;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(DataProviderRunner.class)
-public class CalculatorAppIT {
+public class CalculatorCoreIT {
 
-    final static Double DELTA=0.0001;
+    private final static Double DELTA=0.0001;
 
     @DataProvider
     public static Object[][] correctExpressionSupplier(){
@@ -29,6 +29,7 @@ public class CalculatorAppIT {
                               {"( 1 + 2 *( 10/5/2/1 ) ^^3)","Problem with the structure of equation :Sequential components of the same type"},
                               {"8/ (((10 - 11/2 )))( -1 / 3 )","Problem with the structure of equation :Missing operator between a number and an opening bracket or a closing bracket and a number"},
                               {"\"\"","Problem with the structure of equation :Empty equation"},
+                              {"","Invalid number of arguments"},
                               {"(()()(()))","Problem with the structure of equation :Empty brackets"},
                               {"[ (10 +7) ] (20^100)","Problem with the structure of equation :Scope of equation ending or beginning with an operator"},
                               {"(10-10)*(10+10)/(10-10)","Arithmetic error :Division on zero"},

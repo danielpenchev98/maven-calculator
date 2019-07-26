@@ -2,7 +2,7 @@ package com.calculator.core.computation;
 
 public class Power implements MathArithmeticOperator {
 
-    final static int PRIORITY=4;
+    private final static int PRIORITY=4;
     final static String SYMBOL="^";
     /**
      * @param firstNumber  - the first parameter of the mathematical operation

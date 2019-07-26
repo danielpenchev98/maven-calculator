@@ -19,7 +19,11 @@ public class InputFormatter {
 
     private EquationComponentFactory componentFactory;
 
-    public InputFormatter(final EquationStructureValidator validator, final EquationComponentFactory factory) {
+    public InputFormatter() {
+        this(new EquationStructureValidator(), new EquationComponentFactory());
+    }
+
+    InputFormatter(final EquationStructureValidator validator, final EquationComponentFactory factory) {
         structureValidator = validator;
         componentFactory = factory;
     }

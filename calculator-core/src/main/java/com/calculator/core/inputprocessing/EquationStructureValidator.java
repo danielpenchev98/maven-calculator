@@ -5,7 +5,7 @@ import com.calculator.core.exceptions.InvalidParameterException;
 
 public class EquationStructureValidator {
 
-    public void validateEquationStructure(final String equation) throws InvalidEquationException
+    void validateEquationStructure(final String equation) throws InvalidEquationException
     {
         if(equation==null) {
            throw new InvalidParameterException("validateEquation has received invalid parameter");

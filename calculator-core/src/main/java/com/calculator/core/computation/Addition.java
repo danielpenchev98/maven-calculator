@@ -2,7 +2,7 @@ package com.calculator.core.computation;
 
 public class Addition implements MathArithmeticOperator {
 
-    final static int PRIORITY=2;
+    private final static int PRIORITY=2;
     final static String SYMBOL="+";
     /**
      * @param firstNumber - first argument of the mathematical operation +

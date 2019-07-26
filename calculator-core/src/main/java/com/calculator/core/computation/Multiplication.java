@@ -3,7 +3,7 @@ package com.calculator.core.computation;
 
 public class Multiplication implements MathArithmeticOperator {
 
-    final static int PRIORITY=3;
+    private final static int PRIORITY=3;
     final static String SYMBOL="*";
     /**
      * @param firstNumber - first argument of the mathematical operation *

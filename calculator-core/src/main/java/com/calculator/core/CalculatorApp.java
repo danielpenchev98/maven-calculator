@@ -16,7 +16,7 @@ class CalculatorApp {
     private ReversePolishCalculationAlgorithm algorithm;
 
 
-    public CalculatorApp(final InputFormatter formatter,final ReversePolishNotationParser parser,final ReversePolishCalculationAlgorithm algorithm)
+    CalculatorApp(final InputFormatter formatter,final ReversePolishNotationParser parser,final ReversePolishCalculationAlgorithm algorithm)
     {
         this.formatter=formatter;
         this.parser=parser;
