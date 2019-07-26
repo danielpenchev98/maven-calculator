@@ -100,8 +100,7 @@ public class ReversePolishNotationParser {
         operatorContainer.pop();
     }
 
-    private boolean isNotOpeningBracket(final EquationComponent component)
-    {
+    private boolean isNotOpeningBracket(final EquationComponent component) {
         return !(component instanceof OpeningBracket);
     }
 

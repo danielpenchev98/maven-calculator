@@ -16,12 +16,9 @@ public class ReversePolishCalculationAlgorithm {
         supplier=new Stack<>();
     }
 
-    public double calculateEquation(final List<EquationComponent> components) throws EmptyStackException, InvalidEquationException
-    {
+    public double calculateEquation(final List<EquationComponent> components) throws EmptyStackException, InvalidEquationException {
         handleComponents(components);
-
-        if(supplier.size()!=1)
-        {
+        if (supplier.size() != 1) {
             throw new InvalidEquationException("Invalid equation. Logical error. There aren't enough operators");
         }
 

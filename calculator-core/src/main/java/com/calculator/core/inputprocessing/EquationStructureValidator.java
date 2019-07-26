@@ -44,68 +44,53 @@ public class EquationStructureValidator {
         }
     }
 
-    private void checkIfEmptyEquation(final String equation) throws InvalidEquationException
-    {
-        if(hasEmptyEquation(equation))
-        {
+    private void checkIfEmptyEquation(final String equation) throws InvalidEquationException {
+        if (hasEmptyEquation(equation)) {
             throw new InvalidEquationException("Empty equation");
         }
     }
 
-    private boolean hasEmptyEquation(final String equation)
-    {
+    private boolean hasEmptyEquation(final String equation) {
         return equation.matches("");
     }
 
-    private void checkIfHasSequentialNonBracketComponentsOfTheSameType(final String equation) throws InvalidEquationException
-    {
-        if(hasSequentialNonBracketComponentsOfTheSameType(equation))
-        {
+    private void checkIfHasSequentialNonBracketComponentsOfTheSameType(final String equation) throws InvalidEquationException {
+        if (hasSequentialNonBracketComponentsOfTheSameType(equation)) {
             throw new InvalidEquationException("Sequential components of the same type");
         }
     }
 
-    private boolean hasSequentialNonBracketComponentsOfTheSameType(final String equation)
-    {
+    private boolean hasSequentialNonBracketComponentsOfTheSameType(final String equation) {
         return equation.matches(".*([0-9a-zA-Z.]+ [0-9a-zA-Z.]+|.*[^0-9a-zA-Z.)( ] [^0-9a-zA-Z.)( ]).*");
     }
 
-    private void checkIfHasAnOperatorAsBeginningOrEndingOfEquationScope(final String equation) throws InvalidEquationException
-    {
-        if(hasAnOperatorAsBeginningOrEndingOfEquationScope(equation))
-        {
+    private void checkIfHasAnOperatorAsBeginningOrEndingOfEquationScope(final String equation) throws InvalidEquationException {
+        if (hasAnOperatorAsBeginningOrEndingOfEquationScope(equation)) {
             throw new InvalidEquationException("Scope of equation ending or beginning with an operator");
         }
     }
 
-    private boolean hasAnOperatorAsBeginningOrEndingOfEquationScope(final String equation)
-    {
+    private boolean hasAnOperatorAsBeginningOrEndingOfEquationScope(final String equation) {
         return equation.matches("(^|.*\\( )[^0-9a-zA-Z.)( ] .*|.*[^0-9a-zA-Z.)( ]( \\)|$)");
     }
 
-    private void checkIfHasEmptyBrackets(final String equation) throws InvalidEquationException
-    {
-        if(hasEmptyBrackets(equation))
-        {
+    private void checkIfHasEmptyBrackets(final String equation) throws InvalidEquationException {
+        if (hasEmptyBrackets(equation)) {
             throw new InvalidEquationException("Empty brackets");
         }
     }
 
-    private boolean hasEmptyBrackets(final String equation)
-    {
+    private boolean hasEmptyBrackets(final String equation) {
         return equation.matches(".*\\( \\).*");
     }
 
-    private void checkIfHasMissingOperatorBeforeOrAfterBracket(final String equation) throws InvalidEquationException
-    {
-        if(hasMissingOperatorBeforeOrAfterBracket(equation))
-        {
+    private void checkIfHasMissingOperatorBeforeOrAfterBracket(final String equation) throws InvalidEquationException {
+        if (hasMissingOperatorBeforeOrAfterBracket(equation)) {
             throw new InvalidEquationException("Missing operator between a number and an opening bracket or a closing bracket and a number");
         }
     }
 
-    private boolean hasMissingOperatorBeforeOrAfterBracket(final String equation)
-    {
+    private boolean hasMissingOperatorBeforeOrAfterBracket(final String equation) {
         return equation.matches(".*[0-9a-zA-Z.)] \\(.*|.*\\) [0-9a-zA-Z.(].*");
     }
 

@@ -65,8 +65,7 @@ public class InputFormatter {
     private List<EquationComponent> convertToEquationComponentObjects(final List<String> components) throws InvalidComponentException
     {
         List<EquationComponent> formattedComponents = new LinkedList<>();
-        for(String component:components)
-        {
+        for (String component : components) {
             formattedComponents.add(componentFactory.createComponent(component));
         }
         return formattedComponents;
