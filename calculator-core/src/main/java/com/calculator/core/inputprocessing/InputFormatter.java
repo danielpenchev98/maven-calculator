@@ -15,9 +15,11 @@ import java.util.List;
  */
 public class InputFormatter {
 
-    private EquationStructureValidator structureValidator;
+    private final EquationStructureValidator structureValidator;
 
-    private EquationComponentFactory componentFactory;
+    private final EquationComponentFactory componentFactory;
+
+    private final String COMPONENTSEPARATOR = " ";
 
     public InputFormatter() {
         this(new EquationStructureValidator(), new EquationComponentFactory());
@@ -37,27 +39,35 @@ public class InputFormatter {
     }
 
     private String fixFormatOfEquation(final String equation) {
-        String equationWithPaddingBetweenComponents = addSpaceAfterEveryComponent(equation);
-        return removeSpaceBetweenTheNumberAndItsSign(equationWithPaddingBetweenComponents);
+        String equationWithPaddingBetweenComponents = addSeparatorAfterEveryComponent(equation);
+        return removeSeparatorBetweenTheNumberAndItsSign(equationWithPaddingBetweenComponents);
     }
 
     private List<String> extractComponents(final String equation) {
-        final String componentSeparator = " ";
-        String[] components = equation.split(componentSeparator);
+        String[] components = equation.split(COMPONENTSEPARATOR);
         return Arrays.asList(components);
     }
 
     private String removeJunkSpaces(final String equation) {
-        return equation.replaceAll("[ ]+", " ").trim();
+        final String sequentialSpacesRegex="[ ]+";
+        return equation.replaceAll(sequentialSpacesRegex, COMPONENTSEPARATOR).trim();
     }
 
-    private String addSpaceAfterEveryComponent(final String equation) {
-        String equationWithPossiblyJunkSpaces = equation.replaceAll("([0-9]+([.][0-9]*)*|[^0-9.a-zA-Z ]|[a-zA-Z]+)", "$1 ");
+    private String addSeparatorAfterEveryComponent(final String equation) {
+
+        final String componentsRegex="([0-9]+([.][0-9]*)*|[^0-9.a-zA-Z ]|[a-zA-Z]+)";
+        final String componentPaddedWithSeparator="$1"+COMPONENTSEPARATOR;
+
+        String equationWithPossiblyJunkSpaces = equation.replaceAll(componentsRegex, componentPaddedWithSeparator);
         return removeJunkSpaces(equationWithPossiblyJunkSpaces);
     }
 
-    private String removeSpaceBetweenTheNumberAndItsSign(final String equation) {
-        return equation.replaceAll("([(] |^)- ([0-9]+)", "$1-$2");
+    private String removeSeparatorBetweenTheNumberAndItsSign(final String equation) {
+
+        final String separatorBetweenNumberAndItsSign="([(]"+COMPONENTSEPARATOR+ "|^)-"+COMPONENTSEPARATOR+"([0-9]+)";
+        final String removedSeparatorBetweenNumberAndItsSign="$1-$2";
+
+        return equation.replaceAll(separatorBetweenNumberAndItsSign, removedSeparatorBetweenNumberAndItsSign);
     }
 
     private List<EquationComponent> convertToEquationComponentObjects(final List<String> components) throws InvalidComponentException {

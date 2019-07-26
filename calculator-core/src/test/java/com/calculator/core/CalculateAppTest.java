@@ -9,7 +9,6 @@ import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CalculateAppTest

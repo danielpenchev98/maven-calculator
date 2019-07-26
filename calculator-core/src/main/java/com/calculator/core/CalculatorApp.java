@@ -11,9 +11,9 @@ import java.util.List;
 
 class CalculatorApp {
 
-    private InputFormatter formatter;
-    private ReversePolishNotationParser parser;
-    private ReversePolishCalculationAlgorithm algorithm;
+    private final InputFormatter formatter;
+    private final ReversePolishNotationParser parser;
+    private final ReversePolishCalculationAlgorithm algorithm;
 
 
     CalculatorApp(final InputFormatter formatter,final ReversePolishNotationParser parser,final ReversePolishCalculationAlgorithm algorithm)

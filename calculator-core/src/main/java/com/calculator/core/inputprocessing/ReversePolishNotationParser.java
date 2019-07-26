@@ -9,9 +9,9 @@ import java.util.Stack;
 
 public class ReversePolishNotationParser {
 
-    private Stack<EquationComponent> operatorContainer;
+    private final Stack<EquationComponent> operatorContainer;
 
-    private List<EquationComponent> reversedPolishEquation;
+    private final List<EquationComponent> reversedPolishEquation;
 
     public ReversePolishNotationParser() {
         operatorContainer = new Stack<>();

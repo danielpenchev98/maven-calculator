@@ -9,7 +9,7 @@ import java.util.Stack;
 
 public class ReversePolishCalculationAlgorithm {
 
-    private Stack<NumberComponent> supplier;
+    private final Stack<NumberComponent> supplier;
 
     public ReversePolishCalculationAlgorithm()
     {
@@ -17,6 +17,7 @@ public class ReversePolishCalculationAlgorithm {
     }
 
     public double calculateEquation(final List<EquationComponent> components) throws EmptyStackException, InvalidEquationException {
+
         for (EquationComponent component : components) {
             process(component);
         }

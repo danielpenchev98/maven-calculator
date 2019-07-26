@@ -4,7 +4,7 @@ import com.calculator.core.exceptions.InvalidComponentException;
 
 public class EquationComponentFactory {
 
-    private static String validNumberRegex = "-?[0-9]+(.[0-9]+)?";
+    private final static String validNumberRegex = "-?[0-9]+(.[0-9]+)?";
 
     public EquationComponent createComponent(final String operation) throws InvalidComponentException
     {
