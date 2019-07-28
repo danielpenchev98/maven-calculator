@@ -1,9 +1,8 @@
-package com.calculator.core.operators;
+package com.calculator.core.calculation;
 
-import com.calculator.core.calculation.ReversePolishCalculationAlgorithm;
 import com.calculator.core.exceptions.InvalidEquationException;
 import com.calculator.core.exceptions.InvalidParameterException;
-import com.calculator.core.calculation.ReversePolishNotationParser;
+import com.calculator.core.operators.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
