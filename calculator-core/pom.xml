@@ -18,6 +18,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
+                    <finalName>calculator-core</finalName>
                     <archive>
                         <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
                     </archive>
