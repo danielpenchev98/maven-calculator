@@ -1,24 +1,37 @@
-package com.calculator.core.computation;
+package com.calculator.core.calculation;
 
 import com.calculator.core.exceptions.InvalidEquationException;
 import com.calculator.core.exceptions.InvalidParameterException;
+import com.calculator.core.operators.EquationComponent;
+import com.calculator.core.operators.MathArithmeticOperator;
+import com.calculator.core.operators.NumberComponent;
 
 import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
 
-public class ReversePolishCalculationAlgorithm {
+public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
 
     private final Stack<NumberComponent> supplier;
 
+    private final ReversePolishNotationParser parser;
+
     public ReversePolishCalculationAlgorithm()
     {
-        supplier=new Stack<>();
+        this(new ReversePolishNotationParser());
+    }
+
+    public ReversePolishCalculationAlgorithm(final ReversePolishNotationParser parser)
+    {
+        this.parser=parser;
+        this.supplier=new Stack<>();
     }
 
     public double calculateEquation(final List<EquationComponent> components) throws EmptyStackException, InvalidEquationException {
 
-        for (EquationComponent component : components) {
+        List<EquationComponent> componentsInRPN=formatToReversePolishNotation(components);
+
+        for (EquationComponent component : componentsInRPN) {
             process(component);
         }
 
@@ -27,6 +40,11 @@ public class ReversePolishCalculationAlgorithm {
         }
 
         return getNextNumberFromSupplier();
+    }
+
+    private List<EquationComponent> formatToReversePolishNotation(final List<EquationComponent> components)
+    {
+        return parser.formatFromInfixToReversedPolishNotation(components);
     }
 
     private void process(final EquationComponent component) {

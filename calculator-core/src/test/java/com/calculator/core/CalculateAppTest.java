@@ -1,8 +1,8 @@
 package com.calculator.core;
 
-import com.calculator.core.computation.ReversePolishCalculationAlgorithm;
-import com.calculator.core.inputprocessing.InputFormatter;
-import com.calculator.core.inputprocessing.ReversePolishNotationParser;
+import com.calculator.core.calculation.ReversePolishCalculationAlgorithm;
+import com.calculator.core.inputformatting.EquationFormatter;
+import com.calculator.core.calculation.ReversePolishNotationParser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
@@ -18,7 +18,7 @@ public class CalculateAppTest
     private CalculatorApp app;
 
     @Mock
-    private InputFormatter formatter;
+    private EquationFormatter formatter;
 
     @Mock
     private ReversePolishNotationParser parser;
@@ -33,7 +33,6 @@ public class CalculateAppTest
 
         InOrder inorder=inOrder(formatter,parser,algorithm);
         inorder.verify(formatter).doFormat("1+1");
-        inorder.verify(parser).formatFromInfixToReversedPolishNotation(ArgumentMatchers.anyList());
         inorder.verify(algorithm).calculateEquation(ArgumentMatchers.anyList());
     }
 

@@ -1,6 +1,6 @@
-package com.calculator.core.inputprocessing;
+package com.calculator.core.calculation;
 
-import com.calculator.core.computation.*;
+import com.calculator.core.operators.*;
 
 import java.util.EmptyStackException;
 import java.util.LinkedList;

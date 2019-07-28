@@ -1,7 +1,9 @@
-package com.calculator.core.computation;
+package com.calculator.core.operators;
 
+import com.calculator.core.calculation.ReversePolishCalculationAlgorithm;
 import com.calculator.core.exceptions.InvalidEquationException;
 import com.calculator.core.exceptions.InvalidParameterException;
+import com.calculator.core.calculation.ReversePolishNotationParser;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +23,9 @@ public class ReversePolishCalculationAlgorithmTest {
     private ReversePolishCalculationAlgorithm algorithm;
 
     @Mock
+    private ReversePolishNotationParser parser;
+
+    @Mock
     private NumberComponent firstNumber;
 
     @Mock
@@ -34,28 +39,35 @@ public class ReversePolishCalculationAlgorithmTest {
 
     @Before
     public void setUp() {
-        algorithm=new ReversePolishCalculationAlgorithm();
+        algorithm=new ReversePolishCalculationAlgorithm(parser);
     }
 
     @Test(expected = EmptyStackException.class)
     public void calculationEquation_EquationWithMissingNumber_OutOfItemsExceptionThrown() throws Exception
     {
+        List<EquationComponent> input=Arrays.asList(firstNumber,addition,secondNumber,addition);
+
+        Mockito.when(parser.formatFromInfixToReversedPolishNotation(input))
+                .thenReturn(Arrays.asList(firstNumber,secondNumber,addition,addition));
+
         Mockito.when(firstNumber.getValue()).thenReturn("2.0");
         Mockito.when(secondNumber.getValue()).thenReturn("3.0");
-
         Mockito.when(addition.compute(2.0,3.0)).thenReturn(5.0);
 
-        List<EquationComponent> input=Arrays.asList(firstNumber,secondNumber,addition,addition);
         algorithm.calculateEquation(input);
     }
 
     @Test(expected = InvalidEquationException.class)
     public void calculationEquation_EquationWithMissingOperator_MissingOperatorExceptionThrown() throws Exception
     {
-        Mockito.when(firstNumber.getValue()).thenReturn("2.0");
-        Mockito.when(addition.compute(2.0,2.0)).thenReturn(4.0);
+        List<EquationComponent> input=Arrays.asList(firstNumber,addition,firstNumber,secondNumber);
 
-        List<EquationComponent> input=Arrays.asList(firstNumber,firstNumber,addition,secondNumber);
+        Mockito.when(parser.formatFromInfixToReversedPolishNotation(input))
+                .thenReturn(Arrays.asList(firstNumber,firstNumber,secondNumber,addition));
+
+        Mockito.when(firstNumber.getValue()).thenReturn("2.0");
+        Mockito.when(secondNumber.getValue()).thenReturn("3.0");
+        Mockito.when(addition.compute(2.0,3.0)).thenReturn(5.0);
 
         algorithm.calculateEquation(input);
     }
@@ -63,8 +75,11 @@ public class ReversePolishCalculationAlgorithmTest {
     @Test(expected = InvalidParameterException.class)
     public void calculationEquation_EquationWithInvalidOperator_InvalidOperatorException() throws Exception
     {
+        ClosingBracket closingBracket=new ClosingBracket();
+        List<EquationComponent> input=Arrays.asList(firstNumber,closingBracket,secondNumber);
 
-        List<EquationComponent> input=Arrays.asList(firstNumber,secondNumber,new ClosingBracket());
+        Mockito.when(parser.formatFromInfixToReversedPolishNotation(input))
+                .thenReturn(Arrays.asList(firstNumber,secondNumber,closingBracket));
 
         algorithm.calculateEquation(input);
     }
@@ -72,11 +87,14 @@ public class ReversePolishCalculationAlgorithmTest {
     @Test
     public void calculationEquation_LegalEquation() throws Exception
     {
+        List<EquationComponent> input=Arrays.asList(secondNumber,addition,secondNumber,power,secondNumber);
+
+        Mockito.when(parser.formatFromInfixToReversedPolishNotation(input))
+                .thenReturn(Arrays.asList(secondNumber,secondNumber,secondNumber,power,addition));
+
         Mockito.when(secondNumber.getValue()).thenReturn("3.0");
         Mockito.when(power.compute(3.0,3.0)).thenReturn(27.0);
         Mockito.when(addition.compute(3.0,27.0)).thenReturn(30.0);
-
-        List<EquationComponent> input=Arrays.asList(secondNumber,secondNumber,secondNumber,power,addition);
 
         assertEquals(30,algorithm.calculateEquation(input),0.001);
     }
