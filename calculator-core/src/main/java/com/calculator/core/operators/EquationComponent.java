@@ -1,4 +1,4 @@
-package com.calculator.core.computation;
+package com.calculator.core.operators;
 
 /**
  * Base interface used for polymorphism in ReversedPolishNotationParser

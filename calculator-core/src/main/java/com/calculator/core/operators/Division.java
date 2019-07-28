@@ -1,4 +1,4 @@
-package com.calculator.core.computation;
+package com.calculator.core.operators;
 
 import com.calculator.core.exceptions.DivisionByZeroException;
 

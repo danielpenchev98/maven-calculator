@@ -1,6 +1,7 @@
-package com.calculator.core.inputprocessing;
+package com.calculator.core.inputformatting;
 
-import com.calculator.core.computation.*;
+import com.calculator.core.calculation.ReversePolishNotationParser;
+import com.calculator.core.operators.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

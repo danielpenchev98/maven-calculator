@@ -1,4 +1,4 @@
-package com.calculator.core.inputprocessing;
+package com.calculator.core.inputformatting;
 
 import com.calculator.core.exceptions.InvalidEquationException;
 import com.calculator.core.exceptions.InvalidParameterException;

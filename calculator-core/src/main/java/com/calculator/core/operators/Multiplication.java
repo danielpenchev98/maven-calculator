@@ -1,4 +1,4 @@
-package com.calculator.core.computation;
+package com.calculator.core.operators;
 
 
 public class Multiplication implements MathArithmeticOperator {
