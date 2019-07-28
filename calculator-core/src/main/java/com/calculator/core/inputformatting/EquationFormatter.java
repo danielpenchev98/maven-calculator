@@ -1,8 +1,7 @@
-package com.calculator.core.inputprocessing;
+package com.calculator.core.inputformatting;
 
-
-import com.calculator.core.computation.EquationComponent;
-import com.calculator.core.computation.EquationComponentFactory;
+import com.calculator.core.operators.EquationComponent;
+import com.calculator.core.operators.EquationComponentFactory;
 import com.calculator.core.exceptions.InvalidComponentException;
 import com.calculator.core.exceptions.InvalidEquationException;
 
@@ -13,7 +12,7 @@ import java.util.List;
 /**
  * Class which requires for formatting of the user input and identifying the components of an equation
  */
-public class InputFormatter {
+public class EquationFormatter implements InputFormatter {
 
     private final EquationStructureValidator structureValidator;
 
@@ -21,11 +20,11 @@ public class InputFormatter {
 
     private final String COMPONENTSEPARATOR = " ";
 
-    public InputFormatter() {
+    public EquationFormatter() {
         this(new EquationStructureValidator(), new EquationComponentFactory());
     }
 
-    InputFormatter(final EquationStructureValidator validator, final EquationComponentFactory factory) {
+    EquationFormatter(final EquationStructureValidator validator, final EquationComponentFactory factory) {
         structureValidator = validator;
         componentFactory = factory;
     }

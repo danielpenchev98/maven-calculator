@@ -1,6 +1,6 @@
-package com.calculator.core.inputprocessing;
+package com.calculator.core.inputformatting;
 
-import com.calculator.core.computation.*;
+import com.calculator.core.operators.*;
 import com.calculator.core.exceptions.InvalidComponentException;
 import com.calculator.core.exceptions.InvalidEquationException;
 import org.junit.Before;
@@ -12,16 +12,15 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @RunWith(MockitoJUnitRunner.class)
-public class InputFormatterTest {
+public class EquationFormatterTest {
 
-    private InputFormatter formatter;
+    private EquationFormatter formatter;
 
     @Mock
     private EquationStructureValidator validator;
@@ -39,7 +38,7 @@ public class InputFormatterTest {
     @Before
     public void setUp()
     {
-        formatter= new InputFormatter(validator,factory);
+        formatter= new EquationFormatter(validator,factory);
         firstNumber=new NumberComponent("-1.0");
         secondNumber=new NumberComponent("2.0");
         addition=new Addition();

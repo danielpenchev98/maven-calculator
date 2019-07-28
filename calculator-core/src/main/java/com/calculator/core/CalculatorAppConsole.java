@@ -1,11 +1,10 @@
 package com.calculator.core;
 
-import com.calculator.core.computation.ReversePolishCalculationAlgorithm;
+import com.calculator.core.calculation.ReversePolishCalculationAlgorithm;
 import com.calculator.core.exceptions.DivisionByZeroException;
 import com.calculator.core.exceptions.InvalidComponentException;
 import com.calculator.core.exceptions.InvalidEquationException;
-import com.calculator.core.inputprocessing.InputFormatter;
-import com.calculator.core.inputprocessing.ReversePolishNotationParser;
+import com.calculator.core.inputformatting.EquationFormatter;
 
 public class CalculatorAppConsole {
 
@@ -19,8 +18,7 @@ public class CalculatorAppConsole {
             return;
         }
 
-        InputFormatter formatter = new InputFormatter();
-        CalculatorApp application = new CalculatorApp(formatter, new ReversePolishNotationParser(), new ReversePolishCalculationAlgorithm());
+        CalculatorApp application = new CalculatorApp(new EquationFormatter(),new ReversePolishCalculationAlgorithm());
 
         try {
             System.out.print(application.calculateResult(argc[POSITION_OF_ARGUMENT]));
@@ -31,7 +29,7 @@ public class CalculatorAppConsole {
         } catch (DivisionByZeroException ex) {
             System.out.print("Arithmetic error :" + ex.getMessage());
         } catch (Exception sysError) {
-            //TODO to log the system trace
+            //TODO to log the stacktrace
             System.out.print("Problem with the application");
         }
     }
