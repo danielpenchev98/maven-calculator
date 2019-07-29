@@ -11,6 +11,7 @@
     <modules>
         <module>calculator-core</module>
         <module>calculator-core-test</module>
+        <module>webapp</module>
     </modules>
 
     <build>

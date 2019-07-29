@@ -16,6 +16,8 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
 
     private final ReversePolishNotationParser parser;
 
+    private final int NUMBERS_IN_SUPPLIER_AFTER_CALCULATION=1;
+
     public ReversePolishCalculationAlgorithm()
     {
         this(new ReversePolishNotationParser());
@@ -27,24 +29,24 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
         this.supplier=new Stack<>();
     }
 
-    public double calculateEquation(final List<EquationComponent> components) throws EmptyStackException, InvalidEquationException {
+    public double calculateEquation(final List<EquationComponent> equation) throws EmptyStackException, InvalidEquationException {
 
-        List<EquationComponent> componentsInRPN=formatToReversePolishNotation(components);
+        List<EquationComponent> equationInRPN=formatToReversePolishNotation(equation);
 
-        for (EquationComponent component : componentsInRPN) {
+        for (EquationComponent component : equationInRPN) {
             process(component);
         }
 
-        if (supplier.size() != 1) {
+        if (hasErrorInTheCalculation()) {
             throw new InvalidEquationException("Invalid equation. Logical error. There aren't enough operators");
         }
 
         return getNextNumberFromSupplier();
     }
 
-    private List<EquationComponent> formatToReversePolishNotation(final List<EquationComponent> components)
+    private List<EquationComponent> formatToReversePolishNotation(final List<EquationComponent> equation)
     {
-        return parser.formatFromInfixToReversedPolishNotation(components);
+        return parser.formatFromInfixToReversedPolishNotation(equation);
     }
 
     private void process(final EquationComponent component) {
@@ -68,4 +70,10 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
         String number = supplier.pop().getValue();
         return Double.valueOf(number);
     }
+
+    private boolean hasErrorInTheCalculation()
+    {
+        return supplier.size()!=NUMBERS_IN_SUPPLIER_AFTER_CALCULATION;
+    }
+
 }
