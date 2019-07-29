@@ -5,6 +5,13 @@ import com.calculator.core.exceptions.InvalidParameterException;
 
 public class EquationStructureValidator {
 
+    private final String separator;
+
+    EquationStructureValidator(final String separator)
+    {
+        this.separator=separator;
+    }
+
     void validateEquationStructure(final String equation) throws InvalidEquationException
     {
         if(equation==null) {
@@ -55,7 +62,7 @@ public class EquationStructureValidator {
     }
 
     private boolean hasSequentialNonBracketComponentsOfTheSameType(final String equation) {
-        return equation.matches(".*([0-9a-zA-Z.]+ [0-9a-zA-Z.]+|.*[^0-9a-zA-Z.)( ] [^0-9a-zA-Z.)( ]).*");
+        return equation.matches(".*([0-9a-zA-Z.]+"+separator+"[0-9a-zA-Z.]+|.*[^0-9a-zA-Z.)("+separator+"]"+separator+"[^0-9a-zA-Z.)("+separator+"]).*");
     }
 
     private void checkIfHasAnOperatorAsBeginningOrEndingOfEquationScope(final String equation) throws InvalidEquationException {
@@ -65,7 +72,7 @@ public class EquationStructureValidator {
     }
 
     private boolean hasAnOperatorAsBeginningOrEndingOfEquationScope(final String equation) {
-        return equation.matches("(^|.*\\( )[^0-9a-zA-Z.)( ] .*|.*[^0-9a-zA-Z.)( ]( \\)|$)");
+        return equation.matches("(^|.*\\("+separator+")[^0-9a-zA-Z.)("+separator+"]"+separator+".*|.*[^0-9a-zA-Z.)("+separator+"]("+separator+"\\)|$)");
     }
 
     private void checkIfHasEmptyBrackets(final String equation) throws InvalidEquationException {
@@ -75,7 +82,7 @@ public class EquationStructureValidator {
     }
 
     private boolean hasEmptyBrackets(final String equation) {
-        return equation.matches(".*\\( \\).*");
+        return equation.matches(".*\\("+separator+"\\).*");
     }
 
     private void checkIfHasMissingOperatorBeforeOrAfterBracket(final String equation) throws InvalidEquationException {
@@ -85,7 +92,7 @@ public class EquationStructureValidator {
     }
 
     private boolean hasMissingOperatorBeforeOrAfterBracket(final String equation) {
-        return equation.matches(".*[0-9a-zA-Z.)] \\(.*|.*\\) [0-9a-zA-Z.(].*");
+        return equation.matches(".*[0-9a-zA-Z.)]"+separator+"\\(.*|.*\\)"+separator+"[0-9a-zA-Z.(].*");
     }
 
 }

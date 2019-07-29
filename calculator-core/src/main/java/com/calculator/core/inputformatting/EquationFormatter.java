@@ -18,10 +18,10 @@ public class EquationFormatter implements InputFormatter {
 
     private final EquationComponentFactory componentFactory;
 
-    private final String COMPONENTSEPARATOR = " ";
+    private final static String SEPARATOR_OF_COMPONENTS = " ";
 
     public EquationFormatter() {
-        this(new EquationStructureValidator(), new EquationComponentFactory());
+        this(new EquationStructureValidator(SEPARATOR_OF_COMPONENTS), new EquationComponentFactory());
     }
 
     EquationFormatter(final EquationStructureValidator validator, final EquationComponentFactory factory) {
@@ -38,32 +38,33 @@ public class EquationFormatter implements InputFormatter {
     }
 
     private String fixFormatOfEquation(final String equation) {
-        String equationWithPaddingBetweenComponents = addSeparatorAfterEveryComponent(equation);
+        String equationWithPaddingBetweenComponents = addSeparatorBetweenComponents(equation);
         return removeSeparatorBetweenTheNumberAndItsSign(equationWithPaddingBetweenComponents);
     }
 
     private List<String> extractComponents(final String equation) {
-        String[] components = equation.split(COMPONENTSEPARATOR);
+        String[] components = equation.split(SEPARATOR_OF_COMPONENTS);
         return Arrays.asList(components);
     }
 
     private String removeJunkSpaces(final String equation) {
-        final String sequentialSpacesRegex="[ ]+";
-        return equation.replaceAll(sequentialSpacesRegex, COMPONENTSEPARATOR).trim();
+        final String junkSpacesRegex="[ ]+";
+        return equation.replaceAll(junkSpacesRegex, SEPARATOR_OF_COMPONENTS).trim();
     }
 
-    private String addSeparatorAfterEveryComponent(final String equation) {
+    private String addSeparatorBetweenComponents(final String equation) {
 
-        final String componentsRegex="([0-9]+([.][0-9]*)*|[^0-9.a-zA-Z ]|[a-zA-Z]+)";
-        final String componentPaddedWithSeparator="$1"+COMPONENTSEPARATOR;
+        final String componentsRegex="([^0-9.a-zA-Z ]|[0-9.a-zA-Z]+)";
+        final String componentsPaddedWithSeparator="$1"+SEPARATOR_OF_COMPONENTS;
 
-        String equationWithPossiblyJunkSpaces = equation.replaceAll(componentsRegex, componentPaddedWithSeparator);
+        String equationWithPossiblyJunkSpaces = equation.replaceAll(componentsRegex, componentsPaddedWithSeparator);
+
         return removeJunkSpaces(equationWithPossiblyJunkSpaces);
     }
 
     private String removeSeparatorBetweenTheNumberAndItsSign(final String equation) {
 
-        final String separatorBetweenNumberAndItsSign="([(]"+COMPONENTSEPARATOR+ "|^)-"+COMPONENTSEPARATOR+"([0-9]+)";
+        final String separatorBetweenNumberAndItsSign="([(]"+SEPARATOR_OF_COMPONENTS+ "|^)-"+SEPARATOR_OF_COMPONENTS+"([0-9]+)";
         final String removedSeparatorBetweenNumberAndItsSign="$1-$2";
 
         return equation.replaceAll(separatorBetweenNumberAndItsSign, removedSeparatorBetweenNumberAndItsSign);

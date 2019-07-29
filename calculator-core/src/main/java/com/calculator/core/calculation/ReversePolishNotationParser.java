@@ -29,11 +29,11 @@ public class ReversePolishNotationParser {
      * 4) if it's closing bracket - add operators from the stack to equation, till you find opening bracket in the stack
      * 5) In the end add everything from the stack to equation
      *
-     * @param components infix notation
-     * @return reverse polish notation
+     * @param equation in infix notation
+     * @return equation in reverse polish notation
      */
-    public List<EquationComponent> formatFromInfixToReversedPolishNotation(final List<EquationComponent> components) throws EmptyStackException {
-        for (EquationComponent component : components) {
+    public List<EquationComponent> formatFromInfixToReversedPolishNotation(final List<EquationComponent> equation) throws EmptyStackException {
+        for (EquationComponent component : equation) {
             processComponent(component);
         }
         addAllOperatorsLeftInTheContainerToEquation();
