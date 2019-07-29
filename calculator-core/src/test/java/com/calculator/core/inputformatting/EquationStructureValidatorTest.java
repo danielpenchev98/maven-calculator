@@ -12,7 +12,7 @@ public class EquationStructureValidatorTest {
     @Before
     public void setUp()
     {
-        validator=new EquationStructureValidator();
+        validator=new EquationStructureValidator(" ");
     }
 
     @Test(expected = InvalidParameterException.class)
