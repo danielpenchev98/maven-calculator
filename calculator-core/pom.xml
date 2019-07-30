@@ -11,6 +11,5 @@
 
     <groupId>com.calculator.core</groupId>
     <artifactId>calculator-core</artifactId>
-    <packaging>jar</packaging>
 
 </project>

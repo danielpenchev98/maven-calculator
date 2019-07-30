@@ -40,7 +40,6 @@
     </build>
 
     <dependencies>
-
         <dependency>
             <groupId>com.calculator.core</groupId>
             <artifactId>calculator-core</artifactId>
