@@ -10,8 +10,8 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>calculator-core</module>
-        <module>calculator-core-test</module>
-        <module>webapp</module>
+        <module>calculator-console</module>
+        <module>calculator-console-test</module>
     </modules>
 
     <build>
