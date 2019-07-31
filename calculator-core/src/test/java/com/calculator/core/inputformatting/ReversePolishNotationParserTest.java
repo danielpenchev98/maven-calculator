@@ -12,6 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -56,7 +57,7 @@ public class ReversePolishNotationParserTest {
         List<EquationComponent> expected=Arrays.asList(firstNumber,secondNumber,thirdNumber,multiplication,addition);
         List<EquationComponent> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
 
-        assertEquals(expected,realResult);
+        assertThat(realResult,is(expected));
     }
 
     @Test
@@ -69,7 +70,7 @@ public class ReversePolishNotationParserTest {
         List<EquationComponent> expected=Arrays.asList(firstNumber,thirdNumber,multiplication,secondNumber,multiplication);
         List<EquationComponent> realResult = parserRPN.formatFromInfixToReversedPolishNotation(input);
 
-        assertEquals(expected,realResult);
+        assertThat(realResult,is(expected));
     }
 
     @Test
@@ -80,7 +81,7 @@ public class ReversePolishNotationParserTest {
         List<EquationComponent> expected=Arrays.asList(firstNumber,secondNumber,addition,thirdNumber,multiplication);
         List<EquationComponent> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
 
-        assertEquals(expected,realResult);
+        assertThat(realResult,is(expected));
     }
 
     @Test
@@ -91,8 +92,8 @@ public class ReversePolishNotationParserTest {
 
         List<EquationComponent> input=Arrays.asList(thirdNumber,multiplication,thirdNumber,power,thirdNumber);
         List<EquationComponent> expected=Arrays.asList(thirdNumber,thirdNumber,thirdNumber,power,multiplication);
-        List<EquationComponent> result=parserRPN.formatFromInfixToReversedPolishNotation(input);
+        List<EquationComponent> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
 
-        assertEquals(expected,result);
+        assertThat(realResult,is(expected));
     }
 }
