@@ -1,11 +1,10 @@
 package com.calculator.console;
 
 import com.calculator.core.CalculatorApp;
-import com.calculator.core.calculation.ReversePolishCalculationAlgorithm;
 import com.calculator.core.exceptions.DivisionByZeroException;
 import com.calculator.core.exceptions.InvalidComponentException;
 import com.calculator.core.exceptions.InvalidEquationException;
-import com.calculator.core.inputformatting.EquationFormatter;
+
 
 public class CalculatorConsole {
 
@@ -18,7 +17,7 @@ public class CalculatorConsole {
                 System.out.print("Invalid number of arguments");
                 return;
             }
-            CalculatorApp application = new CalculatorApp(new EquationFormatter(), new ReversePolishCalculationAlgorithm());
+            CalculatorApp application = new CalculatorApp();
 
             try {
                 System.out.print(application.calculateResult(argc[POSITION_OF_ARGUMENT]));

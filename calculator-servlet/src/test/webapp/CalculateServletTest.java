@@ -15,20 +15,14 @@ import static org.mockito.Mockito.*;
 
 public class CalculateServletTest {
 
-    //@Mock
-    //HttpServletRequest request;
-
-    //@Mock
-    //HttpServletResponse response;
-
 
 
     @Test
-    public void doGet_() throws Exception {
+    public void doGet_1() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
 
-        Mockito.when(request.getParameter("equation")).thenReturn("1+1");
+        Mockito.when(request.getParameter("equation")).thenReturn("2");
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
         Mockito.when(response.getWriter()).thenReturn(writer);
@@ -39,7 +33,24 @@ public class CalculateServletTest {
         writer.flush();
         assertTrue(stringWriter.toString().contains("2"));
         Mockito.verify(request, times(1)).getParameter("equation");
+    }
 
+    @Test
+    public void doGet_2() throws Exception {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpServletResponse response = mock(HttpServletResponse.class);
+
+        Mockito.when(request.getParameter("equation")).thenReturn("1/0");
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        Mockito.when(response.getWriter()).thenReturn(writer);
+
+        CalculateServlet servlet=new CalculateServlet();
+        servlet.doGet(request,response);
+
+        writer.flush();
+        assertTrue(stringWriter.toString().contains("2"));
+        Mockito.verify(request, times(1)).getParameter("equation");
     }
 
 }

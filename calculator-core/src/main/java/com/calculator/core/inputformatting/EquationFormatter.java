@@ -60,6 +60,7 @@ public class EquationFormatter implements InputFormatter {
         String equationWithPossiblyJunkSpaces = equation.replaceAll(componentsRegex, componentsPaddedWithSeparator);
 
         return removeJunkSpaces(equationWithPossiblyJunkSpaces);
+
     }
 
     private String removeSeparatorBetweenTheNumberAndItsSign(final String equation) {
