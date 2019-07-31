@@ -11,14 +11,13 @@ public class CalculateServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws  IOException {
 
-        String equation=request.getParameter("equation");
+        String equation = request.getParameter("equation");
 
         response.setContentType("text/html");
-        PrintWriter out=response.getWriter();
+        PrintWriter out = response.getWriter();
 
         out.println("<html><body>");
         out.println("2");
         out.println("</body></html>");
     }
-
 }

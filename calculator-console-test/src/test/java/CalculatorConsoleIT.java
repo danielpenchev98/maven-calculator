@@ -15,6 +15,8 @@ import static org.junit.Assert.assertEquals;
 @RunWith(DataProviderRunner.class)
 public class CalculatorConsoleIT {
 
+    private final static String PATH = "./target/lib/calculator-console-1.0-SNAPSHOT.jar";
+
     private final static Double DELTA=0.0001;
 
     @DataProvider
@@ -40,7 +42,7 @@ public class CalculatorConsoleIT {
 
     private String executeJarInNewProcess(final List<String> equation) throws Exception
     {
-        List<String> command=new LinkedList<>(Arrays.asList("java","-jar","../calculator-console/target/calculator-console-1.0-SNAPSHOT-jar-with-dependencies.jar"));
+        List<String> command=new LinkedList<>(Arrays.asList("java","-jar",PATH));
         command.addAll(equation);
         final ProcessBuilder pBuilder = new ProcessBuilder(command);
         final Process process = pBuilder.start();
