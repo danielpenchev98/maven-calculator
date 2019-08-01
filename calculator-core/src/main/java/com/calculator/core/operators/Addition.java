@@ -15,7 +15,6 @@ public class Addition implements MathArithmeticOperator {
         return firstNumber+secondNumber;
     }
 
-    //TODO The name is against the Clean code principle - should fix it
     /**
      * @return the priority of the operator
      */
