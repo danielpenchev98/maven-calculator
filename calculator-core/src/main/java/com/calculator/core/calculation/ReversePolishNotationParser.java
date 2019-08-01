@@ -33,6 +33,9 @@ public class ReversePolishNotationParser {
      * @return equation in reverse polish notation
      */
     public List<EquationComponent> formatFromInfixToReversedPolishNotation(final List<EquationComponent> equation) throws EmptyStackException {
+        //TODO if we use the same object for multiple calculations, the wont be cleared after each calculation
+        reversedPolishEquation.clear();
+
         for (EquationComponent component : equation) {
             processComponent(component);
         }

@@ -29,6 +29,7 @@ public class CalculateServlet extends HttpServlet {
 
         String equation = request.getParameter("equation");
 
+
         String result=null;
         try{
             result=String.valueOf(calculator.calculateResult(equation));
@@ -43,5 +44,6 @@ public class CalculateServlet extends HttpServlet {
         out.println("<html><body>");
         out.println(result);
         out.println("</body></html>");
+        out.flush();
     }
 }

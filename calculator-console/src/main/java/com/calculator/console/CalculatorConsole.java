@@ -5,11 +5,11 @@ import com.calculator.core.exceptions.DivisionByZeroException;
 import com.calculator.core.exceptions.InvalidComponentException;
 import com.calculator.core.exceptions.InvalidEquationException;
 
-
 public class CalculatorConsole {
 
         private static final int VALID_NUMBER_OF_ARGUMENTS=1;
         private static final int POSITION_OF_ARGUMENT=0;
+
 
         public static void main(String[] argc)
         {
