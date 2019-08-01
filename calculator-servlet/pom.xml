@@ -26,12 +26,22 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
-
+      <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-core</artifactId>
+          <version>3.0.0</version>
+          <scope>test</scope>
+      </dependency>
+    <dependency>
+      <groupId>com.calculator.core</groupId>
+      <artifactId>calculator-core</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <build>
     <finalName>webapp</finalName>
-    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+    <pluginManagement>
       <plugins>
         <plugin>
           <groupId>org.apache.tomcat.maven</groupId>
@@ -42,7 +52,6 @@
           <artifactId>maven-clean-plugin</artifactId>
           <version>3.1.0</version>
         </plugin>
-        <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
           <version>3.0.2</version>

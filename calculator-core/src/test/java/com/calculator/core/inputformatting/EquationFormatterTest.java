@@ -14,6 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
@@ -61,7 +62,7 @@ public class EquationFormatterTest {
         Mockito.when(factory.createComponent("+")).thenReturn(addition);
 
         List<EquationComponent> expected=Arrays.asList(firstNumber,addition,secondNumber);
-        assertEquals( expected,formatter.doFormat("-1.0 +     2.0"));
+        assertThat(formatter.doFormat("-1.0 +     2.0") ,is(expected));
 
         Mockito.verify(factory,times(3)).createComponent(ArgumentMatchers.anyString());
         Mockito.verify(validator,times(1)).validateEquationStructure(ArgumentMatchers.anyString());
@@ -77,7 +78,7 @@ public class EquationFormatterTest {
         Mockito.when(factory.createComponent(")")).thenReturn(closingBracket);
 
         List<EquationComponent> expected=Arrays.asList(openingBracket,firstNumber,addition,secondNumber,closingBracket);
-        assertEquals(expected,formatter.doFormat("(-1.0+2.0)"));
+        assertThat(formatter.doFormat("(-1.0+2.0)"),is(expected));
 
         Mockito.verify(factory,times(5)).createComponent(ArgumentMatchers.anyString());
         Mockito.verify(validator,times(1)).validateEquationStructure(ArgumentMatchers.anyString());
@@ -93,7 +94,7 @@ public class EquationFormatterTest {
         Mockito.when(factory.createComponent(")")).thenReturn(closingBracket);
 
         List<EquationComponent> expected=Arrays.asList(secondNumber,addition,openingBracket,firstNumber,closingBracket);
-        assertEquals(expected,formatter.doFormat("2.0 + ( - 1.0 )"));
+        assertThat(formatter.doFormat("2.0 + ( - 1.0 )"),is(expected));
 
         Mockito.verify(factory,times(5)).createComponent(ArgumentMatchers.anyString());
         Mockito.verify(validator,times(1)).validateEquationStructure(ArgumentMatchers.anyString());

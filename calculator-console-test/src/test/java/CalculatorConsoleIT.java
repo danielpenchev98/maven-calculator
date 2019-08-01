@@ -1,27 +1,34 @@
+import calculatorclient.ConsolePage;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(DataProviderRunner.class)
-public class CalculatorCoreIT {
+public class CalculatorConsoleIT {
 
     private final static Double DELTA=0.0001;
 
+    private static ConsolePage calculator;
+
+    @BeforeClass
+    public static void setUp()
+    {
+        calculator=new ConsolePage();
+    }
+
     @DataProvider
     public static Object[][] correctExpressionSupplier(){
-        return new Object[][]{{"((8 ^2/18)-( 100*100)/1500)^( (10))",84948.4030},
-                              {"22 /7",3.14285},
+        return new Object[][]{{"(  (8 ^2/18) -( 100*100)/1500)^( (10))",84948.4030},
+                              {"22 / 7",3.14285},
                               {"100 /0^0",100.0}};
     }
 
@@ -39,38 +46,26 @@ public class CalculatorCoreIT {
                               {"PI/2 * 6","Problem with a component of equation :Unsupported component :PI"}};
     }
 
-    private String executeJarInNewProcess(final List<String> equation) throws Exception
-    {
-        List<String> command=new LinkedList<>(Arrays.asList("java","-jar","calculator-core.jar"));
-        command.addAll(equation);
 
-        final ProcessBuilder pBuilder = new ProcessBuilder(command);
-        pBuilder.directory(new File("../calculator-core/target"));
-        final Process process = pBuilder.start();
-        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String result = in.readLine();
-        process.waitFor();
-        return result;
-    }
 
     @Test
     @UseDataProvider("correctExpressionSupplier")
     public void calculate_ReturnCorrectResultOfEquation(final String equation, final Double expectedResult) throws Exception {
-        String actualResult = executeJarInNewProcess(Arrays.asList(equation));
-        assertEquals(expectedResult, Double.valueOf(actualResult), DELTA);
+        String actualResult = calculator.getResultFromCalculatorConsole(Arrays.asList(equation));
+        assertEquals(expectedResult,Double.valueOf(actualResult),DELTA);
     }
 
     @Test
     @UseDataProvider("illegalExpressionSupplier")
     public void calculate_WrongStructuredExpression(final String equation, final String exceptionMessage) throws Exception {
-        String actualResult = executeJarInNewProcess(Arrays.asList(equation));
-        assertEquals(exceptionMessage, actualResult);
+        String actualResult = calculator.getResultFromCalculatorConsole(Arrays.asList(equation));
+        assertThat(actualResult,is(exceptionMessage));
     }
 
     @Test
     public void calculate_InvalidNumberOfArguments() throws Exception {
-        String actualResult= executeJarInNewProcess(Arrays.asList("1","+","1"));
-        assertEquals("Invalid number of arguments",actualResult);
+        String actualResult = calculator.getResultFromCalculatorConsole(Arrays.asList("1", "+", "1"));
+        assertThat(actualResult,is("Invalid number of arguments"));
     }
 
 }

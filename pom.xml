@@ -10,8 +10,8 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>calculator-core</module>
-        <module>calculator-core-test</module>
-        <module>webapp</module>
+        <module>calculator-console</module>
+        <module>calculator-console-test</module>
     </modules>
 
     <build>
@@ -24,18 +24,6 @@
                     <source>8</source>
                     <target>8</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.21.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

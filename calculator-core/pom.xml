@@ -9,25 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.calculator.core</groupId>
     <artifactId>calculator-core</artifactId>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.2</version>
-                <configuration>
-                    <finalName>calculator-core</finalName>
-                    <archive>
-                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
-                    </archive>
-                </configuration>
-            </plugin>
-
-        </plugins>
-    </build>
-
-    <packaging>jar</packaging>
 
 </project>

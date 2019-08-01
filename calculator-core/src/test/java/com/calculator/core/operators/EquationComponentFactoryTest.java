@@ -4,6 +4,8 @@ import com.calculator.core.exceptions.InvalidComponentException;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.*;
 
 public class EquationComponentFactoryTest {
@@ -21,56 +23,56 @@ public class EquationComponentFactoryTest {
     public void createComponent_CreateAdditionObject_ObjectCreated() throws InvalidComponentException
     {
         EquationComponent component = factory.createComponent("+");
-        assertTrue(component instanceof Addition);
+        assertThat(component,instanceOf(Addition.class));
     }
 
     @Test
     public void createComponent_CreateSubtractionObject_ObjectCreated() throws InvalidComponentException
     {
         EquationComponent component = factory.createComponent("-");
-        assertTrue(component instanceof Subtraction);
+        assertThat(component,instanceOf(Subtraction.class));
     }
 
     @Test
     public void createComponent_CreateMultiplicationObject_ObjectCreated() throws InvalidComponentException
     {
         EquationComponent component = factory.createComponent("*");
-        assertTrue(component instanceof Multiplication);
+        assertThat(component,instanceOf(Multiplication.class));
     }
 
     @Test
     public void createComponent_CreateDivisionObject_ObjectCreated() throws InvalidComponentException
     {
         EquationComponent component = factory.createComponent("/");
-        assertTrue(component instanceof Division);
+        assertThat(component,instanceOf(Division.class));
     }
 
     @Test
     public void createComponent_CreatePowerObject_ObjectCreated() throws InvalidComponentException
     {
         EquationComponent component = factory.createComponent("^");
-        assertTrue(component instanceof Power);
+        assertThat(component,instanceOf(Power.class));
     }
 
     @Test
     public void createComponent_CreateOpeningBracketObject_ObjectCreated() throws InvalidComponentException
     {
         EquationComponent component = factory.createComponent("(");
-        assertTrue(component instanceof OpeningBracket);
+        assertThat(component,instanceOf(OpeningBracket.class));
     }
 
     @Test
     public void createComponent_CreateClosingBracketObject_ObjectCreated() throws InvalidComponentException
     {
         EquationComponent component = factory.createComponent(")");
-        assertTrue(component instanceof ClosingBracket);
+        assertThat(component,instanceOf(ClosingBracket.class));
     }
 
     @Test
     public void createComponent_CreateNumberComponentObject_ObjectCreated() throws InvalidComponentException
     {
         EquationComponent component=factory.createComponent("101.101");
-        assertTrue(component instanceof NumberComponent);
+        assertThat(component,instanceOf(NumberComponent.class));
     }
 
     @Test (expected = InvalidComponentException.class)
