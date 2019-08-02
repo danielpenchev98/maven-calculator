@@ -30,7 +30,7 @@ public class CalculateServlet extends HttpServlet {
         String equation = request.getParameter("equation");
 
 
-        String result=null;
+        String result;
         try{
             result=String.valueOf(calculator.calculateResult(equation));
         }
@@ -39,6 +39,11 @@ public class CalculateServlet extends HttpServlet {
             result=ex.getMessage();
         }
 
+        printResponseInHTML(response,result);
+    }
+
+    private void printResponseInHTML(final HttpServletResponse response,final String result) throws IOException
+    {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
