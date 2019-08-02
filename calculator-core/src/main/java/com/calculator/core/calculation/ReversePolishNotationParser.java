@@ -9,13 +9,13 @@ import java.util.Stack;
 
 public class ReversePolishNotationParser {
 
-    private final Stack<EquationComponent> operatorContainer;
+    private Stack<EquationComponent> operatorContainer;
 
-    private final List<EquationComponent> reversedPolishEquation;
+    private List<EquationComponent> reversedPolishEquation;
 
-    public ReversePolishNotationParser() {
-        operatorContainer = new Stack<>();
-        reversedPolishEquation = new LinkedList<>();
+    public ReversePolishNotationParser()
+    {
+        operatorContainer=new Stack<>();
     }
 
     /**
@@ -33,8 +33,8 @@ public class ReversePolishNotationParser {
      * @return equation in reverse polish notation
      */
     public List<EquationComponent> formatFromInfixToReversedPolishNotation(final List<EquationComponent> equation) throws EmptyStackException {
-        //TODO if we use the same object for multiple calculations, the wont be cleared after each calculation
-        reversedPolishEquation.clear();
+
+        reversedPolishEquation=new LinkedList<>();
 
         for (EquationComponent component : equation) {
             processComponent(component);
