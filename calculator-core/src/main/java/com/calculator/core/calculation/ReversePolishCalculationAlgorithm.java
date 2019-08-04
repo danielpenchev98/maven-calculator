@@ -68,7 +68,7 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
 
     private double getNextNumberFromSupplier() {
         String number = supplier.pop().getValue();
-        return Double.valueOf(number);
+        return Double.parseDouble(number);
     }
 
     private boolean hasErrorInTheCalculation()
