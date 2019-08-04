@@ -3,14 +3,7 @@ package com.calculator.core.inputformatting;
 import com.calculator.core.exceptions.InvalidEquationException;
 import com.calculator.core.exceptions.InvalidParameterException;
 
-public class EquationStructureValidator {
-
-    private final String separator;
-
-    EquationStructureValidator(final String separator)
-    {
-        this.separator=separator;
-    }
+class EquationStructureValidator {
 
     void validateEquationStructure(final String equation) throws InvalidEquationException
     {
@@ -62,7 +55,7 @@ public class EquationStructureValidator {
     }
 
     private boolean hasSequentialNonBracketComponentsOfTheSameType(final String equation) {
-        return equation.matches(".*([0-9a-zA-Z.]+"+separator+"[0-9a-zA-Z.]+|.*[^0-9a-zA-Z.)("+separator+"]"+separator+"[^0-9a-zA-Z.)("+separator+"]).*");
+        return equation.matches(".*([0-9a-zA-Z.] +[0-9a-zA-Z.]+|.*[^0-9a-zA-Z.)( ] *[^0-9a-zA-Z.)( ]).*");
     }
 
     private void checkIfHasAnOperatorAsBeginningOrEndingOfEquationScope(final String equation) throws InvalidEquationException {
@@ -72,9 +65,8 @@ public class EquationStructureValidator {
     }
 
     private boolean hasAnOperatorAsBeginningOrEndingOfEquationScope(final String equation) {
-        return equation.matches("(^|.*\\("+separator+")[^0-9a-zA-Z.)("+separator+"]"+separator+".*|.*[^0-9a-zA-Z.)("+separator+"]("+separator+"\\)|$)");
+        return equation.matches("(^|.*\\() *([^-0-9a-zA-Z.)( ]|- *[^0-9a-zA-Z. ]).*|.*[^0-9a-zA-Z.)( ] *(\\)|$)");
     }
-
     private void checkIfHasEmptyBrackets(final String equation) throws InvalidEquationException {
         if (hasEmptyBrackets(equation)) {
             throw new InvalidEquationException("Empty brackets");
@@ -82,7 +74,7 @@ public class EquationStructureValidator {
     }
 
     private boolean hasEmptyBrackets(final String equation) {
-        return equation.matches(".*\\("+separator+"\\).*");
+        return equation.matches(".*\\( *\\).*");
     }
 
     private void checkIfHasMissingOperatorBeforeOrAfterBracket(final String equation) throws InvalidEquationException {
@@ -92,7 +84,7 @@ public class EquationStructureValidator {
     }
 
     private boolean hasMissingOperatorBeforeOrAfterBracket(final String equation) {
-        return equation.matches(".*[0-9a-zA-Z.)]"+separator+"\\(.*|.*\\)"+separator+"[0-9a-zA-Z.(].*");
+        return equation.matches(".*[0-9a-zA-Z.)] *\\(.*|.*\\) *[0-9a-zA-Z.(].*");
     }
 
 }

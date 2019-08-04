@@ -2,17 +2,17 @@ package com.calculator.core.inputformatting;
 
 import com.calculator.core.exceptions.InvalidEquationException;
 import com.calculator.core.exceptions.InvalidParameterException;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class EquationStructureValidatorTest {
 
-    private EquationStructureValidator validator;
+    private static EquationStructureValidator validator;
 
-    @Before
-    public void setUp()
+    @BeforeClass
+    public static void setUp()
     {
-        validator=new EquationStructureValidator(" ");
+        validator=new EquationStructureValidator();
     }
 
     @Test(expected = InvalidParameterException.class)
