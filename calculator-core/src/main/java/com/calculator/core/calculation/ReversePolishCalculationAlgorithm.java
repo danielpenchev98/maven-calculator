@@ -12,11 +12,11 @@ import java.util.Stack;
 
 public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
 
-    private final Stack<NumberComponent> supplier;
+    private Stack<NumberComponent> supplier;
 
     private final ReversePolishNotationParser parser;
 
-    private final int NUMBERS_IN_SUPPLIER_AFTER_CALCULATION=1;
+    private final int NUMBERS_IN_SUPPLIER_AFTER_CALCULATION = 1;
 
     public ReversePolishCalculationAlgorithm()
     {
@@ -26,12 +26,12 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
     public ReversePolishCalculationAlgorithm(final ReversePolishNotationParser parser)
     {
         this.parser=parser;
-        this.supplier=new Stack<>();
     }
 
     public double calculateEquation(final List<EquationComponent> equation) throws EmptyStackException, InvalidEquationException {
 
         List<EquationComponent> equationInRPN=formatToReversePolishNotation(equation);
+        supplier=new Stack<>();
 
         for (EquationComponent component : equationInRPN) {
             process(component);

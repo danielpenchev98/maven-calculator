@@ -17,6 +17,7 @@ public class CalculatorConsole {
                 System.out.print("Invalid number of arguments");
                 return;
             }
+
             CalculatorApp application = new CalculatorApp();
 
             try {

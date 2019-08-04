@@ -13,11 +13,6 @@ public class ReversePolishNotationParser {
 
     private List<EquationComponent> reversedPolishEquation;
 
-    public ReversePolishNotationParser()
-    {
-        operatorContainer=new Stack<>();
-    }
-
     /**
      * Shunting yard algorithm
      * Rules:
@@ -35,6 +30,7 @@ public class ReversePolishNotationParser {
     public List<EquationComponent> formatFromInfixToReversedPolishNotation(final List<EquationComponent> equation) throws EmptyStackException {
 
         reversedPolishEquation=new LinkedList<>();
+        operatorContainer=new Stack<>();
 
         for (EquationComponent component : equation) {
             processComponent(component);
