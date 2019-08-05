@@ -1,7 +1,8 @@
-package webapp;
-
+package com.calculator.webapp;
 
 import com.calculator.core.CalculatorApp;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,25 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
-@WebServlet(name="CalculateServlet", urlPatterns = "/CalculateServlet")
+@WebServlet(name="CalculateServlet", urlPatterns = "/calculation")
 public class CalculateServlet extends HttpServlet {
 
-    private final CalculatorApp calculator;
-
-    public CalculateServlet()
-    {
-        this(new CalculatorApp());
-    }
-
-    CalculateServlet(final CalculatorApp calculator)
-    {
-        this.calculator=calculator;
-    }
-
+    static final Logger logger = LogManager.getLogger(CalculateServlet.class);
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws  IOException {
 
         String equation = request.getParameter("equation");
+        CalculatorApp calculator=getCalculator();
 
         String result;
         try{
@@ -35,19 +26,23 @@ public class CalculateServlet extends HttpServlet {
         }
         catch (Exception ex)
         {
+            logger.error("Problem with servlet",ex);
             result=ex.getMessage();
         }
 
-        printResponseInHTML(response,result);
+        printResponseInJSON(response,result);
     }
 
-    private void printResponseInHTML(final HttpServletResponse response,final String result) throws IOException
+    private void printResponseInJSON(final HttpServletResponse response,final String result) throws IOException
     {
-        response.setContentType("text/html");
+        response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        out.println("<html><body>");
         out.println(result);
-        out.println("</body></html>");
         out.flush();
+    }
+
+    protected CalculatorApp getCalculator()
+    {
+        return new CalculatorApp();
     }
 }
