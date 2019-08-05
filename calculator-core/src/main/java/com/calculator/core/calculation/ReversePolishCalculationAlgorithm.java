@@ -12,8 +12,6 @@ import java.util.Stack;
 
 public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
 
-    private Stack<NumberComponent> supplier;
-
     private final ReversePolishNotationParser parser;
 
     private final int NUMBERS_IN_SUPPLIER_AFTER_CALCULATION = 1;
@@ -31,17 +29,17 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
     public double calculateEquation(final List<EquationComponent> equation) throws EmptyStackException, InvalidEquationException {
 
         List<EquationComponent> equationInRPN=formatToReversePolishNotation(equation);
-        supplier=new Stack<>();
+        Stack<NumberComponent> supplier=new Stack<>();
 
         for (EquationComponent component : equationInRPN) {
-            process(component);
+            process(component,supplier);
         }
 
-        if (hasErrorInTheCalculation()) {
+        if (hasErrorInTheCalculation(supplier)) {
             throw new InvalidEquationException("Invalid equation. Logical error. There aren't enough operators");
         }
 
-        return getNextNumberFromSupplier();
+        return getNextNumberFromSupplier(supplier);
     }
 
     private List<EquationComponent> formatToReversePolishNotation(final List<EquationComponent> equation)
@@ -49,29 +47,29 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
         return parser.formatFromInfixToReversedPolishNotation(equation);
     }
 
-    private void process(final EquationComponent component) {
+    private void process(final EquationComponent component,final Stack<NumberComponent> supplier) {
         if (component instanceof NumberComponent) {
             supplier.add((NumberComponent) component);
         } else if (component instanceof MathArithmeticOperator) {
-            executeOperation((MathArithmeticOperator) component);
+            executeOperation((MathArithmeticOperator) component,supplier);
         } else {
             throw new InvalidParameterException("Error. There shouldn't be any components different from numbers and math arithmetic operators");
         }
     }
 
-    private void executeOperation(final MathArithmeticOperator operator) throws EmptyStackException {
-        double rightNumber = getNextNumberFromSupplier();
-        double leftNumber = getNextNumberFromSupplier();
+    private void executeOperation(final MathArithmeticOperator operator,final Stack<NumberComponent> supplier) throws EmptyStackException {
+        double rightNumber = getNextNumberFromSupplier(supplier);
+        double leftNumber = getNextNumberFromSupplier(supplier);
         double result = operator.compute(leftNumber, rightNumber);
         supplier.add(new NumberComponent(String.valueOf(result)));
     }
 
-    private double getNextNumberFromSupplier() {
+    private double getNextNumberFromSupplier(final Stack<NumberComponent> supplier) {
         String number = supplier.pop().getValue();
         return Double.parseDouble(number);
     }
 
-    private boolean hasErrorInTheCalculation()
+    private boolean hasErrorInTheCalculation(final Stack<NumberComponent> supplier)
     {
         return supplier.size()!=NUMBERS_IN_SUPPLIER_AFTER_CALCULATION;
     }
