@@ -4,19 +4,22 @@ import com.calculator.core.CalculatorApp;
 import com.calculator.core.exceptions.DivisionByZeroException;
 import com.calculator.core.exceptions.InvalidComponentException;
 import com.calculator.core.exceptions.InvalidEquationException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CalculatorConsole {
 
         private static final int VALID_NUMBER_OF_ARGUMENTS=1;
         private static final int POSITION_OF_ARGUMENT=0;
 
+        private static Logger logger= LogManager.getLogger(CalculatorConsole.class);
 
         public static void main(String[] argc)
         {
-            if (hasInvalidNumberOfArguments(argc.length)) {
+            /*if (hasInvalidNumberOfArguments(argc.length)) {
                 System.out.print("Invalid number of arguments");
                 return;
-            }
+            }*/
 
             CalculatorApp application = new CalculatorApp();
 
@@ -29,7 +32,8 @@ public class CalculatorConsole {
             } catch (DivisionByZeroException ex) {
                 System.out.print("Arithmetic error :" + ex.getMessage());
             } catch (Exception sysError) {
-                //TODO to log the stacktrace
+
+                logger.error("Problem with the application",sysError);
                 System.out.print("Problem with the application");
             }
         }
