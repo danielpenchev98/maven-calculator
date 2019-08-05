@@ -29,17 +29,17 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
     public double calculateEquation(final List<EquationComponent> equation) throws EmptyStackException, InvalidEquationException {
 
         List<EquationComponent> equationInRPN=formatToReversePolishNotation(equation);
-        Stack<NumberComponent> supplier=new Stack<>();
+        Stack<NumberComponent> numberSupplier=new Stack<>();
 
         for (EquationComponent component : equationInRPN) {
-            process(component,supplier);
+            process(component,numberSupplier);
         }
 
-        if (hasErrorInTheCalculation(supplier)) {
+        if (hasErrorInTheCalculation(numberSupplier)) {
             throw new InvalidEquationException("Invalid equation. Logical error. There aren't enough operators");
         }
 
-        return getNextNumberFromSupplier(supplier);
+        return getNextNumber(numberSupplier);
     }
 
     private List<EquationComponent> formatToReversePolishNotation(final List<EquationComponent> equation)
@@ -47,24 +47,24 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
         return parser.formatFromInfixToReversedPolishNotation(equation);
     }
 
-    private void process(final EquationComponent component,final Stack<NumberComponent> supplier) {
+    private void process(final EquationComponent component,final Stack<NumberComponent> numberSupplier) {
         if (component instanceof NumberComponent) {
-            supplier.add((NumberComponent) component);
+            numberSupplier.add((NumberComponent) component);
         } else if (component instanceof MathArithmeticOperator) {
-            executeOperation((MathArithmeticOperator) component,supplier);
+            executeOperation((MathArithmeticOperator) component,numberSupplier);
         } else {
             throw new InvalidParameterException("Error. There shouldn't be any components different from numbers and math arithmetic operators");
         }
     }
 
     private void executeOperation(final MathArithmeticOperator operator,final Stack<NumberComponent> supplier) throws EmptyStackException {
-        double rightNumber = getNextNumberFromSupplier(supplier);
-        double leftNumber = getNextNumberFromSupplier(supplier);
+        double rightNumber = getNextNumber(supplier);
+        double leftNumber = getNextNumber(supplier);
         double result = operator.compute(leftNumber, rightNumber);
         supplier.add(new NumberComponent(String.valueOf(result)));
     }
 
-    private double getNextNumberFromSupplier(final Stack<NumberComponent> supplier) {
+    private double getNextNumber(final Stack<NumberComponent> supplier) {
         String number = supplier.pop().getValue();
         return Double.parseDouble(number);
     }
