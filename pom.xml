@@ -13,6 +13,7 @@
         <module>calculator-console</module>
         <module>calculator-console-test</module>
         <module>calculator-servlet</module>
+        <module>calculator-servlet-test</module>
     </modules>
 
     <properties>
