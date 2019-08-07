@@ -13,7 +13,7 @@ import java.io.*;
 @WebServlet(name="CalculateServlet", urlPatterns = "/calculation")
 public class CalculateServlet extends HttpServlet {
 
-    static final Logger logger = LogManager.getLogger(CalculateServlet.class);
+    //static final Logger logger = LogManager.getLogger(CalculateServlet.class);
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws  IOException {
 
@@ -26,7 +26,7 @@ public class CalculateServlet extends HttpServlet {
         }
         catch (Exception ex)
         {
-            logger.error("Problem with servlet",ex);
+           // logger.error("Problem with servlet",ex);
             result=ex.getMessage();
         }
 

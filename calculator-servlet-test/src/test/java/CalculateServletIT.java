@@ -2,7 +2,10 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.importer.ZipImporter;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -20,7 +23,11 @@ public class CalculateServletIT {
     @Deployment
     public static WebArchive createTestArchive()
     {
-       return ShrinkWrap.create(ZipImporter.class,"calculator-servlet.war").importFrom(new File("target/calculator-servlet.war"))
+        File[] files=Maven.resolver().loadPomFromFile("./pom.xml")
+                .importDependencies().resolve().withoutTransitivity().asFile();
+        //.addAsLibraries(...)
+       return ShrinkWrap.create(ZipImporter.class,"calculator-servlet.war")
+               .importFrom(new File("target/calculator-servlet.war"))
                .as(WebArchive.class);
     }
 
