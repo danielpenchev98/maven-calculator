@@ -1,16 +1,13 @@
 package com.calculator.webapp;
 
 import com.calculator.core.CalculatorApp;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import javax.servlet.annotation.WebServlet;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
-@WebServlet(name="CalculateServlet", urlPatterns = "/calculation")
 public class CalculateServlet extends HttpServlet {
 
     //static final Logger logger = LogManager.getLogger(CalculateServlet.class);
