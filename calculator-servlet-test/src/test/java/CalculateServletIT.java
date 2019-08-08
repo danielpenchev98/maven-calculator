@@ -18,6 +18,8 @@ import java.net.URI;
 import java.net.URL;
 import static org.junit.Assert.assertEquals;
 
+
+//TODO make it run from IDE
 @RunWith(Arquillian.class)
 public class CalculateServletIT {
 
