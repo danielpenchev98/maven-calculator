@@ -18,7 +18,7 @@ public class EquationFormatter implements InputFormatter {
 
     private final EquationComponentFactory componentFactory;
 
-    private final static String SEPARATOR_OF_COMPONENTS = "#";
+    private final static String SEPARATOR_OF_COMPONENTS = " ";
 
     public EquationFormatter() {
         this(new EquationStructureValidator(), new EquationComponentFactory());
@@ -49,7 +49,7 @@ public class EquationFormatter implements InputFormatter {
 
     private String removeJunkSpaces(final String equation) {
         final String junkSpacesRegex="[ ]+";
-        return equation.replaceAll(junkSpacesRegex, "");
+        return equation.replaceAll(junkSpacesRegex, " ");
     }
 
     private String addSeparatorBetweenComponents(final String equation) {
