@@ -38,10 +38,10 @@ public class CalculatorConsoleIT {
                               {"1 / ( 5-(-2 3 + 5)/10)","Problem with the structure of equation :Sequential components of the same type"},
                               {"( 1 + 2 *( 10/5/2/1 ) ^^3)","Problem with the structure of equation :Sequential components of the same type"},
                               {"8/ (((10 - 11/2 )))( -1 / 3 )","Problem with the structure of equation :Missing operator between a number and an opening bracket or a closing bracket and a number"},
-                              {"\" \"","Problem with the structure of equation :Empty equation"},
+                              {"    ","Problem with the structure of equation :Empty equation"},
                               {"(()()(()))","Problem with the structure of equation :Empty brackets"},
                               {"[ (10 +7) ] (20^100)","Problem with the structure of equation :Scope of equation ending or beginning with an operator"},
-                              {"(10-10)*(10+10)/(10-10)","Arithmetic error :Division on zero"},
+                              {"(10-10)*(10+10)/(10-10)","Arithmetic error :Division by zero"},
                               {"(( 100 - 99) & (199))","Problem with a component of equation :Unsupported component :&"},
                               {"PI/2 * 6","Problem with a component of equation :Unsupported component :PI"}};
     }
