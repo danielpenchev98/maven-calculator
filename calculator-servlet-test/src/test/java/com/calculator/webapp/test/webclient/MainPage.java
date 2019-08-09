@@ -1,6 +1,5 @@
 package com.calculator.webapp.test.webclient;
 
-import com.google.common.base.Utf8;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -18,52 +17,45 @@ public class MainPage {
 
     private final URL baseUrl;
 
-    private static final String ENCODING="UTF-8";
-    private static final String CALCULATOR_SERVLET_URL="/calculator";
-    private static final String GET_REQUEST_URL="/calculation";
-    private static final String REQUEST_PARAMETER="equation";
+    private static final String ENCODING = "UTF-8";
+    private static final String CALCULATOR_SERVLET_URL = "/calculator";
+    private static final String GET_REQUEST_URL = "/calculation";
+    private static final String REQUEST_PARAMETER = "equation";
 
-    public MainPage(final URL baseUrl)
-    {
-        this.baseUrl=baseUrl;
+    public MainPage(final URL baseUrl) {
+        this.baseUrl = baseUrl;
     }
 
-    public String getResultFromTheGeneratedPage(String input) throws IOException
-    {
-        URL fullUrl=getEncodedUrl(input);
+    public String getResultFromTheGeneratedPage(String input) throws IOException {
+        URL fullUrl = getEncodedUrl(input);
         openConnection(fullUrl);
 
-        HttpClient client= createHttpClient();
-        HttpResponse response=client.execute(createGetRequest(fullUrl));
+        HttpClient client = createHttpClient();
+        HttpResponse response = client.execute(createGetRequest(fullUrl));
 
         return getResponse(response);
     }
 
-    private URL getEncodedUrl(String unformattedInput) throws IOException
-    {
-        String spec= URLEncoder.encode(unformattedInput, ENCODING);
-        return new URL(baseUrl,CALCULATOR_SERVLET_URL+GET_REQUEST_URL+"?"+REQUEST_PARAMETER+"="+spec);
+    private URL getEncodedUrl(String unformattedInput) throws IOException {
+        String spec = URLEncoder.encode(unformattedInput, ENCODING);
+        return new URL(baseUrl, CALCULATOR_SERVLET_URL + GET_REQUEST_URL + "?" + REQUEST_PARAMETER + "=" + spec);
     }
 
-    private void openConnection(final URL url) throws IOException
-    {
+    private void openConnection(final URL url) throws IOException {
         url.openStream();
     }
 
-    private HttpClient createHttpClient()
-    {
+    private HttpClient createHttpClient() {
         return HttpClientBuilder.create().build();
     }
 
-    private HttpGet createGetRequest(final URL url)
-    {
+    private HttpGet createGetRequest(final URL url) {
         return new HttpGet(URI.create(url.toExternalForm()));
     }
 
-    private String getResponse(final HttpResponse response) throws IOException
-    {
+    private String getResponse(final HttpResponse response) throws IOException {
         InputStream content = response.getEntity().getContent();
-        BufferedReader rd=new BufferedReader(new InputStreamReader(content));
+        BufferedReader rd = new BufferedReader(new InputStreamReader(content));
         return rd.readLine();
     }
 }

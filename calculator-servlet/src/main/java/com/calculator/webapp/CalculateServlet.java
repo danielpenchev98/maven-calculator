@@ -25,7 +25,7 @@ public class CalculateServlet extends HttpServlet {
         }
         catch (Exception ex)
         {
-            logger.error("Problem with servlet",ex);
+            logger.error("Problem with servlet :\n",ex);
             result=ex.getMessage();
         }
 
