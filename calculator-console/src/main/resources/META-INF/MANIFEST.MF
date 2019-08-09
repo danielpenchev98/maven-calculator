@@ -1,2 +1,2 @@
-java Manifest-Version: 1.0
-Main-Class: com.calculator.console.CalculatorConsole
+Manifest-Version: 1.0
+Main-Class: com.calculator.console.test.CalculatorConsole

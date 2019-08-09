@@ -1,3 +1,6 @@
+package com.calculator.webapp.test;
+
+import com.calculator.webapp.test.webclient.MainPage;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -28,7 +31,6 @@ public class CalculateServletIT {
                .importFrom(new File("target"+File.separator+"lib"+File.separator+"calculator-servlet-1.0-SNAPSHOT.war"))
                .as(WebArchive.class)
                .addAsResource("arquillian.xml");
-       System.out.println(archive.toString(true));
        return archive;
     }
 

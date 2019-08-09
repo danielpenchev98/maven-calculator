@@ -1,3 +1,5 @@
+package com.calculator.webapp.test.webclient;
+
 import com.google.common.base.Utf8;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

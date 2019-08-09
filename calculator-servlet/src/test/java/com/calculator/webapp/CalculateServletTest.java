@@ -60,7 +60,6 @@ public class CalculateServletTest {
     }
 
     @Test
-
     public void doGet_ErrorMessage() throws Exception
     {
         String equation="1/0";
@@ -77,6 +76,5 @@ public class CalculateServletTest {
         assertTrue(stringWriter.toString().contains("Division on zero"));
         Mockito.verify(response).setContentType("application/json");
     }
-
 
 }

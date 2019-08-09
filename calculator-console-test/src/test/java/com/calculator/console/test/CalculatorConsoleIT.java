@@ -1,4 +1,6 @@
-import calculatorclient.ConsolePage;
+package com.calculator.console.test;
+
+import com.calculator.console.test.calculatorclient.ConsolePage;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;

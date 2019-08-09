@@ -1,4 +1,4 @@
-package calculatorclient;
+package com.calculator.console.test.calculatorclient;
 
 import java.io.BufferedReader;
 import java.io.File;
