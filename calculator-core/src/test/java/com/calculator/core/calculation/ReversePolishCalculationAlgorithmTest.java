@@ -14,10 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Arrays;
 import java.util.EmptyStackException;
 import java.util.List;
-import static junit.framework.TestCase.assertEquals;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReversePolishCalculationAlgorithmTest {
@@ -97,7 +94,6 @@ public class ReversePolishCalculationAlgorithmTest {
         Mockito.when(secondNumber.getValue()).thenReturn("3.0");
         Mockito.when(power.compute(3.0,3.0)).thenReturn(27.0);
         Mockito.when(addition.compute(3.0,27.0)).thenReturn(30.0);
-
-        assertThat(algorithm.calculateEquation(input),is(30.0));
+        assertEquals(30.0,algorithm.calculateEquation(input),0.001);
     }
 }

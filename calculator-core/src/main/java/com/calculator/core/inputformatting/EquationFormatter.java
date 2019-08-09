@@ -21,7 +21,7 @@ public class EquationFormatter implements InputFormatter {
     private final static String SEPARATOR_OF_COMPONENTS = " ";
 
     public EquationFormatter() {
-        this(new EquationStructureValidator(SEPARATOR_OF_COMPONENTS), new EquationComponentFactory());
+        this(new EquationStructureValidator(), new EquationComponentFactory());
     }
 
     EquationFormatter(final EquationStructureValidator validator, final EquationComponentFactory factory) {
@@ -31,9 +31,8 @@ public class EquationFormatter implements InputFormatter {
 
     public List<EquationComponent> doFormat(final String equation) throws InvalidComponentException, InvalidEquationException {
 
-        String reformattedEquation = fixFormatOfEquation(equation);
-        structureValidator.validateEquationStructure(reformattedEquation);
-        List<String> components = extractComponents(reformattedEquation);
+        structureValidator.validateEquationStructure(equation);
+        List<String> components = extractComponents(equation);
         return convertToEquationComponentObjects(components);
     }
 
@@ -43,13 +42,14 @@ public class EquationFormatter implements InputFormatter {
     }
 
     private List<String> extractComponents(final String equation) {
-        String[] components = equation.split(SEPARATOR_OF_COMPONENTS);
+        String reformattedEquation = fixFormatOfEquation(equation);
+        String[] components = reformattedEquation.split(SEPARATOR_OF_COMPONENTS);
         return Arrays.asList(components);
     }
 
     private String removeJunkSpaces(final String equation) {
         final String junkSpacesRegex="[ ]+";
-        return equation.replaceAll(junkSpacesRegex, SEPARATOR_OF_COMPONENTS).trim();
+        return equation.replaceAll(junkSpacesRegex, " ");
     }
 
     private String addSeparatorBetweenComponents(final String equation) {
@@ -65,7 +65,7 @@ public class EquationFormatter implements InputFormatter {
 
     private String removeSeparatorBetweenTheNumberAndItsSign(final String equation) {
 
-        final String separatorBetweenNumberAndItsSign="([(]"+SEPARATOR_OF_COMPONENTS+ "|^)-"+SEPARATOR_OF_COMPONENTS+"([0-9]+)";
+        final String separatorBetweenNumberAndItsSign="(\\("+SEPARATOR_OF_COMPONENTS+ "|^)-"+SEPARATOR_OF_COMPONENTS+"([0-9]+)";
         final String removedSeparatorBetweenNumberAndItsSign="$1-$2";
 
         return equation.replaceAll(separatorBetweenNumberAndItsSign, removedSeparatorBetweenNumberAndItsSign);

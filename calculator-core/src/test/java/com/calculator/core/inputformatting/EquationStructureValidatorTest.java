@@ -2,17 +2,17 @@ package com.calculator.core.inputformatting;
 
 import com.calculator.core.exceptions.InvalidEquationException;
 import com.calculator.core.exceptions.InvalidParameterException;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class EquationStructureValidatorTest {
 
-    private EquationStructureValidator validator;
+    private static EquationStructureValidator validator;
 
-    @Before
-    public void setUp()
+    @BeforeClass
+    public static void setUp()
     {
-        validator=new EquationStructureValidator(" ");
+        validator=new EquationStructureValidator();
     }
 
     @Test(expected = InvalidParameterException.class)
@@ -25,6 +25,12 @@ public class EquationStructureValidatorTest {
     public void validateEquationStructure_EmptyEquation_Illegal() throws Exception
     {
         validator.validateEquationStructure("");
+    }
+
+    @Test(expected = InvalidEquationException.class)
+    public void validateEquationStructure_BlankEquation_Illegal() throws Exception
+    {
+        validator.validateEquationStructure("       ");
     }
 
     @Test(expected = InvalidEquationException.class  )
@@ -48,7 +54,7 @@ public class EquationStructureValidatorTest {
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_SequentialOperators_Illegal() throws Exception
     {
-        validator.validateEquationStructure("+ *");
+        validator.validateEquationStructure("+*");
     }
 
     @Test(expected = InvalidEquationException.class)
@@ -60,19 +66,19 @@ public class EquationStructureValidatorTest {
     @Test(expected = InvalidEquationException.class)
     public void validateEquationStructure_EquationBeginningWIthOperator_Illegal() throws Exception
     {
-        validator.validateEquationStructure("+ 10");
+        validator.validateEquationStructure("+   10");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithEmptyBracket_Illegal() throws Exception
     {
-        validator.validateEquationStructure("1 +( )");
+        validator.validateEquationStructure("1 +()");
     }
 
     @Test(expected = InvalidEquationException.class)
     public void validateEquation_EquationWithMissingBracket_Illegal() throws Exception
     {
-        validator.validateEquationStructure("( 1 + 2");
+        validator.validateEquationStructure("(1 + 2");
     }
 
     @Test(expected = InvalidEquationException.class)

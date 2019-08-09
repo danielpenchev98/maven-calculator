@@ -1,15 +1,16 @@
-package calculatorclient;
+package com.calculator.console.test.calculatorclient;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ConsolePage {
 
-    private final static String PATH = "." + File.separator + "target" + File.separator + "lib" + File.separator + "calculator-console-1.0-SNAPSHOT.jar";
+    private final static String PATH = MessageFormat.format(".{0}target{0}lib{0}calculator-console-1.0-SNAPSHOT.jar",File.separator);
 
     public String getResultFromCalculatorConsole(final List<String> equation) throws Exception
     {

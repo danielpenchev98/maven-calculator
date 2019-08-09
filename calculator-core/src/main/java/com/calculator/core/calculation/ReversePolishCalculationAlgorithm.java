@@ -12,26 +12,24 @@ import java.util.Stack;
 
 public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
 
-    private final Stack<NumberComponent> supplier;
+    private Stack<NumberComponent> supplier;
 
     private final ReversePolishNotationParser parser;
 
-    private final int NUMBERS_IN_SUPPLIER_AFTER_CALCULATION=1;
+    private final int NUMBERS_IN_SUPPLIER_AFTER_CALCULATION = 1;
 
-    public ReversePolishCalculationAlgorithm()
-    {
+    public ReversePolishCalculationAlgorithm() {
         this(new ReversePolishNotationParser());
     }
 
-    public ReversePolishCalculationAlgorithm(final ReversePolishNotationParser parser)
-    {
-        this.parser=parser;
+    public ReversePolishCalculationAlgorithm(final ReversePolishNotationParser parser) {
+        this.parser = parser;
         this.supplier=new Stack<>();
     }
 
-    public double calculateEquation(final List<EquationComponent> equation) throws EmptyStackException, InvalidEquationException {
 
-        List<EquationComponent> equationInRPN=formatToReversePolishNotation(equation);
+    public double calculateEquation(final List<EquationComponent> equation) throws EmptyStackException, InvalidEquationException {
+        List<EquationComponent> equationInRPN = formatToReversePolishNotation(equation);
 
         for (EquationComponent component : equationInRPN) {
             process(component);
@@ -40,12 +38,10 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
         if (hasErrorInTheCalculation()) {
             throw new InvalidEquationException("Invalid equation. Logical error. There aren't enough operators");
         }
-
         return getNextNumberFromSupplier();
     }
 
-    private List<EquationComponent> formatToReversePolishNotation(final List<EquationComponent> equation)
-    {
+    private List<EquationComponent> formatToReversePolishNotation(final List<EquationComponent> equation) {
         return parser.formatFromInfixToReversedPolishNotation(equation);
     }
 
@@ -68,12 +64,10 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
 
     private double getNextNumberFromSupplier() {
         String number = supplier.pop().getValue();
-        return Double.valueOf(number);
+        return Double.parseDouble(number);
     }
 
-    private boolean hasErrorInTheCalculation()
-    {
-        return supplier.size()!=NUMBERS_IN_SUPPLIER_AFTER_CALCULATION;
+    private boolean hasErrorInTheCalculation() {
+        return supplier.size() != NUMBERS_IN_SUPPLIER_AFTER_CALCULATION;
     }
-
 }
