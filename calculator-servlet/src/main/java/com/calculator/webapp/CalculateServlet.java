@@ -36,7 +36,7 @@ public class CalculateServlet extends HttpServlet {
 
     private String getCalculationResult(final HttpServletRequest request) throws Exception
     {
-        String equation = request.getParameter("equation");
+        String equation = request.getPathInfo();
 
         if(equation==null)
         {

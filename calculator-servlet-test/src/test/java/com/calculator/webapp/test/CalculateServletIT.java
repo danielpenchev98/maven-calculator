@@ -44,63 +44,63 @@ public class CalculateServletIT {
     public void doGet_LegalExpression() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("10*10");
-        assertEquals("100.0",response);
+        assertEquals("{\"result\":\"100.0\"}",response);
     }
 
     @Test
     public void doGet_IllegalExpression_MissingBracket() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("(-1.0/0.001");
-        assertEquals("Missing or misplaced brackets",response);
+        assertEquals("{\"error\":\"Missing or misplaced brackets\"}",response);
     }
 
     @Test
     public void doGet_IllegalExpression_SequentialComponents() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("-1.0 2 + 3");
-        assertEquals("Sequential components of the same type",response);
+        assertEquals("{\"error\":\"Sequential components of the same type\"}",response);
     }
 
     @Test
     public void doGet_IllegalExpression_MissingOperator() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("1(-1.0)/2");
-        assertEquals("Missing operator between a number and an opening bracket or a closing bracket and a number",response);
+        assertEquals("{\"error\":\"Missing operator between a number and an opening bracket or a closing bracket and a number\"}",response);
     }
 
     @Test
     public void doGet_IllegalExpression_EmptyEquation() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("     ");
-        assertEquals("Empty equation",response);
+        assertEquals("{\"error\":\"Empty equation\"}",response);
     }
 
     @Test
     public void doGet_IllegalExpression_EmptyBrackets() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("()");
-        assertEquals("Empty brackets",response);
+        assertEquals("{\"error\":\"Empty brackets\"}",response);
     }
 
     @Test
     public void doGet_IllegalExpression_EquationBeginningWithOperation() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("^1/2+3");
-        assertEquals("Scope of equation ending or beginning with an operator",response);
+        assertEquals("{\"error\":\"Scope of equation ending or beginning with an operator\"}",response);
     }
 
     @Test
     public void doGet_IllegalExpression_DivisionByZero() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("1/0");
-        assertEquals("Division by zero",response);
+        assertEquals("{\"error\":\"Division by zero\"}",response);
     }
 
     @Test
     public void doGet_IllegalExpression_UnsupportedComponent() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("1#3");
-        assertEquals("Unsupported component :#",response);
+        assertEquals("{\"error\":\"Unsupported component :#\"}",response);
     }
 }
 
