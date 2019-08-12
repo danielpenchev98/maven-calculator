@@ -45,6 +45,9 @@ public class CalculateServletTest {
     public void doGet_ResultOfCalculationTest() throws Exception {
 
         String equation="1+1";
+
+       String expected="{\"result\":\"2.0\"}";
+
         Mockito.when(request.getParameter("equation")).thenReturn(equation);
 
         StringWriter stringWriter = new StringWriter();
@@ -55,7 +58,7 @@ public class CalculateServletTest {
 
         servlet.doGet(request,response);
 
-        assertTrue(stringWriter.toString().contains("2.0"));
+        assertEquals(expected,stringWriter.toString());
         Mockito.verify(response).setContentType("application/json");
     }
 
@@ -63,17 +66,19 @@ public class CalculateServletTest {
     public void doGet_ErrorMessage() throws Exception
     {
         String equation="1/0";
+        String expected="{\"error\":\"Division by zero\"}";
+
         Mockito.when(request.getParameter("equation")).thenReturn(equation);
 
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
 
         Mockito.when(response.getWriter()).thenReturn(writer);
-        Mockito.when(app.calculateResult(equation)).thenThrow(new Exception("Division on zero"));
+        Mockito.when(app.calculateResult(equation)).thenThrow(new Exception("Division by zero"));
 
         servlet.doGet(request,response);
 
-        assertTrue(stringWriter.toString().contains("Division on zero"));
+        assertEquals(expected,stringWriter.toString());
         Mockito.verify(response).setContentType("application/json");
     }
 
