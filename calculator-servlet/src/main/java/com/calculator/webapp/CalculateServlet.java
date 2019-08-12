@@ -29,19 +29,18 @@ public class CalculateServlet extends HttpServlet {
         {
             logger.error("Problem with servlet :\n",ex);
             result=ex.getMessage();
-            jsonResult.put("error",result);
+            jsonResult.put("error",ex.getMessage());
+            //jsonResult.put("error",HttpServletResponse.SC_BAD_REQUEST);
+            //jsonResult.put("message",ex.getMessage());
         }
         printResponseInJSON(response,jsonResult);
     }
 
     private String getCalculationResult(final HttpServletRequest request) throws Exception
     {
-        String equation = request.getPathInfo();
+        String getPathInfo = request.getPathInfo();
+        String equation=getPathInfo.substring(1);
 
-        if(equation==null)
-        {
-            equation="";
-        }
         CalculatorApp calculator=getCalculator();
         return String.valueOf(calculator.calculateResult(equation));
 

@@ -48,7 +48,7 @@ public class CalculateServletTest {
 
        String expected="{\"result\":\"2.0\"}";
 
-        Mockito.when(request.getPathInfo()).thenReturn(equation);
+        Mockito.when(request.getPathInfo()).thenReturn("/"+equation);
 
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
@@ -68,7 +68,7 @@ public class CalculateServletTest {
         String equation="1/0";
         String expected="{\"error\":\"Division by zero\"}";
 
-        Mockito.when(request.getPathInfo()).thenReturn(equation);
+        Mockito.when(request.getPathInfo()).thenReturn("/"+equation);
 
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);

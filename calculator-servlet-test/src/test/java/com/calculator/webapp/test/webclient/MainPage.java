@@ -37,7 +37,8 @@ public class MainPage {
 
     private URL getEncodedUrl(String unformattedInput) throws IOException {
         String spec = URLEncoder.encode(unformattedInput, ENCODING);
-        return new URL(baseUrl, CALCULATOR_SERVLET_URL + GET_REQUEST_URL + spec);
+        URI temp= URI.create(baseUrl+CALCULATOR_SERVLET_URL + GET_REQUEST_URL + spec);
+        return temp.toURL();
     }
 
     private void openConnection(final URL url) throws IOException {
