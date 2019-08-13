@@ -13,7 +13,9 @@ import org.junit.runner.RunWith;
 
 import java.io.File;
 import java.net.URL;
-import static org.junit.Assert.assertEquals;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(Arquillian.class)
 public class CalculateServletIT {
@@ -44,63 +46,71 @@ public class CalculateServletIT {
     public void doGet_LegalExpression() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("10*10");
-        assertEquals("{\"result\":\"100.0\"}",response);
+        assertThat(response,containsString("\"result\":\"100.0\""));
     }
 
     @Test
     public void doGet_IllegalExpression_MissingBracket() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("(-1.0/0.001");
-        assertEquals("{\"error\":\"Missing or misplaced brackets\"}",response);
+        assertThat(response,containsString("\"errorCode\":400"));
+        assertThat(response,containsString("\"message\":\"Missing or misplaced brackets\""));
     }
 
     @Test
     public void doGet_IllegalExpression_SequentialComponents() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("-1.0 2 + 3");
-        assertEquals("{\"error\":\"Sequential components of the same type\"}",response);
+        assertThat(response,containsString("\"errorCode\":400"));
+        assertThat(response,containsString("\"message\":\"Sequential components of the same type\""));
     }
 
     @Test
     public void doGet_IllegalExpression_MissingOperator() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("1(-1.0)/2");
-        assertEquals("{\"error\":\"Missing operator between a number and an opening bracket or a closing bracket and a number\"}",response);
+        assertThat(response,containsString("\"errorCode\":400"));
+        assertThat(response,containsString("\"message\":\"Missing operator between a number and an opening bracket or a closing bracket and a number\""));
     }
 
     @Test
     public void doGet_IllegalExpression_EmptyEquation() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("     ");
-        assertEquals("{\"error\":\"Empty equation\"}",response);
+        assertThat(response,containsString("\"errorCode\":400"));
+        assertThat(response,containsString("\"message\":\"Empty equation\""));
     }
 
     @Test
     public void doGet_IllegalExpression_EmptyBrackets() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("()");
-        assertEquals("{\"error\":\"Empty brackets\"}",response);
+        assertThat(response,containsString("\"errorCode\":400"));
+        assertThat(response,containsString("\"message\":\"Empty brackets\""));
     }
 
     @Test
     public void doGet_IllegalExpression_EquationBeginningWithOperation() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("^1/2+3");
-        assertEquals("{\"error\":\"Scope of equation ending or beginning with an operator\"}",response);
+        assertThat(response,containsString("\"errorCode\":400"));
+        assertThat(response,containsString("\"message\":\"Scope of equation ending or beginning with an operator\""));
     }
 
     @Test
     public void doGet_IllegalExpression_DivisionByZero() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("1/0");
-        assertEquals("{\"error\":\"Division by zero\"}",response);
+        assertThat(response,containsString("\"errorCode\":400"));
+        assertThat(response,containsString("\"message\":\"Division by zero\""));
     }
 
     @Test
     public void doGet_IllegalExpression_UnsupportedComponent() throws Exception
     {
         String response=page.getResultFromTheGeneratedPage("1#3");
-        assertEquals("{\"error\":\"Unsupported component :#\"}",response);
+        assertThat(response,containsString("\"errorCode\":400"));
+        assertThat(response,containsString("\"message\":\"Unsupported component :#\""));
     }
 }
 
