@@ -1,6 +1,7 @@
 package com.calculator.webapp;
 
 import com.calculator.core.CalculatorApp;
+import com.calculator.core.exceptions.BadInputException;
 import com.calculator.webapp.servletresponse.ServletError;
 import com.calculator.webapp.servletresponse.ServletResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,10 +25,14 @@ public class CalculateServlet extends HttpServlet {
             String result=getCalculationResult(request);
             resultObj=new ServletResult(result);
         }
-        catch (Exception ex)
+        catch(BadInputException badInput)
         {
-            logger.error("Problem with servlet :\n",ex);
-            resultObj=new ServletError(HttpServletResponse.SC_BAD_REQUEST,ex.getMessage());
+            resultObj=new ServletError(HttpServletResponse.SC_BAD_REQUEST,badInput.getMessage());
+        }
+        catch (Exception systemError)
+        {
+            logger.error("Problem with servlet :\n",systemError);
+            resultObj=new ServletError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,systemError.getMessage());
         }
 
         //could put it in finally, but a possibility exists, where the ServletError could not be created
