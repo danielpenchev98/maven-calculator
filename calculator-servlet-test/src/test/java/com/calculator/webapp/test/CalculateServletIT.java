@@ -45,7 +45,7 @@ public class CalculateServletIT {
     @Test
     public void doGet_LegalExpression() throws Exception
     {
-        String response=page.getResultFromTheGeneratedPage("10*10");
+        String response=page.getResultFromTheGeneratedPage("((100/0^0/100)*10)-(-90)");
         assertThat(response,containsString("\"result\":\"100.0\""));
     }
 
