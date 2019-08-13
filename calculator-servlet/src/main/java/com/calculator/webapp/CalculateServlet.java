@@ -20,19 +20,18 @@ public class CalculateServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        Object resultObj;
+        Object result;
         try {
-            String result = getCalculationResult(request);
-            resultObj = new ServletResult(result);
+            result = new ServletResult(getCalculationResult(request));
         } catch (BadInputException badInput) {
-            resultObj = new ServletError(HttpServletResponse.SC_BAD_REQUEST, badInput.getMessage());
+            result = new ServletError(HttpServletResponse.SC_BAD_REQUEST, badInput.getMessage());
         } catch (Exception systemError) {
             logger.error("Problem with servlet :\n", systemError);
-            resultObj = new ServletError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, systemError.getMessage());
+            result = new ServletError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, systemError.getMessage());
         }
 
         //could put it in finally, but a possibility exists, where the ServletError could not be created
-        printResponseInJSON(response, resultObj);
+        printResponseInJSON(response, result);
     }
 
 
@@ -47,13 +46,13 @@ public class CalculateServlet extends HttpServlet {
 
     }
 
-    private void printResponseInJSON(final HttpServletResponse response, final Object resultObj) throws IOException {
+    private void printResponseInJSON(final HttpServletResponse response, final Object result) throws IOException {
         response.setContentType("application/json");
 
-        String jsonResultObj = new ObjectMapper().writeValueAsString(resultObj);
+        String resultJSON = new ObjectMapper().writeValueAsString(result);
         PrintWriter out = response.getWriter();
 
-        out.print(jsonResultObj);
+        out.print(resultJSON);
         out.flush();
     }
 
