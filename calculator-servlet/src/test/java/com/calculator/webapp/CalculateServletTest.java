@@ -1,6 +1,7 @@
 package com.calculator.webapp;
 
 import com.calculator.core.CalculatorApp;
+import com.calculator.core.exceptions.DivisionByZeroException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,12 +30,11 @@ public class CalculateServletTest {
     private HttpServletResponse response;
 
     @Mock
-     private HttpServletRequest request;
+    private HttpServletRequest request;
 
     @Before
-    public void setUp()
-    {
-        servlet=new CalculateServlet(){
+    public void setUp() {
+        servlet = new CalculateServlet() {
             @Override
             protected CalculatorApp getCalculator() {
                 return app;
@@ -45,27 +45,7 @@ public class CalculateServletTest {
     @Test
     public void doGet_ResultOfCalculationTest() throws Exception {
 
-        String equation="1+1";
-
-       Mockito.when(request.getParameter("equation")).thenReturn(equation);
-
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter writer = new PrintWriter(stringWriter);
-
-        Mockito.when(response.getWriter()).thenReturn(writer);
-        Mockito.when(app.calculateResult(equation)).thenReturn(2.0);
-
-        servlet.doGet(request,response);
-
-        String actual=stringWriter.toString();
-        assertThat(actual,containsString("2.0"));
-        Mockito.verify(response).setContentType("application/json");
-    }
-
-    @Test
-    public void doGet_ErrorMessage() throws Exception
-    {
-        String equation="1/0";
+        String equation = "1+1";
 
         Mockito.when(request.getParameter("equation")).thenReturn(equation);
 
@@ -73,12 +53,33 @@ public class CalculateServletTest {
         PrintWriter writer = new PrintWriter(stringWriter);
 
         Mockito.when(response.getWriter()).thenReturn(writer);
-        Mockito.when(app.calculateResult(equation)).thenThrow(new Exception("Division by zero"));
+        Mockito.when(app.calculateResult(equation)).thenReturn(2.0);
 
-        servlet.doGet(request,response);
+        servlet.doGet(request, response);
 
-        String actual=stringWriter.toString();
-        assertThat(actual,containsString("Division by zero"));
+        String actual = stringWriter.toString();
+        assertThat(actual, containsString("\"result\":\"2.0\""));
+        Mockito.verify(response).setContentType("application/json");
+    }
+
+    @Test
+    public void doGet_ErrorMessage() throws Exception {
+        String equation = "1/0";
+
+        Mockito.when(request.getParameter("equation")).thenReturn(equation);
+
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+
+        Mockito.when(response.getWriter()).thenReturn(writer);
+        Mockito.when(app.calculateResult(equation)).thenThrow(new DivisionByZeroException("Division by zero"));
+
+        servlet.doGet(request, response);
+
+        String actual = stringWriter.toString();
+        assertThat(actual, containsString("\"errorCode\":400"));
+        assertThat(actual, containsString("\"message\":\"Division by zero\""));
+
         Mockito.verify(response).setContentType("application/json");
     }
 

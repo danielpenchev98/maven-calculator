@@ -18,21 +18,17 @@ public class CalculateServlet extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger(CalculateServlet.class);
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws  IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Object resultObj;
-        try{
-            String result=getCalculationResult(request);
-            resultObj=new ServletResult(result);
-        }
-        catch(BadInputException badInput)
-        {
-            resultObj=new ServletError(HttpServletResponse.SC_BAD_REQUEST,badInput.getMessage());
-        }
-        catch (Exception systemError)
-        {
-            logger.error("Problem with servlet :\n",systemError);
-            resultObj=new ServletError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,systemError.getMessage());
+        try {
+            String result = getCalculationResult(request);
+            resultObj = new ServletResult(result);
+        } catch (BadInputException badInput) {
+            resultObj = new ServletError(HttpServletResponse.SC_BAD_REQUEST, badInput.getMessage());
+        } catch (Exception systemError) {
+            logger.error("Problem with servlet :\n", systemError);
+            resultObj = new ServletError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, systemError.getMessage());
         }
 
         //could put it in finally, but a possibility exists, where the ServletError could not be created
@@ -40,32 +36,28 @@ public class CalculateServlet extends HttpServlet {
     }
 
 
-    private String getCalculationResult(final HttpServletRequest request) throws Exception
-    {
+    private String getCalculationResult(final HttpServletRequest request) throws Exception {
         String equation = request.getParameter("equation");
-        if(equation==null)
-        {
+        if (equation == null) {
             throw new Exception("Equation parameter is missing");
         }
 
-        CalculatorApp calculator=getCalculator();
+        CalculatorApp calculator = getCalculator();
         return String.valueOf(calculator.calculateResult(equation));
 
     }
 
-    private void printResponseInJSON(final HttpServletResponse response,final Object resultObj) throws IOException
-    {
+    private void printResponseInJSON(final HttpServletResponse response, final Object resultObj) throws IOException {
         response.setContentType("application/json");
 
-        String jsonResultObj=new ObjectMapper().writeValueAsString(resultObj);
+        String jsonResultObj = new ObjectMapper().writeValueAsString(resultObj);
         PrintWriter out = response.getWriter();
 
         out.print(jsonResultObj);
         out.flush();
     }
 
-    protected CalculatorApp getCalculator()
-    {
+    protected CalculatorApp getCalculator() {
         return new CalculatorApp();
     }
 }
