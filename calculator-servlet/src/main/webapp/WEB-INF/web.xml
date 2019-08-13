@@ -10,6 +10,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>CalculateServlet</servlet-name>
-        <url-pattern>/api/v1/calculation/*</url-pattern>
+        <url-pattern>/api/v1/calculation</url-pattern>
     </servlet-mapping>
 </web-app>

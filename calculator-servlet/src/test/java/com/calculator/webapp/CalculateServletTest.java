@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -46,9 +47,7 @@ public class CalculateServletTest {
 
         String equation="1+1";
 
-       String expected="{\"result\":\"2.0\"}";
-
-        Mockito.when(request.getPathInfo()).thenReturn("/"+equation);
+       Mockito.when(request.getParameter("equation")).thenReturn(equation);
 
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
@@ -58,7 +57,8 @@ public class CalculateServletTest {
 
         servlet.doGet(request,response);
 
-        assertEquals(expected,stringWriter.toString());
+        String actual=stringWriter.toString();
+        assertThat(actual,containsString("2.0"));
         Mockito.verify(response).setContentType("application/json");
     }
 
@@ -66,9 +66,8 @@ public class CalculateServletTest {
     public void doGet_ErrorMessage() throws Exception
     {
         String equation="1/0";
-        String expected="{\"error\":\"Division by zero\"}";
 
-        Mockito.when(request.getPathInfo()).thenReturn("/"+equation);
+        Mockito.when(request.getParameter("equation")).thenReturn(equation);
 
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
@@ -78,7 +77,8 @@ public class CalculateServletTest {
 
         servlet.doGet(request,response);
 
-        assertEquals(expected,stringWriter.toString());
+        String actual=stringWriter.toString();
+        assertThat(actual,containsString("Division by zero"));
         Mockito.verify(response).setContentType("application/json");
     }
 

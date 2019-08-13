@@ -1,9 +1,11 @@
 package com.calculator.webapp;
 
 import com.calculator.core.CalculatorApp;
+import com.calculator.webapp.servletresponse.ServletError;
+import com.calculator.webapp.servletresponse.ServletResult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.simple.JSONObject;
 
 
 import javax.servlet.http.HttpServlet;
@@ -17,40 +19,43 @@ public class CalculateServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws  IOException {
 
-        String result;
-
-        JSONObject jsonResult=new JSONObject();
-
+        Object resultObj;
         try{
-            result=getCalculationResult(request);
-            jsonResult.put("result",result);
+            String result=getCalculationResult(request);
+            resultObj=new ServletResult(result);
         }
         catch (Exception ex)
         {
             logger.error("Problem with servlet :\n",ex);
-            result=ex.getMessage();
-            jsonResult.put("error",ex.getMessage());
-            //jsonResult.put("error",HttpServletResponse.SC_BAD_REQUEST);
-            //jsonResult.put("message",ex.getMessage());
+            resultObj=new ServletError(HttpServletResponse.SC_BAD_REQUEST,ex.getMessage());
         }
-        printResponseInJSON(response,jsonResult);
+
+        //could put it in finally, but a possibility exists, where the ServletError could not be created
+        printResponseInJSON(response, resultObj);
     }
+
 
     private String getCalculationResult(final HttpServletRequest request) throws Exception
     {
-        String getPathInfo = request.getPathInfo();
-        String equation=getPathInfo.substring(1);
+        String equation = request.getParameter("equation");
+        if(equation==null)
+        {
+            throw new Exception("Equation parameter is missing");
+        }
 
         CalculatorApp calculator=getCalculator();
         return String.valueOf(calculator.calculateResult(equation));
 
     }
 
-    private void printResponseInJSON(final HttpServletResponse response,final JSONObject jsonResult) throws IOException
+    private void printResponseInJSON(final HttpServletResponse response,final Object resultObj) throws IOException
     {
         response.setContentType("application/json");
+
+        String jsonResultObj=new ObjectMapper().writeValueAsString(resultObj);
         PrintWriter out = response.getWriter();
-        out.print(jsonResult);
+
+        out.print(jsonResultObj);
         out.flush();
     }
 
