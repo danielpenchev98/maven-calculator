@@ -1,12 +1,12 @@
 package com.calculator.core.calculation;
 
+import com.calculator.core.exceptions.BadInputException;
 import com.calculator.core.exceptions.InvalidEquationException;
 import com.calculator.core.exceptions.InvalidParameterException;
 import com.calculator.core.operators.EquationComponent;
 import com.calculator.core.operators.MathArithmeticOperator;
 import com.calculator.core.operators.NumberComponent;
 
-import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
 
@@ -28,7 +28,7 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
     }
 
 
-    public double calculateEquation(final List<EquationComponent> equation) throws EmptyStackException, InvalidEquationException {
+    public double calculateEquation(final List<EquationComponent> equation) throws BadInputException {
         List<EquationComponent> equationInRPN = formatToReversePolishNotation(equation);
 
         for (EquationComponent component : equationInRPN) {
@@ -45,7 +45,7 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
         return parser.formatFromInfixToReversedPolishNotation(equation);
     }
 
-    private void process(final EquationComponent component) {
+    private void process(final EquationComponent component) throws BadInputException {
         if (component instanceof NumberComponent) {
             supplier.add((NumberComponent) component);
         } else if (component instanceof MathArithmeticOperator) {
@@ -55,7 +55,7 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
         }
     }
 
-    private void executeOperation(final MathArithmeticOperator operator) throws EmptyStackException {
+    private void executeOperation(final MathArithmeticOperator operator) throws BadInputException {
         double rightNumber = getNextNumberFromSupplier();
         double leftNumber = getNextNumberFromSupplier();
         double result = operator.compute(leftNumber, rightNumber);
