@@ -18,7 +18,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(Arquillian.class)
-public class CalculateServletIT {
+public class CalculateRestServletIT {
 
     @ArquillianResource
     private URL url;
