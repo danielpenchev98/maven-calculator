@@ -1,10 +1,12 @@
 package com.calculator.webapp.test.webclient;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -22,13 +24,9 @@ public class MainPage {
         this.baseUrl = baseUrl;
     }
 
-    public String getResultFromTheGeneratedPage(String input) throws IOException {
-        URL encodedUrl = getEncodedUrl(input);
-
-        ClientResponse response=getResponse(encodedUrl);
-        String result=response.getEntity(String.class);
-
-        return result;
+    public Response getResponseFromTheGeneratedPage(final String input) throws IOException {
+        URL encodedUrl=getEncodedUrl(input);
+        return getResponse(encodedUrl);
     }
 
     private URL getEncodedUrl(String unformattedInput) throws IOException {
@@ -36,9 +34,9 @@ public class MainPage {
         return new URL(baseUrl,CALCULATOR_SERVLET_URL + GET_REQUEST_URL +"?"+REQUEST_PARAMETER+"="+spec);
     }
 
-    private ClientResponse getResponse(final URL url){
-        Client client=Client.create();
-        WebResource webResource=client.resource(url.toExternalForm());
-        return webResource.accept("application/json").get(ClientResponse.class);
+    private Response getResponse(final URL url){
+        Client client= ClientBuilder.newClient();
+        WebTarget webTarget=client.target(URI.create(url.toExternalForm()));
+        return webTarget.request(MediaType.APPLICATION_JSON).get(Response.class);
     }
 }

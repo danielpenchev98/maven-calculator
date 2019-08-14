@@ -4,6 +4,8 @@ import com.calculator.core.CalculatorApp;
 import com.calculator.core.exceptions.BadInputException;
 import com.calculator.webapp.servletresponse.ServletError;
 import com.calculator.webapp.servletresponse.ServletResult;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,23 +26,27 @@ public class CalculateRestServlet {
     private static final int INTERNAL_SERVER_CODE=500;
 
     @GET
-    public Response doGetCalculationResult(@QueryParam("equation") String equation)
+    public Response doGetCalculationResult(@QueryParam("equation") String equation) throws JsonProcessingException
     {
-        Response response;
         try {
             ServletResult calculationResult = new ServletResult(getCalculationResult(equation));
-            response= Response.status(Response.Status.OK).entity(calculationResult).build();
+            return createResponse(Response.Status.OK,calculationResult);
         } catch (BadInputException badInput) {
             ServletError userInputError = new ServletError(BAD_REQUEST_CODE, badInput.getMessage());
-            response=Response.status(Response.Status.BAD_REQUEST).entity(userInputError).build();
+            return createResponse(Response.Status.BAD_REQUEST,userInputError);
         } catch (Exception ex) {
             logger.error("Problem with servlet :\n", ex);
             ServletError systemError = new ServletError(INTERNAL_SERVER_CODE, ex.getMessage());
-            response=Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(systemError).build();
+            return createResponse(Response.Status.INTERNAL_SERVER_ERROR,systemError);
         }
-        return response;
     }
 
+    private Response createResponse(final Response.Status statusCode,final Object result) throws JsonProcessingException
+    {
+        ObjectMapper mapper=new ObjectMapper();
+        String jsonResult=mapper.writeValueAsString(result);
+        return Response.status(statusCode).entity(jsonResult).build();
+    }
 
     private String getCalculationResult(final String equation) throws Exception {
         if (equation == null) {

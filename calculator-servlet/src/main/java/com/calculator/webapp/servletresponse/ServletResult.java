@@ -1,21 +1,24 @@
 package com.calculator.webapp.servletresponse;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class ServletResult {
-    private String result;
+    public String result;
 
     public ServletResult(final String result)
     {
-        setResult(result);
+        setCalculationResult(result);
     }
 
-    public void setResult(final String result)
+    @JsonSetter("result")
+    public void setCalculationResult(final String result)
     {
         this.result=result;
     }
 
-    public String getResult()
-    {
+    @JsonGetter("result")
+    public String getCalculationResult() {
         return this.result;
     }
 }
