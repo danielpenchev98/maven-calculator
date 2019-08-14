@@ -5,11 +5,21 @@
         version="3.0" metadata-complete="true">
 
     <servlet>
-        <servlet-name>CalculateServlet</servlet-name>
-        <servlet-class>com.calculator.webapp.CalculateServlet</servlet-class>
+        <servlet-name>CalculatorRestServlet</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>com.calculator.webapp</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>CalculateServlet</servlet-name>
-        <url-pattern>/api/v1/calculation</url-pattern>
+        <servlet-name>CalculatorRestServlet</servlet-name>
+        <url-pattern>/api/v2/*</url-pattern>
     </servlet-mapping>
+
 </web-app>
