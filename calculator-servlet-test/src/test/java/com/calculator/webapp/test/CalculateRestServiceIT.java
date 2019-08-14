@@ -21,7 +21,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(Arquillian.class)
-public class CalculateRestServletIT {
+public class CalculateRestServiceIT {
 
     private final static int BAD_REQUEST = Response.Status.BAD_REQUEST.getStatusCode();
     private final static int OK = Response.Status.OK.getStatusCode();

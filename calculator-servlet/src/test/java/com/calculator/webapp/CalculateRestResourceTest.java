@@ -16,16 +16,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class CalculateRestServletTest {
+public class CalculateRestResourceTest {
 
-    private CalculateRestServlet resource;
+    private CalculateRestResource resource;
 
     @Mock
     private CalculatorApp app;
 
     @Before
     public void setUp() {
-        resource = new CalculateRestServlet() {
+        resource = new CalculateRestResource() {
             @Override
             protected CalculatorApp getCalculator() {
                 return app;

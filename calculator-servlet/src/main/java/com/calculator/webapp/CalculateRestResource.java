@@ -18,9 +18,9 @@ import javax.ws.rs.core.Response;
 
 @Path("/calculation")
 @Produces(MediaType.APPLICATION_JSON)
-public class CalculateRestServlet {
+public class CalculateRestResource {
 
-    private static final Logger logger = LogManager.getLogger(CalculateRestServlet.class);
+    private static final Logger logger = LogManager.getLogger(CalculateRestResource.class);
 
     private static final int BAD_REQUEST_CODE=400;
     private static final int INTERNAL_SERVER_CODE=500;
