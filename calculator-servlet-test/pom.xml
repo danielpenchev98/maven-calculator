@@ -31,11 +31,6 @@
             <version>1.0.0</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>jta</artifactId>
-            <version>1.1</version>
-        </dependency>
 
         <!-- tomcat runtime -->
         <dependency>

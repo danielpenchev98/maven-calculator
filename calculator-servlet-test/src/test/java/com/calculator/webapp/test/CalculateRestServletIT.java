@@ -15,12 +15,16 @@ import javax.ws.rs.core.Response;
 import java.io.File;
 import java.net.URL;
 
+import static java.util.function.Predicate.isEqual;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(Arquillian.class)
 public class CalculateRestServletIT {
+
+    private final static int BAD_REQUEST = Response.Status.BAD_REQUEST.getStatusCode();
+    private final static int OK = Response.Status.OK.getStatusCode();
 
     @ArquillianResource
     private URL url;
@@ -48,8 +52,7 @@ public class CalculateRestServletIT {
     public void doGet_LegalExpression() throws Exception
     {
         Response response=page.getResponseFromTheGeneratedPage("((100/0^0/100)*10)-(-90)");
-        assertThat(response.getStatus(),equalTo(Response.Status.OK.getStatusCode()));
-
+        verifyResponseCode(response,OK);
 
         String calculationResult=response.readEntity(String.class);
         assertThat(calculationResult,containsString("\"result\":\"100.0\""));
@@ -59,83 +62,91 @@ public class CalculateRestServletIT {
     public void doGet_IllegalExpression_MissingBracket() throws Exception
     {
         Response response=page.getResponseFromTheGeneratedPage("(-1.0/0.001");
-        assertThat(response.getStatus(),equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+        verifyResponseCode(response,BAD_REQUEST);
 
         String calculationResult=response.readEntity(String.class);
-        assertThat(calculationResult,containsString("\"errorCode\":400"));
-        assertThat(calculationResult,containsString("\"message\":\"Missing or misplaced brackets\""));
+        verifyCalculationErrorMessage(calculationResult,400,"Missing or misplaced brackets");
     }
 
     @Test
     public void doGet_IllegalExpression_SequentialComponents() throws Exception
     {
         Response response=page.getResponseFromTheGeneratedPage("-1.0 2 + 3");
-        assertThat(response.getStatus(),equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+        verifyResponseCode(response,BAD_REQUEST);
 
         String calculationResult=response.readEntity(String.class);
-        assertThat(calculationResult,containsString("\"errorCode\":400"));
-        assertThat(calculationResult,containsString("\"message\":\"Sequential components of the same type\""));
+        verifyCalculationErrorMessage(calculationResult,400,"Sequential components of the same type");
     }
 
     @Test
     public void doGet_IllegalExpression_MissingOperator() throws Exception
     {
         Response response=page.getResponseFromTheGeneratedPage("1(-1.0)/2");
-        assertThat(response.getStatus(),equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+        verifyResponseCode(response,BAD_REQUEST);
+
         String calculationResult=response.readEntity(String.class);
-        assertThat(calculationResult,containsString("\"errorCode\":400"));
-        assertThat(calculationResult,containsString("\"message\":\"Missing operator between a number and an opening bracket or a closing bracket and a number\""));
+        verifyCalculationErrorMessage(calculationResult,400,"Missing operator between a number and an opening bracket or a closing bracket and a number");
     }
 
     @Test
     public void doGet_IllegalExpression_EmptyEquation() throws Exception
     {
         Response response=page.getResponseFromTheGeneratedPage("     ");
-        assertThat(response.getStatus(),equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+        verifyResponseCode(response,BAD_REQUEST);
+
         String calculationResult=response.readEntity(String.class);
-        assertThat(calculationResult,containsString("\"errorCode\":400"));
-        assertThat(calculationResult,containsString("\"message\":\"Empty equation\""));
+        verifyCalculationErrorMessage(calculationResult,400,"Empty equation");
     }
 
     @Test
     public void doGet_IllegalExpression_EmptyBrackets() throws Exception
     {
         Response response=page.getResponseFromTheGeneratedPage("()");
-        assertThat(response.getStatus(),equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+        verifyResponseCode(response,BAD_REQUEST);
+
         String calculationResult=response.readEntity(String.class);
-        assertThat(calculationResult,containsString("\"errorCode\":400"));
-        assertThat(calculationResult,containsString("\"message\":\"Empty brackets\""));
+        verifyCalculationErrorMessage(calculationResult,400,"Empty brackets");
     }
 
     @Test
     public void doGet_IllegalExpression_EquationBeginningWithOperation() throws Exception
     {
         Response response=page.getResponseFromTheGeneratedPage("^1/2+3");
-        assertThat(response.getStatus(),equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+        verifyResponseCode(response,BAD_REQUEST);
+
         String calculationResult=response.readEntity(String.class);
-        assertThat(calculationResult,containsString("\"errorCode\":400"));
-        assertThat(calculationResult,containsString("\"message\":\"Scope of equation ending or beginning with an operator\""));
+        verifyCalculationErrorMessage(calculationResult,400,"Scope of equation ending or beginning with an operator");
     }
 
     @Test
     public void doGet_IllegalExpression_DivisionByZero() throws Exception
     {
         Response response=page.getResponseFromTheGeneratedPage("1/0");
-        assertThat(response.getStatus(),equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+        verifyResponseCode(response,BAD_REQUEST);
+
         String calculationResult=response.readEntity(String.class);
-        assertThat(calculationResult,containsString("\"errorCode\":400"));
-        assertThat(calculationResult,containsString("\"message\":\"Division by zero\""));
+        verifyCalculationErrorMessage(calculationResult,400,"Division by zero");
     }
 
     @Test
     public void doGet_IllegalExpression_UnsupportedComponent() throws Exception
     {
         Response response=page.getResponseFromTheGeneratedPage("1#3");
-        assertThat(response.getStatus(),equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+        verifyResponseCode(response,BAD_REQUEST);
+
         String calculationResult=response.readEntity(String.class);
-        assertThat(calculationResult,containsString("\"errorCode\":400"));
-        assertThat(calculationResult,containsString("\"message\":\"Unsupported component :#\""));
+        verifyCalculationErrorMessage(calculationResult,400,"Unsupported component :#");
     }
 
+    private void verifyResponseCode(final Response response,final int expectedCode)
+    {
+        assertThat(response.getStatus(),equalTo(expectedCode));
+    }
+
+    private void verifyCalculationErrorMessage(final String actual,final int expectedErrorCode,final String expectedMessage)
+    {
+        assertThat(actual,containsString("\"errorCode\":"+expectedErrorCode));
+        assertThat(actual,containsString("\"message\":\""+expectedMessage+"\""));
+    }
 }
 

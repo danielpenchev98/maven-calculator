@@ -15,6 +15,13 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
+  <properties>
+    <jackson.version>2.9.9</jackson.version>
+    <jersey.version>2.29</jersey.version>
+    <tomcat7.plugin.version>2.2</tomcat7.plugin.version>
+    <log4j.version>2.8.2</log4j.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.calculator.core</groupId>
@@ -24,81 +31,53 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-web</artifactId>
-      <version>2.8.2</version>
+      <version>${log4j.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>javax.ws.rs</groupId>
-      <artifactId>javax.ws.rs-api</artifactId>
-      <version>2.1.1</version>
-    </dependency>
 
     <!--Jackson-->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.9.9</version>
+      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.9.9</version>
+      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.9.9</version>
+      <version>${jackson.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.jaxrs</groupId>
-      <artifactId>jackson-jaxrs-json-provider</artifactId>
-      <version>2.9.9</version>
-    </dependency>
-
-
 
     <!--Jersey implementation of JAX-RS -->
     <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>
       <artifactId>jersey-container-servlet</artifactId>
-      <version>2.29</version>
+      <version>${jersey.version}</version>
     </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.core</groupId>
       <artifactId>jersey-server</artifactId>
-      <version>2.29</version>
+      <version>${jersey.version}</version>
     </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.inject</groupId>
       <artifactId>jersey-hk2</artifactId>
-      <version>2.29</version>
+      <version>${jersey.version}</version>
     </dependency>
   </dependencies>
 
   <build>
     <finalName>calculator-servlet</finalName>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.1.2</version>
-          <configuration>
-            <archive>
-              <manifest>
-                <addClasspath>true</addClasspath>
-                <mainClass>CalculatorConsole</mainClass>
-              </manifest>
-            </archive>
-          </configuration>
-        </plugin>
-      </plugins>
-
     <pluginManagement>
       <plugins>
         <plugin>
           <groupId>org.apache.tomcat.maven</groupId>
           <artifactId>tomcat7-maven-plugin</artifactId>
-          <version>2.2</version>
+          <version>${tomcat7.plugin.version}</version>
           <configuration>
             <url>http://localhost:8080</url>
             <server>localhost</server>
