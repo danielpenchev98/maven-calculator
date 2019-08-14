@@ -26,17 +26,13 @@ public class MainPage {
 
     public Response getResponseFromTheGeneratedPage(final String input) throws IOException {
         URL encodedUrl=getEncodedUrl(input);
-        return getResponse(encodedUrl);
+        Client client= ClientBuilder.newClient();
+        WebTarget webTarget=client.target(URI.create(encodedUrl.toExternalForm()));
+        return webTarget.request(MediaType.APPLICATION_JSON).get(Response.class);
     }
 
     private URL getEncodedUrl(String unformattedInput) throws IOException {
-        String spec = URLEncoder.encode(unformattedInput, ENCODING);
-        return new URL(baseUrl,CALCULATOR_SERVLET_URL + GET_REQUEST_URL +"?"+REQUEST_PARAMETER+"="+spec);
-    }
-
-    private Response getResponse(final URL url){
-        Client client= ClientBuilder.newClient();
-        WebTarget webTarget=client.target(URI.create(url.toExternalForm()));
-        return webTarget.request(MediaType.APPLICATION_JSON).get(Response.class);
+        String encodedEquation = URLEncoder.encode(unformattedInput, ENCODING);
+        return new URL(baseUrl,CALCULATOR_SERVLET_URL + GET_REQUEST_URL +"?"+REQUEST_PARAMETER+"="+encodedEquation);
     }
 }
