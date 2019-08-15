@@ -1,7 +1,9 @@
 package com.calculator.webapp;
 
 import com.calculator.core.CalculatorApp;
+import com.calculator.core.exceptions.BadInputException;
 import com.calculator.core.exceptions.DivisionByZeroException;
+import com.calculator.webapp.restresources.CalculateRestResource;
 import com.calculator.webapp.servletresponse.ServletError;
 import com.calculator.webapp.servletresponse.ServletResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,6 +43,7 @@ public class CalculateRestResourceTest {
         Response response=resource.doGetCalculationResult("1+1");
         String actual=(String)response.getEntity();
 
+        assertThat(response.getStatus(),is(Response.Status.OK.getStatusCode()));
         assertThat(actual, containsString("\"result\":\"2.0\""));
     }
 
@@ -53,8 +56,23 @@ public class CalculateRestResourceTest {
         Response response=resource.doGetCalculationResult("1/0");
         String actual=(String)response.getEntity();
 
+        assertThat(response.getStatus(),is(Response.Status.BAD_REQUEST.getStatusCode()));
         assertThat(actual, containsString("\"errorCode\":400"));
         assertThat(actual, containsString("\"message\":\"Division by zero\""));
+
+    }
+
+    @Test
+    public void doGetCalculatorResult_MissingParameterInTheUrl_ServerError() throws Exception
+    {
+        Mockito.when(mapper.writeValueAsString(argThat(instanceOf(ServletError.class)))).thenReturn("{\"errorCode\":400,\"message\":\"Equation parameter is missing from URL\"}");
+
+        Response response=resource.doGetCalculationResult(null);
+        String actual=(String)response.getEntity();
+
+        assertThat(response.getStatus(),is(Response.Status.BAD_REQUEST.getStatusCode()));
+        assertThat(actual, containsString("\"errorCode\":400"));
+        assertThat(actual, containsString("\"message\":\"Equation parameter is missing from URL\""));
 
     }
 }
