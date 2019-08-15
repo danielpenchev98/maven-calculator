@@ -1,4 +1,4 @@
-package com.calculator.webapp;
+package com.calculator.webapp.injectionconfig;
 
 import com.calculator.core.CalculatorApp;
 import com.fasterxml.jackson.databind.ObjectMapper;

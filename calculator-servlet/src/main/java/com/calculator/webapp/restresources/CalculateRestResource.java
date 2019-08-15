@@ -1,4 +1,4 @@
-package com.calculator.webapp;
+package com.calculator.webapp.restresources;
 
 import com.calculator.core.CalculatorApp;
 import com.calculator.core.exceptions.BadInputException;
@@ -53,7 +53,7 @@ public class CalculateRestResource {
 
     private String getCalculationResult(final String equation) throws Exception {
         if (equation == null) {
-            throw new Exception("Equation parameter is missing");
+            throw new BadInputException("Equation parameter is missing from URL");
         }
 
         return String.valueOf(calculator.calculateResult(equation));
