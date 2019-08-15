@@ -31,7 +31,7 @@ public class MainPage {
         return webTarget.request(MediaType.APPLICATION_JSON).get(Response.class);
     }
 
-    private URL getEncodedUrl(String unformattedInput) throws IOException {
+    private URL getEncodedUrl(final String unformattedInput) throws IOException {
         String encodedEquation = URLEncoder.encode(unformattedInput, ENCODING);
         return new URL(baseUrl,CALCULATOR_SERVLET_URL + GET_REQUEST_URL +"?"+REQUEST_PARAMETER+"="+encodedEquation);
     }

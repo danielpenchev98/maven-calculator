@@ -2,8 +2,8 @@ package com.calculator.webapp.restresources;
 
 import com.calculator.core.CalculatorApp;
 import com.calculator.core.exceptions.BadInputException;
-import com.calculator.webapp.servletresponse.ServletError;
-import com.calculator.webapp.servletresponse.ServletResult;
+import com.calculator.webapp.servletresponse.CalculationError;
+import com.calculator.webapp.servletresponse.CalculationResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
@@ -23,31 +23,34 @@ public class CalculateRestResource {
 
     private static final Logger logger = LogManager.getLogger(CalculateRestResource.class);
 
-    @Inject
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
+    private final CalculatorApp calculator;
 
     @Inject
-    private CalculatorApp calculator;
+    public CalculateRestResource(final ObjectMapper mapper,final CalculatorApp calculator) {
+        this.mapper=mapper;
+        this.calculator=calculator;
+    }
+
 
     @GET
-    public Response doGetCalculationResult(@QueryParam("equation") String equation) throws JsonProcessingException
-    {
+    public Response doGetCalculationResult(@QueryParam("equation") String equation) throws JsonProcessingException {
         try {
-            ServletResult calculationResult = new ServletResult(getCalculationResult(equation));
-            return createResponse(Response.Status.OK,calculationResult);
+            CalculationResult calculationResult = new CalculationResult(getCalculationResult(equation));
+            return createResponse(Response.Status.OK, calculationResult);
         } catch (BadInputException badInput) {
-            ServletError userInputError = new ServletError(Response.Status.BAD_REQUEST.getStatusCode(), badInput.getMessage());
-            return createResponse(Response.Status.BAD_REQUEST,userInputError);
+            logger.info("User input error",badInput);
+            CalculationError userInputError = new CalculationError(Response.Status.BAD_REQUEST.getStatusCode(), badInput.getMessage());
+            return createResponse(Response.Status.BAD_REQUEST, userInputError);
         } catch (Exception ex) {
             logger.error("Problem with servlet :\n", ex);
-            ServletError systemError = new ServletError(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), ex.getMessage());
-            return createResponse(Response.Status.INTERNAL_SERVER_ERROR,systemError);
+            CalculationError systemError = new CalculationError(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), ex.getMessage());
+            return createResponse(Response.Status.INTERNAL_SERVER_ERROR, systemError);
         }
     }
 
-    private Response createResponse(final Response.Status statusCode,final Object result) throws JsonProcessingException
-    {
-        String jsonResult=mapper.writeValueAsString(result);
+    private Response createResponse(final Response.Status statusCode, final Object result) throws JsonProcessingException {
+        String jsonResult = mapper.writeValueAsString(result);
         return Response.status(statusCode).entity(jsonResult).build();
     }
 
@@ -57,6 +60,5 @@ public class CalculateRestResource {
         }
 
         return String.valueOf(calculator.calculateResult(equation));
-
     }
 }
