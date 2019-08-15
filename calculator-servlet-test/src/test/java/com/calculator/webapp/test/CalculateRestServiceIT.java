@@ -31,122 +31,93 @@ public class CalculateRestServiceIT {
 
     private MainPage page;
 
-    //tests are clients outside of the container
     @Deployment(testable = false)
-    public static WebArchive createTestArchive()
-    {
-       WebArchive archive = ShrinkWrap.create(ZipImporter.class,"calculator.war")
-               .importFrom(new File("target"+File.separator+"lib"+File.separator+"calculator-servlet-1.0-SNAPSHOT.war"))
-               .as(WebArchive.class)
-               .addAsResource("arquillian.xml");
-       return archive;
+    public static WebArchive createTestArchive() {
+        WebArchive archive = ShrinkWrap.create(ZipImporter.class, "calculator.war")
+                .importFrom(new File("target" + File.separator + "lib" + File.separator + "calculator-servlet-1.0-SNAPSHOT.war"))
+                .as(WebArchive.class)
+                .addAsResource("arquillian.xml");
+        return archive;
     }
 
     @Before
-    public void setUp()
-    {
-        page=new MainPage(url);
+    public void setUp() {
+        page = new MainPage(url);
     }
 
     @Test
-    public void doGet_LegalExpression() throws Exception
-    {
-        Response response=page.getResponseFromTheGeneratedPage("((100/0^0/100)*10)-(-90)");
-        verifyResponseCode(response,OK);
+    public void doGet_LegalExpression() throws Exception {
+        Response response = page.getResponseFromTheGeneratedPage("((100/0^0/100)*10)-(-90)");
+        verifyResponseCode(response, OK);
 
-        String calculationResult=response.readEntity(String.class);
-        assertThat(calculationResult,containsString("\"result\":\"100.0\""));
+        String calculationResult = response.readEntity(String.class);
+        assertThat(calculationResult, containsString("\"result\":\"100.0\""));
     }
 
     @Test
-    public void doGet_IllegalExpression_MissingBracket() throws Exception
-    {
-        Response response=page.getResponseFromTheGeneratedPage("(-1.0/0.001");
-        verifyResponseCode(response,BAD_REQUEST);
-
-        String calculationResult=response.readEntity(String.class);
-        verifyCalculationErrorMessage(calculationResult,400,"Missing or misplaced brackets");
+    public void doGet_IllegalExpression_MissingBracket() throws Exception {
+        Response response = page.getResponseFromTheGeneratedPage("(-1.0/0.001");
+        verifyResponseCode(response, BAD_REQUEST);
+        verifyCalculationErrorMessage(response, 400, "Missing or misplaced brackets");
     }
 
     @Test
-    public void doGet_IllegalExpression_SequentialComponents() throws Exception
-    {
-        Response response=page.getResponseFromTheGeneratedPage("-1.0 2 + 3");
-        verifyResponseCode(response,BAD_REQUEST);
-
-        String calculationResult=response.readEntity(String.class);
-        verifyCalculationErrorMessage(calculationResult,400,"Sequential components of the same type");
+    public void doGet_IllegalExpression_SequentialComponents() throws Exception {
+        Response response = page.getResponseFromTheGeneratedPage("-1.0 2 + 3");
+        verifyResponseCode(response, BAD_REQUEST);
+        verifyCalculationErrorMessage(response, 400, "Sequential components of the same type");
     }
 
     @Test
-    public void doGet_IllegalExpression_MissingOperator() throws Exception
-    {
-        Response response=page.getResponseFromTheGeneratedPage("1(-1.0)/2");
-        verifyResponseCode(response,BAD_REQUEST);
-
-        String calculationResult=response.readEntity(String.class);
-        verifyCalculationErrorMessage(calculationResult,400,"Missing operator between a number and an opening bracket or a closing bracket and a number");
+    public void doGet_IllegalExpression_MissingOperator() throws Exception {
+        Response response = page.getResponseFromTheGeneratedPage("1(-1.0)/2");
+        verifyResponseCode(response, BAD_REQUEST);
+        verifyCalculationErrorMessage(response, 400, "Missing operator between a number and an opening bracket or a closing bracket and a number");
     }
 
     @Test
-    public void doGet_IllegalExpression_EmptyEquation() throws Exception
-    {
-        Response response=page.getResponseFromTheGeneratedPage("     ");
-        verifyResponseCode(response,BAD_REQUEST);
-
-        String calculationResult=response.readEntity(String.class);
-        verifyCalculationErrorMessage(calculationResult,400,"Empty equation");
+    public void doGet_IllegalExpression_EmptyEquation() throws Exception {
+        Response response = page.getResponseFromTheGeneratedPage("     ");
+        verifyResponseCode(response, BAD_REQUEST);
+        verifyCalculationErrorMessage(response, 400, "Empty equation");
     }
 
     @Test
-    public void doGet_IllegalExpression_EmptyBrackets() throws Exception
-    {
-        Response response=page.getResponseFromTheGeneratedPage("()");
-        verifyResponseCode(response,BAD_REQUEST);
-
-        String calculationResult=response.readEntity(String.class);
-        verifyCalculationErrorMessage(calculationResult,400,"Empty brackets");
+    public void doGet_IllegalExpression_EmptyBrackets() throws Exception {
+        Response response = page.getResponseFromTheGeneratedPage("()");
+        verifyResponseCode(response, BAD_REQUEST);
+        verifyCalculationErrorMessage(response, 400, "Empty brackets");
     }
 
     @Test
-    public void doGet_IllegalExpression_EquationBeginningWithOperation() throws Exception
-    {
-        Response response=page.getResponseFromTheGeneratedPage("^1/2+3");
-        verifyResponseCode(response,BAD_REQUEST);
-
-        String calculationResult=response.readEntity(String.class);
-        verifyCalculationErrorMessage(calculationResult,400,"Scope of equation ending or beginning with an operator");
+    public void doGet_IllegalExpression_EquationBeginningWithOperation() throws Exception {
+        Response response = page.getResponseFromTheGeneratedPage("^1/2+3");
+        verifyResponseCode(response, BAD_REQUEST);
+        verifyCalculationErrorMessage(response, 400, "Scope of equation ending or beginning with an operator");
     }
 
     @Test
-    public void doGet_IllegalExpression_DivisionByZero() throws Exception
-    {
-        Response response=page.getResponseFromTheGeneratedPage("1/0");
-        verifyResponseCode(response,BAD_REQUEST);
-
-        String calculationResult=response.readEntity(String.class);
-        verifyCalculationErrorMessage(calculationResult,400,"Division by zero");
+    public void doGet_IllegalExpression_DivisionByZero() throws Exception {
+        Response response = page.getResponseFromTheGeneratedPage("1/0");
+        verifyResponseCode(response, BAD_REQUEST);
+        verifyCalculationErrorMessage(response, 400, "Division by zero");
     }
 
     @Test
-    public void doGet_IllegalExpression_UnsupportedComponent() throws Exception
-    {
-        Response response=page.getResponseFromTheGeneratedPage("1#3");
-        verifyResponseCode(response,BAD_REQUEST);
-
-        String calculationResult=response.readEntity(String.class);
-        verifyCalculationErrorMessage(calculationResult,400,"Unsupported component :#");
+    public void doGet_IllegalExpression_UnsupportedComponent() throws Exception {
+        Response response = page.getResponseFromTheGeneratedPage("1#3");
+        verifyResponseCode(response, BAD_REQUEST);
+        verifyCalculationErrorMessage(response, 400, "Unsupported component :#");
     }
 
-    private void verifyResponseCode(final Response response,final int expectedCode)
-    {
-        assertThat(response.getStatus(),equalTo(expectedCode));
+    private void verifyResponseCode(final Response response, final int expectedCode) {
+        assertThat(response.getStatus(), equalTo(expectedCode));
     }
 
-    private void verifyCalculationErrorMessage(final String actual,final int expectedErrorCode,final String expectedMessage)
-    {
-        assertThat(actual,containsString("\"errorCode\":"+expectedErrorCode));
-        assertThat(actual,containsString("\"message\":\""+expectedMessage+"\""));
+    private void verifyCalculationErrorMessage(final Response response, final int expectedErrorCode, final String expectedMessage) {
+        String actual=response.readEntity(String.class);
+        assertThat(actual, containsString("\"errorCode\":" + expectedErrorCode));
+        assertThat(actual, containsString("\"message\":\"" + expectedMessage + "\""));
     }
 }
 
