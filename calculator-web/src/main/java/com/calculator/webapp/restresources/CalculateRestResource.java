@@ -39,7 +39,7 @@ public class CalculateRestResource {
             CalculationResult calculationResult = new CalculationResult(getCalculationResult(equation));
             return createResponse(Response.Status.OK, calculationResult);
         } catch (BadInputException badInput) {
-            logger.info("User input error",badInput);
+            logger.warn("User input error",badInput);
             CalculationError userInputError = new CalculationError(Response.Status.BAD_REQUEST.getStatusCode(), badInput.getMessage());
             return createResponse(Response.Status.BAD_REQUEST, userInputError);
         } catch (Exception ex) {

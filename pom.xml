@@ -12,8 +12,8 @@
         <module>calculator-core</module>
         <module>calculator-console</module>
         <module>calculator-console-test</module>
-        <module>calculator-servlet</module>
-        <module>calculator-servlet-test</module>
+        <module>calculator-web</module>
+        <module>calculator-web-test</module>
     </modules>
 
     <properties>

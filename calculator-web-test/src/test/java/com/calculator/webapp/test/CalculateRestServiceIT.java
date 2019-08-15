@@ -15,7 +15,6 @@ import javax.ws.rs.core.Response;
 import java.io.File;
 import java.net.URL;
 
-import static java.util.function.Predicate.isEqual;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -34,7 +33,7 @@ public class CalculateRestServiceIT {
     @Deployment(testable = false)
     public static WebArchive createTestArchive() {
         WebArchive archive = ShrinkWrap.create(ZipImporter.class, "calculator.war")
-                .importFrom(new File("target" + File.separator + "lib" + File.separator + "calculator-servlet-1.0-SNAPSHOT.war"))
+                .importFrom(new File("target" + File.separator + "lib" + File.separator + "calculator-web-1.0-SNAPSHOT.war"))
                 .as(WebArchive.class)
                 .addAsResource("arquillian.xml");
         return archive;

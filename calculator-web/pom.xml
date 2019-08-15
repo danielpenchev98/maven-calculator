@@ -11,7 +11,7 @@
   </parent>
 
   <groupId>com.calculator.webapp</groupId>
-  <artifactId>calculator-servlet</artifactId>
+  <artifactId>calculator-web</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
