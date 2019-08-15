@@ -75,4 +75,5 @@ public class CalculateRestResourceTest {
         assertThat(actual, containsString("\"message\":\"Equation parameter is missing from URL\""));
 
     }
+
 }
