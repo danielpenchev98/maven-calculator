@@ -9,13 +9,34 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <properties>
+        <junit.dataprovider.version>1.13.1</junit.dataprovider.version>
+        <failsafe.plugin.version>3.0.0-M3</failsafe.plugin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.calculator.console</groupId>
+            <artifactId>calculator-console</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- using more than 1 data set in a test class -->
+        <dependency>
+            <groupId>com.tngtech.java</groupId>
+            <artifactId>junit-dataprovider</artifactId>
+            <version>${junit.dataprovider.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <artifactId>calculator-console-test</artifactId>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.0.0-M3</version>
+                <version>${failsafe.plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -41,17 +62,4 @@
             </plugin>
         </plugins>
     </build>
-    <dependencies>
-        <dependency>
-            <groupId>com.tngtech.java</groupId>
-            <artifactId>junit-dataprovider</artifactId>
-            <version>1.13.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.calculator.console</groupId>
-            <artifactId>calculator-console</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
 </project>

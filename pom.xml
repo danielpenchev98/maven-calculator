@@ -20,6 +20,13 @@
         <skipAllTests>false</skipAllTests>
         <skipITs>${skipAllTests}</skipITs>
         <skipTests>${skipAllTests}</skipTests>
+
+        <junit.version>4.12</junit.version>
+        <failsafe.plugin.version>3.0.0-M3</failsafe.plugin.version>
+        <surefire.plugin.version>3.0.0-M3</surefire.plugin.version>
+        <compiler.plugin.version>3.6.1</compiler.plugin.version>
+        <compiler.source.version>11</compiler.source.version>
+        <compiler.target.version>11</compiler.target.version>
     </properties>
 
     <build>
@@ -27,16 +34,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>${compiler.plugin.version}</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>${compiler.source.version}</source>
+                    <target>${compiler.target.version}</target>
                 </configuration>
             </plugin>
             <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.0.0-M3</version>
+            <version>${failsafe.plugin.version}</version>
             <executions>
                 <execution>
                     <goals>
@@ -52,7 +59,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M3</version>
+                <version>${surefire.plugin.version}</version>
                 <configuration>
                     <skipTests>${skipTests}</skipTests>
                 </configuration>
@@ -65,7 +72,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
