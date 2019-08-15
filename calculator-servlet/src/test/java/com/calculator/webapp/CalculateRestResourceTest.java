@@ -1,11 +1,10 @@
 package com.calculator.webapp;
 
 import com.calculator.core.CalculatorApp;
-import com.calculator.core.exceptions.BadInputException;
 import com.calculator.core.exceptions.DivisionByZeroException;
 import com.calculator.webapp.restresources.CalculateRestResource;
-import com.calculator.webapp.servletresponse.ServletError;
-import com.calculator.webapp.servletresponse.ServletResult;
+import com.calculator.webapp.servletresponse.CalculationError;
+import com.calculator.webapp.servletresponse.CalculationResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,9 +35,8 @@ public class CalculateRestResourceTest {
 
     @Test
     public void doGetCalculationResult_LegalEquation_ExpectedResult() throws Exception {
-
         Mockito.when(app.calculateResult("1+1")).thenReturn(2.0);
-        Mockito.when(mapper.writeValueAsString(argThat(instanceOf(ServletResult.class)))).thenReturn("\"result\":\"2.0\"");
+        Mockito.when(mapper.writeValueAsString(argThat(instanceOf(CalculationResult.class)))).thenReturn("\"result\":\"2.0\"");
 
         Response response=resource.doGetCalculationResult("1+1");
         String actual=(String)response.getEntity();
@@ -48,10 +46,9 @@ public class CalculateRestResourceTest {
     }
 
     @Test
-    public void doGetCalculationResult_IllegalEquation_ErrorMessage() throws Exception
-    {
+    public void doGetCalculationResult_IllegalEquation_ErrorMessage() throws Exception {
         Mockito.when(app.calculateResult("1/0")).thenThrow(new DivisionByZeroException("Division by zero"));
-        Mockito.when(mapper.writeValueAsString(argThat(instanceOf(ServletError.class)))).thenReturn("{\"errorCode\":400,\"message\":\"Division by zero\"}");
+        Mockito.when(mapper.writeValueAsString(argThat(instanceOf(CalculationError.class)))).thenReturn("{\"errorCode\":400,\"message\":\"Division by zero\"}");
 
         Response response=resource.doGetCalculationResult("1/0");
         String actual=(String)response.getEntity();
@@ -59,21 +56,17 @@ public class CalculateRestResourceTest {
         assertThat(response.getStatus(),is(Response.Status.BAD_REQUEST.getStatusCode()));
         assertThat(actual, containsString("\"errorCode\":400"));
         assertThat(actual, containsString("\"message\":\"Division by zero\""));
-
     }
 
     @Test
-    public void doGetCalculatorResult_MissingParameterInTheUrl_ServerError() throws Exception
-    {
-        Mockito.when(mapper.writeValueAsString(argThat(instanceOf(ServletError.class)))).thenReturn("{\"errorCode\":400,\"message\":\"Equation parameter is missing from URL\"}");
-
+    public void doGetCalculatorResult_MissingParameterInTheUrl_ServerError() throws Exception {
+        Mockito.when(mapper.writeValueAsString(argThat(instanceOf(CalculationError.class)))).thenReturn("{\"errorCode\":400,\"message\":\"Equation parameter is missing from URL\"}");
         Response response=resource.doGetCalculationResult(null);
         String actual=(String)response.getEntity();
 
         assertThat(response.getStatus(),is(Response.Status.BAD_REQUEST.getStatusCode()));
         assertThat(actual, containsString("\"errorCode\":400"));
         assertThat(actual, containsString("\"message\":\"Equation parameter is missing from URL\""));
-
     }
 
 }

@@ -1,15 +1,14 @@
 package com.calculator.webapp.servletresponse;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-@JsonPropertyOrder({"errorCode", "message"})
-public class ServletError {
+
+public class CalculationError {
     private int errorCode;
     private String message;
 
-    public ServletError(final int errorCode, final String message) {
+    public CalculationError(final int errorCode, final String message) {
         setErrorCode(errorCode);
         setMessage(message);
     }
