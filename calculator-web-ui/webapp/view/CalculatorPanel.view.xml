@@ -1,0 +1,21 @@
+<mvc:View
+	controllerName="com.calculator.web.ui.controller.CalculatorPanel"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc">
+	<Panel
+		class="sapUiResponsiveMargin"
+		width="auto" >
+		<content>
+			<Text text="Enter equation:" class="sapUiSmallMarginEnd sapUiSmallMarginTop"/>
+			<Input
+				value="{/result}"
+				valueLiveUpdate="true"
+				width="60%"/>
+			<Button
+					id="resultDialogButton"
+					text="{i18n>openResultDialogButtonText}"
+					press=".onOpenDialog"
+					class="sapUiSmallMarginBegin"/>
+		</content>
+	</Panel>
+</mvc:View>
