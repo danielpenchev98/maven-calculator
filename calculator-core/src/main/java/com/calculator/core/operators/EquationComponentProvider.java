@@ -2,7 +2,10 @@ package com.calculator.core.operators;
 
 import com.calculator.core.exceptions.InvalidComponentException;
 
-public class EquationComponentFactory {
+import java.util.HashMap;
+import java.util.Map;
+
+public class EquationComponentProvider {
 
     private final static String validNumberRegex = "-?[0-9]+(.[0-9]+)?";
     private final static Map<String,EquationComponent> validOperators = new HashMap<>() {{
@@ -15,7 +18,7 @@ public class EquationComponentFactory {
                                                                             put(Power.SYMBOL, new Power());
                                                                         }};
 
-    public EquationComponent createComponent(final String component) throws InvalidComponentException
+    public EquationComponent getComponent(final String component) throws InvalidComponentException
     {
         if(isValidNumber(component))
         {
@@ -27,7 +30,7 @@ public class EquationComponentFactory {
         }
         else
         {
-            throw new InvalidComponentException("Unsupported component :"+operation);
+            throw new InvalidComponentException("Unsupported component :"+component);
         }
     }
 

@@ -1,7 +1,7 @@
 package com.calculator.core.inputformatting;
 
 import com.calculator.core.operators.EquationComponent;
-import com.calculator.core.operators.EquationComponentFactory;
+import com.calculator.core.operators.EquationComponentProvider;
 import com.calculator.core.exceptions.InvalidComponentException;
 import com.calculator.core.exceptions.InvalidEquationException;
 
@@ -16,17 +16,17 @@ public class EquationFormatter implements InputFormatter {
 
     private final EquationStructureValidator structureValidator;
 
-    private final EquationComponentFactory componentFactory;
+    private final EquationComponentProvider componentProvider;
 
     private final static String SEPARATOR_OF_COMPONENTS = " ";
 
     public EquationFormatter() {
-        this(new EquationStructureValidator(), new EquationComponentFactory());
+        this(new EquationStructureValidator(), new EquationComponentProvider());
     }
 
-    EquationFormatter(final EquationStructureValidator validator, final EquationComponentFactory factory) {
+    EquationFormatter(final EquationStructureValidator validator, final EquationComponentProvider factory) {
         structureValidator = validator;
-        componentFactory = factory;
+        componentProvider = factory;
     }
 
     public List<EquationComponent> doFormat(final String equation) throws InvalidComponentException, InvalidEquationException {
@@ -74,7 +74,7 @@ public class EquationFormatter implements InputFormatter {
     private List<EquationComponent> convertToEquationComponentObjects(final List<String> components) throws InvalidComponentException {
         List<EquationComponent> formattedComponents = new LinkedList<>();
         for (String component : components) {
-            formattedComponents.add(componentFactory.createComponent(component));
+            formattedComponents.add(componentProvider.getComponent(component));
         }
         return formattedComponents;
     }
