@@ -2,8 +2,8 @@ package com.calculator.webapp.restresources;
 
 import com.calculator.core.CalculatorApp;
 import com.calculator.core.exceptions.BadInputException;
-import com.calculator.webapp.servletresponse.CalculationError;
-import com.calculator.webapp.servletresponse.CalculationResult;
+import com.calculator.webapp.restresponse.CalculationError;
+import com.calculator.webapp.restresponse.CalculationResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;

@@ -1,4 +1,4 @@
-package com.calculator.webapp.servletresponse;
+package com.calculator.webapp.restresponse;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
