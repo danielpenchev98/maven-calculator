@@ -27,6 +27,7 @@
         <compiler.plugin.version>3.6.1</compiler.plugin.version>
         <compiler.source.version>11</compiler.source.version>
         <compiler.target.version>11</compiler.target.version>
+        <compiler.release.version>11</compiler.release.version>
     </properties>
 
     <build>
@@ -36,6 +37,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${compiler.plugin.version}</version>
                 <configuration>
+                    <release>${compiler.release.version}</release>
                     <source>${compiler.source.version}</source>
                     <target>${compiler.target.version}</target>
                 </configuration>
