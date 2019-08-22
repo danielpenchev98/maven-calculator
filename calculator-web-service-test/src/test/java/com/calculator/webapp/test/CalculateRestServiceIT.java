@@ -33,7 +33,7 @@ public class CalculateRestServiceIT {
     @Deployment(testable = false)
     public static WebArchive createTestArchive() {
         WebArchive archive = ShrinkWrap.create(ZipImporter.class, "calculator.war")
-                .importFrom(new File("target" + File.separator + "lib" + File.separator + "calculator-web-1.0-SNAPSHOT.war"))
+                .importFrom(new File("target" + File.separator + "lib" + File.separator + "calculator-web-service-1.0-SNAPSHOT.war"))
                 .as(WebArchive.class)
                 .addAsResource("arquillian.xml");
         return archive;
