@@ -8,8 +8,7 @@
 		<content>
 			<Text text="Enter equation:" class="sapUiSmallMarginEnd sapUiSmallMarginTop"/>
 			<Input
-				value="{/result}"
-				valueLiveUpdate="true"
+				value=""
 				width="60%"/>
 			<Button
 					id="resultDialogButton"

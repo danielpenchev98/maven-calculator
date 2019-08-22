@@ -5,9 +5,6 @@ sap.ui.define([
 
 	return Controller.extend("com.calculator.web.ui.controller.App", {
 
-		onOpenDialog : function () {
-			this.getOwnerComponent().openResultDialog();
-		}
 	});
 
 });

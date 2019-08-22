@@ -3,7 +3,7 @@
 	xmlns:core="sap.ui.core">
 	<Dialog
 		id="resultDialog"
-		title="Calculation result">
+		title="{i18n>resultDialogTitle}">
 		<content>
 			<Text text="{/result}"/>
 		</content>

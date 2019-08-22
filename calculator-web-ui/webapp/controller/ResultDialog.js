@@ -14,8 +14,9 @@ sap.ui.define([
 			delete this._oView;
 		},
 
-		open : function () {
+		open : function (oModel) {
 			var oView = this._oView;
+            oView.setModel(oModel);
 
 			// create dialog lazily
 			if (!oView.byId("resultDialog")) {
@@ -30,7 +31,6 @@ sap.ui.define([
 					name: "com.calculator.web.ui.view.ResultDialog",
 					controller: oFragmentController
 				}).then(function (oDialog) {
-					// connect dialog to the root view of this component (models, lifecycle)
 					oView.addDependent(oDialog);
 					oDialog.open();
 				});
