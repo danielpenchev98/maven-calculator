@@ -46,7 +46,7 @@ class EquationStructureValidator {
     }
 
     private boolean hasEmptyEquation(final String equation) {
-        return equation.isBlank();
+        return equation.trim().isEmpty();
     }
 
     private void checkSequentialNonBracketComponentsOfTheSameType(final String equation) throws InvalidEquationException {

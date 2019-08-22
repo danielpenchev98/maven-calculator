@@ -8,7 +8,7 @@ import java.util.Map;
 public class EquationComponentProvider {
 
     private final static String validNumberRegex = "-?[0-9]+(.[0-9]+)?";
-    private final static Map<String,EquationComponent> validOperators = new HashMap<>() {{
+    private final static Map<String,EquationComponent> validOperators = new HashMap<String,EquationComponent>() {{
                                                                             put(OpeningBracket.SYMBOL, new OpeningBracket());
                                                                             put(ClosingBracket.SYMBOL, new ClosingBracket());
                                                                             put(Addition.SYMBOL, new Addition());

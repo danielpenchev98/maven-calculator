@@ -25,9 +25,9 @@
         <failsafe.plugin.version>3.0.0-M3</failsafe.plugin.version>
         <surefire.plugin.version>3.0.0-M3</surefire.plugin.version>
         <compiler.plugin.version>3.6.1</compiler.plugin.version>
-        <compiler.source.version>11</compiler.source.version>
-        <compiler.target.version>11</compiler.target.version>
-        <compiler.release.version>11</compiler.release.version>
+        <compiler.source.version>8</compiler.source.version>
+        <compiler.target.version>8</compiler.target.version>
+        <compiler.release.version>8</compiler.release.version>
     </properties>
 
     <build>
