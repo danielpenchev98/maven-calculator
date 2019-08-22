@@ -15,17 +15,15 @@ sap.ui.define([
 		},
 
 		open : function (oModel) {
-			var oView = this._oView;
+			let oView = this._oView;
             oView.setModel(oModel);
 
-			// create dialog lazily
 			if (!oView.byId("resultDialog")) {
-				var oFragmentController = {
+				let oFragmentController = {
 					onCloseDialog : function () {
 						oView.byId("resultDialog").close();
 					}
 				};
-				// load asynchronous XML fragment
 				Fragment.load({
 					id: oView.getId(),
 					name: "com.calculator.web.ui.view.ResultDialog",

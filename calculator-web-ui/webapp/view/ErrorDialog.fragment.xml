@@ -3,9 +3,10 @@
         xmlns:core="sap.ui.core">
     <Dialog
             id="errorDialog"
+            icon="sap-icon://error"
             title="{i18n>errorDialogTitle}">
         <content>
-            <Text text="{/message}"/>
+            <Text text="{/message}" class="sapUiSmallMargin" />
         </content>
         <beginButton>
             <Button

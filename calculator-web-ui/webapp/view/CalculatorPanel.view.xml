@@ -6,13 +6,14 @@
 		class="sapUiResponsiveMargin"
 		width="auto" >
 		<content>
-			<Text text="Enter equation:" class="sapUiSmallMarginEnd sapUiSmallMarginTop"/>
+			<Text text="Enter equation:" class="sapUiSmallMarginEnd sapUiSmallMarginTop" textAlign="center"/>
 			<Input
+                id="equation"
 				value=""
 				width="60%"/>
 			<Button
-					id="resultDialogButton"
-					text="{i18n>openResultDialogButtonText}"
+					id="calculateButton"
+					text="{i18n>calculateButtonText}"
 					press=".onOpenDialog"
 					class="sapUiSmallMarginBegin"/>
 		</content>

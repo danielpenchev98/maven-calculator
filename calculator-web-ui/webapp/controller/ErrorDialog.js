@@ -1,6 +1,6 @@
 sap.ui.define([
     "sap/ui/base/ManagedObject",
-    "sap/ui/core/Fragment"
+    "sap/ui/core/Fragment",
 ], function (ManagedObject, Fragment) {
     "use strict";
 
@@ -15,17 +15,15 @@ sap.ui.define([
         },
 
         open : function (oModel) {
-            var oView = this._oView;
+            let oView = this._oView;
             oView.setModel(oModel);
 
-            // create dialog lazily
             if (!oView.byId("errorDialog")) {
-                var oFragmentController = {
-                    onCloseDialog : function () {
+                 let oFragmentController = {
+                     onCloseDialog : function () {
                         oView.byId("errorDialog").close();
-                    }
-                };
-                // load asynchronous XML fragment
+                     }
+                 };
                 Fragment.load({
                     id: oView.getId(),
                     name: "com.calculator.web.ui.view.ErrorDialog",

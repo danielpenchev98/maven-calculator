@@ -1,14 +1,18 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
-], function (Controller, JSONModel) {
+	"../model/UrlFormatter"
+], function (Controller, JSONModel,UrlFormatter) {
 	"use strict";
 
 	return Controller.extend("com.calculator.web.ui.controller.CalculatorPanel", {
 
 		onOpenDialog : function () {
 
-			let url="http://localhost:8080/api/v1/calculate?equation=2%2a2";
+			let expression=this.getView().byId("equation").getValue();
+			let encodedExpression=UrlFormatter.encodeExpresion(expression);
+
+			let url="http://localhost:8080/api/v1/calculate?equation="+encodedExpression;
 			let oModel=new JSONModel();
 			let ownerComponent=this.getOwnerComponent();
 			oModel.loadData(url).then(function(){

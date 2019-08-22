@@ -5,7 +5,7 @@
 		id="resultDialog"
 		title="{i18n>resultDialogTitle}">
 		<content>
-			<Text text="{/result}"/>
+			<Text text="{/result}" class="sapUiSmallMargin" />
 		</content>
 		<beginButton>
 			<Button
