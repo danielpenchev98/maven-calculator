@@ -26,6 +26,7 @@ sap.ui.define([
 			this._resultDialog.destroy();
 			delete this._errorDialog;
 			delete this._resultDialog;
+			
 		},
 
 		openResultDialog : function (oModel) {
