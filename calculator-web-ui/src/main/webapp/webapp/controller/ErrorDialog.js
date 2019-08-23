@@ -15,11 +15,11 @@ sap.ui.define([
         },
 
         open : function (oModel) {
-            let oView = this._oView;
+            var oView = this._oView;
             oView.setModel(oModel);
 
             if (!oView.byId("errorDialog")) {
-                 let oFragmentController = {
+                 var oFragmentController = {
                      onCloseDialog : function () {
                         oView.byId("errorDialog").close();
                      }
