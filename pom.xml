@@ -12,8 +12,8 @@
         <module>calculator-core</module>
         <module>calculator-console</module>
         <module>calculator-console-test</module>
-        <module>calculator-web</module>
-        <module>calculator-web-test</module>
+        <module>calculator-web-service</module>
+        <module>calculator-web-service-test</module>
     </modules>
 
     <properties>
@@ -25,8 +25,9 @@
         <failsafe.plugin.version>3.0.0-M3</failsafe.plugin.version>
         <surefire.plugin.version>3.0.0-M3</surefire.plugin.version>
         <compiler.plugin.version>3.6.1</compiler.plugin.version>
-        <compiler.source.version>11</compiler.source.version>
-        <compiler.target.version>11</compiler.target.version>
+        <compiler.source.version>8</compiler.source.version>
+        <compiler.target.version>8</compiler.target.version>
+        <compiler.release.version>8</compiler.release.version>
     </properties>
 
     <build>
@@ -36,6 +37,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${compiler.plugin.version}</version>
                 <configuration>
+                    <release>${compiler.release.version}</release>
                     <source>${compiler.source.version}</source>
                     <target>${compiler.target.version}</target>
                 </configuration>

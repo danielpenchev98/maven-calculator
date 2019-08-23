@@ -24,7 +24,7 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
 
     public ReversePolishCalculationAlgorithm(final ReversePolishNotationParser parser) {
         this.parser = parser;
-        this.supplier=new Stack<>();
+        this.supplier= new Stack<>();
     }
 
 
