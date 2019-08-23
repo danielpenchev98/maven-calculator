@@ -20,7 +20,7 @@
     <properties>
         <skipAllTests>false</skipAllTests>
         <skipITs>${skipAllTests}</skipITs>
-        <skipTests>${skipAllTests}</skipTests>
+        <skipUTs>${skipAllTests}</skipUTs>
 
         <junit.version>4.12</junit.version>
         <failsafe.plugin.version>3.0.0-M3</failsafe.plugin.version>
@@ -64,7 +64,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire.plugin.version}</version>
                 <configuration>
-                    <skipTests>${skipTests}</skipTests>
+                    <skipTests>${skipUTs}</skipTests>
                 </configuration>
             </plugin>
         </plugins>
