@@ -6,7 +6,7 @@
             icon="sap-icon://error"
             title="{i18n>errorDialogTitle}">
         <content>
-            <Text text="{/message}" class="sapUiSmallMargin" />
+            <Text  text="{/message}" class="sapUiSmallMargin errMessageColor" />
         </content>
         <beginButton>
             <Button

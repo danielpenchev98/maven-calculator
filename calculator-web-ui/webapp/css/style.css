@@ -10,3 +10,11 @@ html[dir="rtl"] .myAppDemoWT .myCustomButton.sapMBtn {
 	display: inline-block;
 	font-weight: bold;
 }
+
+.errMessageColor {
+	color : red;
+}
+
+.resultColor {
+	color : limegreen;
+}

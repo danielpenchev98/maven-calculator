@@ -9,12 +9,12 @@ sap.ui.define([
 
 		onOpenDialog : function () {
 
-			let expression=this.getView().byId("equation").getValue();
-			let encodedExpression=UrlFormatter.encodeExpresion(expression);
+			let equation=this.getView().byId("equation").getValue();
+			let url="http://localhost:8080/api/v1/calculate?equation="+UrlFormatter.encodeExpresion(equation);
 
-			let url="http://localhost:8080/api/v1/calculate?equation="+encodedExpression;
 			let oModel=new JSONModel();
 			let ownerComponent=this.getOwnerComponent();
+
 			oModel.loadData(url).then(function(){
 				ownerComponent.openResultDialog(oModel);
 			}).catch(function(error){

@@ -4,7 +4,6 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("com.calculator.web.ui.controller.App", {
-
 	});
 
 });
