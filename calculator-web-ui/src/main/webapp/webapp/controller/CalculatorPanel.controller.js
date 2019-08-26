@@ -1,29 +1,29 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
-	"./UrlProvider"
-], function (Controller, JSONModel,UrlProvider) {
+	"../model/UrlFormatter"
+], function (Controller, JSONModel,UrlFormatter) {
 	"use strict";
 
 	return Controller.extend("com.calculator.web.ui.controller.CalculatorPanel", {
 
-		onOpenDialog: function () {
+		onCalculation: function () {
 
 			let equation = this.getView().byId("equation").getValue();
-			let url=UrlProvider.getUrl(equation);
-			
-			let oModel = new JSONModel();
+			let encodedEquation = UrlFormatter.encodeExpresion(equation);
+			let url="http://localhost:7777/api/v1/calculate?equation=" + encodedEquation;
 			let ownerComponent = this.getOwnerComponent();
 
+			let oModel = new JSONModel();
 			oModel.loadData(url).then(function () {
 				ownerComponent.openResultDialog(oModel);
 			}).catch(function (error) {
 
 				//if (error.statusCode === 0) {
 				//	oModel.setJSON("{\"message\": \"Service unavailable\"}");
-				//} else {
-				oModel.setJSON(error.responseText);
-				//}
+			//	} else {
+					oModel.setJSON(error.responseText);
+			//	}
 				ownerComponent.openErrorDialog(oModel);
 			});
 		}
