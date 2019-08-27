@@ -16,12 +16,34 @@ sap.ui.define([
             },
         });
 
-        When.onTheAppPage.iEnterInputInInputControl("1+1");
-        When.onTheAppPage.iPressTheCalculateButton();
+        When.onTheAppPage.iEnterInputInInputControl("1+1").and.iPressTheCalculateButton();
 
-        Then.onTheAppPage.iShouldSeeTheResultDialog();
+        Then.onTheAppPage.iShouldSeeTheDialog("Result").and.iShouldSeeTheResponseValue("2.0").and
+            .iShouldSeeTheCloseButton("Ok");
 
-        Then.iTeardownMyApp();
+        When.onTheAppPage.iPressTheCloseDialogButton();
+
+        Then.onTheAppPage.iShouldSeeTheView().and.iTeardownMyApp();
+
+    });
+
+   opaTest("Should open error dialog with Empty equation message", function(Given,When,Then) {
+
+       Given.iStartMyUIComponent({
+           componentConfig: {
+               name: "com.calculator.web.ui",
+               async: true
+           },
+       });
+
+        When.onTheAppPage.iEnterInputInInputControl("").and.iPressTheCalculateButton();
+
+        Then.onTheAppPage.iShouldSeeTheDialog("Error").iShouldSeeTheResponseValue("Empty equation").and
+            .iShouldSeeTheCloseButton("Ok");
+
+        When.onTheAppPage.iPressTheCloseDialogButton();
+
+        Then.onTheAppPage.iShouldSeeTheView().and.iTeardownMyApp();
 
     });
 });

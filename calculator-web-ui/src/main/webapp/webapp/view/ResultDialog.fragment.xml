@@ -9,6 +9,7 @@
 		</content>
 		<beginButton>
 			<Button
+				id="suckit"
 				text="{i18n>dialogCloseButtonText}"
 				press=".onCloseDialog"/>
 		</beginButton>

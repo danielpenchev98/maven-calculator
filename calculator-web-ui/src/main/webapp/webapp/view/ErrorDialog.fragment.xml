@@ -6,10 +6,11 @@
             icon="sap-icon://error"
             title="{i18n>errorDialogTitle}">
         <content>
-            <Text  text="{/message}" class="sapUiSmallMargin errMessageColor" />
+            <Text id="resultText" text="{/message}" class="sapUiSmallMargin errMessageColor" />
         </content>
         <beginButton>
             <Button
+                    id="closeErrorDialogButton"
                     text="{i18n>dialogCloseButtonText}"
                     press=".onCloseDialog"/>
         </beginButton>
