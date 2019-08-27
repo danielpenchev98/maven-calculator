@@ -21,6 +21,17 @@
     <script src="https://openui5.hana.ondemand.com/resources/sap/ui/thirdparty/qunit-2.js"></script>
     <script src="https://openui5.hana.ondemand.com/resources/sap/ui/qunit/qunit-junit.js"></script>
 
+    <script>
+        sap.ui.getCore().attachInit(function () {
+            sap.ui.require([
+                "com/calculator/web/ui/test/server/server",
+            ], function (server) {
+                // start fake server
+                server.init();
+            });
+        });
+    </script>
+
     <script src="opaTests.qunit.js"></script>
 </head>
 <body>

@@ -7,10 +7,6 @@ sap.ui.define([
 
     var sViewName = "CalculatorPanel";
 
-    Opa5.extendConfig({
-        viewNamespace: "com.calculator.web.ui.view"
-    });
-
     Opa5.createPageObjects({
         onTheAppPage: {
             actions: {
@@ -18,6 +14,7 @@ sap.ui.define([
                      return this.waitFor({
                          id: "calculateButton",
                          viewName: sViewName,
+                         viewNamespace: "com.calculator.web.ui.view",
                          actions: new Press(),
                          errorMessage: "Couldnt find the calculateButton on the CalculatorPanel view"
                      });
@@ -26,6 +23,7 @@ sap.ui.define([
                     return this.waitFor({
                         id: "equation",
                         viewName: sViewName,
+                        viewNamespace: "com.calculator.web.ui.view",
                         actions: new EnterText({text: equation}),
                         errorMessage: "Couldnt enter the equation in the Input box"
                     });

@@ -11,7 +11,7 @@ sap.ui.define([
 
 			let equation = this.getView().byId("equation").getValue();
 			let encodedEquation = UrlFormatter.encodeExpresion(equation);
-			let url="http://localhost:7777/api/v1/calculate?equation=" + encodedEquation;
+			let url="/api/v1/calculate?equation=" + encodedEquation;
 			let ownerComponent = this.getOwnerComponent();
 
 			let oModel = new JSONModel();
