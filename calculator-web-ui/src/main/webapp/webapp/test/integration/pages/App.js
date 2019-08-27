@@ -75,8 +75,10 @@ sap.ui.define([
                 iShouldSeeTheCloseButton: function(text)
                 {
                     return this.waitFor({
-                       controlType: "sap.m.Button",
-                       searchOpenDialogs: true,
+                        controlType: "sap.m.Button",
+                        matchers: new Properties({
+                            text : text
+                        }),
                         success: function () {
                             Opa5.assert.ok(true, "The close button is available");
                         },
