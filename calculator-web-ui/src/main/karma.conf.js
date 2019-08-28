@@ -13,7 +13,8 @@ module.exports = function(config) {
         port:9000,
         browsers: ["Chrome"],
         plugins: [
-            'karma-chrome-launcher'
+            'karma-chrome-launcher',
+            'karma-ui5'
         ]
 
     });

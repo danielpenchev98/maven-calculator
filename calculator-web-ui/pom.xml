@@ -61,10 +61,10 @@
             </goals>
             <configuration>
               <nodeVersion>v10.16.3</nodeVersion>
-              <!--<npmVersion>0.11.11</npmVersion>-->
+              <npmVersion>6.9.0</npmVersion>
             </configuration>
           </execution>
-          <!--<execution>
+          <execution>
             <id>npm install</id>
             <goals>
               <goal>npm</goal>
@@ -72,7 +72,7 @@
             <configuration>
               <arguments>install</arguments>
             </configuration>
-          </execution>-->
+          </execution>
           <execution>
             <id>javascript tests</id>
             <goals>
