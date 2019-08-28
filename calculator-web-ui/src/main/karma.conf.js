@@ -15,7 +15,9 @@ module.exports = function(config) {
         plugins: [
             'karma-chrome-launcher',
             'karma-ui5'
-        ]
+        ],
+        singleRun: true
+
 
     });
 };
