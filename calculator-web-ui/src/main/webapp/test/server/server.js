@@ -12,7 +12,7 @@ sap.ui.define(
         let badRequestCode = 400;
         let okCode = 200;
 
-        //change the baseUrl in case domain changes
+        //change the baseUrl in case the domain changes
         let baseUrl="http://localhost:7777";
         let serviceUrl="/api/v1/calculate";
         let queryParam="equation";
@@ -29,14 +29,14 @@ sap.ui.define(
         let urlWithUnsupportedComponent = urlWithoutQueryParamValue + "1%230";
 
         let correctEquationResponseBody = '{"result":"2.0"}';
-        let emptyEquationResponseBody = '{"errorCode" : "400", "message" : "Empty equation"}';
-        let missingOpeningBracketResponseBody = '{"errorCode" : "400", "message" : "Missing or misplaced bracket"}';
-        let sequentialComponentsOfTheSameTypeResponseBody = '{"errorCode" : "400", "message" : "Sequential components of the same type"}';
-        let missingOperatorResponseBody = '{"errorCode" : "400", "message" : "Missing operator between a number and an opening bracket or a closing bracket and a number"}';
-        let emptyBracketsResponseBody = '{"errorCode" : "400", "message" : "Empty brackets"}';
-        let equationBeginningWithOperatorResponseBody = '{"errorCode" : "400", "message" : "Scope of equation ending or beginning with an operator"}';
-        let divisionByZeroEventResponseBody = '{"errorCode" : "400", "message" : "Division by zero"}';
-        let unsupportedComponentResponseBody = '{"errorCode" : "400", "message" : "Unsupported component :#"}';
+        let emptyEquationResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Empty equation"}';
+        let missingOpeningBracketResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Missing or misplaced bracket"}';
+        let sequentialComponentsOfTheSameTypeResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Sequential components of the same type"}';
+        let missingOperatorResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Missing operator between a number and an opening bracket or a closing bracket and a number"}';
+        let emptyBracketsResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Empty brackets"}';
+        let equationBeginningWithOperatorResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Scope of equation ending or beginning with an operator"}';
+        let divisionByZeroEventResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Division by zero"}';
+        let unsupportedComponentResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Unsupported component :#"}';
 
 
         return {

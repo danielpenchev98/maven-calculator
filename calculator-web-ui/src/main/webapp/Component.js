@@ -17,8 +17,8 @@ sap.ui.define([
 			UIComponent.prototype.init.apply(this, arguments);
 
 			// set dialog
-			this._errorDialog = new ErrorDialog(this.getRootControl());
-			this._resultDialog = new ResultDialog(this.getRootControl());
+			this._errorDialog = new ErrorDialog();
+			this._resultDialog = new ResultDialog();
 		},
 
 		exit : function () {
@@ -26,15 +26,15 @@ sap.ui.define([
 			this._resultDialog.destroy();
 			delete this._errorDialog;
 			delete this._resultDialog;
-			
+
 		},
 
 		openResultDialog : function (oModel) {
-			this._resultDialog.open(oModel);
+			this._resultDialog.open(this.getRootControl(),oModel,"resultDialog","com.calculator.web.ui.view.ResultDialog");
 		},
 
 		openErrorDialog : function (oModel) {
-		    this._errorDialog.open(oModel);
+			this._errorDialog.open(this.getRootControl(),oModel,"errorDialog","com.calculator.web.ui.view.ErrorDialog");
 		}
 
 	});
