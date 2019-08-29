@@ -23,10 +23,10 @@ sap.ui.define([
 			oModel.loadData(url).then(function () {
 				ownerComponent.openResultDialog(oModel);
 			}).catch(function (error) {
-				if (error.statusCode === 0 || error.statusCode === 503 || error.statusCode === 404) {
-					oModel.setJSON(serviceNotFoundResponseBody);
-				} else {
+				if (error.statusCode === 500 || error.statusCode === 400 ) {
 					oModel.setJSON(error.responseText);
+				} else {
+					oModel.setJSON(serviceNotFoundResponseBody);
 				}
 				ownerComponent.openErrorDialog(oModel);
 			});
