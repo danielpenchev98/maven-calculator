@@ -27,10 +27,13 @@ public class CalculatorConsole {
             try {
                 System.out.print(application.calculateResult(argc[POSITION_OF_ARGUMENT]));
             } catch (InvalidEquationException ex) {
+                logger.info("Problem with the structure of equation :\n"+ex);
                 System.out.print("Problem with the structure of equation :" + ex.getMessage());
             } catch (InvalidComponentException ex) {
+                logger.info("Problem with a component of equation :\n"+ex);
                 System.out.print("Problem with a component of equation :" + ex.getMessage());
             } catch (DivisionByZeroException ex) {
+                logger.info("Arithmetic error :\n"+ex);
                 System.out.print("Arithmetic error :" + ex.getMessage());
             } catch (Exception sysError) {
                 logger.error("Problem with the application :\n"+sysError);
