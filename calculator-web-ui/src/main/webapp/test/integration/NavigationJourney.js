@@ -69,7 +69,7 @@ sap.ui.define([
         Then.onTheAppPage.iTeardownMyApp();
     });
 
-    opaTest("Should open error dialog with \"Missing operator between a number and an opening bracket or a closing bracket and a number\" message and close it", function (Given, When, Then) {
+    opaTest("Should open error dialog with \"Missing operator between a number and an opening bracket or a closing bracket and a number\" message", function (Given, When, Then) {
 
         startUiComponent(Given);
 

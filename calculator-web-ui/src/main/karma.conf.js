@@ -12,11 +12,11 @@ module.exports = function(config) {
         },
         port:9000,
         browsers: ["Chrome"],
+        singleRun: true,
         plugins: [
             'karma-chrome-launcher',
             'karma-ui5'
-        ],
-        singleRun: true
+        ]
 
 
     });

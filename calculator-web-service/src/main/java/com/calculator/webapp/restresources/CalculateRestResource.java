@@ -43,7 +43,7 @@ public class CalculateRestResource {
             CalculationError userInputError = new CalculationError(Response.Status.BAD_REQUEST.getStatusCode(), badInput.getMessage());
             return createResponse(Response.Status.BAD_REQUEST, userInputError);
         } catch (Exception ex) {
-            logger.error("Problem with servlet :\n", ex);
+            logger.error("Problem with service :\n", ex);
             CalculationError systemError = new CalculationError(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), ex.getMessage());
             return createResponse(Response.Status.INTERNAL_SERVER_ERROR, systemError);
         }

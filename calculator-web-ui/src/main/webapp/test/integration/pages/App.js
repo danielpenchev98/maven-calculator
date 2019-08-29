@@ -91,7 +91,7 @@ sap.ui.define([
                         success: function () {
                             Opa5.assert.ok(true, "The View is to be seen");
                         },
-                        errorMessage: "The View is to be seen"
+                        errorMessage: "The View is not to be seen"
                     })
                 }
             }
