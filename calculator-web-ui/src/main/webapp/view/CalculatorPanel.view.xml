@@ -10,7 +10,8 @@
 			<Input
                 id="equation"
 				value=""
-				width="60%"/>
+				width="60%"
+				maxLength="500"/>
 			<Button
 					id="calculateButton"
 					text="{i18n>calculateButtonText}"
