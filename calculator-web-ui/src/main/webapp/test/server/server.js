@@ -9,28 +9,35 @@ sap.ui.define(
 
         let typeOfRequest = "GET";
         let contentTypeHeader = {"Content-Type": "application/json"};
-        let badRequestCode = 404;
+        let badRequestCode = 400;
         let okCode = 200;
 
-        let urlWithCorrectEquation = "/api/v1/calculate?equation=1%2B1";
-        let urlWithEmptyEquation = "/api/v1/calculate?equation=";
-        let urlWithMissingOpeningBracket = "/api/v1/calculate?equation=1%2B)";
-        let urlWithSequentialComponentsOfTheSameType = "/api/v1/calculate?equation=1%2B%2B2";
-        let urlWithMissingOperator = "/api/v1/calculate?equation=2(-1)";
-        let urlWithEmptyBrackets = "/api/v1/calculate?equation=2%2B()";
-        let urlWithEquationBeginningWithOperator = "/api/v1/calculate?equation=%2B2%2B1";
-        let urlWithDivisionOnZeroEvent = "/api/v1/calculate?equation=1%2F0";
-        let urlWithUnsupportedComponent = "/api/v1/calculate?equation=1%230";
+        //change the baseUrl in case domain changes
+        let baseUrl="http://localhost:7777";
+        let serviceUrl="/api/v1/calculate";
+        let queryParam="equation";
+        let urlWithoutQueryParamValue = baseUrl + serviceUrl + '?' + queryParam + '=';
+
+        let urlWithCorrectEquation = urlWithoutQueryParamValue + "1%2B1";
+        let urlWithEmptyEquation = urlWithoutQueryParamValue +  "";
+        let urlWithMissingOpeningBracket = urlWithoutQueryParamValue + "1%2B)";
+        let urlWithSequentialComponentsOfTheSameType = urlWithoutQueryParamValue +  "1%2B%2B2";
+        let urlWithMissingOperator = urlWithoutQueryParamValue + "2(-1)";
+        let urlWithEmptyBrackets = urlWithoutQueryParamValue + "2%2B()";
+        let urlWithEquationBeginningWithOperator = urlWithoutQueryParamValue + "%2B2%2B1";
+        let urlWithDivisionOnZeroEvent = urlWithoutQueryParamValue + "1%2F0";
+        let urlWithUnsupportedComponent = urlWithoutQueryParamValue + "1%230";
 
         let correctEquationResponseBody = '{"result":"2.0"}';
-        let emptyEquationResponseBody = '{"errorCode" : "404", "message" : "Empty equation"}';
-        let missingOpeningBracketResponseBody = '{"errorCode" : "404", "message" : "Missing or misplaced bracket"}';
-        let sequentialComponentsOfTheSameTypeResponseBody = '{"errorCode" : "404", "message" : "Sequential components of the same type"}';
-        let missingOperatorResponseBody = '{"errorCode" : "404", "message" : "Missing operator between a number and an opening bracket or a closing bracket and a number"}';
-        let emptyBracketsResponseBody = '{"errorCode" : "404", "message" : "Empty brackets"}';
-        let equationBeginningWithOperatorResponseBody = '{"errorCode" : "404", "message" : "Scope of equation ending or beginning with an operator"}';
-        let divisionByZeroEventResponseBody = '{"errorCode" : "404", "message" : "Division by zero"}';
-        let unsupportedComponentResponseBody = '{"errorCode" : "404", "message" : "Unsupported component :#"}';
+        let emptyEquationResponseBody = '{"errorCode" : "400", "message" : "Empty equation"}';
+        let missingOpeningBracketResponseBody = '{"errorCode" : "400", "message" : "Missing or misplaced bracket"}';
+        let sequentialComponentsOfTheSameTypeResponseBody = '{"errorCode" : "400", "message" : "Sequential components of the same type"}';
+        let missingOperatorResponseBody = '{"errorCode" : "400", "message" : "Missing operator between a number and an opening bracket or a closing bracket and a number"}';
+        let emptyBracketsResponseBody = '{"errorCode" : "400", "message" : "Empty brackets"}';
+        let equationBeginningWithOperatorResponseBody = '{"errorCode" : "400", "message" : "Scope of equation ending or beginning with an operator"}';
+        let divisionByZeroEventResponseBody = '{"errorCode" : "400", "message" : "Division by zero"}';
+        let unsupportedComponentResponseBody = '{"errorCode" : "400", "message" : "Unsupported component :#"}';
+
 
         return {
             /**
@@ -47,6 +54,7 @@ sap.ui.define(
                 this.server.xhr.addFilter(function(method, url) {
                     return !url.match("/api/v1/calculate");
                 });
+
 
 
                 serverRespondWith(this.server,typeOfRequest,urlWithCorrectEquation, okCode, contentTypeHeader,
