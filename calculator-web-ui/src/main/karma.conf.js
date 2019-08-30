@@ -8,7 +8,7 @@ module.exports = function(config) {
                 webapp: "webapp"
             },
             url: "https://localhost:9000",
-            testpage: "webapp/test/integration/opaTests.qunit.html"
+            testpage: "webapp/test/testsuite.qunit.html"
         },
         port:9000,
         browsers: ["Chrome"],
