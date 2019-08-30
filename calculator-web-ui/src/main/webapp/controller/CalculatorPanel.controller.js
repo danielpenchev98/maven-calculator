@@ -21,7 +21,7 @@ sap.ui.define([
 
 			let oModel = new JSONModel();
 			oModel.loadData(url).then(function () {
-				ownerComponent.openResultDialog(oModel);
+				ownerComponent.showResult(oModel);
 			}).catch(function (error) {
 				if (error.statusCode === 500 || error.statusCode === 400 ) {
 					oModel.setJSON(error.responseText);

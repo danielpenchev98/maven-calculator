@@ -9,7 +9,7 @@
 			<Text text="Enter equation:" class="sapUiSmallMarginEnd sapUiSmallMarginTop"/>
 			<Input
                 id="equation"
-				value=""
+				value="{/result}"
 				width="60%"
 				maxLength="500"/>
 			<Button
