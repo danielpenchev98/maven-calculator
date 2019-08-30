@@ -52,8 +52,6 @@ sap.ui.define(
 
                 sinon.fakeServer.xhr.useFilters = true;
                 this.server.xhr.addFilter(function(method, url) {
-                   // console.log(url);
-                    //console.log("Does it match :"+url.match(baseUrl+serviceUrl));
                     return !url.match(baseUrl+serviceUrl);
                 });
 
