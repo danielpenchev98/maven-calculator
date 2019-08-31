@@ -13,7 +13,7 @@ sap.ui.define(
         let okCode = 200;
 
         //change the baseUrl in case the domain changes
-        let baseUrl="http://localhost:7777";
+        let baseUrl="https://calculato-web-service.cfapps.eu10.hana.ondemand.com";
         let serviceUrl="/api/v1/calculate";
         let queryParam="equation";
         let urlWithoutQueryParamValue = baseUrl + serviceUrl + '?' + queryParam + '=';

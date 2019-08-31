@@ -8,44 +8,18 @@
   <artifactId>calculator-web-ui</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
+  <properties>
+      <sap.cloud.host>${env.SAP_CP_HOST}</sap.cloud.host>
+      <sap.cloud.username>${env.SAP_CP_USERNAME}</sap.cloud.username>
+      <sap.cloud.password>${env.SAP_CP_PASSWORD}</sap.cloud.password>
+      <sap.cloud.account>${env.SAP_CP_ACCOUNT}</sap.cloud.account>
+      <sap.cloud.application>${env.SAP_CP_APPLICATION}</sap.cloud.application>
+  </properties>
 
   <build>
     <finalName>calculator-web-ui</finalName>
-    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
-      <plugins>
-        <plugin>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>3.1.0</version>
-        </plugin>
-        <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
-        <plugin>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>3.0.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-war-plugin</artifactId>
-          <version>3.2.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>2.5.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-
     <plugins>
+      <!-- ui integration and unit testing with Node.js, NPM and Karma -->
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
@@ -80,6 +54,58 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+            <groupId>com.sap.cloud</groupId>
+            <artifactId>neo-java-web-maven-plugin</artifactId>
+            <version>3.87.7</version>
+            <executions>
+                <execution>
+                    <id>sdk</id>
+                     <!--Choose a phase when to install the SDK-->
+                    <phase>initialize</phase>
+                    <goals>
+                         <!--Call the SDK installation goal of this plugin-->
+                        <goal>install-sdk</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>deploy</id>
+                     <!--Choose a phase when to execute the goal-->
+                    <phase>package</phase>
+                    <goals>
+                         <!--Call the dedicated deploy goal of this plugin-->
+                        <goal>deploy</goal>
+                    </goals>
+                    <configuration>
+                         <!--Configuration for the above deploy goal-->
+                        <host>hanatrial.ondemand.com</host>
+                        <mavenSettingsServerId>sap-hana-cloud-credentials</mavenSettingsServerId>
+                        <account>${sap.cloud.account}</account>
+                        <application>calculatorwebui</application>
+                        <source>${project.build.directory}/${project.artifactId}.war</source>
+                    </configuration>
+                </execution>
+            </executions>
+            <configuration>
+                 <!--Location of the SAP Cloud Platform SDK for Neo environment-->
+                <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
+            </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.cloudfoundry</groupId>
+        <artifactId>cf-maven-plugin</artifactId>
+        <configuration>
+          <server>mycloudfoundry-instance</server>
+          <target>https://api.cf.eu10.hana.ondemand.com</target>
+          <org>I515142trial_trial</org>
+          <space>dev</space>
+          <appname>calculatorwebui</appname>
+          <memory>1024</memory>
+          <diskQuota>1024</diskQuota>
+        </configuration>
       </plugin>
     </plugins>
   </build>

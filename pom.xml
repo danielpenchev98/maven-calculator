@@ -29,9 +29,23 @@
         <compiler.source.version>8</compiler.source.version>
         <compiler.target.version>8</compiler.target.version>
         <compiler.release.version>8</compiler.release.version>
+        <cloud.foundry.plugin.version>1.0.4</cloud.foundry.plugin.version>
     </properties>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                 <plugin>
+                     <groupId>org.cloudfoundry</groupId>
+                     <artifactId>cf-maven-plugin</artifactId>
+                     <version>${cloud.foundry.plugin.version}</version>
+                     <configuration>
+                         <skip>true</skip>
+                     </configuration>
+                 </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -69,6 +83,7 @@
             </plugin>
         </plugins>
     </build>
+
 
 
     <dependencies>
