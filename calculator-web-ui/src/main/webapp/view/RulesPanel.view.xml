@@ -1,0 +1,13 @@
+<mvc:View
+        controllerName="com.calculator.web.ui.controller.RulesPanel"
+        xmlns="sap.m"
+        xmlns:mvc="sap.ui.core.mvc">
+    <Panel
+            class="sapUiResponsiveMargin"
+            width="auto"
+            headerText="{i18n>rulesHeaderText}">
+        <content>
+            <Text text="{i18n>inputLength}{i18n>characterLimitation}{i18n>numberLimitations}{i18n>functionLimitations}"/>
+        </content>
+    </Panel>
+</mvc:View>

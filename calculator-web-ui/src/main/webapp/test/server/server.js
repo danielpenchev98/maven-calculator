@@ -13,7 +13,7 @@ sap.ui.define(
         let okCode = 200;
 
         //change the baseUrl in case the domain changes
-        let baseUrl="http://localhost:7777";
+        let baseUrl="https://calculatorwebservii515142trial.hanatrial.ondemand.com/calculator-web-service";
         let serviceUrl="/api/v1/calculate";
         let queryParam="equation";
         let urlWithoutQueryParamValue = baseUrl + serviceUrl + '?' + queryParam + '=';
@@ -52,8 +52,6 @@ sap.ui.define(
 
                 sinon.fakeServer.xhr.useFilters = true;
                 this.server.xhr.addFilter(function(method, url) {
-                   // console.log(url);
-                    //console.log("Does it match :"+url.match(baseUrl+serviceUrl));
                     return !url.match(baseUrl+serviceUrl);
                 });
 

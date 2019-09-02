@@ -16,7 +16,7 @@ sap.ui.define([
 
     let assertAppearanceOfDialog = function (Then, title, content, textOfCloseButton) {
         Then.onTheAppPage.iShouldSeeTheDialog(title).and
-            .iShouldSeeTheResponseValue(content).and
+            .iShouldSeeTheErrorMessage(content).and
             .iShouldSeeTheCloseButton(textOfCloseButton);
     };
 
@@ -28,7 +28,7 @@ sap.ui.define([
 
         When.onTheAppPage.iEnterInputInInputControl("1+1").and.iPressTheCalculateButton();
 
-        assertAppearanceOfDialog(Then, "Result", "2.0", "Ok");
+        Then.onTheAppPage.iShouldSeeTheCalculationResult("2.0");
 
         Then.onTheAppPage.iTeardownMyApp();
 
@@ -120,17 +120,6 @@ sap.ui.define([
         assertAppearanceOfDialog(Then, "Error", "Unsupported component :#", "Ok");
 
         Then.onTheAppPage.iTeardownMyApp();
-    });
-
-    opaTest("Should open ResultDialog and close it", function(Given, When, Then) {
-       startUiComponent(Given);
-
-        When.onTheAppPage.iEnterInputInInputControl("1+1").and.iPressTheCalculateButton();
-
-        Then.onTheAppPage.iShouldSeeTheDialog("Result");
-
-        When.onTheAppPage.iPressTheCloseDialogButton();
-        Then.onTheAppPage.iShouldSeeTheView().iTeardownMyApp();
     });
 
     opaTest("Should open ErrorDialog and close it", function(Given, When, Then) {

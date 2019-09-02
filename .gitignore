@@ -6,3 +6,6 @@
 # Maven
 log/
 target/
+node/
+node_modules/
+package-lock.json

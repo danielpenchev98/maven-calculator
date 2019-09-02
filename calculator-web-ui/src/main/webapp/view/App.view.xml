@@ -8,6 +8,8 @@
 			<pages>
 				<Page title="{i18n>homePageTitle}">
 					<content>
+						<mvc:XMLView viewName="com.calculator.web.ui.view.IntroductionPanel"/>
+						<mvc:XMLView viewName="com.calculator.web.ui.view.RulesPanel"/>
 						<mvc:XMLView viewName="com.calculator.web.ui.view.CalculatorPanel"/>
 					</content>
 				</Page>

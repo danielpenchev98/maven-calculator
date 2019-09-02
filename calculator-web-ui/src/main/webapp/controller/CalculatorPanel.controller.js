@@ -5,9 +5,6 @@ sap.ui.define([
 ], function (Controller, JSONModel,UrlFormatter) {
 	"use strict";
 
-	let baseUrl="http://localhost:7777";
-	let resourceUrl="/api/v1/calculate";
-	let queryParameter="equation";
 	let serviceNotFoundResponseBody="{\"message\": \"Service unavailable\"}";
 
 	return Controller.extend("com.calculator.web.ui.controller.CalculatorPanel", {
@@ -16,12 +13,14 @@ sap.ui.define([
 
 			let equation = this.getView().byId("equation").getValue();
 			let encodedEquation = UrlFormatter.encodeExpresion(equation);
-			let url=baseUrl + resourceUrl +'?' + queryParameter +'='+ encodedEquation;
+
 			let ownerComponent = this.getOwnerComponent();
+			let serviceConfig = ownerComponent.getManifestEntry("/sap.app/dataSources/calculationService");
+			let url=serviceConfig.baseUrl + serviceConfig.serviceUrl +'?' + serviceConfig.queryParam +'='+ encodedEquation;
 
 			let oModel = new JSONModel();
 			oModel.loadData(url).then(function () {
-				ownerComponent.openResultDialog(oModel);
+				ownerComponent.showResult(oModel);
 			}).catch(function (error) {
 				if (error.statusCode === 500 || error.statusCode === 400 ) {
 					oModel.setJSON(error.responseText);

@@ -8,6 +8,14 @@
 		"description": "{{appDescription}}",
 		"applicationVersion": {
 			"version": "1.0.0"
+		},
+		"dataSources": {
+			"calculationService": {
+				"baseUrl": "https://calculatorwebservii515142trial.hanatrial.ondemand.com/calculator-web-service",
+				"serviceUrl": "/api/v1/calculate",
+				"queryParam": "equation",
+				"type": "JSON"
+			}
 		}
 	},
 	"sap.ui": {

@@ -44,17 +44,34 @@ sap.ui.define([
             },
 
             assertions: {
-                iShouldSeeTheResponseValue: function (result)
+
+                iShouldSeeTheCalculationResult: function(result)
                 {
                     return this.waitFor({
-                       controlType: "sap.m.Text",
+                        viewName : sViewName,
+                        controlType: "sap.m.Input",
                         matchers: new Properties({
-                            text : result
+                            value : result
                         }),
                         success: function () {
-                           Opa5.assert.ok(true, "the right response value");
+                            Opa5.assert.ok(true, "the right result value");
                         },
-                        errorMessage: "the wrong response value"
+                        errorMessage: "the wrong result value"
+                    });
+                },
+
+                iShouldSeeTheErrorMessage: function (message)
+                {
+                    return this.waitFor({
+                        searchOpenDialogs: true,
+                        controlType: "sap.m.Text",
+                        matchers: new Properties({
+                            text : message
+                        }),
+                        success: function () {
+                           Opa5.assert.ok(true, "the right error message");
+                        },
+                        errorMessage: "the wrong error message"
                     });
                 },
 
