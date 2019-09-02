@@ -1,112 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.calculator.webapp.ui</groupId>
-  <artifactId>calculator-web-ui</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>war</packaging>
-  <properties>
-      <sap.cloud.host>${env.SAP_CP_HOST}</sap.cloud.host>
-      <sap.cloud.username>${env.SAP_CP_USERNAME}</sap.cloud.username>
-      <sap.cloud.password>${env.SAP_CP_PASSWORD}</sap.cloud.password>
-      <sap.cloud.account>${env.SAP_CP_ACCOUNT}</sap.cloud.account>
-      <sap.cloud.application>${env.SAP_CP_APPLICATION}</sap.cloud.application>
-  </properties>
+    <groupId>com.calculator.webapp.ui</groupId>
+    <artifactId>calculator-web-ui</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
-  <build>
-    <finalName>calculator-web-ui</finalName>
-    <plugins>
-      <!-- ui integration and unit testing with Node.js, NPM and Karma -->
-      <plugin>
-        <groupId>com.github.eirslett</groupId>
-        <artifactId>frontend-maven-plugin</artifactId>
-        <version>1.7.6</version>
-        <configuration>
-          <workingDirectory>src/main</workingDirectory>
-        </configuration>
-        <executions>
-          <execution>
-            <id>install node and npm</id>
-            <goals>
-              <goal>install-node-and-npm</goal>
-            </goals>
-            <configuration>
-              <nodeVersion>v10.16.3</nodeVersion>
-              <npmVersion>6.9.0</npmVersion>
-            </configuration>
-          </execution>
-          <execution>
-            <id>npm install</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <arguments>install</arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>javascript tests</id>
-            <goals>
-              <goal>karma</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+    <build>
+        <finalName>calculator-web-ui</finalName>
+        <plugins>
+            <!-- ui integration and unit testing with Node.js, NPM and Karma -->
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.7.6</version>
+                <configuration>
+                    <workingDirectory>src/main</workingDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <configuration>
+                            <nodeVersion>v10.16.3</nodeVersion>
+                            <npmVersion>6.9.0</npmVersion>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>javascript tests</id>
+                        <goals>
+                            <goal>karma</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>com.sap.cloud</groupId>-->
+<!--                <artifactId>neo-java-web-maven-plugin</artifactId>-->
+<!--                <version>3.87.7</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>sdk</id>-->
+<!--                        &lt;!&ndash;Choose a phase when to install the SDK&ndash;&gt;-->
+<!--                        <phase>initialize</phase>-->
+<!--                        <goals>-->
+<!--                            &lt;!&ndash;Call the SDK installation goal of this plugin&ndash;&gt;-->
+<!--                            <goal>install-sdk</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>deploy</id>-->
+<!--                        &lt;!&ndash;Choose a phase when to execute the goal&ndash;&gt;-->
+<!--                        <phase>install</phase>-->
+<!--                        <goals>-->
+<!--                            &lt;!&ndash;Call the dedicated deploy goal of this plugin&ndash;&gt;-->
+<!--                            <goal>deploy</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            &lt;!&ndash; Configuration for the above deploy goal&ndash;&gt;-->
+<!--                            <host>https://hanatrial.ondemand.com</host>-->
+<!--                            <mavenSettingsServerId>sap-hana-cloud-credentials</mavenSettingsServerId>-->
+<!--                            <account>i515142trial</account>-->
+<!--                            <application>calculatorwebui</application>-->
+<!--                            <source>${project.build.directory}/${project.artifactId}.war</source>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    &lt;!&ndash;Location of the SAP Cloud Platform SDK for Neo environment&ndash;&gt;-->
+<!--                    <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
 
-      <plugin>
-            <groupId>com.sap.cloud</groupId>
-            <artifactId>neo-java-web-maven-plugin</artifactId>
-            <version>3.87.7</version>
-            <executions>
-                <execution>
-                    <id>sdk</id>
-                     <!--Choose a phase when to install the SDK-->
-                    <phase>initialize</phase>
-                    <goals>
-                         <!--Call the SDK installation goal of this plugin-->
-                        <goal>install-sdk</goal>
-                    </goals>
-                </execution>
-                <execution>
-                    <id>deploy</id>
-                     <!--Choose a phase when to execute the goal-->
-                    <phase>package</phase>
-                    <goals>
-                         <!--Call the dedicated deploy goal of this plugin-->
-                        <goal>deploy</goal>
-                    </goals>
-                    <configuration>
-                         <!--Configuration for the above deploy goal-->
-                        <host>hanatrial.ondemand.com</host>
-                        <mavenSettingsServerId>sap-hana-cloud-credentials</mavenSettingsServerId>
-                        <account>${sap.cloud.account}</account>
-                        <application>calculatorwebui</application>
-                        <source>${project.build.directory}/${project.artifactId}.war</source>
-                    </configuration>
-                </execution>
-            </executions>
-            <configuration>
-                 <!--Location of the SAP Cloud Platform SDK for Neo environment-->
-                <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
-            </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.cloudfoundry</groupId>
-        <artifactId>cf-maven-plugin</artifactId>
-        <configuration>
-          <server>mycloudfoundry-instance</server>
-          <target>https://api.cf.eu10.hana.ondemand.com</target>
-          <org>I515142trial_trial</org>
-          <space>dev</space>
-          <appname>calculatorwebui</appname>
-          <memory>1024</memory>
-          <diskQuota>1024</diskQuota>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+             <plugin>
+                 <groupId>org.cloudfoundry</groupId>
+                 <artifactId>cf-maven-plugin</artifactId>
+               <configuration>
+                 <server>mycloudfoundry-instance</server>
+                 <target>https://api.cf.eu10.hana.ondemand.com</target>
+                 <org>I515142trial_trial</org>
+                 <space>dev</space>
+                 <appname>calculatorwebui</appname>
+                 <memory>1024</memory>
+                 <diskQuota>1024</diskQuota>
+               </configuration>
+             </plugin>
+        </plugins>
+    </build>
 </project>

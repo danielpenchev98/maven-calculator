@@ -11,7 +11,7 @@
 		},
 		"dataSources": {
 			"calculationService": {
-				"baseUrl": "https://calculato-web-service.cfapps.eu10.hana.ondemand.com",
+				"baseUrl": "https://calculatorwebservii515142trial.hanatrial.ondemand.com/calculator-web-service",
 				"serviceUrl": "/api/v1/calculate",
 				"queryParam": "equation",
 				"type": "JSON"
