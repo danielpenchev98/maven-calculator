@@ -102,5 +102,56 @@
       </plugins>
     </pluginManagement>
   </build>
+  <profiles>
+    <profile>
+      <id>neo-push</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.sap.cloud</groupId>
+            <artifactId>neo-java-web-maven-plugin</artifactId>
+            <version>3.83.3</version>
+            <executions>
+              <execution>
+                <id>sdk</id>
+                <!--Choose a phase when to install the SDK -->
+                <phase>initialize</phase>
+                <goals>
+                  <!--Call the SDK installation goal of this plugin-->
+                  <goal>install-sdk</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>deploy</id>
+                <!--Choose a phase when to execute the goal-->
+                <phase>install</phase>
+                <goals>
+                  <!--Call the dedicated deploy goal of this plugin-->
+                  <goal>deploy</goal>
+                  <goal>start</goal>
+                </goals>
+                <configuration>
+                  <!--Configuration for the above deploy goal-->
+                  <host>https://hanatrial.ondemand.com</host>
+                  <mavenSettingsServerId>sap-hana-cloud-credentials</mavenSettingsServerId>
+                  <account>i515142trial</account>
+                  <application>calculatorwebservice</application>
+                  <source>${project.build.directory}/${project.artifactId}.war</source>
+                </configuration>
+              </execution>
+            </executions>
+            <configuration>
+              <!--Location of the SAP Cloud Platform SDK for Neo environment-->
+              <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 
 </project>
