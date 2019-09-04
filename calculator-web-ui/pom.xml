@@ -47,45 +47,7 @@
                         </goals>
                     </execution>
                 </executions>
-                 </plugin>
-<!--            <plugin>-->
-<!--                <groupId>com.sap.cloud</groupId>-->
-<!--                <artifactId>neo-java-web-maven-plugin</artifactId>-->
-<!--                <version>3.87.7</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>sdk</id>-->
-<!--                        &lt;!&ndash;Choose a phase when to install the SDK&ndash;&gt;-->
-<!--                        <phase>initialize</phase>-->
-<!--                        <goals>-->
-<!--                            &lt;!&ndash;Call the SDK installation goal of this plugin&ndash;&gt;-->
-<!--                            <goal>install-sdk</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>deploy</id>-->
-<!--                        &lt;!&ndash;Choose a phase when to execute the goal&ndash;&gt;-->
-<!--                        <phase>install</phase>-->
-<!--                        <goals>-->
-<!--                            &lt;!&ndash;Call the dedicated deploy goal of this plugin&ndash;&gt;-->
-<!--                            <goal>deploy</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            &lt;!&ndash; Configuration for the above deploy goal&ndash;&gt;-->
-<!--                            <host>https://hanatrial.ondemand.com</host>-->
-<!--                            <mavenSettingsServerId>sap-hana-cloud-credentials</mavenSettingsServerId>-->
-<!--                            <account>i515142trial</account>-->
-<!--                            <application>calculatorwebui</application>-->
-<!--                            <source>${project.build.directory}/${project.artifactId}.war</source>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--                <configuration>-->
-<!--                    &lt;!&ndash;Location of the SAP Cloud Platform SDK for Neo environment&ndash;&gt;-->
-<!--                    <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-
+            </plugin>
              <plugin>
                  <groupId>org.cloudfoundry</groupId>
                  <artifactId>cf-maven-plugin</artifactId>
@@ -93,7 +55,7 @@
                  <server>mycloudfoundry-instance</server>
                  <target>https://api.cf.eu10.hana.ondemand.com</target>
                  <org>I515142trial_trial</org>
-                 <space>dev</space>   
+                 <space>dev</space>
                  <appname>calculatorwebui</appname>
                  <memory>1024</memory>
                  <diskQuota>1024</diskQuota>

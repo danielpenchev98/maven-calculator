@@ -28,7 +28,6 @@
         <compiler.plugin.version>3.6.1</compiler.plugin.version>
         <compiler.source.version>8</compiler.source.version>
         <compiler.target.version>8</compiler.target.version>
-        <compiler.release.version>8</compiler.release.version>
         <cloud.foundry.plugin.version>1.0.4</cloud.foundry.plugin.version>
     </properties>
 
@@ -52,7 +51,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${compiler.plugin.version}</version>
                 <configuration>
-                    <release>${compiler.release.version}</release>
                     <source>${compiler.source.version}</source>
                     <target>${compiler.target.version}</target>
                 </configuration>
