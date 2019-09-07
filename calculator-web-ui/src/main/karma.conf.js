@@ -11,9 +11,7 @@ module.exports = function(config) {
             testpage: "webapp/test/testsuite.qunit.html"
         },
         port:9000,
-        captureTimeout: 200000,
-        browserNoActivityTimeout: 500000,
-        browsers: ["Chrome"],
+        browsers: ["ChromeHeadless"],
         singleRun: true,
         plugins: [
             'karma-chrome-launcher',
