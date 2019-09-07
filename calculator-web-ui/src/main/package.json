@@ -24,7 +24,7 @@
     "grunt-zip": "^0.17.1",
     "jit-grunt": "^0.10.0",
     "karma": "^4.2.0",
-    "karma-chrome-launcher": "^3.1.0",
+    "karma-firefox-launcher": "^1.2.0",
     "karma-ng-html2js-preprocessor": "^1.0.0",
     "karma-ui5": "^1.0.1"
   }
