@@ -11,8 +11,6 @@ module.exports = function(config) {
             testpage: "webapp/test/testsuite.qunit.html"
         },
         port:9000,
-        captureTimeout: 60000,
-        browserNoActivityTimeout: 360000,
         browsers: ["Chrome"],
         singleRun: true,
         plugins: [
