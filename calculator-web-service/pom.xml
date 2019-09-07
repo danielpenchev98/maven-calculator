@@ -130,6 +130,7 @@
                 <phase>install</phase>
                 <goals>
                   <!--Call the dedicated deploy goal of this plugin-->
+                  <goal>stop</goal>
                   <goal>deploy</goal>
                   <goal>start</goal>
                 </goals>
