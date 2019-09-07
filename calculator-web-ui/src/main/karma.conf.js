@@ -11,10 +11,10 @@ module.exports = function(config) {
             testpage: "webapp/test/testsuite.qunit.html"
         },
         port:9000,
-        browsers: ["Chrome"],
+        browsers: ["Firefox"],
         singleRun: true,
         plugins: [
-            'karma-chrome-launcher',
+            'karma-firefox-launcher',
             'karma-ui5'
         ]
 
