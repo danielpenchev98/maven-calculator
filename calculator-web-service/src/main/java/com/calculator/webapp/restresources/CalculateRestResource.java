@@ -22,7 +22,6 @@ import javax.ws.rs.core.Response;
 public class CalculateRestResource {
 
     private static final Logger logger = LogManager.getLogger(CalculateRestResource.class);
-
     private final ObjectMapper mapper;
     private final CalculatorApp calculator;
 

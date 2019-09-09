@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <calculationResponse id="1" equation="1+1" responseMsg="2.0" legitemacy="true" creationDate="2019-09-09 15:00:00"/>
+    <calculationResponse id="2" equation="1/0" responseMsg="Division by zero" legitemacy="false" creationDate="2019-09-09 15:00:01"/>
+</dataset>
+

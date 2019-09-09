@@ -1,28 +1,31 @@
 package com.calculator.webapp.db;
 
-import sun.util.calendar.LocalGregorianCalendar;
-
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "CalculationResult")
+@Table(name = "CalculationResponse")
 public class CalculatorResponseDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column( name = "ID" )
     private long id;
 
+    @Column(name = "LEGITEMACY")
     private boolean legitimacy;
 
+    @Column(name = "EQUATION")
     private String equation;
 
+    @Column(name = "RESPONSE_MESSAGE")
     private String responseMsg;
 
     //accuracy
     @Temporal(TemporalType.TIMESTAMP)
     //automatically generated from Hibernate
     @org.hibernate.annotations.CreationTimestamp
+    @Column(name = "DATE_OF_CREATION")
     private Date creationDate;
 
     public long getId() {

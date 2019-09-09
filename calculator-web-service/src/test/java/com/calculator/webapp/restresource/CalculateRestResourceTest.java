@@ -1,4 +1,4 @@
-package com.calculator.webapp;
+package com.calculator.webapp.restresource;
 
 import com.calculator.core.CalculatorApp;
 import com.calculator.core.exceptions.DivisionByZeroException;
