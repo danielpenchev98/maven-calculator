@@ -12,14 +12,14 @@
          <property name="hibernate.connection.password" value="root" />
 
          <!-- automatically exports schema DDL to database when EntityManager is created -->
-         <property name="hibernate.hbm2ddl.auto" value="update" />
+         <property name="hibernate.hbm2ddl.auto" value="create" />
 
          <!-- for logging of generated SQL statements-->
-         <!--<property name="hibernate.show_sql" value="true" />
-         <property name="hibernate.format_sql" value="true"/>-->
+         <property name="hibernate.show_sql" value="true" />
+         <property name="hibernate.format_sql" value="true"/>
 
          <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSevenDialect"/>
-         <property name="hibernate.connection.url" value="jdbc:derby:memory:TestDB;create=true"/>
+         <property name="hibernate.connection.url" value="jdbc:derby:memory://127.0.0.1:1527/calculator;create=true"/>
       </properties>
    </persistence-unit>
 </persistence>
