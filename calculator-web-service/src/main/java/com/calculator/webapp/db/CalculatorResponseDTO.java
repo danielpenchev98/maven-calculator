@@ -4,29 +4,30 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "CalculationResponse")
+@Table(name = "calculator_responses")
+@NamedQuery(name = "CalculatorResponses.findAll", query = "SELECT c FROM CalculatorResponseDTO c")
 public class CalculatorResponseDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column( name = "ID" )
+    @Column
     private long id;
 
-    @Column(name = "LEGITEMACY")
+    @Column
     private boolean legitimacy;
 
-    @Column(name = "EQUATION")
+    @Column
     private String equation;
 
-    @Column(name = "RESPONSE_MESSAGE")
+    @Column
     private String responseMsg;
 
-    //accuracy
     @Temporal(TemporalType.TIMESTAMP)
     //automatically generated from Hibernate
     @org.hibernate.annotations.CreationTimestamp
-    @Column(name = "DATE_OF_CREATION")
-    private Date creationDate;
+    @Column(name = "date_of_creation")
+
+    private Date dateOfCreation;
 
     public long getId() {
         return this.id;
@@ -56,7 +57,8 @@ public class CalculatorResponseDTO {
         return this.responseMsg;
     }
 
-    public Date getCreationDate() {
-        return this.creationDate;
+    public Date getDateOfCreation() {
+        return this.dateOfCreation;
     }
+
 }
