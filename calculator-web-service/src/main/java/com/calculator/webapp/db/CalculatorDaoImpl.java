@@ -1,7 +1,9 @@
 package com.calculator.webapp.db;
 
+
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -30,7 +32,12 @@ public class CalculatorDaoImpl implements Dao<Long,CalculatorResponseDTO> {
 
     @Override
     public void saveItem(CalculatorResponseDTO item) {
-
+        //EntityTransaction transaction = manager.getTransaction();
+        //transaction.begin();
+        manager.getTransaction().begin();
+        manager.persist(item);
+        manager.getTransaction().commit();
+        //transaction.commit();
     }
 
     @Override

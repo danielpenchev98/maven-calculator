@@ -1,21 +1,28 @@
 package com.calculator.webapp.db;
 
-import org.dbunit.DatabaseUnitException;
+import org.dbunit.Assertion;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
+import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.util.fileloader.FlatXmlDataFileLoader;
-import org.hamcrest.Matchers;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
-import javax.persistence.*;
-import java.text.ParseException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.hamcrest.core.IsNull.notNullValue;
 
 public class CalculatorDaoImplTest {
 
@@ -61,15 +68,24 @@ public class CalculatorDaoImplTest {
         assertThat(actualItem.getId(),is(equalTo(6L)));
     }
 
-    @Ignore
     @Test
-    public void saveItem_emptyDataSet_tableSize1() {
-        CalculatorResponseDTO response = new CalculatorResponseDTO();
-        response.setLegitimacy(false);
-        response.setEquation("1");
-        response.setResponseMsg("1.0");
+    public void saveItem_emptyDataSet_tableSize1() throws Exception {
+        IDataSet initialDataSet = getDataSet("/datasets/oneEntityDataSet.xml");
+        uploadDataSet(initialDataSet);
+        ITable expectedTable=getDataSet("/datasets/oneEntityDataSet.xml").getTable("calculator_responses");
 
+        CalculatorResponseDTO response = new CalculatorResponseDTO();
+        response.setLegitimacy(true);
+        response.setEquation("1+1");
+        response.setResponseMsg("2.0");
+        Date currentDateTime=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
+        response.setDateOfCreation(currentDateTime);
+
+        System.out.println(response.getId());
         dao.saveItem(response);
+
+        ITable actualTable=getActualTable("calculator_responses");
+        Assertion.assertEquals(expectedTable,actualTable);
     }
 
     @Ignore
@@ -78,12 +94,16 @@ public class CalculatorDaoImplTest {
 
     }
 
-    IDataSet getDataSet(final String path)
+    private ITable getActualTable(final String tableName) throws DataSetException {
+        return databaseTester.getDataSet().getTable(tableName);
+    }
+
+    private IDataSet getDataSet(final String path)
     {
         return new FlatXmlDataFileLoader().load(path);
     }
 
-    void uploadDataSet(final IDataSet wantedDataSet) throws Exception {
+    private void uploadDataSet(final IDataSet wantedDataSet) throws Exception {
         databaseTester.setDataSet(wantedDataSet);
         DatabaseOperation.CLEAN_INSERT.execute(databaseTester.getConnection(),wantedDataSet);
     }
