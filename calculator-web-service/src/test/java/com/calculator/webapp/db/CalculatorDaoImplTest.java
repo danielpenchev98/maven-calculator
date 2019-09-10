@@ -3,7 +3,9 @@ package com.calculator.webapp.db;
 
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.util.fileloader.FlatXmlDataFileLoader;
 import org.junit.*;
@@ -12,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -27,8 +31,9 @@ public class CalculatorDaoImplTest {
 
     @BeforeClass
     public static void setUpDB() throws Exception {
+        //Connection connection = DriverManager.getConnection("jdbc:derby:memory://127.0.0.1:1527/calculator;create=true","root","root");
         databaseTester = new JdbcDatabaseTester("org.apache.derby.jdbc.EmbeddedDriver",
-                "jdbc:derby:memory:TestDB;create=true","root","root");
+                "jdbc:derby:memory://127.0.0.1:1527/calculator;create=true","root","root");
     }
 
     @AfterClass
@@ -41,7 +46,8 @@ public class CalculatorDaoImplTest {
     {
         //dao=new CalculatorDaoImpl(manager);
 
-        IDataSet populatedDataSet = new FlatXmlDataFileLoader().load("populatedDataSet.xml");
+        //IDataSet populatedDataSet=new FlatXmlDataSetBuilder().build(getClass().getResourceAsStream("/datasets/populatedDataSet.xml"));
+        IDataSet populatedDataSet = new FlatXmlDataFileLoader().load("/datasets/populatedDataSet.xml");
         databaseTester.setDataSet(populatedDataSet);
         DatabaseOperation.CLEAN_INSERT.execute(databaseTester.getConnection(),populatedDataSet);
     }
