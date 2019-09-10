@@ -24,7 +24,6 @@ public class CalculatorResponseDTO {
 
     @Temporal(TemporalType.TIMESTAMP)
     //automatically generated from Hibernate
-    @org.hibernate.annotations.CreationTimestamp
     @Column(name = "date_of_creation")
 
     private Date dateOfCreation;
@@ -59,6 +58,10 @@ public class CalculatorResponseDTO {
 
     public Date getDateOfCreation() {
         return this.dateOfCreation;
+    }
+
+    public void setDateOfCreation(final Date dateOfCreation){
+        this.dateOfCreation=dateOfCreation;
     }
 
 }
