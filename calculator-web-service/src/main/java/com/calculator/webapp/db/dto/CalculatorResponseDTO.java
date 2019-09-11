@@ -1,6 +1,7 @@
-package com.calculator.webapp.db;
+package com.calculator.webapp.db.dto;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -9,7 +10,7 @@ import java.util.Date;
 public class CalculatorResponseDTO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private long id;
 
@@ -17,19 +18,39 @@ public class CalculatorResponseDTO {
     private boolean legitimacy;
 
     @Column
+    @NotNull
     private String equation;
 
     @Column
+    @NotNull
     private String responseMsg;
 
     @Temporal(TemporalType.TIMESTAMP)
     //automatically generated from Hibernate
     @Column(name = "date_of_creation")
-
+    @NotNull
     private Date dateOfCreation;
+
+    public CalculatorResponseDTO(final long id,final boolean legitimacy,final String equation,final String responseMsg,final Date dateOfCreation)
+    {
+        setId(id);
+        setLegitimacy(legitimacy);
+        setEquation(equation);
+        setResponseMsg(responseMsg);
+        setDateOfCreation(dateOfCreation);
+    }
+
+    public CalculatorResponseDTO()
+    {
+        this(1,false," ","Empty equation",new Date());
+    }
 
     public long getId() {
         return this.id;
+    }
+
+    public void setId(final long id) {
+        this.id=id;
     }
 
     public void setLegitimacy(final boolean legitimacy) {
