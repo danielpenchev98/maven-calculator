@@ -17,7 +17,7 @@ public class MainPage {
 
     private static final String ENCODING = "UTF-8";
     private static final String CALCULATOR_SERVICE_WAR = "/calculator";
-    private static final String GET_REQUEST_URL = "/api/v1/calculate";
+    private static final String GET_REQUEST_URL = "/api/v1/calculator/calculate";
     private static final String REQUEST_PARAMETER="equation";
 
     public MainPage(final URL baseUrl) {

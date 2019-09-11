@@ -6,6 +6,7 @@ import com.calculator.webapp.restresources.CalculateRestResource;
 import com.calculator.webapp.restresponse.CalculationError;
 import com.calculator.webapp.restresponse.CalculationResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -20,7 +21,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 
-
+@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class CalculateRestResourceTest {
 
