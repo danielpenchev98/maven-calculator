@@ -1,21 +1,22 @@
 package com.calculator.webapp.db;
 
+import com.calculator.webapp.db.dao.CalculatorDaoImpl;
+import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import org.dbunit.Assertion;
-import org.dbunit.IDatabaseTester;
-import org.dbunit.JdbcDatabaseTester;
-import org.dbunit.dataset.DataSetException;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.util.fileloader.FlatXmlDataFileLoader;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.sql.DriverManager;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -28,83 +29,96 @@ public class CalculatorDaoImplTest {
 
     private static EntityManager manager;
     private final CalculatorDaoImpl dao = new CalculatorDaoImpl(manager);
-    private static IDatabaseTester databaseTester;
+    private static IDatabaseConnection databaseConnection;
+
+    private static final String multipleEntitiesDataSetPath = "/datasets/multipleEntitiesDataSet.xml";
+    private static final String emptyDataSetPath = "/datasets/emptyDataSet.xml";
+    private static final String oneEntityDataSetPath = "/datasets/oneEntityDataSet.xml";
+    private static final String responseTableName = "calculator_responses";
+
+    private static final String connectionUrl="jdbc:derby:memory:calculator";
+    private static final String DBUsername="root";
+    private static final String DBPassword="root";
 
     @BeforeClass
     public static void setUpDB() throws Exception {
-        databaseTester = new JdbcDatabaseTester("org.apache.derby.jdbc.EmbeddedDriver",
-                "jdbc:derby:memory://127.0.0.1:1527/calculator;create=true","root","root");
-        EntityManagerFactory factory= Persistence.createEntityManagerFactory("test-unit");
-         manager=factory.createEntityManager();
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("test-unit");
+        manager = factory.createEntityManager();
+        databaseConnection = new DatabaseConnection(DriverManager.getConnection(connectionUrl, DBUsername, DBPassword));
     }
 
     @AfterClass
     public static void tearDownDB() throws Exception {
+        databaseConnection.close();
         manager.close();
-        databaseTester.getConnection().close();
     }
+
 
     @Test
     public void getAllItems_populatedDataSet_expectedSize() throws Exception {
-        IDataSet initialDataSet = getDataSet("/datasets/populatedDataSet.xml");
-        uploadDataSet(initialDataSet);
+        setInitialTableInDataBase(multipleEntitiesDataSetPath);
 
         final int expectedNumberOfEntities = 6;
         List<CalculatorResponseDTO> actualItems = dao.getAllItems();
 
-        assertThat(actualItems.size(),is(equalTo(expectedNumberOfEntities)));
+        assertThat(actualItems.size(), is(equalTo(expectedNumberOfEntities)));
     }
 
-
-    //should all properties be tested?
     @Test
     public void getItem_populatedDataSet_expectedItem() throws Exception {
-        IDataSet initialDataSet = getDataSet("/datasets/populatedDataSet.xml");
-        uploadDataSet(initialDataSet);
+        setInitialTableInDataBase(multipleEntitiesDataSetPath);
 
-        CalculatorResponseDTO actualItem=dao.getItem(6L);
+        CalculatorResponseDTO actualItem = dao.getItem(6L);
 
-        assertThat(actualItem,is(notNullValue()));
-        assertThat(actualItem.getId(),is(equalTo(6L)));
+        assertThat(actualItem, is(notNullValue()));
+        assertThat(actualItem.getId(), is(equalTo(6L)));
     }
 
     @Test
     public void saveItem_emptyDataSet_tableSize1() throws Exception {
-        IDataSet initialDataSet = getDataSet("/datasets/oneEntityDataSet.xml");
-        uploadDataSet(initialDataSet);
-        ITable expectedTable=getDataSet("/datasets/oneEntityDataSet.xml").getTable("calculator_responses");
+        setInitialTableInDataBase(emptyDataSetPath);
 
-        CalculatorResponseDTO response = new CalculatorResponseDTO();
-        response.setLegitimacy(true);
-        response.setEquation("1+1");
-        response.setResponseMsg("2.0");
-        Date currentDateTime=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
-        response.setDateOfCreation(currentDateTime);
+        ITable expectedTable = getDataSet(oneEntityDataSetPath).getTable(responseTableName);
 
-        System.out.println(response.getId());
+        Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
+        CalculatorResponseDTO response = new CalculatorResponseDTO(1, true, "1+1", "2.0", currentDateTime);
+
         dao.saveItem(response);
 
-        ITable actualTable=getActualTable("calculator_responses");
-        Assertion.assertEquals(expectedTable,actualTable);
+        ITable actualTable = getActualTable(responseTableName);
+        Assertion.assertEquals(expectedTable, actualTable);
     }
 
-    @Ignore
     @Test
-    public void deleteItem() {
+    public void deleteItem_oneEntityDataSet_emptyTable() throws Exception {
+        setInitialTableInDataBase(oneEntityDataSetPath);
 
+        Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
+        CalculatorResponseDTO response = new CalculatorResponseDTO(1, true, "1+1", "2.0", currentDateTime);
+
+        dao.deleteItem(response);
+        final int emptyTableSize = 0;
+
+        ITable actualTable = getActualTable(responseTableName);
+        assertThat(actualTable.getRowCount(), is(emptyTableSize));
     }
 
-    private ITable getActualTable(final String tableName) throws DataSetException {
-        return databaseTester.getDataSet().getTable(tableName);
+
+    private ITable getActualTable(final String tableName) throws Exception {
+        return databaseConnection.createDataSet().getTable(tableName);
     }
 
-    private IDataSet getDataSet(final String path)
-    {
+    private void setInitialTableInDataBase(final String pathToDataSet) throws Exception {
+        IDataSet initialDataSet = getDataSet(pathToDataSet);
+        uploadDataSet(initialDataSet);
+    }
+
+    private IDataSet getDataSet(final String path) {
         return new FlatXmlDataFileLoader().load(path);
     }
 
     private void uploadDataSet(final IDataSet wantedDataSet) throws Exception {
-        databaseTester.setDataSet(wantedDataSet);
-        DatabaseOperation.CLEAN_INSERT.execute(databaseTester.getConnection(),wantedDataSet);
+        DatabaseOperation.CLEAN_INSERT.execute(databaseConnection, wantedDataSet);
     }
+
 }
