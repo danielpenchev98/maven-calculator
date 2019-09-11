@@ -1,4 +1,4 @@
-package com.calculator.webapp.db;
+package com.calculator.webapp.db.dao;
 
 import java.util.List;
 
