@@ -9,9 +9,7 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.util.fileloader.FlatXmlDataFileLoader;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -27,32 +25,41 @@ import static org.hamcrest.core.IsNull.notNullValue;
 
 public class CalculatorDaoImplTest {
 
-    private static EntityManager manager;
-    private final CalculatorDaoImpl dao = new CalculatorDaoImpl(manager);
     private static IDatabaseConnection databaseConnection;
+    private EntityManager manager;
+    private CalculatorDaoImpl dao;
+
 
     private static final String multipleEntitiesDataSetPath = "/datasets/multipleEntitiesDataSet.xml";
     private static final String emptyDataSetPath = "/datasets/emptyDataSet.xml";
     private static final String oneEntityDataSetPath = "/datasets/oneEntityDataSet.xml";
     private static final String responseTableName = "calculator_responses";
 
-    private static final String connectionUrl="jdbc:derby:memory:calculator";
+    private static final String connectionUrl="jdbc:derby:memory:calculator;create=true";
     private static final String DBUsername="root";
     private static final String DBPassword="root";
 
     @BeforeClass
     public static void setUpDB() throws Exception {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("test-unit");
-        manager = factory.createEntityManager();
         databaseConnection = new DatabaseConnection(DriverManager.getConnection(connectionUrl, DBUsername, DBPassword));
     }
 
     @AfterClass
     public static void tearDownDB() throws Exception {
         databaseConnection.close();
-        manager.close();
     }
 
+    @Before
+    public void setUp() {
+        setUpEntityManager();
+        setUpDao(manager);
+    }
+
+    @After
+    public void tearDown()
+    {
+        manager.close();
+    }
 
     @Test
     public void getAllItems_populatedDataSet_expectedSize() throws Exception {
@@ -81,9 +88,10 @@ public class CalculatorDaoImplTest {
         ITable expectedTable = getDataSet(oneEntityDataSetPath).getTable(responseTableName);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
-        CalculatorResponseDTO response = new CalculatorResponseDTO(1, true, "1+1", "2.0", currentDateTime);
+        CalculatorResponseDTO entity = new CalculatorResponseDTO("1+1","2.0",currentDateTime);
 
-        dao.saveItem(response);
+        dao.saveItem(entity);
+
 
         ITable actualTable = getActualTable(responseTableName);
         Assertion.assertEquals(expectedTable, actualTable);
@@ -94,9 +102,10 @@ public class CalculatorDaoImplTest {
         setInitialTableInDataBase(oneEntityDataSetPath);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
-        CalculatorResponseDTO response = new CalculatorResponseDTO(1, true, "1+1", "2.0", currentDateTime);
+        CalculatorResponseDTO entity = new CalculatorResponseDTO("1+1","2.0",currentDateTime);
+        entity.setId(1);
 
-        dao.deleteItem(response);
+        dao.deleteItem(entity);
         final int emptyTableSize = 0;
 
         ITable actualTable = getActualTable(responseTableName);
@@ -104,8 +113,13 @@ public class CalculatorDaoImplTest {
     }
 
 
-    private ITable getActualTable(final String tableName) throws Exception {
-        return databaseConnection.createDataSet().getTable(tableName);
+    private void setUpEntityManager() {
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("test-unit");
+        manager = factory.createEntityManager();
+    }
+
+    private void setUpDao(final EntityManager entityManager) {
+        dao=new CalculatorDaoImpl(entityManager);
     }
 
     private void setInitialTableInDataBase(final String pathToDataSet) throws Exception {
@@ -117,8 +131,13 @@ public class CalculatorDaoImplTest {
         return new FlatXmlDataFileLoader().load(path);
     }
 
+    private ITable getActualTable(final String tableName) throws Exception {
+        return databaseConnection.createDataSet().getTable(tableName);
+    }
+
     private void uploadDataSet(final IDataSet wantedDataSet) throws Exception {
         DatabaseOperation.CLEAN_INSERT.execute(databaseConnection, wantedDataSet);
     }
+
 
 }
