@@ -38,6 +38,8 @@ public class CalculatorRestResource {
         this.dao=dao;
     }
 
+    //TODO during the execution of the rest service to log the sql statements - currently isnt working
+
     @GET
     @Path("/calculate")
     public Response doGetCalculationResult(@NotNull @QueryParam("equation") String equation) throws JsonProcessingException {
