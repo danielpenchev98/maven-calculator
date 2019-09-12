@@ -1,7 +1,10 @@
 package com.calculator.webapp.db.dto;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -15,9 +18,6 @@ public class CalculatorResponseDTO {
     private long id;
 
     @Column
-    private boolean legitimacy;
-
-    @Column
     @NotNull
     private String equation;
 
@@ -26,23 +26,20 @@ public class CalculatorResponseDTO {
     private String responseMsg;
 
     @Temporal(TemporalType.TIMESTAMP)
-    //automatically generated from Hibernate
-    @Column(name = "date_of_creation")
+    @Column(name = "time_of_creation")
     @NotNull
-    private Date dateOfCreation;
+    private Date timeOfCreation;
 
-    public CalculatorResponseDTO(final long id,final boolean legitimacy,final String equation,final String responseMsg,final Date dateOfCreation)
+    public CalculatorResponseDTO(final String equation,final String responseMsg,final Date timeOfCreation)
     {
-        setId(id);
-        setLegitimacy(legitimacy);
         setEquation(equation);
         setResponseMsg(responseMsg);
-        setDateOfCreation(dateOfCreation);
+        setTimeOfCreation(timeOfCreation);
     }
 
     public CalculatorResponseDTO()
     {
-        this(1,false," ","Empty equation",new Date());
+        this(" ","Empty equation",new Date());
     }
 
     public long getId() {
@@ -51,14 +48,6 @@ public class CalculatorResponseDTO {
 
     public void setId(final long id) {
         this.id=id;
-    }
-
-    public void setLegitimacy(final boolean legitimacy) {
-        this.legitimacy = legitimacy;
-    }
-
-    public boolean getLegitimacy() {
-        return this.legitimacy;
     }
 
     public void setEquation(final String equation) {
@@ -77,12 +66,12 @@ public class CalculatorResponseDTO {
         return this.responseMsg;
     }
 
-    public Date getDateOfCreation() {
-        return this.dateOfCreation;
+    public Date getTimeOfCreation() {
+        return this.timeOfCreation;
     }
 
-    public void setDateOfCreation(final Date dateOfCreation){
-        this.dateOfCreation=dateOfCreation;
+    public void setTimeOfCreation(final Date timeOfCreation){
+        this.timeOfCreation=timeOfCreation;
     }
 
 }
