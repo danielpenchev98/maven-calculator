@@ -28,20 +28,20 @@
       <class>com.calculator.webapp.db.dto.CalculatorResponseDTO</class>
 
       <properties>
-         <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+         <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
          <!-- save the credidentials in environment variables -->
          <property name="hibernate.connection.username" value="root" />
          <property name="hibernate.connection.password" value="root" />
 
          <!-- automatically exports schema DDL to database when EntityManager is created -->
-         <property name="hibernate.hbm2ddl.auto" value="create" />
+         <property name="hibernate.hbm2ddl.auto" value="update" />
 
          <!-- for logging of generated SQL statements-->
          <property name="hibernate.show_sql" value="true" />
          <property name="hibernate.format_sql" value="true"/>
 
-         <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
-         <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/calculator;create=true"/>
+         <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+         <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/calculator?createDatabaseIfNotExist=true"/>
       </properties>
    </persistence-unit>
 </persistence>
