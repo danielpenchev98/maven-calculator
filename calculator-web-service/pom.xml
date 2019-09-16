@@ -22,6 +22,7 @@
     <log4j.version>2.12.1</log4j.version>
     <jaxrs.version>2.1.1</jaxrs.version>
     <hibernate.core.version>5.4.4.Final</hibernate.core.version>
+    <liquibase.propertyFile>src/main/resources/properties/liquibase.properties</liquibase.propertyFile>
   </properties>
 
   <dependencies>
@@ -113,6 +114,13 @@
       <version>10.14.2.0</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.17</version>
+    </dependency>
+
     <!--CORS-->
     <dependency>
       <groupId>com.thetransactioncompany</groupId>
@@ -120,12 +128,34 @@
       <version>2.8</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+    <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.17</version>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-core</artifactId>
+      <version>3.7.0</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-maven-plugin -->
+    <dependency>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-maven-plugin</artifactId>
+      <version>3.7.0</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.sap.cloud.db.jdbc/ngdbc -->
+    <dependency>
+      <groupId>com.sap.cloud.db.jdbc</groupId>
+      <artifactId>ngdbc</artifactId>
+      <version>2.4.56</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.github.lbitonti/liquibase-hana -->
+    <dependency>
+      <groupId>com.github.lbitonti</groupId>
+      <artifactId>liquibase-hana</artifactId>
+      <version>3.1.1</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -147,6 +177,25 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.liquibase</groupId>
+        <artifactId>liquibase-maven-plugin</artifactId>
+        <version>3.7.0</version>
+        <executions>
+          <execution>
+            <!--<phase>install</phase>-->
+            <goals>
+              <goal>update</goal>
+            </goals>
+            <configuration>
+              <propertyFile>${liquibase.propertyFile}</propertyFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
   </build>
   <profiles>
     <profile>

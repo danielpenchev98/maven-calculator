@@ -23,9 +23,10 @@
       </properties>
    </persistence-unit>
 
-   <persistence-unit name="production-unit">
+   <persistence-unit name="production-unit" transaction-type="RESOURCE_LOCAL">
       <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
       <class>com.calculator.webapp.db.dto.CalculatorResponseDTO</class>
+      <shared-cache-mode>NONE</shared-cache-mode>
 
       <properties>
          <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
@@ -34,7 +35,7 @@
          <property name="hibernate.connection.password" value="root" />
 
          <!-- automatically exports schema DDL to database when EntityManager is created -->
-         <property name="hibernate.hbm2ddl.auto" value="update" />
+         <!--<property name="hibernate.hbm2ddl.auto" value="update" />-->
 
          <!-- for logging of generated SQL statements-->
          <property name="hibernate.show_sql" value="true" />
