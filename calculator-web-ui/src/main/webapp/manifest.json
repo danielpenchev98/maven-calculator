@@ -12,7 +12,7 @@
 		"dataSources": {
 			"calculationService": {
 				"baseUrl": "https://calculatorwebservii515142trial.hanatrial.ondemand.com/calculator-web-service",
-				"serviceUrl": "/api/v1/calculate",
+				"serviceUrl": "/api/v1/calculator/calculate",
 				"queryParam": "equation",
 				"type": "JSON"
 			}
