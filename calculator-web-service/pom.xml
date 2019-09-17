@@ -135,13 +135,6 @@
       <version>3.7.0</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-maven-plugin -->
-    <dependency>
-      <groupId>org.liquibase</groupId>
-      <artifactId>liquibase-maven-plugin</artifactId>
-      <version>3.7.0</version>
-    </dependency>
-
     <!-- https://mvnrepository.com/artifact/com.sap.cloud.db.jdbc/ngdbc -->
     <dependency>
       <groupId>com.sap.cloud.db.jdbc</groupId>
@@ -177,25 +170,6 @@
         </plugin>
       </plugins>
     </pluginManagement>
-    <plugins>
-      <plugin>
-        <groupId>org.liquibase</groupId>
-        <artifactId>liquibase-maven-plugin</artifactId>
-        <version>3.7.0</version>
-        <executions>
-          <execution>
-            <!--<phase>install</phase>-->
-            <goals>
-              <goal>update</goal>
-            </goals>
-            <configuration>
-              <propertyFile>${liquibase.propertyFile}</propertyFile>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-
   </build>
   <profiles>
     <profile>
