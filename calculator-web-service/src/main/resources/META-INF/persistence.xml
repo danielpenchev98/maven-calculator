@@ -25,24 +25,17 @@
 
    <persistence-unit name="production-unit" transaction-type="RESOURCE_LOCAL">
       <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+      <non-jta-data-source>java:comp/env/jdbc/DefaultDB</non-jta-data-source>
       <class>com.calculator.webapp.db.dto.CalculatorResponseDTO</class>
       <shared-cache-mode>NONE</shared-cache-mode>
 
       <properties>
-         <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
-         <!-- save the credidentials in environment variables -->
-         <property name="hibernate.connection.username" value="root" />
-         <property name="hibernate.connection.password" value="root" />
-
-         <!-- automatically exports schema DDL to database when EntityManager is created -->
-         <!--<property name="hibernate.hbm2ddl.auto" value="update" />-->
-
          <!-- for logging of generated SQL statements-->
          <property name="hibernate.show_sql" value="true" />
          <property name="hibernate.format_sql" value="true"/>
 
-         <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
-         <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/calculator?createDatabaseIfNotExist=true"/>
-      </properties>
+         <property name="hibernate.hbm2ddl.auto" value="update" />
+         <!--<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>-->
+        </properties>
    </persistence-unit>
 </persistence>
