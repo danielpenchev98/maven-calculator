@@ -26,8 +26,6 @@ public class ReversePolishNotationParserTest {
     @Mock
     private Addition addition;
 
-    @Mock
-    private Power power;
 
     private NumberComponent firstNumber;
     private NumberComponent secondNumber;
@@ -84,16 +82,4 @@ public class ReversePolishNotationParserTest {
         assertThat(realResult,is(expected));
     }
 
-    @Test
-    public void formatToReversedPolishNotation_EquationWithLeftAndRightAssociativeOperators_RPNFormat()
-    {
-        Mockito.when(multiplication.getPriority()).thenReturn(3);
-        Mockito.when(power.getPriority()).thenReturn(4);
-
-        List<EquationComponent> input=Arrays.asList(thirdNumber,multiplication,thirdNumber,power,thirdNumber);
-        List<EquationComponent> expected=Arrays.asList(thirdNumber,thirdNumber,thirdNumber,power,multiplication);
-        List<EquationComponent> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
-
-        assertThat(realResult,is(expected));
-    }
 }

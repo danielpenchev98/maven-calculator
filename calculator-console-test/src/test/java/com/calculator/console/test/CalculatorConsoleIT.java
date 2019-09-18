@@ -29,20 +29,20 @@ public class CalculatorConsoleIT {
 
     @DataProvider
     public static Object[][] correctExpressionSupplier(){
-        return new Object[][]{{"(  (8 ^2/18) -( 100*100)/1500)^( (10))",84948.4030},
+        return new Object[][]{{"(  (8 +2/18) -( 100*100)/1500)-( (10))",-8.5555},
                               {"22 / 7",3.14285},
-                              {"100 /0^0",100.0}};
+                              {"100 / (0+1)",100.0}};
     }
 
     @DataProvider
     public static Object[][] illegalExpressionSupplier(){
         return new Object[][]{{"1+(( 23*4) - (-11)","Problem with the structure of equation :Missing or misplaced brackets"},
                               {"1 / ( 5-(-2 3 + 5)/10)","Problem with the structure of equation :Sequential components of the same type"},
-                              {"( 1 + 2 *( 10/5/2/1 ) ^^3)","Problem with the structure of equation :Sequential components of the same type"},
+                              {"( 1 + 2 *( 10/5/2/1 ) ++3)","Problem with the structure of equation :Sequential components of the same type"},
                               {"8/ (((10 - 11/2 )))( -1 / 3 )","Problem with the structure of equation :Missing operator between a number and an opening bracket or a closing bracket and a number"},
                               {"    ","Problem with the structure of equation :Empty equation"},
                               {"(()()(()))","Problem with the structure of equation :Empty brackets"},
-                              {"[ (10 +7) ] (20^100)","Problem with the structure of equation :Scope of equation ending or beginning with an operator"},
+                              {"[ (10 +7) ] (20*100)","Problem with the structure of equation :Scope of equation ending or beginning with an operator"},
                               {"(10-10)*(10+10)/(10-10)","Arithmetic error :Division by zero"},
                               {"(( 100 - 99) & (199))","Problem with a component of equation :Unsupported component :&"},
                               {"PI/2 * 6","Problem with a component of equation :Unsupported component :PI"}};

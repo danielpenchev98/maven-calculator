@@ -111,5 +111,4 @@ public class EquationStructureValidatorTest {
         validator.validateEquationStructure("1 ) * 2 ( ");
     }
 
-
 }

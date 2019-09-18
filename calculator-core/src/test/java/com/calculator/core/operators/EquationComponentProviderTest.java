@@ -47,12 +47,6 @@ public class EquationComponentProviderTest {
         assertThat(component,is(instanceOf(Division.class)));
     }
 
-    @Test
-    public void createComponent_CreatePowerObject_ObjectCreated() throws InvalidComponentException
-    {
-        EquationComponent component = provider.getComponent("^");
-        assertThat(component,is(instanceOf(Power.class)));
-    }
 
     @Test
     public void createComponent_CreateOpeningBracketObject_ObjectCreated() throws InvalidComponentException

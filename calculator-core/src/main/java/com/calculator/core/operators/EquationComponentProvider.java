@@ -15,7 +15,6 @@ public class EquationComponentProvider {
                                                                             put(Subtraction.SYMBOL, new Subtraction());
                                                                             put(Multiplication.SYMBOL, new Multiplication());
                                                                             put(Division.SYMBOL, new Division());
-                                                                            put(Power.SYMBOL, new Power());
                                                                         }};
 
     public EquationComponent getComponent(final String component) throws InvalidComponentException

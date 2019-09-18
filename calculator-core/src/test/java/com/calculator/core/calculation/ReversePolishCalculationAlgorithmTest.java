@@ -34,7 +34,8 @@ public class ReversePolishCalculationAlgorithmTest {
     private Addition addition;
 
     @Mock
-    private Power power;
+    private Multiplication multiplication;
+
 
     @Before
     public void setUp() {
@@ -86,14 +87,14 @@ public class ReversePolishCalculationAlgorithmTest {
     @Test
     public void calculationEquation_LegalEquation() throws Exception
     {
-        List<EquationComponent> input=Arrays.asList(secondNumber,addition,secondNumber,power,secondNumber);
+        List<EquationComponent> input=Arrays.asList(secondNumber,addition,secondNumber,multiplication,secondNumber);
 
         Mockito.when(parser.formatFromInfixToReversedPolishNotation(input))
-                .thenReturn(Arrays.asList(secondNumber,secondNumber,secondNumber,power,addition));
+                .thenReturn(Arrays.asList(secondNumber,secondNumber,secondNumber,multiplication,addition));
 
         Mockito.when(secondNumber.getValue()).thenReturn("3.0");
-        Mockito.when(power.compute(3.0,3.0)).thenReturn(27.0);
-        Mockito.when(addition.compute(3.0,27.0)).thenReturn(30.0);
-        assertEquals(30.0,algorithm.calculateEquation(input),0.001);
+        Mockito.when(multiplication.compute(3.0,3.0)).thenReturn(9.0);
+        Mockito.when(addition.compute(3.0,9.0)).thenReturn(12.0);
+        assertEquals(12.0,algorithm.calculateEquation(input),0.001);
     }
 }
