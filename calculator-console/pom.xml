@@ -45,7 +45,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.calculator.console.test.CalculatorConsole</mainClass>
+                            <mainClass>com.calculator.console.CalculatorConsole</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

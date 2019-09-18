@@ -1,4 +1,4 @@
-package com.calculator.console.test;
+package com.calculator.console;
 
 import com.calculator.core.CalculatorApp;
 import com.calculator.core.exceptions.DivisionByZeroException;
