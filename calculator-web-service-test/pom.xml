@@ -8,7 +8,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.calculator..wabapp.test</groupId>
+    <groupId>com.calculator.wabapp.test</groupId>
     <artifactId>calculator-web-service-test</artifactId>
 
     <properties>
