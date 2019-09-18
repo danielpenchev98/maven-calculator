@@ -29,9 +29,9 @@ public class CalculatorConsoleIT {
 
     @DataProvider
     public static Object[][] correctExpressionSupplier(){
-        return new Object[][]{{"(  (8 +2/18) -( 100*100)/1500)-( (10))",-8.5555},
+        return new Object[][]{{"(  (3/18) + 11 -( 100*100)/1500)-( (10))",-5.5},
                               {"22 / 7",3.14285},
-                              {"100 / (0+1)",100.0}};
+                              {"1 + 0/100",1.0}};
     }
 
     @DataProvider
