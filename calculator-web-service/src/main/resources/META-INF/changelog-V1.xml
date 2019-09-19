@@ -4,8 +4,9 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
 	http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet author="i515142" id="Employee">
+    <changeSet author="i515142" id="production">
         <preConditions onFail="MARK_RAN">
+            <dbms type="hana"/>
             <not>
                 <tableExists tableName="calculator_responses" />
             </not>
@@ -17,5 +18,28 @@
                                                               time_of_creation TIMESTAMP NOT NULL,
                                                               CONSTRAINT PK_CALCULATOR_RESPONSES PRIMARY KEY (id))
         </sql>
+    </changeSet>
+
+    <changeSet id="i515142" author="test">
+        <preConditions>
+            <dbms type="derby"/>
+            <not>
+                <tableExists tableName="calculator_responses" />
+            </not>
+        </preConditions>
+        <createTable tableName="calculator_responses"  >
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="equation" type="VARCHAR(500)">
+                <constraints nullable="false" />
+            </column>
+            <column name="responseMsg" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="time_of_creation" type="TIMESTAMP" >
+                <constraints nullable="false" />
+            </column>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

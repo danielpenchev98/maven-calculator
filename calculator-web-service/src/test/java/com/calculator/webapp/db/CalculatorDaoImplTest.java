@@ -131,13 +131,14 @@ public class CalculatorDaoImplTest {
         return new FlatXmlDataFileLoader().load(path);
     }
 
+    private void uploadDataSet(final IDataSet wantedDataSet) throws Exception {
+        DatabaseOperation.CLEAN_INSERT.execute(databaseConnection, wantedDataSet);
+    }
+
     private ITable getActualTable(final String tableName) throws Exception {
         return databaseConnection.createDataSet().getTable(tableName);
     }
 
-    private void uploadDataSet(final IDataSet wantedDataSet) throws Exception {
-        DatabaseOperation.CLEAN_INSERT.execute(databaseConnection, wantedDataSet);
-    }
 
 
 }
