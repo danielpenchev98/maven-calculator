@@ -8,7 +8,7 @@ module.exports = function(config) {
                 webapp: "webapp"
             },
             //to revert back to https if karma does not work
-            url: "http://localhost:9000",
+            url: "https://localhost:9000",
             testpage: "webapp/test/testsuite.qunit.html"
         },
         port:9000,
