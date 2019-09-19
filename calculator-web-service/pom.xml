@@ -194,15 +194,23 @@
                 <goals>
                   <!--Call the dedicated deploy goal of this plugin-->
                   <goal>stop</goal>
+                  <goal>unbind-db</goal>
                   <goal>deploy</goal>
+                  <goal>bind-db</goal>
                   <goal>start</goal>
                 </goals>
                 <configuration>
+                  <!-- to cope unbind-db and bind-db errors -->
+                  <failOnError>false</failOnError>
+
                   <!--Configuration for the above deploy goal-->
                   <host>https://hanatrial.ondemand.com</host>
                   <mavenSettingsServerId>sap-hana-cloud-credentials</mavenSettingsServerId>
                   <account>i515142trial</account>
-                  <application>calculatorwebservice</application>
+                  <application>calcwebservice</application>
+                  <id>testdb1</id>
+                  <dbUser>i515142</dbUser>
+                  <dbPassword>Dp280898</dbPassword>
                   <source>${project.build.directory}/${project.artifactId}.war</source>
                 </configuration>
               </execution>
