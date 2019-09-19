@@ -20,8 +20,8 @@
         </sql>
     </changeSet>
 
-    <changeSet id="i515142" author="test">
-        <preConditions>
+    <changeSet id="test" author="i515142">
+        <preConditions onFail="MARK_RAN">
             <dbms type="derby"/>
             <not>
                 <tableExists tableName="calculator_responses" />
