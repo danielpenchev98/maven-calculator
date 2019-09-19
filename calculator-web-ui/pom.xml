@@ -56,7 +56,7 @@
                  <target>https://api.cf.eu10.hana.ondemand.com</target>
                  <org>I515142trial_trial</org>
                  <space>dev</space>
-                 <appname>calculatorwebui</appname>
+                 <appname>calcwebui</appname>
                  <memory>1024</memory>
                  <diskQuota>1024</diskQuota>
                </configuration>
