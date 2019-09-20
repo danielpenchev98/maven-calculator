@@ -177,10 +177,23 @@
             <groupId>com.sap.cloud</groupId>
             <artifactId>neo-java-web-maven-plugin</artifactId>
             <version>3.83.3</version>
+            <configuration>
+              <!--Location of the SAP Cloud Platform SDK for Neo environment-->
+              <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
+
+              <!--Configuration for the above deploy goal-->
+              <host>https://hanatrial.ondemand.com</host>
+              <mavenSettingsServerId>sap-hana-cloud-credentials</mavenSettingsServerId>
+              <account>i515142trial</account>
+              <application>calcwebservice</application>
+              <id>testdb1</id>
+              <dbUser>${hanadb.user}</dbUser>
+              <dbPassword>${hanadb.password}</dbPassword>
+              <source>${project.build.directory}/${project.artifactId}.war</source>
+            </configuration>
             <executions>
               <execution>
                 <id>sdk</id>
-                <!--Choose a phase when to install the SDK -->
                 <phase>initialize</phase>
                 <goals>
                   <!--Call the SDK installation goal of this plugin-->
@@ -188,38 +201,32 @@
                 </goals>
               </execution>
               <execution>
-                <id>deploy</id>
-                <!--Choose a phase when to execute the goal-->
+                <id>stop-application</id>
                 <phase>install</phase>
                 <goals>
-                  <!--Call the dedicated deploy goal of this plugin-->
                   <goal>stop</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>unbind-application-to-db</id>
+                <phase>install</phase>
+                <goals>
                   <goal>unbind-db</goal>
+                </goals>
+                <configuration>
+                  <failOnError>false</failOnError>
+                </configuration>
+              </execution>
+              <execution>
+                <id>deploy-bind-db-start-application</id>
+                <phase>install</phase>
+                <goals>
                   <goal>deploy</goal>
                   <goal>bind-db</goal>
                   <goal>start</goal>
                 </goals>
-                <configuration>
-                  <!-- to cope unbind-db and bind-db errors -->
-                  <failOnError>false</failOnError>
-
-                  <!--Configuration for the above deploy goal-->
-                  <host>https://hanatrial.ondemand.com</host>
-                  <account>i515142trial</account>
-                  <username>${env.username}</username>
-                  <password>${env.password}</password>
-                  <application>calcwebservice</application>
-                  <id>testdb1</id>
-                  <dbUser>${env.dbUser}</dbUser>
-                  <dbPassword>${env.dbPassword}</dbPassword>
-                  <source>${project.build.directory}/${project.artifactId}.war</source>
-                </configuration>
               </execution>
             </executions>
-            <configuration>
-              <!--Location of the SAP Cloud Platform SDK for Neo environment-->
-              <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
-            </configuration>
           </plugin>
         </plugins>
       </build>
