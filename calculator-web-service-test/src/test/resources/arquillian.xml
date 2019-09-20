@@ -5,11 +5,11 @@
 
     <container qualifier="tomcat" default="true">
         <configuration>
-            <property name="tomcatHome">target/tomcat-embedded-7</property>
+            <property name="tomcatHome">target/tomcat-embedded-8</property>
             <property name="workDir">work</property>
             <property name="bindHttpPort">8888</property>
             <property name="unpackArchive">true</property>
-            <property name="serverName">arquillian-tomcat-embedded-7</property>
+            <property name="serverName">arquillian-tomcat-embedded-8</property>
         </configuration>
     </container>
 </arquillian>
