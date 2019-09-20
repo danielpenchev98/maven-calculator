@@ -36,8 +36,8 @@ public class CalculatorDaoImplTest {
     private static final String responseTableName = "calculator_responses";
 
     private static final String connectionUrl="jdbc:derby:memory:calculator;create=true";
-    private static final String DBUsername="root";
-    private static final String DBPassword="root";
+    private static final String DBUsername="";
+    private static final String DBPassword="";
 
     @BeforeClass
     public static void setUpDB() throws Exception {
