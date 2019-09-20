@@ -205,12 +205,13 @@
 
                   <!--Configuration for the above deploy goal-->
                   <host>https://hanatrial.ondemand.com</host>
-                  <mavenSettingsServerId>sap-hana-cloud-credentials</mavenSettingsServerId>
                   <account>i515142trial</account>
+                  <username>${env.username}</username>
+                  <password>${env.password}</password>
                   <application>calcwebservice</application>
                   <id>testdb1</id>
-                  <dbUser>i515142</dbUser>
-                  <dbPassword>Dp280898</dbPassword>
+                  <dbUser>${env.dbUser}</dbUser>
+                  <dbPassword>${env.dbPassword}</dbPassword>
                   <source>${project.build.directory}/${project.artifactId}.war</source>
                 </configuration>
               </execution>
