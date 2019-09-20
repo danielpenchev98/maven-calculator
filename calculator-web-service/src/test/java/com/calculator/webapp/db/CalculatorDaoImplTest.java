@@ -68,6 +68,7 @@ public class CalculatorDaoImplTest {
         final int expectedNumberOfEntities = 6;
         List<CalculatorResponseDTO> actualItems = dao.getAllItems();
 
+        assertThat(actualItems, is(notNullValue()));
         assertThat(actualItems.size(), is(equalTo(expectedNumberOfEntities)));
     }
 

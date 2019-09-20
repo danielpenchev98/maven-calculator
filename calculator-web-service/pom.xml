@@ -200,6 +200,24 @@
                   <goal>install-sdk</goal>
                 </goals>
               </execution>
+              <!--<execution>
+                <id>create-db-hana</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>create-db-hana</goal>
+                </goals>
+                <configuration>
+                  <dbsystem>-trial-</dbsystem>
+                  <failOnError>false</failOnError>
+                </configuration>
+              </execution>-->
+              <execution>
+                <id>start-db-hana</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>start-db-hana</goal>
+                </goals>
+              </execution>
               <execution>
                 <id>stop-application</id>
                 <phase>install</phase>
@@ -218,10 +236,16 @@
                 </configuration>
               </execution>
               <execution>
-                <id>deploy-bind-db-start-application</id>
+                <id>deploy-application</id>
                 <phase>install</phase>
                 <goals>
                   <goal>deploy</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>bind-db-start-application</id>
+                <phase>install</phase>
+                <goals>
                   <goal>bind-db</goal>
                   <goal>start</goal>
                 </goals>
