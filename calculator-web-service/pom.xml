@@ -200,17 +200,6 @@
                   <goal>install-sdk</goal>
                 </goals>
               </execution>
-              <!--<execution>
-                <id>create-db-hana</id>
-                <phase>install</phase>
-                <goals>
-                  <goal>create-db-hana</goal>
-                </goals>
-                <configuration>
-                  <dbsystem>-trial-</dbsystem>
-                  <failOnError>false</failOnError>
-                </configuration>
-              </execution>-->
               <execution>
                 <id>start-db-hana</id>
                 <phase>install</phase>
