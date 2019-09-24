@@ -3,6 +3,7 @@ package com.calculator.webapp.restresource;
 import com.calculator.core.CalculatorApp;
 import com.calculator.core.exceptions.DivisionByZeroException;
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
+import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import com.calculator.webapp.restresources.CalculatorRestResource;
 import com.calculator.webapp.restresponse.CalculationError;
 import com.calculator.webapp.restresponse.CalculationResult;
@@ -16,6 +17,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.ws.rs.core.Response;
 
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -39,7 +46,7 @@ public class CalculatorRestResourceTest {
     @Test
     public void doGetCalculationResult_LegalEquation_ExpectedResult() throws Exception {
         Mockito.when(app.calculateResult("1+1")).thenReturn(2.0);
-        Mockito.when(mapper.writeValueAsString(argThat(instanceOf(CalculationResult.class)))).thenReturn("\"result\":\"2.0\"");
+        Mockito.when(mapper.writeValueAsString(argThat(instanceOf(CalculationResult.class)))).thenReturn("{\"result\":\"2.0\"}");
 
         Response response=resource.doGetCalculationResult("1+1");
         String actual=(String)response.getEntity();
@@ -70,6 +77,20 @@ public class CalculatorRestResourceTest {
         assertThat(response.getStatus(),is(Response.Status.BAD_REQUEST.getStatusCode()));
         assertThat(actual, containsString("\"errorCode\":400"));
         assertThat(actual, containsString("\"message\":\"Equation parameter is missing from URL\""));
+    }
+
+    @Test
+    public void doGetCalculationHistory_ExpectedResponseObject() throws Exception {
+        String jsonResult = "[]";
+
+        Mockito.when(dao.getAllItems()).thenReturn(new ArrayList<>());
+        Mockito.when(mapper.writeValueAsString(argThat((instanceOf(ArrayList.class))))).thenReturn(jsonResult);
+
+        Response response=resource.doGetCalculationHistory();
+        String actual=(String)response.getEntity();
+
+        assertThat(response.getStatus(),is(Response.Status.OK.getStatusCode()));
+        assertThat(actual, containsString(jsonResult));
     }
 
 }
