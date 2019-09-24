@@ -42,6 +42,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- very important for tomcat8 in order to function with datasources-->
+        <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-dbcp -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-dbcp</artifactId>
+            <version>8.5.43</version>
+        </dependency>
+
         <!-- tomcat runtime -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
@@ -94,27 +102,28 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.dbunit/dbunit -->
-       <!-- <dependency>
+        <dependency>
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>
             <version>2.6.0</version>
             <scope>test</scope>
-        </dependency>-->
+        </dependency>
 
 
         <!-- https://mvnrepository.com/artifact/org.apache.derby/derby -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
             <version>10.14.2.0</version>
-        </dependency>-->
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.derby/derbyclient -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derbyclient</artifactId>
             <version>10.14.2.0</version>
-        </dependency>-->
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>

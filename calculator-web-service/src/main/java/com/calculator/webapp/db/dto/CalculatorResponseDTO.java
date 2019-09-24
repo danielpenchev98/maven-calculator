@@ -1,5 +1,5 @@
 package com.calculator.webapp.db.dto;
-/*
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -74,4 +74,4 @@ public class CalculatorResponseDTO {
         this.timeOfCreation=timeOfCreation;
     }
 
-}*/
+}

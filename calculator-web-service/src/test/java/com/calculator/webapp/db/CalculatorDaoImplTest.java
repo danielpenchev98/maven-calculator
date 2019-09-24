@@ -1,5 +1,5 @@
 package com.calculator.webapp.db;
-/*
+
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
 import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import org.dbunit.Assertion;
@@ -141,6 +141,4 @@ public class CalculatorDaoImplTest {
         return databaseConnection.createDataSet().getTable(tableName);
     }
 
-
-
-}*/
+}

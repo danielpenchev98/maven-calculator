@@ -1,5 +1,5 @@
 package com.calculator.webapp.restresource;
-/*
+
 import com.calculator.core.CalculatorApp;
 import com.calculator.core.exceptions.DivisionByZeroException;
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
@@ -90,4 +90,4 @@ public class CalculatorRestResourceTest {
         assertThat(actual, containsString(jsonResult));
     }
 
-}*/
+}

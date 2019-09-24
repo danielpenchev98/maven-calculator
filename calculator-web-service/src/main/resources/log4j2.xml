@@ -4,15 +4,15 @@
         <File name="SystemErrors" fileName="./target/logs/sysErrors.log">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
-        <!--<File name="UserErrors" fileName="./target/logs/userErrors.log">
+        <File name="UserErrors" fileName="./target/logs/userErrors.log">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
         <File name="SQLLog" fileName="./target/logs/sqlLog.log">
             <PatternLayout pattern="%d %p %C{1.} [%t] %m%n"/>
-        </File>-->
+        </File>
     </appenders>
 
-    <!--<loggers>
+    <loggers>
         <root level="debug">
             <appender-ref ref="SystemErrors" level="error"/>
             <appender-ref ref="UserErrors" level="warn"/>
@@ -26,5 +26,5 @@
         <logger name="com.allaroundjava" level="debug" additivity="false">
             <appender-ref ref="SQLLog"/>
         </logger>
-    </loggers>-->
+    </loggers>
 </configuration>

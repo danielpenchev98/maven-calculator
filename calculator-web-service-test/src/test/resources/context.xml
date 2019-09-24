@@ -2,9 +2,10 @@
 <Context>
     <Resource name="jdbc/DefaultDB"
               global="jdbc/DefaultDB"
+              factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory"
               auth="Container"
               type="javax.sql.DataSource"
               driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
-              url="jdbc:derby:memory:calculator;create=true"
-              factory="org.apache.commons.dbcp.BasicDataSourceFactory"/>
+              username="" password=""
+              url="jdbc:derby:memory:calculator;create=true"/>
 </Context>

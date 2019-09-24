@@ -47,7 +47,7 @@ public class CalculateRestServiceIT {
 
     @Test
     public void doGet_LegalExpression() throws Exception {
-        Response response = page.getResponseFromTheGeneratedPage("");
+        Response response = page.getResponseFromTheGeneratedPage("((121/(10-(-1))))-(-89)");
         verifyResponseCode(response, OK);
 
         String calculationResult = response.readEntity(String.class);
