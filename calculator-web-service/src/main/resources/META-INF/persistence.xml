@@ -8,8 +8,6 @@
 
       <properties>
          <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver"/>
-         <property name="hibernate.connection.username" value="" />
-         <property name="hibernate.connection.password" value="" />
 
          <!-- automatically exports schema DDL to database when EntityManager is created -->
          <property name="hibernate.hbm2ddl.auto" value="create" />
