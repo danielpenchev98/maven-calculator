@@ -12,4 +12,8 @@
             <property name="serverName">arquillian-tomcat-embedded-8</property>
         </configuration>
     </container>
+    <!--<extension qualifier="persistence">
+        <property name="defaultDataSource">"jdbc:derby:memory:calculator;create=true"</property>
+    </extension>-->
+
 </arquillian>

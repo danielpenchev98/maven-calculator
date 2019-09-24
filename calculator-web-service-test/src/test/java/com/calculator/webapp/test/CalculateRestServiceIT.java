@@ -3,6 +3,8 @@ package com.calculator.webapp.test;
 import com.calculator.webapp.test.webclient.MainPage;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.persistence.ShouldMatchDataSet;
+import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.importer.ZipImporter;
@@ -45,8 +47,10 @@ public class CalculateRestServiceIT {
     }
 
     @Test
+    //@UsingDataSet("datasets/emptyDataSet.xml")
+    //@ShouldMatchDataSet("datasets/expected-valid-equation.xml")
     public void doGet_LegalExpression() throws Exception {
-        Response response = page.getResponseFromTheGeneratedPage("((100/0^0/100)*10)-(-90)");
+        Response response = page.getResponseFromTheGeneratedPage("");
         verifyResponseCode(response, OK);
 
         String calculationResult = response.readEntity(String.class);
@@ -63,6 +67,7 @@ public class CalculateRestServiceIT {
     @Test
     public void doGet_IllegalExpression_SequentialComponents() throws Exception {
         Response response = page.getResponseFromTheGeneratedPage("-1.0 2 + 3");
+
         verifyResponseCode(response, BAD_REQUEST);
         verifyCalculationErrorMessage(response, 400, "Sequential components of the same type");
     }
@@ -70,6 +75,7 @@ public class CalculateRestServiceIT {
     @Test
     public void doGet_IllegalExpression_MissingOperator() throws Exception {
         Response response = page.getResponseFromTheGeneratedPage("1(-1.0)/2");
+
         verifyResponseCode(response, BAD_REQUEST);
         verifyCalculationErrorMessage(response, 400, "Missing operator between a number and an opening bracket or a closing bracket and a number");
     }
@@ -77,6 +83,7 @@ public class CalculateRestServiceIT {
     @Test
     public void doGet_IllegalExpression_EmptyEquation() throws Exception {
         Response response = page.getResponseFromTheGeneratedPage("     ");
+
         verifyResponseCode(response, BAD_REQUEST);
         verifyCalculationErrorMessage(response, 400, "Empty equation");
     }
@@ -84,6 +91,7 @@ public class CalculateRestServiceIT {
     @Test
     public void doGet_IllegalExpression_EmptyBrackets() throws Exception {
         Response response = page.getResponseFromTheGeneratedPage("()");
+
         verifyResponseCode(response, BAD_REQUEST);
         verifyCalculationErrorMessage(response, 400, "Empty brackets");
     }
@@ -91,6 +99,7 @@ public class CalculateRestServiceIT {
     @Test
     public void doGet_IllegalExpression_EquationBeginningWithOperation() throws Exception {
         Response response = page.getResponseFromTheGeneratedPage("^1/2+3");
+
         verifyResponseCode(response, BAD_REQUEST);
         verifyCalculationErrorMessage(response, 400, "Scope of equation ending or beginning with an operator");
     }
@@ -98,6 +107,7 @@ public class CalculateRestServiceIT {
     @Test
     public void doGet_IllegalExpression_DivisionByZero() throws Exception {
         Response response = page.getResponseFromTheGeneratedPage("1/0");
+
         verifyResponseCode(response, BAD_REQUEST);
         verifyCalculationErrorMessage(response, 400, "Division by zero");
     }
@@ -105,6 +115,7 @@ public class CalculateRestServiceIT {
     @Test
     public void doGet_IllegalExpression_UnsupportedComponent() throws Exception {
         Response response = page.getResponseFromTheGeneratedPage("1#3");
+
         verifyResponseCode(response, BAD_REQUEST);
         verifyCalculationErrorMessage(response, 400, "Unsupported component :#");
     }
@@ -113,8 +124,10 @@ public class CalculateRestServiceIT {
         assertThat(response.getStatus(), equalTo(expectedCode));
     }
 
+
     private void verifyCalculationErrorMessage(final Response response, final int expectedErrorCode, final String expectedMessage) {
         String actual=response.readEntity(String.class);
+
         assertThat(actual, containsString("\"errorCode\":" + expectedErrorCode));
         assertThat(actual, containsString("\"message\":\"" + expectedMessage + "\""));
     }

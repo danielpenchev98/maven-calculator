@@ -42,6 +42,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- arquillian persistence extension -->
+        <dependency>
+            <groupId>org.jboss.arquillian.extension</groupId>
+            <artifactId>arquillian-persistence-dbunit</artifactId>
+            <version>1.0.0.Alpha7</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- tomcat runtime -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
@@ -65,7 +73,6 @@
             <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
             <scope>test</scope>
         </dependency>
-
 
         <!-- Jersey client -->
         <dependency>
@@ -93,6 +100,7 @@
             <artifactId>jersey-hk2</artifactId>
             <version>${jersey.version}</version>
         </dependency>
+
     </dependencies>
 
     <dependencyManagement>
