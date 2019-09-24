@@ -1,5 +1,5 @@
 package com.calculator.webapp.db.dao;
-
+/*
 
 import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 
@@ -61,4 +61,4 @@ public class CalculatorDaoImpl implements Dao<Long, CalculatorResponseDTO> {
         action.accept(manager,item);
         manager.getTransaction().commit();
     }
-}
+}*/

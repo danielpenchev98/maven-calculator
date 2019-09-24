@@ -3,8 +3,6 @@ package com.calculator.webapp.test;
 import com.calculator.webapp.test.webclient.MainPage;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.ShouldMatchDataSet;
-import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.importer.ZipImporter;
@@ -37,7 +35,8 @@ public class CalculateRestServiceIT {
         WebArchive archive = ShrinkWrap.create(ZipImporter.class, "calculator.war")
                 .importFrom(new File("target" + File.separator + "lib" + File.separator + "calculator-web-service-1.0-SNAPSHOT.war"))
                 .as(WebArchive.class)
-                .addAsResource("arquillian.xml");
+                .addAsResource("arquillian.xml")
+                .addAsManifestResource("context.xml","context.xml");
         return archive;
     }
 
@@ -47,8 +46,6 @@ public class CalculateRestServiceIT {
     }
 
     @Test
-    //@UsingDataSet("datasets/emptyDataSet.xml")
-    //@ShouldMatchDataSet("datasets/expected-valid-equation.xml")
     public void doGet_LegalExpression() throws Exception {
         Response response = page.getResponseFromTheGeneratedPage("");
         verifyResponseCode(response, OK);

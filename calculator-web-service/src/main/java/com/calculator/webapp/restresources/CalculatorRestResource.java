@@ -2,8 +2,8 @@ package com.calculator.webapp.restresources;
 
 import com.calculator.core.CalculatorApp;
 import com.calculator.core.exceptions.BadInputException;
-import com.calculator.webapp.db.dao.CalculatorDaoImpl;
-import com.calculator.webapp.db.dto.CalculatorResponseDTO;
+//import com.calculator.webapp.db.dao.CalculatorDaoImpl;
+//import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import com.calculator.webapp.restresponse.CalculationError;
 import com.calculator.webapp.restresponse.CalculationResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,13 +29,13 @@ public class CalculatorRestResource {
     private static final Logger logger = LogManager.getLogger(CalculatorRestResource.class);
     private final ObjectMapper mapper;
     private final CalculatorApp calculator;
-    private final CalculatorDaoImpl dao;
+    //private final CalculatorDaoImpl dao;
 
     @Inject
-    public CalculatorRestResource(final ObjectMapper mapper, final CalculatorApp calculator, final CalculatorDaoImpl dao) {
+    public CalculatorRestResource(final ObjectMapper mapper, final CalculatorApp calculator/*, final CalculatorDaoImpl dao*/) {
         this.mapper=mapper;
         this.calculator=calculator;
-        this.dao=dao;
+     //   this.dao=dao;
     }
 
     //TODO during the execution of the rest service to log the sql statements - currently isnt working
@@ -60,11 +60,11 @@ public class CalculatorRestResource {
             return createResponse(Response.Status.INTERNAL_SERVER_ERROR, systemError);
         }
         finally {
-            saveCalculationResponse(equation,responseMsg);
+           // saveCalculationResponse(equation,responseMsg);
         }
     }
 
-    @GET
+  /*  @GET
     @Path("/calculationHistory")
     public Response doGetCalculationHistory() throws JsonProcessingException {
         List<CalculatorResponseDTO> calculationHistory=dao.getAllItems();
@@ -75,7 +75,7 @@ public class CalculatorRestResource {
         Date currentTime = new Date();
         CalculatorResponseDTO test = new CalculatorResponseDTO(equation,responseMsg,currentTime);
         dao.saveItem(test);
-    }
+    }*/
 
     private Response createResponse(final Response.Status statusCode, final Object result) throws JsonProcessingException {
         String jsonResult = mapper.writeValueAsString(result);
