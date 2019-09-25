@@ -90,7 +90,7 @@ public class CalculateRestServiceIT {
 
     @Test
     public void doGet_IllegalExpression_EquationBeginningWithOperation() throws Exception {
-        Response response = page.getResponseFromTheGeneratedPage("^1/2+3");
+        Response response = page.getResponseFromTheGeneratedPage("*1/2+3");
         verifyResponseCode(response, BAD_REQUEST);
         verifyCalculationErrorMessage(response, 400, "Scope of equation ending or beginning with an operator");
     }
