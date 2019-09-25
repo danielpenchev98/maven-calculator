@@ -1,20 +1,30 @@
 package com.calculator.webapp.test;
 
 import com.calculator.webapp.test.webclient.MainPage;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.util.fileloader.FlatXmlDataFileLoader;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.importer.ZipImporter;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.net.URL;
+import java.sql.DriverManager;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,8 +32,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(Arquillian.class)
 public class CalculateRestServiceIT {
 
-    private final static int BAD_REQUEST = Response.Status.BAD_REQUEST.getStatusCode();
-    private final static int OK = Response.Status.OK.getStatusCode();
+    private static final int BAD_REQUEST = Response.Status.BAD_REQUEST.getStatusCode();
+    private static final int OK = Response.Status.OK.getStatusCode();
+
+    private static final String emptyDataSetPath = "/datasets/emptyDataSet.xml";
+    private static final String oneEntityDataSetPath = "/datasets/oneEntityDataSet.xml";
+
+    private static IDatabaseConnection databaseConnection;
+
+    private static final String connectionUrl="jdbc:derby:memory:calculator;create=true";
+    private static final String DBUsername="";
+    private static final String DBPassword="";
+
 
     @ArquillianResource
     private URL url;
@@ -40,6 +60,16 @@ public class CalculateRestServiceIT {
         return archive;
     }
 
+    @BeforeClass
+    public static void setUpDB() throws Exception {
+        databaseConnection = new DatabaseConnection(DriverManager.getConnection(connectionUrl, DBUsername, DBPassword));
+    }
+
+    @AfterClass
+    public static void tearDownDB() throws Exception {
+        databaseConnection.close();
+    }
+
     @Before
     public void setUp() {
         page = new MainPage(url);
@@ -47,12 +77,19 @@ public class CalculateRestServiceIT {
 
     @Test
     public void doGet_LegalExpression() throws Exception {
+        setInitialTableInDataBase(emptyDataSetPath);
+
         Response response = page.getResponseFromTheGeneratedPage("((121/(10-(-1))))-(-89)");
         verifyResponseCode(response, OK);
 
         String calculationResult = response.readEntity(String.class);
         assertThat(calculationResult, containsString("\"result\":\"100.0\""));
+
+        ITable actualTable = getActualTable("calculator_responses");
+        assertThat(actualTable.getRowCount(),is(1));
     }
+
+
 
     @Test
     public void doGet_IllegalExpression_MissingBracket() throws Exception {
@@ -95,7 +132,7 @@ public class CalculateRestServiceIT {
 
     @Test
     public void doGet_IllegalExpression_EquationBeginningWithOperation() throws Exception {
-        Response response = page.getResponseFromTheGeneratedPage("^1/2+3");
+        Response response = page.getResponseFromTheGeneratedPage("*1/2+3");
 
         verifyResponseCode(response, BAD_REQUEST);
         verifyCalculationErrorMessage(response, 400, "Scope of equation ending or beginning with an operator");
@@ -128,5 +165,23 @@ public class CalculateRestServiceIT {
         assertThat(actual, containsString("\"errorCode\":" + expectedErrorCode));
         assertThat(actual, containsString("\"message\":\"" + expectedMessage + "\""));
     }
+
+    private void setInitialTableInDataBase(final String pathToDataSet) throws Exception {
+        IDataSet initialDataSet = getDataSet(pathToDataSet);
+        uploadDataSet(initialDataSet);
+    }
+
+    private IDataSet getDataSet(final String path) {
+        return new FlatXmlDataFileLoader().load(path);
+    }
+
+    private void uploadDataSet(final IDataSet wantedDataSet) throws Exception {
+        DatabaseOperation.CLEAN_INSERT.execute(databaseConnection, wantedDataSet);
+    }
+
+    private ITable getActualTable(final String tableName) throws Exception {
+        return databaseConnection.createDataSet().getTable(tableName);
+    }
+
 }
 
