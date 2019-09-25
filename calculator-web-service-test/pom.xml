@@ -14,10 +14,14 @@
     <properties>
         <jersey.version>2.29</jersey.version>
         <tomcat.embedded.core.version>8.5.43</tomcat.embedded.core.version>
+        <tomcat.dbcp.version>8.5.43</tomcat.dbcp.version>
         <tomcat.embedded.jasper.version>8.5.2</tomcat.embedded.jasper.version>
         <tomcat.embedded.juli.version>8.5.2</tomcat.embedded.juli.version>
         <arquillian.tomcat.embedded.version>1.0.0</arquillian.tomcat.embedded.version>
         <arquillian.junit.container.version>1.4.1.Final</arquillian.junit.container.version>
+        <arquillian.bom.version>1.4.0.Final</arquillian.bom.version>
+        <dbunit.version>2.6.0</dbunit.version>
+        <derby.version>10.14.2.0</derby.version>
     </properties>
 
     <dependencies>
@@ -47,7 +51,7 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-dbcp</artifactId>
-            <version>8.5.43</version>
+            <version>${tomcat.dbcp.version}</version>
         </dependency>
 
         <!-- tomcat runtime -->
@@ -105,7 +109,7 @@
         <dependency>
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>
-            <version>2.6.0</version>
+            <version>${dbunit.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -114,14 +118,14 @@
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
-            <version>10.14.2.0</version>
+            <version>${derby.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.derby/derbyclient -->
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derbyclient</artifactId>
-            <version>10.14.2.0</version>
+            <version>${derby.version}</version>
         </dependency>
 
     </dependencies>
@@ -131,7 +135,7 @@
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
-                <version>1.4.0.Final</version>
+                <version>${arquillian.bom.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
