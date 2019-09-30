@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -19,8 +18,10 @@
     <jackson.version>2.9.9</jackson.version>
     <jersey.version>2.29</jersey.version>
     <tomcat7.plugin.version>2.2</tomcat7.plugin.version>
-    <log4j.version>2.8.2</log4j.version>
+    <log4j.version>2.12.1</log4j.version>
     <jaxrs.version>2.1.1</jaxrs.version>
+    <hibernate.core.version>5.4.4.Final</hibernate.core.version>
+    <liquibase.propertyFile>src/main/resources/properties/liquibase.properties</liquibase.propertyFile>
   </properties>
 
   <dependencies>
@@ -31,7 +32,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-web</artifactId>
+      <artifactId>log4j-core</artifactId>
       <version>${log4j.version}</version>
     </dependency>
     <dependency>
@@ -74,12 +75,57 @@
       <version>${jersey.version}</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.ext/jersey-bean-validation -->
+    <dependency>
+      <groupId>org.glassfish.jersey.ext</groupId>
+      <artifactId>jersey-bean-validation</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate.core.version}</version>
+    </dependency>
+
+
+    <!-- https://mvnrepository.com/artifact/org.dbunit/dbunit -->
+   <dependency>
+      <groupId>org.dbunit</groupId>
+      <artifactId>dbunit</artifactId>
+      <version>2.6.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.derby/derby -->
+    <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derby</artifactId>
+      <version>10.14.2.0</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.derby/derbyclient -->
+   <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derbyclient</artifactId>
+      <version>10.14.2.0</version>
+    </dependency>
+
     <!--CORS-->
     <dependency>
       <groupId>com.thetransactioncompany</groupId>
       <artifactId>cors-filter</artifactId>
       <version>2.8</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.liquibase.ext/liquibase-hanadb -->
+    <dependency>
+      <groupId>org.liquibase.ext</groupId>
+      <artifactId>liquibase-hanadb</artifactId>
+      <version>2.0</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -114,10 +160,23 @@
             <groupId>com.sap.cloud</groupId>
             <artifactId>neo-java-web-maven-plugin</artifactId>
             <version>3.83.3</version>
+            <configuration>
+              <!--Location of the SAP Cloud Platform SDK for Neo environment-->
+              <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
+
+              <!--Configuration for the above deploy goal-->
+              <host>https://hanatrial.ondemand.com</host>
+              <mavenSettingsServerId>sap-hana-cloud-credentials</mavenSettingsServerId>
+              <account>i515142trial</account>
+              <application>calcwebservice</application>
+              <id>testdb1</id>
+              <dbUser>${hanadb.user}</dbUser>
+              <dbPassword>${hanadb.password}</dbPassword>
+              <source>${project.build.directory}/${project.artifactId}.war</source>
+            </configuration>
             <executions>
               <execution>
                 <id>sdk</id>
-                <!--Choose a phase when to install the SDK -->
                 <phase>initialize</phase>
                 <goals>
                   <!--Call the SDK installation goal of this plugin-->
@@ -125,34 +184,49 @@
                 </goals>
               </execution>
               <execution>
-                <id>deploy</id>
-                <!--Choose a phase when to execute the goal-->
+                <id>start-db-hana</id>
                 <phase>install</phase>
                 <goals>
-                  <!--Call the dedicated deploy goal of this plugin-->
+                  <goal>start-db-hana</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>stop-application</id>
+                <phase>install</phase>
+                <goals>
                   <goal>stop</goal>
-                  <goal>deploy</goal>
-                  <goal>start</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>unbind-application-to-db</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>unbind-db</goal>
                 </goals>
                 <configuration>
-                  <!--Configuration for the above deploy goal-->
-                  <host>https://hanatrial.ondemand.com</host>
-                  <mavenSettingsServerId>sap-hana-cloud-credentials</mavenSettingsServerId>
-                  <account>i515142trial</account>
-                  <application>calculatorwebservice</application>
-                  <source>${project.build.directory}/${project.artifactId}.war</source>
+                  <failOnError>false</failOnError>
                 </configuration>
               </execution>
+              <execution>
+                <id>deploy-application</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>deploy</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>bind-db-start-application</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>bind-db</goal>
+                  <goal>start</goal>
+                </goals>
+              </execution>
             </executions>
-            <configuration>
-              <!--Location of the SAP Cloud Platform SDK for Neo environment-->
-              <sdkInstallPath>${project.build.directory}/sdk</sdkInstallPath>
-            </configuration>
           </plugin>
         </plugins>
       </build>
     </profile>
   </profiles>
-
 
 </project>

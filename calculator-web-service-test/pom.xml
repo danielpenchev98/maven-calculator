@@ -14,10 +14,14 @@
     <properties>
         <jersey.version>2.29</jersey.version>
         <tomcat.embedded.core.version>8.5.43</tomcat.embedded.core.version>
+        <tomcat.dbcp.version>8.5.43</tomcat.dbcp.version>
         <tomcat.embedded.jasper.version>8.5.2</tomcat.embedded.jasper.version>
         <tomcat.embedded.juli.version>8.5.2</tomcat.embedded.juli.version>
         <arquillian.tomcat.embedded.version>1.0.0</arquillian.tomcat.embedded.version>
         <arquillian.junit.container.version>1.4.1.Final</arquillian.junit.container.version>
+        <arquillian.bom.version>1.4.0.Final</arquillian.bom.version>
+        <dbunit.version>2.6.0</dbunit.version>
+        <derby.version>10.14.2.0</derby.version>
     </properties>
 
     <dependencies>
@@ -27,7 +31,7 @@
             <version>1.0-SNAPSHOT</version>
             <type>war</type>
         </dependency>
-        
+
         <!-- arquillian -->
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
@@ -40,6 +44,14 @@
             <artifactId>arquillian-tomcat-embedded-8</artifactId>
             <version>${arquillian.tomcat.embedded.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- very important for tomcat8 in order to function with datasources-->
+        <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-dbcp -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-dbcp</artifactId>
+            <version>${tomcat.dbcp.version}</version>
         </dependency>
 
         <!-- tomcat runtime -->
@@ -65,7 +77,6 @@
             <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
             <scope>test</scope>
         </dependency>
-
 
         <!-- Jersey client -->
         <dependency>
@@ -93,6 +104,38 @@
             <artifactId>jersey-hk2</artifactId>
             <version>${jersey.version}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.dbunit/dbunit -->
+        <dependency>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <version>${dbunit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.apache.derby/derby -->
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>${derby.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.derby/derbyclient -->
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbyclient</artifactId>
+            <version>${derby.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20190722</version>
+        </dependency>
+
+
     </dependencies>
 
     <dependencyManagement>
@@ -100,7 +143,7 @@
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
-                <version>1.4.0.Final</version>
+                <version>${arquillian.bom.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>

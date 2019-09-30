@@ -7,6 +7,7 @@ module.exports = function(config) {
             paths: {
                 webapp: "webapp"
             },
+            //to revert back to https if karma does not work
             url: "https://localhost:9000",
             testpage: "webapp/test/testsuite.qunit.html"
         },

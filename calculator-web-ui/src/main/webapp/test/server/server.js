@@ -13,8 +13,8 @@ sap.ui.define(
         let okCode = 200;
 
         //change the baseUrl in case the domain changes
-        let baseUrl="https://calculatorwebservii515142trial.hanatrial.ondemand.com/calculator-web-service";
-        let serviceUrl="/api/v1/calculate";
+        let baseUrl="https://calcwebservicei515142trial.hanatrial.ondemand.com/calculator-web-service";
+        let serviceUrl="/api/v1/calculator/calculate";
         let queryParam="equation";
         let urlWithoutQueryParamValue = baseUrl + serviceUrl + '?' + queryParam + '=';
 

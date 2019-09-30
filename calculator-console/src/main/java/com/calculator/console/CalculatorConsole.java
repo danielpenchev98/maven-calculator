@@ -18,6 +18,7 @@ public class CalculatorConsole {
         public static void main(String[] argc)
         {
             if (hasInvalidNumberOfArguments(argc.length)) {
+                logger.error("Invalid number of arguments \n");
                 System.out.print("Invalid number of arguments");
                 return;
             }

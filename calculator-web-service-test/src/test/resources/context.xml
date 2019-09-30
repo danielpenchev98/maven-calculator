@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context>
+    <Resource name="jdbc/DefaultDB"
+              global="jdbc/DefaultDB"
+              factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory"
+              auth="Container"
+              type="javax.sql.DataSource"
+              driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
+              username="" password=""
+              url="jdbc:derby:memory:calculator;create=true"/>
+</Context>
