@@ -30,7 +30,7 @@ public class DatabasePage {
     }
 
     public void closeDbConnection() throws SQLException {
-        databaseConnection.close();
+        databaseConnection.getConnection().close();
     }
 
 

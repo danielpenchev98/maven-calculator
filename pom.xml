@@ -23,8 +23,8 @@
         <skipITs>${skipAllTests}</skipITs>
         <skipUTs>${skipAllTests}</skipUTs>
         <junit.version>4.12</junit.version>
-        <failsafe.plugin.version>3.0.0-M3</failsafe.plugin.version>
-        <surefire.plugin.version>3.0.0-M3</surefire.plugin.version>
+        <failsafe.plugin.version>2.22.2</failsafe.plugin.version>
+        <surefire.plugin.version>2.22.2</surefire.plugin.version>
         <compiler.plugin.version>3.6.1</compiler.plugin.version>
         <compiler.source.version>8</compiler.source.version>
         <compiler.target.version>8</compiler.target.version>
