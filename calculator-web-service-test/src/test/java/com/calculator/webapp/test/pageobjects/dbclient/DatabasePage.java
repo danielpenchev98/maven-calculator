@@ -18,12 +18,15 @@ import static org.dbunit.Assertion.assertEquals;
 
 public class DatabasePage {
 
+    private static final String CONNECTION_URL="jdbc:derby:memory:calculator;create=true";
+    private static final String DB_USERNAME="";
+    private static final String DB_PASSWORD="";
     private static final String RESTART_IDENTITY_COUNTER = "ALTER TABLE calculator_responses ALTER COLUMN id RESTART WITH 1";
 
     private IDatabaseConnection databaseConnection;
 
-    public DatabasePage(final String databaseUrl,final String user,final String password) throws Exception {
-        databaseConnection = new DatabaseConnection(DriverManager.getConnection(databaseUrl,user,password));
+    public DatabasePage() throws Exception {
+        databaseConnection = new DatabaseConnection(DriverManager.getConnection(CONNECTION_URL,DB_USERNAME,DB_PASSWORD));
     }
 
     public void closeDbConnection() throws SQLException {
