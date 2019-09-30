@@ -35,9 +35,9 @@ public class CalculatorDaoImplTest {
 
     @BeforeClass
     public static void setUpDB() throws Exception {
-        databaseConnection = new DatabaseConnection(DriverManager.getConnection(DerbyConfiguration.connectionUrl,
-                                                                                DerbyConfiguration.DBUsername,
-                                                                                DerbyConfiguration.DBPassword));
+        databaseConnection = new DatabaseConnection(DriverManager.getConnection(DerbyConfiguration.CONNECTION_URL,
+                                                                                DerbyConfiguration.DB_USERNAME,
+                                                                                DerbyConfiguration.DB_PASSWORD));
     }
 
     @AfterClass
@@ -60,7 +60,7 @@ public class CalculatorDaoImplTest {
     @Test
     public void getAllItems_populatedDataSet_expectedSize() throws Exception {
         resetStateOfDatabase();
-        setInitialTableInDataBase(DatasetProvider.multipleEntitiesDataSetPath);
+        setInitialTableInDataBase(DatasetProvider.MULTIPLE_ENTITIES_DATASET_PATH);
 
         final int expectedNumberOfEntities = 6;
         List<CalculatorResponseDTO> actualItems = dao.getAllItems();
@@ -72,7 +72,7 @@ public class CalculatorDaoImplTest {
     @Test
     public void getItem_populatedDataSet_expectedItem() throws Exception {
         resetStateOfDatabase();
-        setInitialTableInDataBase(DatasetProvider.multipleEntitiesDataSetPath);
+        setInitialTableInDataBase(DatasetProvider.MULTIPLE_ENTITIES_DATASET_PATH);
 
         CalculatorResponseDTO actualItem = dao.getItem(6L);
 
@@ -83,9 +83,9 @@ public class CalculatorDaoImplTest {
     @Test
     public void saveItem_emptyDataSet_tableSize1() throws Exception {
         resetStateOfDatabase();
-        setInitialTableInDataBase(DatasetProvider.emptyDataSetPath);
+        setInitialTableInDataBase(DatasetProvider.EMPTY_DATASET_PATH);
 
-        ITable expectedTable = getDataSet(DatasetProvider.oneEntityDataSetPath).getTable(responseTableName);
+        ITable expectedTable = getDataSet(DatasetProvider.ONE_ENTITY_DATASET_PATH).getTable(responseTableName);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
         CalculatorResponseDTO entity = new CalculatorResponseDTO("1+1","2.0",currentDateTime);
@@ -100,7 +100,7 @@ public class CalculatorDaoImplTest {
     @Test
     public void deleteItem_oneEntityDataSet_emptyTable() throws Exception {
         resetStateOfDatabase();
-        setInitialTableInDataBase(DatasetProvider.oneEntityDataSetPath);
+        setInitialTableInDataBase(DatasetProvider.ONE_ENTITY_DATASET_PATH);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
         CalculatorResponseDTO entity = new CalculatorResponseDTO("1+1","2.0",currentDateTime);
