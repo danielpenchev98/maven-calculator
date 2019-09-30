@@ -92,7 +92,6 @@ public class TestSuite1 extends CalculateRestServiceIT {
         verifyCalculationErrorMessage(response, 400, "Unsupported component :#");
     }
 
-    @Ignore
     @Test
     public void doGetCalculationHistory_requestWholeHistory() throws Exception {
         dbPage.setInitialTableInDataBase(DatasetPaths.CALCULATION_HISTORY_DATASET_PATH);
