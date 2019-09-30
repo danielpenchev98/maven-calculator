@@ -15,6 +15,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -29,19 +31,13 @@ public class CalculatorDaoImplTest {
     private EntityManager manager;
     private CalculatorDaoImpl dao;
 
-
-    private static final String multipleEntitiesDataSetPath = "/datasets/multipleEntitiesDataSet.xml";
-    private static final String emptyDataSetPath = "/datasets/emptyDataSet.xml";
-    private static final String oneEntityDataSetPath = "/datasets/oneEntityDataSet.xml";
     private static final String responseTableName = "calculator_responses";
-
-    private static final String connectionUrl="jdbc:derby:memory:calculator;create=true";
-    private static final String DBUsername="";
-    private static final String DBPassword="";
 
     @BeforeClass
     public static void setUpDB() throws Exception {
-        databaseConnection = new DatabaseConnection(DriverManager.getConnection(connectionUrl, DBUsername, DBPassword));
+        databaseConnection = new DatabaseConnection(DriverManager.getConnection(DerbyConfiguration.connectionUrl,
+                                                                                DerbyConfiguration.DBUsername,
+                                                                                DerbyConfiguration.DBPassword));
     }
 
     @AfterClass
@@ -63,7 +59,8 @@ public class CalculatorDaoImplTest {
 
     @Test
     public void getAllItems_populatedDataSet_expectedSize() throws Exception {
-        setInitialTableInDataBase(multipleEntitiesDataSetPath);
+        resetStateOfDatabase();
+        setInitialTableInDataBase(DatasetProvider.multipleEntitiesDataSetPath);
 
         final int expectedNumberOfEntities = 6;
         List<CalculatorResponseDTO> actualItems = dao.getAllItems();
@@ -74,7 +71,8 @@ public class CalculatorDaoImplTest {
 
     @Test
     public void getItem_populatedDataSet_expectedItem() throws Exception {
-        setInitialTableInDataBase(multipleEntitiesDataSetPath);
+        resetStateOfDatabase();
+        setInitialTableInDataBase(DatasetProvider.multipleEntitiesDataSetPath);
 
         CalculatorResponseDTO actualItem = dao.getItem(6L);
 
@@ -84,9 +82,10 @@ public class CalculatorDaoImplTest {
 
     @Test
     public void saveItem_emptyDataSet_tableSize1() throws Exception {
-        setInitialTableInDataBase(emptyDataSetPath);
+        resetStateOfDatabase();
+        setInitialTableInDataBase(DatasetProvider.emptyDataSetPath);
 
-        ITable expectedTable = getDataSet(oneEntityDataSetPath).getTable(responseTableName);
+        ITable expectedTable = getDataSet(DatasetProvider.oneEntityDataSetPath).getTable(responseTableName);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
         CalculatorResponseDTO entity = new CalculatorResponseDTO("1+1","2.0",currentDateTime);
@@ -100,7 +99,8 @@ public class CalculatorDaoImplTest {
 
     @Test
     public void deleteItem_oneEntityDataSet_emptyTable() throws Exception {
-        setInitialTableInDataBase(oneEntityDataSetPath);
+        resetStateOfDatabase();
+        setInitialTableInDataBase(DatasetProvider.oneEntityDataSetPath);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
         CalculatorResponseDTO entity = new CalculatorResponseDTO("1+1","2.0",currentDateTime);
@@ -113,6 +113,10 @@ public class CalculatorDaoImplTest {
         assertThat(actualTable.getRowCount(), is(emptyTableSize));
     }
 
+    private void resetStateOfDatabase() throws SQLException {
+        PreparedStatement statement = databaseConnection.getConnection().prepareStatement(DerbyConfiguration.RESTART_IDENTITY_COUNTER);
+        statement.executeUpdate();
+    }
 
     private void setUpEntityManager() {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("test-unit");
