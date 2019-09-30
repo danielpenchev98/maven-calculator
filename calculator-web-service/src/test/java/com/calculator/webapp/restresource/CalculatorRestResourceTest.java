@@ -24,7 +24,6 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 
-@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class CalculatorRestResourceTest {
 
