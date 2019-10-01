@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Context>
+<Context antiResourceLocking="true">
     <Resource name="jdbc/DefaultDB"
               global="jdbc/DefaultDB"
               factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory"
@@ -8,4 +8,5 @@
               driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
               username="" password=""
               url="jdbc:derby:memory:calculator;create=true"/>
+    <JarScanner scanManifest="false"/>
 </Context>
