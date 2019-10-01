@@ -166,13 +166,13 @@
 
               <!--Configuration for the above deploy goal-->
               <host>https://hanatrial.ondemand.com</host>
-              <username>${env.neoUsername}</username>
-              <password>${env.neoPassword}</password>
-              <account>${env.neoAccount}</account>
+              <user>${env.NEO_USER}</user>
+              <password>${env.NEO_PASSWORD}</password>
+              <account>${env.NEO_ACCOUNT}</account>
               <application>calcwebservice</application>
-              <id>${env.databaseId}</id>
-              <dbUser>${env.hanadbUsername}</dbUser>
-              <dbPassword>${env.hanadbPassword}</dbPassword>
+              <id>${env.HANADB_DATABASE_ID}</id>
+              <dbUser>${env.HANADB_USER}</dbUser>
+              <dbPassword>${env.HANADB_PASSWORD}</dbPassword>
               <source>${project.build.directory}/${project.artifactId}.war</source>
             </configuration>
             <executions>

@@ -53,9 +53,9 @@
                  <artifactId>cf-maven-plugin</artifactId>
                <configuration>
                  <target>https://api.cf.eu10.hana.ondemand.com</target>
-                 <username>${env.cfUsername}</username>
-                 <password>${env.cfPassword}</password>
-                 <org>${env.cfOrganization}</org>
+                 <username>${env.CF_USERNAME}</username>
+                 <password>${env.CF_PASSWORD}</password>
+                 <org>${env.CF_ORGANIZATION}</org>
                  <space>dev</space>
                  <appname>calcwebui</appname>
                  <memory>1024</memory>
