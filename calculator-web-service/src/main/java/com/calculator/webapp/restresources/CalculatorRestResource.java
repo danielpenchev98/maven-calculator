@@ -45,23 +45,36 @@ public class CalculatorRestResource {
     public Response doGetCalculationResult(@NotNull @QueryParam("equation") String equation) throws JsonProcessingException {
         String responseMsg="";
         try {
-            responseMsg=getCalculationResult(equation);
-            CalculationResult calculationResult = new CalculationResult(responseMsg);
-            return createResponse(Response.Status.OK, calculationResult);
+            responseMsg = getCalculationResult(equation);
+            return getSuccessfulRequestResponse(responseMsg);
         } catch (BadInputException badInput) {
             logger.warn("User input error",badInput);
             responseMsg=badInput.getMessage();
-            CalculationError userInputError = new CalculationError(Response.Status.BAD_REQUEST.getStatusCode(),responseMsg);
-            return createResponse(Response.Status.BAD_REQUEST, userInputError);
+            return getErrorRequestResponse(Response.Status.BAD_REQUEST,responseMsg);
         } catch (Exception ex) {
             logger.error("Problem with service :\n", ex);
             responseMsg=ex.getMessage();
-            CalculationError systemError = new CalculationError(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), responseMsg);
-            return createResponse(Response.Status.INTERNAL_SERVER_ERROR, systemError);
+            return getErrorRequestResponse(Response.Status.INTERNAL_SERVER_ERROR,responseMsg);
         }
         finally {
             saveCalculationResponse(equation,responseMsg);
         }
+    }
+
+    private Response getSuccessfulRequestResponse(final String responseMsg) throws JsonProcessingException {
+        CalculationResult calculationResult = new CalculationResult(responseMsg);
+        return createResponse(Response.Status.OK,calculationResult);
+    }
+
+    private Response getErrorRequestResponse(final Response.Status status, final String errorMsg) throws JsonProcessingException {
+        CalculationError errorResponseBody = new CalculationError(status.getStatusCode(),errorMsg);
+        return createResponse(status,errorResponseBody);
+    }
+
+
+    private Response createResponse(final Response.Status status,final Object responseBody) throws JsonProcessingException {
+        String jsonMsgBody = mapper.writeValueAsString(responseBody);
+        return  Response.status(status).entity(jsonMsgBody).build();
     }
 
     @GET
@@ -75,11 +88,6 @@ public class CalculatorRestResource {
         Date currentTime = new Date();
         CalculatorResponseDTO test = new CalculatorResponseDTO(equation,responseMsg,currentTime);
         dao.saveItem(test);
-    }
-
-    private Response createResponse(final Response.Status statusCode, final Object result) throws JsonProcessingException {
-        String jsonResult = mapper.writeValueAsString(result);
-        return Response.status(statusCode).entity(jsonResult).build();
     }
 
     private String getCalculationResult(final String equation) throws Exception {
