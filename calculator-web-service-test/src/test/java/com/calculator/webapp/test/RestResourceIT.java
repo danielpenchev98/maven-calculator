@@ -1,7 +1,7 @@
 package com.calculator.webapp.test;
 
 import com.calculator.webapp.test.pageobjects.dbclient.DatabasePage;
-import com.calculator.webapp.test.pageobjects.webclient.ResourcePage;
+import com.calculator.webapp.test.pageobjects.webclient.CalculatorPage;
 import org.eu.ingwar.tools.arquillian.extension.suite.annotations.ArquillianSuiteDeployment;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -24,7 +24,7 @@ public class RestResourceIT {
     @ArquillianResource
     protected URL baseUrl;
 
-    protected ResourcePage resourcePage;
+    protected CalculatorPage calculatorPage;
 
     @Deployment(testable = false)
     public static WebArchive createTestArchive() throws InterruptedException {
@@ -48,7 +48,7 @@ public class RestResourceIT {
 
     @Before
     public void setUp() throws Exception{
-        resourcePage = new ResourcePage();
+        calculatorPage = new CalculatorPage(baseUrl);
         dbPage.resetStateOfDatabase();
         dbPage.setInitialTableInDataBase(DatasetPaths.EMPTY_DATASET_PATH);
     }

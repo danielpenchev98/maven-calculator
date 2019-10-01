@@ -1,9 +1,8 @@
 package com.calculator.webapp.test;
 
-import com.calculator.webapp.test.pageobjects.webclient.requestobjects.CalculationHistoryRequestUrl;
-import com.calculator.webapp.test.pageobjects.webclient.requestobjects.CalculationResultRequestUrl;
 import org.jboss.arquillian.junit.Arquillian;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -20,75 +19,73 @@ public class CalculationResultClientIT extends RestResourceIT {
 
     @Test
     public void doGetCalculationResult_legalExpression() throws Exception {
-        Response response = resourcePage.getResponseFromTheGeneratedPage(new CalculationResultRequestUrl(baseUrl,"((121/(10-(-1))))-(-89)"));
+        Response response = calculatorPage.calculate("((121/(10-(-1))))-(-89)");
 
         verifyResponseCode(response, OK);
-        String calculationResult = response.readEntity(String.class);
-        assertThat(calculationResult, containsString("\"result\":\"100.0\""));
+        verifySuccessfulResponseBody(response,"100.0");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_missingBracket() throws Exception {
-        Response response = resourcePage.getResponseFromTheGeneratedPage(new CalculationResultRequestUrl(baseUrl,"(-1.0/0.001"));
+        Response response = calculatorPage.calculate("(-1.0/0.001");
 
         verifyResponseCode(response, BAD_REQUEST);
-        verifyCalculationErrorMessage(response, 400, "Missing or misplaced brackets");
+        verifyErrorResponseBody(response, 400, "Missing or misplaced brackets");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_sequentialComponents() throws Exception {
-        Response response = resourcePage.getResponseFromTheGeneratedPage(new CalculationResultRequestUrl(baseUrl,"-1.0 2 + 3"));
+        Response response = calculatorPage.calculate("-1.0 2 + 3");
 
         verifyResponseCode(response, BAD_REQUEST);
-        verifyCalculationErrorMessage(response, 400, "Sequential components of the same type");
+        verifyErrorResponseBody(response, 400, "Sequential components of the same type");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_missingOperator() throws Exception {
-        Response response = resourcePage.getResponseFromTheGeneratedPage(new CalculationResultRequestUrl(baseUrl,"1(-1.0)/2"));
+        Response response = calculatorPage.calculate("1(-1.0)/2");
 
         verifyResponseCode(response, BAD_REQUEST);
-        verifyCalculationErrorMessage(response, 400, "Missing operator between a number and an opening bracket or a closing bracket and a number");
+        verifyErrorResponseBody(response, 400, "Missing operator between a number and an opening bracket or a closing bracket and a number");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_emptyEquation() throws Exception {
-        Response response = resourcePage.getResponseFromTheGeneratedPage(new CalculationResultRequestUrl(baseUrl,"     "));
+        Response response = calculatorPage.calculate("     ");
 
         verifyResponseCode(response, BAD_REQUEST);
-        verifyCalculationErrorMessage(response, 400, "Empty equation");
+        verifyErrorResponseBody(response, 400, "Empty equation");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_emptyBrackets() throws Exception {
-        Response response = resourcePage.getResponseFromTheGeneratedPage(new CalculationResultRequestUrl(baseUrl,"()"));
+        Response response = calculatorPage.calculate("()");
 
         verifyResponseCode(response, BAD_REQUEST);
-        verifyCalculationErrorMessage(response, 400, "Empty brackets");
+        verifyErrorResponseBody(response, 400, "Empty brackets");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_equationBeginningWithOperation() throws Exception {
-        Response response = resourcePage.getResponseFromTheGeneratedPage(new CalculationResultRequestUrl(baseUrl,"*1/2+3"));
+        Response response = calculatorPage.calculate("*1/2+3");
 
         verifyResponseCode(response, BAD_REQUEST);
-        verifyCalculationErrorMessage(response, 400, "Scope of equation ending or beginning with an operator");
+        verifyErrorResponseBody(response, 400, "Scope of equation ending or beginning with an operator");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_divisionByZero() throws Exception {
-        Response response = resourcePage.getResponseFromTheGeneratedPage(new CalculationResultRequestUrl(baseUrl,"1/0"));
+        Response response = calculatorPage.calculate("1/0");
 
         verifyResponseCode(response, BAD_REQUEST);
-        verifyCalculationErrorMessage(response, 400, "Division by zero");
+        verifyErrorResponseBody(response, 400, "Division by zero");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_unsupportedComponent() throws Exception {
-        Response response = resourcePage.getResponseFromTheGeneratedPage(new CalculationResultRequestUrl(baseUrl,"1#3"));
-
+        Response response = calculatorPage.calculate("1#3");
         verifyResponseCode(response, BAD_REQUEST);
-        verifyCalculationErrorMessage(response, 400, "Unsupported component :#");
+        verifyErrorResponseBody(response, 400, "Unsupported component :#");
     }
 
     @Test
@@ -96,14 +93,13 @@ public class CalculationResultClientIT extends RestResourceIT {
         dbPage.setInitialTableInDataBase(DatasetPaths.CALCULATION_HISTORY_DATASET_PATH);
         final int HISTORY_RECORDS_COUNT = 6;
 
-        Response response = resourcePage.getResponseFromTheGeneratedPage(new CalculationHistoryRequestUrl(baseUrl));
-
+        Response response = calculatorPage.getCalculationHistory();
         verifyResponseCode(response,OK);
 
         String responseBody = response.readEntity(String.class);
-        JSONArray historyRecords = new JSONArray(responseBody);
-        verifyNumberOfRecords(historyRecords,HISTORY_RECORDS_COUNT);
 
+        JSONArray history = new JSONArray(responseBody);
+        verifyNumberOfRecords(history,HISTORY_RECORDS_COUNT);
     }
 
     private void verifyNumberOfRecords(final JSONArray recordHistory, final int recordsCount) {
@@ -114,11 +110,18 @@ public class CalculationResultClientIT extends RestResourceIT {
         assertThat(response.getStatus(), equalTo(expectedCode));
     }
 
+    private void verifySuccessfulResponseBody(final Response response,final String calculationResult) {
+        String responseBody = response.readEntity(String.class);
+        JSONObject actual = new JSONObject(responseBody);
 
-    private void verifyCalculationErrorMessage(final Response response, final int expectedErrorCode, final String expectedMessage) {
-        String actual=response.readEntity(String.class);
+        assertThat(actual.getString("result"),is(calculationResult));
+    }
 
-        assertThat(actual, containsString("\"errorCode\":" + expectedErrorCode));
-        assertThat(actual, containsString("\"message\":\"" + expectedMessage + "\""));
+    private void verifyErrorResponseBody(final Response response, final int expectedErrorCode, final String expectedMessage) {
+        String responseBody = response.readEntity(String.class);
+        JSONObject actual = new JSONObject(responseBody);
+
+        assertThat(actual.getInt("errorCode"), is(expectedErrorCode));
+        assertThat(actual.getString("message"), is(expectedMessage));
     }
 }
