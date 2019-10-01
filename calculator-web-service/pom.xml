@@ -166,12 +166,13 @@
 
               <!--Configuration for the above deploy goal-->
               <host>https://hanatrial.ondemand.com</host>
-              <mavenSettingsServerId>sap-hana-cloud-credentials</mavenSettingsServerId>
-              <account>i515142trial</account>
+              <username>${env.neoUsername}</username>
+              <password>${env.neoPassword}</password>
+              <account>${env.neoAccount}</account>
               <application>calcwebservice</application>
-              <id>testdb1</id>
-              <dbUser>${hanadb.user}</dbUser>
-              <dbPassword>${hanadb.password}</dbPassword>
+              <id>${env.databaseId}</id>
+              <dbUser>${env.hanadbUsername}</dbUser>
+              <dbPassword>${env.hanadbPassword}</dbPassword>
               <source>${project.build.directory}/${project.artifactId}.war</source>
             </configuration>
             <executions>

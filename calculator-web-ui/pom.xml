@@ -52,9 +52,10 @@
                  <groupId>org.cloudfoundry</groupId>
                  <artifactId>cf-maven-plugin</artifactId>
                <configuration>
-                 <server>mycloudfoundry-instance</server>
                  <target>https://api.cf.eu10.hana.ondemand.com</target>
-                 <org>I515142trial_trial</org>
+                 <username>${env.cfUsername}</username>
+                 <password>${env.cfPassword}</password>
+                 <org>${env.cfOrganization}</org>
                  <space>dev</space>
                  <appname>calcwebui</appname>
                  <memory>1024</memory>
