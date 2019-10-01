@@ -6,13 +6,9 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.junit.*;
 import org.junit.runner.RunWith;
 
-import javax.ws.rs.core.Response;
-
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(Arquillian.class)
-public class TestSuite2 extends CalculateRestServiceIT {
+public class CalculationResultDatabaseIT extends RestResourceIT {
 
     private static final String NAME_OF_TABLE = "calculator_responses";
     private static final String[] columnsToFilter = new String[]{"time_of_creation"};
@@ -37,4 +33,5 @@ public class TestSuite2 extends CalculateRestServiceIT {
         dbPage.verifyTableEquality(expected, actual);
 
     }
+
 }

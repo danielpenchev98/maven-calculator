@@ -19,7 +19,7 @@
         <tomcat.embedded.juli.version>8.5.2</tomcat.embedded.juli.version>
         <arquillian.tomcat.embedded.version>1.0.0</arquillian.tomcat.embedded.version>
         <arquillian.junit.container.version>1.4.1.Final</arquillian.junit.container.version>
-        <arquillian.bom.version>1.4.0.Final</arquillian.bom.version>
+        <arquillian.bom.version>1.5.0.Final</arquillian.bom.version>
         <dbunit.version>2.6.0</dbunit.version>
         <derby.version>10.14.2.0</derby.version>
     </properties>
@@ -141,6 +141,23 @@
             <artifactId>logback-core</artifactId>
             <version>1.2.3</version>
         </dependency>
+
+        <!--reflections and arquillian-suite-extension needed for 1 deployment 2 test classes -->
+        <!-- https://mvnrepository.com/artifact/org.eu.ingwar.tools/arquillian-suite-extension -->
+        <dependency>
+            <groupId>org.eu.ingwar.tools</groupId>
+            <artifactId>arquillian-suite-extension</artifactId>
+            <version>1.2.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.reflections/reflections -->
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.10</version>
+        </dependency>
+
 
     </dependencies>
 

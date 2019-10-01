@@ -4,7 +4,6 @@ import com.calculator.webapp.test.pageobjects.webclient.requestobjects.Calculati
 import com.calculator.webapp.test.pageobjects.webclient.requestobjects.CalculationResultRequestUrl;
 import org.jboss.arquillian.junit.Arquillian;
 import org.json.JSONArray;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -14,7 +13,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(Arquillian.class)
-public class TestSuite1 extends CalculateRestServiceIT {
+public class CalculationResultClientIT extends RestResourceIT {
 
     private static final int BAD_REQUEST = Response.Status.BAD_REQUEST.getStatusCode();
     private static final int OK = Response.Status.OK.getStatusCode();
