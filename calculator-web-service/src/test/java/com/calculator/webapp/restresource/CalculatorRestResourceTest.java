@@ -3,11 +3,12 @@ package com.calculator.webapp.restresource;
 import com.calculator.core.CalculatorApp;
 import com.calculator.core.exceptions.DivisionByZeroException;
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
+import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import com.calculator.webapp.restresources.CalculatorRestResource;
 import com.calculator.webapp.restresponse.CalculationError;
 import com.calculator.webapp.restresponse.CalculationResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -19,10 +20,10 @@ import javax.ws.rs.core.Response;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CalculatorRestResourceTest {
@@ -30,63 +31,80 @@ public class CalculatorRestResourceTest {
     @InjectMocks
     private CalculatorRestResource resource;
 
+    //TODO it be mocked or not ??????????
+    private final ObjectMapper mapper = new ObjectMapper();
+
     @Mock
     private CalculatorApp app;
 
     @Mock
-    private ObjectMapper mapper;
-
-    @Mock
     private CalculatorDaoImpl dao;
+
+    @Before
+    public void setUp() {
+        resource = new CalculatorRestResource(mapper,app,dao);
+    }
 
     @Test
     public void doGetCalculationResult_LegalEquation_ExpectedResult() throws Exception {
+        CalculationResult result = new CalculationResult("2.0");
+        String expectedResponseBody = mapper.writeValueAsString(result);
+
         Mockito.when(app.calculateResult("1+1")).thenReturn(2.0);
-        Mockito.when(mapper.writeValueAsString(argThat(instanceOf(CalculationResult.class)))).thenReturn("{\"result\":\"2.0\"}");
 
         Response response=resource.doGetCalculationResult("1+1");
-        String actual=(String)response.getEntity();
+        String actual = (String)response.getEntity();
 
-        assertThat(response.getStatus(),is(Response.Status.OK.getStatusCode()));
-        assertThat(actual, containsString("\"result\":\"2.0\""));
+        verifyResponseCode(response,Response.Status.OK.getStatusCode());
+        assertThat(actual, is(expectedResponseBody));
     }
 
     @Test
     public void doGetCalculationResult_IllegalEquation_ErrorMessage() throws Exception {
+        CalculationError userError = new CalculationError(Response.Status.BAD_REQUEST.getStatusCode(),"Division by zero");
+        String expectedResponseBody = mapper.writeValueAsString(userError);
+
         Mockito.when(app.calculateResult("1/0")).thenThrow(new DivisionByZeroException("Division by zero"));
-        Mockito.when(mapper.writeValueAsString(argThat(instanceOf(CalculationError.class)))).thenReturn("{\"errorCode\":400,\"message\":\"Division by zero\"}");
 
         Response response=resource.doGetCalculationResult("1/0");
-        String actual=(String)response.getEntity();
+        String actualResponseBody=(String)response.getEntity();
 
-        assertThat(response.getStatus(),is(Response.Status.BAD_REQUEST.getStatusCode()));
-        assertThat(actual, containsString("\"errorCode\":400"));
-        assertThat(actual, containsString("\"message\":\"Division by zero\""));
+        verifyResponseCode(response,Response.Status.BAD_REQUEST.getStatusCode());
+        assertThat(actualResponseBody, is(expectedResponseBody));
     }
 
     @Test
     public void doGetCalculatorResult_MissingParameterInTheUrl_ServerError() throws Exception {
-        Mockito.when(mapper.writeValueAsString(argThat(instanceOf(CalculationError.class)))).thenReturn("{\"errorCode\":400,\"message\":\"Equation parameter is missing from URL\"}");
-        Response response=resource.doGetCalculationResult(null);
-        String actual=(String)response.getEntity();
+        CalculationError urlError = new CalculationError(Response.Status.BAD_REQUEST.getStatusCode(),"Equation parameter is missing from URL");
+        String expectedResponseBody = mapper.writeValueAsString(urlError);
 
-        assertThat(response.getStatus(),is(Response.Status.BAD_REQUEST.getStatusCode()));
-        assertThat(actual, containsString("\"errorCode\":400"));
-        assertThat(actual, containsString("\"message\":\"Equation parameter is missing from URL\""));
+        Response response=resource.doGetCalculationResult(null);
+        String actualResponseBody=(String)response.getEntity();
+
+        verifyResponseCode(response,Response.Status.BAD_REQUEST.getStatusCode());
+        verifyResponseBody(expectedResponseBody,actualResponseBody);
     }
 
     @Test
     public void doGetCalculationHistory_ExpectedResponseObject() throws Exception {
-        String jsonResult = "[]";
+        List<CalculatorResponseDTO> history = new ArrayList<>();
+        String expected = mapper.writeValueAsString(history);
 
         Mockito.when(dao.getAllItems()).thenReturn(new ArrayList<>());
-        Mockito.when(mapper.writeValueAsString(argThat((instanceOf(ArrayList.class))))).thenReturn(jsonResult);
 
         Response response=resource.doGetCalculationHistory();
         String actual=(String)response.getEntity();
 
         assertThat(response.getStatus(),is(Response.Status.OK.getStatusCode()));
-        assertThat(actual, containsString(jsonResult));
+        assertThat(actual, is(expected));
+    }
+
+    private void verifyResponseCode(final Response actualResponse, final int expectedStatusCode){
+        assertThat(actualResponse.getStatus(),is(expectedStatusCode));
+    }
+
+    private void verifyResponseBody(final String expectedResponseBody, final String actualResponseBody) {
+        assertThat(actualResponseBody, is(expectedResponseBody));
     }
 
 }
