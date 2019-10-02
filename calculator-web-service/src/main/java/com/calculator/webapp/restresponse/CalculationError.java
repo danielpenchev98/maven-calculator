@@ -1,6 +1,8 @@
 package com.calculator.webapp.restresponse;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 
@@ -8,7 +10,8 @@ public class CalculationError {
     private int errorCode;
     private String message;
 
-    public CalculationError(final int errorCode, final String message) {
+    @JsonCreator
+    public CalculationError(@JsonProperty("errorCode") final int errorCode,@JsonProperty("message") final String message) {
         setErrorCode(errorCode);
         setMessage(message);
     }
