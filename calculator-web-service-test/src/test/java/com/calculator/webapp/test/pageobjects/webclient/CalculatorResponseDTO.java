@@ -1,32 +1,15 @@
-package com.calculator.webapp.db.dto;
+package com.calculator.webapp.test.pageobjects.webclient;
 
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-@Entity
-@Table(name = "calculator_responses")
-@NamedQuery(name = "CalculatorResponses.findAll", query = "SELECT c FROM CalculatorResponseDTO c")
 public class CalculatorResponseDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private long id;
-
-    @Column
-    @NotNull
     private String equation;
-
-    @Column
-    @NotNull
     private String responseMsg;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "time_of_creation")
-    @NotNull
     private Date timeOfCreation;
+
 
     public CalculatorResponseDTO(final String equation,final String responseMsg,final Date timeOfCreation)
     {

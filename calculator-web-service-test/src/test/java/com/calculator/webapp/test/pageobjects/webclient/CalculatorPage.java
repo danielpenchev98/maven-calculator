@@ -1,16 +1,22 @@
 package com.calculator.webapp.test.pageobjects.webclient;
 
+import com.calculator.webapp.test.pageobjects.webclient.CalculatorResponseDTO;
+import com.calculator.webapp.test.pageobjects.webclient.CalculatorResultPojo;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.List;
 
 public class CalculatorPage {
 
@@ -27,23 +33,37 @@ public class CalculatorPage {
         this.baseUrl = baseUrl;
     }
 
-    public Response calculate(final String input) throws IOException {
+    public CalculatorResultPojo calculate(final String input) throws IOException {
         String encodedInput = getUrlEncodedInput(input);
         URL encodedUrl = new URL(baseUrl,CALCULATOR_SERVICE_WAR+REST_URL+CALCULATE_EQUATION_URL+"?"+REQUEST_PARAMETER+"="+encodedInput);
-        return getResponseViaURL(encodedUrl);
+        return new ObjectMapper().readValue(getResponseViaURL(encodedUrl).readEntity(String.class),CalculatorResultPojo.class);
     }
 
-    public Response getCalculationHistory() throws MalformedURLException {
+    public List<CalculatorResponseDTO> getCalculationHistory() throws IOException {
         URL url = new URL(baseUrl,CALCULATOR_SERVICE_WAR+ REST_URL+CALCULATION_HISTORY_URL);
-        return getResponseViaURL(url);
+        return new ObjectMapper().readValue(getResponseViaURL(url).readEntity(String.class),new TypeReference<List<CalculatorResponseDTO>>(){});
     }
 
+    private void checkResponseStatusCode(final Response response) {
+        if(response.getStatus()!=Response.Status.OK.getStatusCode()) {
+            String exceptionMessage = extractExceptionMessage(response);
+            throw new BadRequestException(exceptionMessage);
+        }
+    }
 
-    private Response getResponseViaURL(final URL url){
+    private Response getResponseViaURL(final URL url) {
         Client client= ClientBuilder.newClient();
         WebTarget webTarget=client.target(URI.create(url.toExternalForm()));
-        return webTarget.request(MediaType.APPLICATION_JSON).get(Response.class);
+        Response restResponse = webTarget.request(MediaType.APPLICATION_JSON).get(Response.class);
+        checkResponseStatusCode(restResponse);
+        return restResponse;
     }
+
+    private String extractExceptionMessage(final Response response) {
+        JSONObject errorResponse = new JSONObject(response.readEntity(String.class));
+        return errorResponse.getString("message");
+    }
+
 
     private String getUrlEncodedInput(final String unformattedInput) throws IOException {
         return URLEncoder.encode(unformattedInput, ENCODING);

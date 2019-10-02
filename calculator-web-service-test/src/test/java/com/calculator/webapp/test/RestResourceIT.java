@@ -11,6 +11,8 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.net.URL;
@@ -18,6 +20,8 @@ import java.net.URL;
 @ArquillianSuiteDeployment
 public class RestResourceIT {
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     protected static DatabasePage dbPage;
 
@@ -27,7 +31,7 @@ public class RestResourceIT {
     protected CalculatorPage calculatorPage;
 
     @Deployment(testable = false)
-    public static WebArchive createTestArchive() throws InterruptedException {
+    public static WebArchive createTestArchive() {
         WebArchive archive = ShrinkWrap.create(ZipImporter.class, "calculator.war")
                 .importFrom(new File("target" + File.separator + "lib" + File.separator + "calculator-web-service-1.0-SNAPSHOT.war"))
                 .as(WebArchive.class)

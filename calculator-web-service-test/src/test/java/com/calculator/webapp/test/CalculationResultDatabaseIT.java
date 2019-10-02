@@ -25,9 +25,12 @@ public class CalculationResultDatabaseIT extends RestResourceIT {
 
     @Test
     public void doGetCalculationResult_illegalExpression_saveInDatabase() throws Exception {
+        expectedException.expect(BadUserInputException.class);
+
         ITable expected = dbPage.getFilteredTableFromDataset(NAME_OF_TABLE, DatasetPaths.ILLEGAL_EQUATION_DATASET_PATH, columnsToFilter);
 
         calculatorPage.calculate("(-1.0/0.001");
+
         ITable actual = dbPage.getFilteredTableFromDatabase(NAME_OF_TABLE, columnsToFilter);
         dbPage.verifyTableEquality(expected, actual);
 
