@@ -1,7 +1,7 @@
 package com.calculator.webapp.test;
 
 import com.calculator.webapp.test.pageobjects.dbclient.DatabasePage;
-import com.calculator.webapp.test.pageobjects.webclient.CalculatorPage;
+import com.calculator.webapp.test.pageobjects.webclient.CalculationResultPage;
 import org.eu.ingwar.tools.arquillian.extension.suite.annotations.ArquillianSuiteDeployment;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -24,11 +24,10 @@ public class RestResourceIT {
     public ExpectedException expectedException = ExpectedException.none();
 
     protected static DatabasePage dbPage;
+    protected CalculationResultPage calculationResultPage;
 
     @ArquillianResource
     protected URL baseUrl;
-
-    protected CalculatorPage calculatorPage;
 
     @Deployment(testable = false)
     public static WebArchive createTestArchive() {
@@ -52,11 +51,10 @@ public class RestResourceIT {
 
     @Before
     public void setUp() throws Exception{
-        calculatorPage = new CalculatorPage(baseUrl);
+        calculationResultPage = new CalculationResultPage(baseUrl);
         dbPage.resetStateOfDatabase();
         dbPage.setInitialTableInDataBase(DatasetPaths.EMPTY_DATASET_PATH);
     }
-
 
 }
 
