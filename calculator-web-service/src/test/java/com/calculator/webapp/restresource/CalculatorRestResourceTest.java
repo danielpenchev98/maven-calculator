@@ -28,7 +28,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class CalculatorRestResourceTest {
 
-    @InjectMocks
+
     private CalculatorRestResource resource;
 
     //TODO it be mocked or not ??????????
