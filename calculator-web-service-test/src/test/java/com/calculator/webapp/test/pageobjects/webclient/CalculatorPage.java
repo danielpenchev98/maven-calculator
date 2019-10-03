@@ -1,12 +1,15 @@
 package com.calculator.webapp.test.pageobjects.webclient;
 
-import com.calculator.webapp.test.pageobjects.webclient.CalculatorResponseDTO;
-import com.calculator.webapp.test.pageobjects.webclient.CalculatorResultPojo;
+import com.calculator.webapp.db.dto.CalculatorResponseDTO;
+import com.calculator.webapp.restresponse.CalculationError;
+import com.calculator.webapp.restresponse.CalculationResult;
+import com.calculator.webapp.test.pageobjects.webclient.exception.CalculatorRestException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 
 import javax.ws.rs.BadRequestException;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -29,29 +32,41 @@ public class CalculatorPage {
 
     private URL baseUrl;
 
+    private final ObjectMapper mapper = new ObjectMapper();
+
     public CalculatorPage(final URL baseUrl) {
         this.baseUrl = baseUrl;
     }
 
-    public CalculatorResultPojo calculate(final String input) throws IOException {
+    public CalculationResult calculate(final String input) throws Exception {
         String encodedInput = getUrlEncodedInput(input);
         URL encodedUrl = new URL(baseUrl,CALCULATOR_SERVICE_WAR+REST_URL+CALCULATE_EQUATION_URL+"?"+REQUEST_PARAMETER+"="+encodedInput);
-        return new ObjectMapper().readValue(getResponseViaURL(encodedUrl).readEntity(String.class),CalculatorResultPojo.class);
+
+        String responseBody = getRestResponse(encodedUrl).readEntity(String.class);
+
+        return mapper.readValue(responseBody,CalculationResult.class);
     }
 
-    public List<CalculatorResponseDTO> getCalculationHistory() throws IOException {
+    public List<CalculatorResponseDTO> getCalculationHistory() throws Exception {
         URL url = new URL(baseUrl,CALCULATOR_SERVICE_WAR+ REST_URL+CALCULATION_HISTORY_URL);
-        return new ObjectMapper().readValue(getResponseViaURL(url).readEntity(String.class),new TypeReference<List<CalculatorResponseDTO>>(){});
+
+        String responseBody = getRestResponse(url).readEntity(String.class);
+
+        return mapper.readValue(responseBody,new TypeReference<List<CalculatorResponseDTO>>(){});
     }
 
-    private void checkResponseStatusCode(final Response response) {
-        if(response.getStatus()!=Response.Status.OK.getStatusCode()) {
+    private void checkResponseStatusCode(final Response response) throws Exception {
+        if(isUnsuccessfulRequest(response)) {
             String exceptionMessage = extractExceptionMessage(response);
-            throw new BadRequestException(exceptionMessage);
+            throw new CalculatorRestException(exceptionMessage);
         }
     }
 
-    private Response getResponseViaURL(final URL url) {
+    private boolean isUnsuccessfulRequest(final Response response){
+        return response.getStatus()!=Response.Status.OK.getStatusCode();
+    }
+
+    private Response getRestResponse(final URL url) throws Exception {
         Client client= ClientBuilder.newClient();
         WebTarget webTarget=client.target(URI.create(url.toExternalForm()));
         Response restResponse = webTarget.request(MediaType.APPLICATION_JSON).get(Response.class);
@@ -59,9 +74,10 @@ public class CalculatorPage {
         return restResponse;
     }
 
-    private String extractExceptionMessage(final Response response) {
-        JSONObject errorResponse = new JSONObject(response.readEntity(String.class));
-        return errorResponse.getString("message");
+    private String extractExceptionMessage(final Response response) throws IOException {
+        String responseBody = response.readEntity(String.class);
+        CalculationError error = mapper.readValue(responseBody,CalculationError.class);
+        return error.getMessage();
     }
 
 

@@ -1,9 +1,12 @@
 package com.calculator.webapp.test;
 
+import com.calculator.webapp.test.pageobjects.webclient.exception.CalculatorRestException;
 import org.dbunit.dataset.ITable;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.*;
 import org.junit.runner.RunWith;
+
+import javax.ws.rs.BadRequestException;
 
 
 @RunWith(Arquillian.class)
@@ -25,7 +28,7 @@ public class CalculationResultDatabaseIT extends RestResourceIT {
 
     @Test
     public void doGetCalculationResult_illegalExpression_saveInDatabase() throws Exception {
-        expectedException.expect(BadUserInputException.class);
+        expectedException.expect(CalculatorRestException.class);
 
         ITable expected = dbPage.getFilteredTableFromDataset(NAME_OF_TABLE, DatasetPaths.ILLEGAL_EQUATION_DATASET_PATH, columnsToFilter);
 
