@@ -19,8 +19,7 @@ public class CalculationResultPage extends CalculatorRestPage {
     public CalculationResult calculate(final String equation) throws Exception {
         String encodedEquation = getUrlEncodedInput(equation);
         URL requestUrl = getResultRequestUrl(encodedEquation);
-        String responseBody = getRestResponse(requestUrl).readEntity(String.class);
-        return mapper.readValue(responseBody,CalculationResult.class);
+        return requestExecutor.executeGetRequest(requestUrl).readEntity(CalculationResult.class);
     }
 
     private String getUrlEncodedInput(final String unformattedInput) throws IOException {

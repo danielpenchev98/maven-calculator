@@ -98,7 +98,6 @@ public class CalculationResultClientIT extends RestResourceIT {
         calculationResultPage.calculate("1#3");
     }
 
-    //TODO to assert more than length of the list??
     @Test
     public void doGetCalculationHistory_requestWholeHistory() throws Exception {
         dbPage.setInitialTableInDataBase(DatasetPaths.CALCULATION_HISTORY_DATASET_PATH);
