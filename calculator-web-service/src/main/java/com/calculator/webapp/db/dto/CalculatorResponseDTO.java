@@ -1,9 +1,5 @@
 package com.calculator.webapp.db.dto;
 
-
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonSetter;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;

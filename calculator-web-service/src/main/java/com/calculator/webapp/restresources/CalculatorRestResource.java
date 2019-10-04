@@ -6,8 +6,6 @@ import com.calculator.webapp.db.dao.CalculatorDaoImpl;
 import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import com.calculator.webapp.restresponse.CalculationError;
 import com.calculator.webapp.restresponse.CalculationResult;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,20 +25,18 @@ import java.util.List;
 public class CalculatorRestResource {
 
     private static final Logger logger = LogManager.getLogger(CalculatorRestResource.class);
-    private final ObjectMapper mapper;
     private final CalculatorApp calculator;
     private final CalculatorDaoImpl dao;
 
     @Inject
-    public CalculatorRestResource(final ObjectMapper mapper, final CalculatorApp calculator, final CalculatorDaoImpl dao) {
-        this.mapper=mapper;
+    public CalculatorRestResource(final CalculatorApp calculator, final CalculatorDaoImpl dao) {
         this.calculator=calculator;
         this.dao=dao;
     }
 
     @GET
     @Path("/calculate")
-    public Response doGetCalculationResult(@NotNull @QueryParam("equation") String equation) throws JsonProcessingException {
+    public Response doGetCalculationResult(@NotNull @QueryParam("equation") String equation) {
         String responseMsg="";
         try {
             responseMsg = getCalculationResult(equation);
@@ -59,25 +55,24 @@ public class CalculatorRestResource {
         }
     }
 
-    private Response getSuccessfulRequestResponse(final String responseMsg) throws JsonProcessingException {
+    private Response getSuccessfulRequestResponse(final String responseMsg) {
         CalculationResult calculationResult = new CalculationResult(responseMsg);
         return createResponse(Response.Status.OK,calculationResult);
     }
 
-    private Response getErrorRequestResponse(final Response.Status status, final String errorMsg) throws JsonProcessingException {
+    private Response getErrorRequestResponse(final Response.Status status, final String errorMsg) {
         CalculationError errorResponseBody = new CalculationError(status.getStatusCode(),errorMsg);
         return createResponse(status,errorResponseBody);
     }
 
 
-    private Response createResponse(final Response.Status status,final Object responseBody) throws JsonProcessingException {
-        String jsonMsgBody = mapper.writeValueAsString(responseBody);
-        return  Response.status(status).entity(jsonMsgBody).build();
+    private Response createResponse(final Response.Status status,final Object responseBody) {
+        return  Response.status(status).entity(responseBody).build();
     }
 
     @GET
     @Path("/calculationHistory")
-    public Response doGetCalculationHistory() throws JsonProcessingException {
+    public Response doGetCalculationHistory() {
         List<CalculatorResponseDTO> calculationHistory=dao.getAllItems();
         return createResponse(Response.Status.OK,calculationHistory);
     }

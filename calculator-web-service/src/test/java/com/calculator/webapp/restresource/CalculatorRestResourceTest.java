@@ -7,7 +7,6 @@ import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import com.calculator.webapp.restresources.CalculatorRestResource;
 import com.calculator.webapp.restresponse.CalculationError;
 import com.calculator.webapp.restresponse.CalculationResult;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,80 +30,78 @@ public class CalculatorRestResourceTest {
     @InjectMocks
     private CalculatorRestResource resource;
 
-    //TODO it be mocked or not ??????????
-    private final ObjectMapper mapper = new ObjectMapper();
+    @Mock
+    private CalculatorApp mockedApp;
 
     @Mock
-    private CalculatorApp app;
-
-    @Mock
-    private CalculatorDaoImpl dao;
+    private CalculatorDaoImpl mockedDao;
 
     @Before
     public void setUp() {
-        resource = new CalculatorRestResource(mapper,app,dao);
+        resource = new CalculatorRestResource(mockedApp,mockedDao);
     }
 
     @Test
     public void doGetCalculationResult_LegalEquation_ExpectedResult() throws Exception {
-        CalculationResult result = new CalculationResult("2.0");
-        String expectedResponseBody = mapper.writeValueAsString(result);
+        CalculationResult expectedResult = new CalculationResult("2.0");
 
-        Mockito.when(app.calculateResult("1+1")).thenReturn(2.0);
+        Mockito.when(mockedApp.calculateResult("1+1")).thenReturn(2.0);
 
         Response response=resource.doGetCalculationResult("1+1");
-        String actual = (String)response.getEntity();
+        CalculationResult actualResult = (CalculationResult) response.getEntity();
 
         verifyResponseCode(response,Response.Status.OK.getStatusCode());
-        assertThat(actual, is(expectedResponseBody));
+        verifyCalculationResult(expectedResult,actualResult);
     }
 
     @Test
     public void doGetCalculationResult_IllegalEquation_ErrorMessage() throws Exception {
-        CalculationError userError = new CalculationError(Response.Status.BAD_REQUEST.getStatusCode(),"Division by zero");
-        String expectedResponseBody = mapper.writeValueAsString(userError);
+        CalculationError expectedUserError = new CalculationError(Response.Status.BAD_REQUEST.getStatusCode(),"Division by zero");
 
-        Mockito.when(app.calculateResult("1/0")).thenThrow(new DivisionByZeroException("Division by zero"));
+        Mockito.when(mockedApp.calculateResult("1/0")).thenThrow(new DivisionByZeroException("Division by zero"));
 
         Response response=resource.doGetCalculationResult("1/0");
-        String actualResponseBody=(String)response.getEntity();
+        CalculationError actualUserError = (CalculationError) response.getEntity();
 
         verifyResponseCode(response,Response.Status.BAD_REQUEST.getStatusCode());
-        assertThat(actualResponseBody, is(expectedResponseBody));
+        verifyCalculationError(expectedUserError,actualUserError);
     }
 
     @Test
-    public void doGetCalculatorResult_MissingParameterInTheUrl_ServerError() throws Exception {
-        CalculationError urlError = new CalculationError(Response.Status.BAD_REQUEST.getStatusCode(),"Equation parameter is missing from URL");
-        String expectedResponseBody = mapper.writeValueAsString(urlError);
+    public void doGetCalculatorResult_MissingParameterInTheUrl_ServerError(){
+        CalculationError expectedUrlError = new CalculationError(Response.Status.BAD_REQUEST.getStatusCode(),"Equation parameter is missing from URL");
 
         Response response=resource.doGetCalculationResult(null);
-        String actualResponseBody=(String)response.getEntity();
+        CalculationError actualUrlError = (CalculationError) response.getEntity();
 
         verifyResponseCode(response,Response.Status.BAD_REQUEST.getStatusCode());
-        verifyResponseBody(expectedResponseBody,actualResponseBody);
+        verifyCalculationError(expectedUrlError,actualUrlError);
     }
 
     @Test
-    public void doGetCalculationHistory_ExpectedResponseObject() throws Exception {
-        List<CalculatorResponseDTO> history = new ArrayList<>();
-        String expected = mapper.writeValueAsString(history);
+    public void doGetCalculationHistory_ExpectedResponseObject(){
+        List<CalculatorResponseDTO> expectedHistory = new ArrayList<>();
 
-        Mockito.when(dao.getAllItems()).thenReturn(new ArrayList<>());
+        Mockito.when(mockedDao.getAllItems()).thenReturn(new ArrayList<>());
 
         Response response=resource.doGetCalculationHistory();
-        String actual=(String)response.getEntity();
+        List<CalculatorResponseDTO> actualHistory = (List<CalculatorResponseDTO>) response.getEntity();
 
-        assertThat(response.getStatus(),is(Response.Status.OK.getStatusCode()));
-        assertThat(actual, is(expected));
+        verifyResponseCode(response,Response.Status.OK.getStatusCode());
+        assertThat(actualHistory.size(),is(expectedHistory.size()));
     }
 
     private void verifyResponseCode(final Response actualResponse, final int expectedStatusCode){
         assertThat(actualResponse.getStatus(),is(expectedStatusCode));
     }
 
-    private void verifyResponseBody(final String expectedResponseBody, final String actualResponseBody) {
-        assertThat(actualResponseBody, is(expectedResponseBody));
+    private void verifyCalculationResult(final CalculationResult expectedResponseBody, final CalculationResult actualResponseBody) {
+        assertThat(actualResponseBody.getResult(), is(expectedResponseBody.getResult()));
+    }
+
+    private void verifyCalculationError(final CalculationError expectedError, final CalculationError actualError) {
+        assertThat(actualError.getErrorCode(),is(expectedError.getErrorCode()));
+        assertThat(actualError.getMessage(), is(expectedError.getMessage()));
     }
 
 }
