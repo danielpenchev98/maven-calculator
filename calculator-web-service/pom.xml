@@ -62,6 +62,12 @@
       <version>${jersey.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-json-jackson</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.ext/jersey-bean-validation -->
     <dependency>
       <groupId>org.glassfish.jersey.ext</groupId>
