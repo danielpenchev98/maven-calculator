@@ -6,6 +6,8 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.junit.*;
 import org.junit.runner.RunWith;
 
+import static junit.framework.TestCase.fail;
+
 
 @RunWith(Arquillian.class)
 public class CalculationResultDatabaseIT extends RestResourceIT {
@@ -26,14 +28,17 @@ public class CalculationResultDatabaseIT extends RestResourceIT {
 
     @Test
     public void doGetCalculationResult_illegalExpression_saveInDatabase() throws Exception {
-        expectedException.expect(CalculatorRestException.class);
-
         ITable expected = dbPage.getFilteredTableFromDataset(NAME_OF_TABLE, DatasetPaths.ILLEGAL_EQUATION_DATASET_PATH, COLUMNS_TO_FILTER);
 
-        calculationResultPage.calculate("(-1.0/0.001");
+        try {
+            calculationResultPage.calculate("(-1.0/0.001");
+        }
+        catch(CalculatorRestException ex){
+            ITable actual = dbPage.getFilteredTableFromDatabase(NAME_OF_TABLE, COLUMNS_TO_FILTER);
+            dbPage.verifyTableEquality(expected, actual);
+        }
 
-        ITable actual = dbPage.getFilteredTableFromDatabase(NAME_OF_TABLE, COLUMNS_TO_FILTER);
-        dbPage.verifyTableEquality(expected, actual);
+        throw new Exception("No expected exception occurred");
 
     }
 }

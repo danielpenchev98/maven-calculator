@@ -1,7 +1,6 @@
 package com.calculator.webapp.test.pageobjects.webclient;
 
 import com.calculator.webapp.db.dto.CalculatorResponseDTO;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.net.MalformedURLException;
 import java.net.URL;
