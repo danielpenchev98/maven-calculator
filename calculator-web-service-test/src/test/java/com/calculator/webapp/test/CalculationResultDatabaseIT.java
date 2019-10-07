@@ -1,5 +1,6 @@
 package com.calculator.webapp.test;
 
+import com.calculator.webapp.test.pageobjects.webclient.exception.CalculatorRestException;
 import org.dbunit.dataset.ITable;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.*;
@@ -22,10 +23,10 @@ public class CalculationResultDatabaseIT extends RestResourceIT {
         dbPage.verifyTableEquality(expected, actual);
     }
 
-    //TODO find a way to get rid of the try/catch block because this test otherwise tests 2 things
     @Test
     public void doGetCalculationResult_illegalExpression_saveInDatabase() throws Exception {
         ITable expected = dbPage.getFilteredTableFromDataset(NAME_OF_TABLE, DatasetPaths.ILLEGAL_EQUATION_DATASET_PATH, COLUMNS_TO_FILTER);
+        expectedException.expect(CalculatorRestException.class);
 
         try {
             calculationResultPage.calculate("(-1.0/0.001");
