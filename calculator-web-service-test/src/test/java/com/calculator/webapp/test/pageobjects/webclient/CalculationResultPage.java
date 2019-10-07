@@ -30,6 +30,4 @@ public class CalculationResultPage extends CalculatorRestPage {
         return new URL(baseUrl,CALCULATOR_SERVICE_WAR + REST_URL+CALCULATE_EQUATION_URL + "?" + REQUEST_PARAMETER + "=" + encodedEquation);
     }
 
-
-
 }
