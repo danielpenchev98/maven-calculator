@@ -32,13 +32,12 @@ public class CalculationResultDatabaseIT extends RestResourceIT {
 
         try {
             calculationResultPage.calculate("(-1.0/0.001");
+            throw new Exception("No expected exception occurred");
         }
         catch(CalculatorRestException ex){
             ITable actual = dbPage.getFilteredTableFromDatabase(NAME_OF_TABLE, COLUMNS_TO_FILTER);
             dbPage.verifyTableEquality(expected, actual);
         }
-
-        throw new Exception("No expected exception occurred");
 
     }
 }
