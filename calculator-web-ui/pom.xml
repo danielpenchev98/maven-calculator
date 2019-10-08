@@ -9,6 +9,15 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.sap.cloud/neo-java-web-api -->
+        <dependency>
+            <groupId>com.sap.cloud</groupId>
+            <artifactId>neo-java-web-api</artifactId>
+            <version>3.90.12</version>
+        </dependency>
+
+    </dependencies>
     <build>
         <finalName>calculator-web-ui</finalName>
         <plugins>
