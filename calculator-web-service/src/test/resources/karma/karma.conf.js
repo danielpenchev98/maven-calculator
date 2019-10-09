@@ -1,12 +1,9 @@
 module.exports = function(config) {
     config.set({
-
+        basePath: "../../../main",
         frameworks: ["ui5"],
         ui5: {
             type: "application",
-            paths: {
-                webapp: "webapp"
-            },
             //to revert back to https if karma does not work
             url: "https://localhost:9000",
             testpage: "webapp/test/testsuite.qunit.html"

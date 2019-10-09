@@ -2,9 +2,8 @@
   "name": "calculator-web-ui",
   "version": "1.0.0",
   "description": "",
-  "main": "Gruntfile.js",
   "scripts": {
-    "test": "karma start /src/main/karma.conf.js"
+    "test": "echo \\\\\\\"Error: no src/test specified\\\\\\\" && exit 1"
   },
   "author": "",
   "license": "ISC",
