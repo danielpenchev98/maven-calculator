@@ -26,7 +26,7 @@ public class HttpRequestExecutor {
 
     private WebTarget getWebTarget(final URL resource){
         Client client = ClientBuilder.newClient()
-                .register(HttpAuthenticationFeature.basic("i515142","Dp280898"))
+                .register(HttpAuthenticationFeature.basic("admin","admin"))
                 .register(JacksonFeature.class);
         return client.target(URI.create(resource.toExternalForm()));
     }
