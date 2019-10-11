@@ -2,7 +2,10 @@ package com.calculator.webapp.test.pageobjects.webclient.requestexecutor;
 
 import com.calculator.webapp.restresponse.CalculationError;
 import com.calculator.webapp.test.pageobjects.webclient.exception.CalculatorRestException;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.client.filter.CsrfProtectionFilter;
+import org.imixs.melman.FormAuthenticator;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -23,6 +26,7 @@ public class HttpRequestExecutor {
 
     private WebTarget getWebTarget(final URL resource){
         Client client = ClientBuilder.newClient()
+                .register(HttpAuthenticationFeature.basic("i515142","Dp280898"))
                 .register(JacksonFeature.class);
         return client.target(URI.create(resource.toExternalForm()));
     }

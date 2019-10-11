@@ -9,4 +9,5 @@
               username="" password=""
               url="jdbc:derby:memory:calculator;create=true"/>
     <JarScanner scanManifest="false"/>
+    <Realm className="org.apache.catalina.realm.MemoryRealm" pathname="../../src/test/resources/tomcat-users.xml"/>
 </Context>

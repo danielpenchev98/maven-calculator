@@ -183,6 +183,15 @@
             <version>${jackson.version}</version>
         </dependency>
 
+        <!-- JEE Dependencies -->
+        <dependency>
+            <groupId>org.imixs.workflow</groupId>
+            <artifactId>imixs-melman</artifactId>
+            <version>1.0.9</version>
+            <scope>test</scope>
+        </dependency>
+
+
     </dependencies>
 
     <dependencyManagement>
