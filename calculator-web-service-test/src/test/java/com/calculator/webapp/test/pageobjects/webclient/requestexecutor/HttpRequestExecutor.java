@@ -2,6 +2,7 @@ package com.calculator.webapp.test.pageobjects.webclient.requestexecutor;
 
 import com.calculator.webapp.restresponse.CalculationError;
 import com.calculator.webapp.test.pageobjects.webclient.exception.CalculatorRestException;
+import com.calculator.webapp.test.pageobjects.webclient.exception.UnauthenticatedUserException;
 import com.calculator.webapp.test.pageobjects.webclient.exception.UnauthorizedUserException;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -42,15 +43,23 @@ public class HttpRequestExecutor {
 
     private void checkResponseStatusCode(final Response response) throws Exception {
         if(isUnsuccessfulRequest(response)) {
+            verifyProblemWithAuthentication(response);
             verifyProblemWithAuthorization(response);
+
             String exceptionMessage = extractExceptionMessage(response);
             throw new CalculatorRestException(exceptionMessage);
         }
     }
 
     private void verifyProblemWithAuthorization(final Response response) throws UnauthorizedUserException {
-        if(response.getStatus()==Response.Status.UNAUTHORIZED.getStatusCode()){
+        if(response.getStatus()==Response.Status.FORBIDDEN.getStatusCode()){
             throw new UnauthorizedUserException();
+        }
+    }
+
+    private void verifyProblemWithAuthentication(final Response response) throws UnauthenticatedUserException {
+        if(response.getStatus()==Response.Status.UNAUTHORIZED.getStatusCode()){
+            throw new UnauthenticatedUserException();
         }
     }
 

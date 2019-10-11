@@ -2,4 +2,5 @@
 <tomcat-users>
     <role rolename="VIP"/>
     <user name="admin" password="admin" roles="VIP"/>
+    <user name="client" password="client" />
 </tomcat-users>
