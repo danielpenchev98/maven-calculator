@@ -17,15 +17,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(Arquillian.class)
 public class CalculationResultClientIT extends RestResourceIT {
 
-    private CalculationHistoryPage calculationHistoryPage;
-
-    @Before
-    @Override
-    public void setUp() throws Exception {
-        calculationHistoryPage = new CalculationHistoryPage(baseUrl);
-        super.setUp();
-    }
-
     @Test
     public void doGetCalculationResult_legalExpression() throws Exception {
         CalculationResult expectedResult = new CalculationResult("100.0");

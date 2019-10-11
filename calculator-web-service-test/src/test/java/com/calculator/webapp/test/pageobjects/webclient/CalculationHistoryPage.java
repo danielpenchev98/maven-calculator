@@ -1,6 +1,7 @@
 package com.calculator.webapp.test.pageobjects.webclient;
 
 import com.calculator.webapp.db.dto.CalculatorResponseDTO;
+import com.calculator.webapp.test.pageobjects.webclient.requestexecutor.HttpRequestExecutor;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -10,8 +11,8 @@ public class CalculationHistoryPage extends CalculatorRestPage {
 
     static final String CALCULATION_HISTORY_URL = "/calculationHistory";
 
-    public CalculationHistoryPage(final URL baseUrl) {
-        super(baseUrl);
+    public CalculationHistoryPage(final URL baseUrl,final String username,final String password) {
+        super(baseUrl,new HttpRequestExecutor(username,password));
     }
 
     public List<CalculatorResponseDTO> getCalculationHistory() throws Exception {

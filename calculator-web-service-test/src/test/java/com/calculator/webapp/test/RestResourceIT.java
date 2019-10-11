@@ -1,6 +1,7 @@
 package com.calculator.webapp.test;
 
 import com.calculator.webapp.test.pageobjects.dbclient.DatabasePage;
+import com.calculator.webapp.test.pageobjects.webclient.CalculationHistoryPage;
 import com.calculator.webapp.test.pageobjects.webclient.CalculationResultPage;
 import org.eu.ingwar.tools.arquillian.extension.suite.annotations.ArquillianSuiteDeployment;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -25,6 +26,10 @@ public class RestResourceIT {
 
     protected static DatabasePage dbPage;
     protected CalculationResultPage calculationResultPage;
+    protected CalculationHistoryPage calculationHistoryPage;
+
+    private static String VALID_USERNAME="admin";
+    private static String VALID_PASSWORD="admin";
 
     @ArquillianResource
     protected URL baseUrl;
@@ -52,9 +57,10 @@ public class RestResourceIT {
 
     @Before
     public void setUp() throws Exception{
-        calculationResultPage = new CalculationResultPage(baseUrl);
+        calculationResultPage = new CalculationResultPage(baseUrl,VALID_USERNAME,VALID_PASSWORD);
         dbPage.resetStateOfDatabase();
         dbPage.setInitialTableInDataBase(DatasetPaths.EMPTY_DATASET_PATH);
+        calculationHistoryPage = new CalculationHistoryPage(baseUrl,VALID_USERNAME,VALID_PASSWORD);
     }
 
 }

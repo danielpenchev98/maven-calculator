@@ -1,6 +1,8 @@
 package com.calculator.webapp.test.pageobjects.webclient;
 
 import com.calculator.webapp.restresponse.CalculationResult;
+import com.calculator.webapp.test.pageobjects.webclient.requestexecutor.HttpRequestExecutor;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,8 +14,8 @@ public class CalculationResultPage extends CalculatorRestPage {
     static final String CALCULATE_EQUATION_URL = "/calculate";
     static final String REQUEST_PARAMETER="equation";
 
-    public CalculationResultPage(final URL baseUrl) {
-        super(baseUrl);
+    public CalculationResultPage(final URL baseUrl,final String username,final String password) {
+        super(baseUrl,new HttpRequestExecutor(username,password));
     }
 
     public CalculationResult calculate(final String equation) throws Exception {

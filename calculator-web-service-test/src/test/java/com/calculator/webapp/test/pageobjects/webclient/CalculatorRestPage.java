@@ -9,10 +9,11 @@ public abstract class CalculatorRestPage {
     static final String REST_URL = "/api/v1/calculator";
 
     protected URL baseUrl;
-    protected HttpRequestExecutor requestExecutor = new HttpRequestExecutor();
+    protected HttpRequestExecutor requestExecutor;
 
-    public CalculatorRestPage(final URL baseUrl){
+    public CalculatorRestPage(final URL baseUrl,final HttpRequestExecutor executor){
         this.baseUrl=baseUrl;
+        this.requestExecutor = executor;
     }
 
 }
