@@ -43,21 +43,21 @@ public class HttpRequestExecutor {
 
     private void checkResponseStatusCode(final Response response) throws Exception {
         if(isUnsuccessfulRequest(response)) {
-            verifyProblemWithAuthentication(response);
-            verifyProblemWithAuthorization(response);
+            checkProblemWithAuthentication(response);
+            checkProblemWithAuthorization(response);
 
             String exceptionMessage = extractExceptionMessage(response);
             throw new CalculatorRestException(exceptionMessage);
         }
     }
 
-    private void verifyProblemWithAuthorization(final Response response) throws UnauthorizedUserException {
+    private void checkProblemWithAuthorization(final Response response) throws UnauthorizedUserException {
         if(response.getStatus()==Response.Status.FORBIDDEN.getStatusCode()){
             throw new UnauthorizedUserException();
         }
     }
 
-    private void verifyProblemWithAuthentication(final Response response) throws UnauthenticatedUserException {
+    private void checkProblemWithAuthentication(final Response response) throws UnauthenticatedUserException {
         if(response.getStatus()==Response.Status.UNAUTHORIZED.getStatusCode()){
             throw new UnauthenticatedUserException();
         }
