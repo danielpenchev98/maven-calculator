@@ -2,10 +2,8 @@ package com.calculator.webapp.test;
 
 import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import com.calculator.webapp.restresponse.CalculationResult;
-import com.calculator.webapp.test.pageobjects.webclient.CalculationHistoryPage;
 import com.calculator.webapp.test.pageobjects.webclient.exception.CalculatorRestException;
 import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

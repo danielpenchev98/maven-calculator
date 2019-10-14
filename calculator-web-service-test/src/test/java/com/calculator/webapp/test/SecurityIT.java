@@ -34,7 +34,7 @@ public class SecurityIT extends RestResourceIT {
 
     @Test
     public void givenInvalidCredentialsWhenGettingHistoryThenError401() throws Exception {
-        calculationResultPage = new CalculationResultPage(baseUrl,INVALID_USERNAME,INVALID_PASSWORD);
+        calculationHistoryPage = new CalculationHistoryPage(baseUrl,INVALID_USERNAME,INVALID_PASSWORD);
         expectedException.expect(UnauthenticatedUserException.class);
 
         calculationHistoryPage.getCalculationHistory();

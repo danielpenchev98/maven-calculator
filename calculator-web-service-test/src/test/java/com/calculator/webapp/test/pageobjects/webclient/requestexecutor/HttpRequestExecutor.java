@@ -6,8 +6,6 @@ import com.calculator.webapp.test.pageobjects.webclient.exception.Unauthenticate
 import com.calculator.webapp.test.pageobjects.webclient.exception.UnauthorizedUserException;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.glassfish.jersey.jackson.JacksonFeature;
-import org.glassfish.jersey.client.filter.CsrfProtectionFilter;
-import org.imixs.melman.FormAuthenticator;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
