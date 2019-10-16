@@ -120,7 +120,6 @@
       <artifactId>liquibase-hanadb</artifactId>
       <version>${liquibase.hana.version}</version>
     </dependency>
-
   </dependencies>
 
   <build>
@@ -162,61 +161,43 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
+
+
 
   </build>
   <profiles>
-    <profile>
-      <id>karma-ui-test</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.github.eirslett</groupId>
-            <artifactId>frontend-maven-plugin</artifactId>
-            <version>1.7.6</version>
-            <executions>
-              <execution>
-                <id>install node and npm</id>
-                <goals>
-                  <goal>install-node-and-npm</goal>
-                </goals>
-                <configuration>
-                  <nodeVersion>v10.16.3</nodeVersion>
-                  <npmVersion>6.9.0</npmVersion>
-                </configuration>
-              </execution>
-              <execution>
-                <id>npm install</id>
-                <goals>
-                  <goal>npm</goal>
-                </goals>
-                <configuration>
-                  <arguments>install</arguments>
-                </configuration>
-              </execution>
-              <execution>
-                <id>javascript tests</id>
-                <goals>
-                  <goal>karma</goal>
-                </goals>
-                <configuration>
-                  <karmaConfPath>src/test/resources/karma/karma.conf.js</karmaConfPath>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
     <profile>
       <id>neo-push</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
+
+      <dependencies>
+        <dependency>
+          <groupId>com.calculator.webapp.ui</groupId>
+          <artifactId>calculator-web-ui</artifactId>
+          <version>1.0-SNAPSHOT</version>
+          <type>war</type>
+          <scope>provided</scope>
+        </dependency>
+      </dependencies>
+
       <build>
         <plugins>
           <plugin>
@@ -229,6 +210,7 @@
 
               <!--Configuration for the above deploy goal-->
               <host>https://hanatrial.ondemand.com</host>
+
               <user>${env.NEO_USER}</user>
               <password>${env.NEO_PASSWORD}</password>
               <account>${env.NEO_ACCOUNT}</account>
@@ -236,7 +218,10 @@
               <id>${env.HANADB_DATABASE_ID}</id>
               <dbUser>${env.HANADB_USER}</dbUser>
               <dbPassword>${env.HANADB_PASSWORD}</dbPassword>
-              <source>${project.build.directory}/${project.artifactId}.war</source>
+              <source>
+                ${project.build.directory}/${project.artifactId}.war,
+                ${project.build.directory}/lib/calculator-web-ui-1.0-SNAPSHOT.war
+              </source>
             </configuration>
             <executions>
               <execution>

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "echo \\\\\\\"Error: no src/test specified\\\\\\\" && exit 1"
+    "test": "echo \\\\\\\\\\\\\\\"Error: no ../calculator-web-service/src/test specified\\\\\\\\\\\\\\\" && exit 1"
   },
   "author": "",
   "license": "ISC",

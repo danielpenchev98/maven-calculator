@@ -5,10 +5,9 @@ import com.calculator.core.exceptions.InvalidParameterException;
 
 class EquationStructureValidator {
 
-    void validateEquationStructure(final String equation) throws InvalidEquationException
-    {
-        if(equation==null) {
-           throw new InvalidParameterException("validateEquation has received invalid parameter");
+    void validateEquationStructure(final String equation) throws InvalidEquationException {
+        if (equation == null) {
+            throw new InvalidParameterException("validateEquation has received invalid parameter");
         }
 
         checkEmptyEquation(equation);
@@ -19,8 +18,7 @@ class EquationStructureValidator {
         checkMissingOperatorBeforeOrAfterBracket(equation);
     }
 
-    private void checkBracketImbalance(final String equation) throws InvalidEquationException
-    {
+    private void checkBracketImbalance(final String equation) throws InvalidEquationException {
         int bracketBalance = 0;
         boolean hasError = false;
         for (char symbol : equation.toCharArray()) {
@@ -68,6 +66,7 @@ class EquationStructureValidator {
     private boolean hasAnOperatorAsBeginningOrEndingOfEquationScope(final String equation) {
         return equation.matches("(^|.*\\() *([^-0-9a-zA-Z.)( ]|- *[^0-9a-zA-Z. ]).*|.*[^0-9a-zA-Z.)( ] *(\\)|$)");
     }
+
     private void checkEmptyBrackets(final String equation) throws InvalidEquationException {
         if (hasEmptyBrackets(equation)) {
             throw new InvalidEquationException("Empty brackets");
