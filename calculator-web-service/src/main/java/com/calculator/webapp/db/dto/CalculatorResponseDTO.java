@@ -7,6 +7,7 @@ import java.util.Date;
 @Entity
 @Table(name = "calculator_responses")
 @NamedQuery(name = "CalculatorResponses.findAll", query = "SELECT c FROM CalculatorResponseDTO c")
+@NamedQuery(name="CalculatorResponses.findAllNotCalculated", query = "SELECT c FROM CalculatorResponseDTO c WHERE responseMsg='Not evaluated'")
 public class CalculatorResponseDTO {
 
     @Id
@@ -17,6 +18,7 @@ public class CalculatorResponseDTO {
     @Column
     @NotNull
     private String equation;
+
 
     @Column
     @NotNull

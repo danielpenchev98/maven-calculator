@@ -1,21 +1,17 @@
 package com.calculator.webapp.restresources;
 
 import com.calculator.core.CalculatorApp;
-import com.calculator.core.exceptions.BadInputException;
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
+import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
 import com.calculator.webapp.db.dto.CalculatorResponseDTO;
-import com.calculator.webapp.restresponse.CalculationError;
-import com.calculator.webapp.restresponse.CalculationResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.*;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
 
@@ -27,66 +23,58 @@ public class CalculatorRestResource {
     private final CalculatorApp calculator;
     private final CalculatorDaoImpl dao;
 
+    private static final int ACCEPTED = Response.Status.ACCEPTED.getStatusCode();
+    private static final int OK = Response.Status.OK.getStatusCode();
+    private static final int BAD_REQUEST = Response.Status.BAD_REQUEST.getStatusCode();
+    private static final String PENDING_REQUEST = "Not evaluated";
+
     @Inject
     public CalculatorRestResource(final CalculatorApp calculator, final CalculatorDaoImpl dao) {
-        this.calculator=calculator;
-        this.dao=dao;
+        this.calculator = calculator;
+        this.dao = dao;
+    }
+
+    @POST
+    @Path("/calculate")
+    public Response doGetCalculationId(@NotNull @QueryParam("equation") String equation) {
+        Long itemId = saveCalculationRequest(equation);
+        return createResponseWithPayload(ACCEPTED,itemId);
     }
 
     @GET
-    @Path("/calculate")
-    public Response doGetCalculationResult(@NotNull @QueryParam("equation") String equation) {
-        String responseMsg="";
-        try {
-            responseMsg = getCalculationResult(equation);
-            return getSuccessfulRequestResponse(responseMsg);
-        } catch (BadInputException badInput) {
-            logger.warn("User input error",badInput);
-            responseMsg=badInput.getMessage();
-            return getErrorRequestResponse(Response.Status.BAD_REQUEST,responseMsg);
-        } catch (Exception ex) {
-            logger.error("Problem with service :\n", ex);
-            responseMsg=ex.getMessage();
-            return getErrorRequestResponse(Response.Status.INTERNAL_SERVER_ERROR,responseMsg);
+    @Path("/calculate/{id}")
+    public Response doGetCalculationResult(@NotNull @PathParam("id") Long id) {
+        try{
+            CalculatorResponseDTO calculation = dao.getItem(id);
+            return isNotEvaluated(calculation) ? createResponseWithoutPayload(ACCEPTED) : createResponseWithPayload(OK,calculation);
         }
-        finally {
-            saveCalculationResponse(equation,responseMsg);
+        catch (ItemDoesNotExistException ex){
+            return createResponseWithoutPayload(BAD_REQUEST);
         }
     }
 
-    private Response getSuccessfulRequestResponse(final String responseMsg) {
-        CalculationResult calculationResult = new CalculationResult(responseMsg);
-        return createResponse(Response.Status.OK,calculationResult);
+    private boolean isNotEvaluated(final CalculatorResponseDTO calculation){
+        return calculation.getResponseMsg().equals("Not evaluated");
     }
 
-    private Response getErrorRequestResponse(final Response.Status status, final String errorMsg) {
-        CalculationError errorResponseBody = new CalculationError(status.getStatusCode(),errorMsg);
-        return createResponse(status,errorResponseBody);
+    private Response createResponseWithPayload(final int statusCode,final Object responseBody){
+        return Response.status(statusCode).entity(responseBody).build();
     }
 
-
-    private Response createResponse(final Response.Status status,final Object responseBody) {
-        return  Response.status(status).entity(responseBody).build();
+    private Response createResponseWithoutPayload(final int statusCode){
+        return Response.status(statusCode).build();
     }
 
     @GET
     @Path("/calculationHistory")
     public Response doGetCalculationHistory() {
-        List<CalculatorResponseDTO> calculationHistory=dao.getAllItems();
-        return createResponse(Response.Status.OK,calculationHistory);
+        List<CalculatorResponseDTO> calculationHistory = dao.getAllItems();
+        return createResponseWithPayload(OK,calculationHistory);
     }
 
-    private void saveCalculationResponse(final String equation, final String responseMsg) {
-        Date currentTime = new Date();
-        CalculatorResponseDTO test = new CalculatorResponseDTO(equation,responseMsg,currentTime);
-        dao.saveItem(test);
-    }
-
-    private String getCalculationResult(final String equation) throws Exception {
-        if (equation == null) {
-            throw new BadInputException("Equation parameter is missing from URL");
-        }
-
-        return String.valueOf(calculator.calculateResult(equation));
+    private Long saveCalculationRequest(final String equation) {
+        CalculatorResponseDTO request  = new CalculatorResponseDTO(equation,PENDING_REQUEST, new Date());
+        dao.saveItem(request);
+        return request.getId();
     }
 }

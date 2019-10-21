@@ -1,16 +1,13 @@
 package com.calculator.webapp.restresource;
 
 import com.calculator.core.CalculatorApp;
-import com.calculator.core.exceptions.DivisionByZeroException;
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
+import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
 import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import com.calculator.webapp.restresources.CalculatorRestResource;
-import com.calculator.webapp.restresponse.CalculationError;
-import com.calculator.webapp.restresponse.CalculationResult;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -19,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -42,40 +40,46 @@ public class CalculatorRestResourceTest {
     }
 
     @Test
-    public void doGetCalculationResult_LegalEquation_ExpectedResult() throws Exception {
-        CalculationResult expectedResult = new CalculationResult("2.0");
+    public void doGetCalculationId_idOfJob(){
+        Response response=resource.doGetCalculationId("1+1");
 
-        Mockito.when(mockedApp.calculateResult("1+1")).thenReturn(2.0);
+        assertThat(response.getEntity(),is(instanceOf(Long.class)));
+        verifyResponseCode(response,Response.Status.ACCEPTED.getStatusCode());
+    }
 
-        Response response=resource.doGetCalculationResult("1+1");
-        CalculationResult actualResult = (CalculationResult) response.getEntity();
+    @Test
+    public void doGetCalculationResult_CalculationFinished() throws Exception {
+        CalculatorResponseDTO expectedResult = new CalculatorResponseDTO("1+1","2.0",new Date());
+        expectedResult.setId(1l);
+        Mockito.when(mockedDao.getItem(1l)).thenReturn(expectedResult);
+
+        Response response=resource.doGetCalculationResult(1l);
+        CalculatorResponseDTO actualResult = (CalculatorResponseDTO) response.getEntity();
 
         verifyResponseCode(response,Response.Status.OK.getStatusCode());
         verifyCalculationResult(expectedResult,actualResult);
     }
 
     @Test
-    public void doGetCalculationResult_IllegalEquation_ErrorMessage() throws Exception {
-        CalculationError expectedUserError = new CalculationError(Response.Status.BAD_REQUEST.getStatusCode(),"Division by zero");
+    public void doGetCalculationResult_CalculationPending() throws Exception {
+        CalculatorResponseDTO expectedResult = new CalculatorResponseDTO("1+1","Not evaluated",new Date());
+        expectedResult.setId(1l);
+        Mockito.when(mockedDao.getItem(1l)).thenReturn(expectedResult);
 
-        Mockito.when(mockedApp.calculateResult("1/0")).thenThrow(new DivisionByZeroException("Division by zero"));
+        Response response=resource.doGetCalculationResult(1l);
 
-        Response response=resource.doGetCalculationResult("1/0");
-        CalculationError actualUserError = (CalculationError) response.getEntity();
-
-        verifyResponseCode(response,Response.Status.BAD_REQUEST.getStatusCode());
-        verifyCalculationError(expectedUserError,actualUserError);
+        assertThat(response.hasEntity(),is(false));
+        verifyResponseCode(response,Response.Status.ACCEPTED.getStatusCode());
     }
 
     @Test
-    public void doGetCalculatorResult_MissingParameterInTheUrl_ServerError(){
-        CalculationError expectedUrlError = new CalculationError(Response.Status.BAD_REQUEST.getStatusCode(),"Equation parameter is missing from URL");
+    public void doGetCalculationResult_CalculationMissing() throws Exception {
+        Mockito.when(mockedDao.getItem(1l)).thenThrow(new ItemDoesNotExistException("Item not found"));
 
-        Response response=resource.doGetCalculationResult(null);
-        CalculationError actualUrlError = (CalculationError) response.getEntity();
+        Response response=resource.doGetCalculationResult(1l);
 
+        assertThat(response.hasEntity(),is(false));
         verifyResponseCode(response,Response.Status.BAD_REQUEST.getStatusCode());
-        verifyCalculationError(expectedUrlError,actualUrlError);
     }
 
     @Test
@@ -95,13 +99,12 @@ public class CalculatorRestResourceTest {
         assertThat(actualResponse.getStatus(),is(expectedStatusCode));
     }
 
-    private void verifyCalculationResult(final CalculationResult expectedResponseBody, final CalculationResult actualResponseBody) {
-        assertThat(actualResponseBody.getResult(), is(expectedResponseBody.getResult()));
+    private void verifyCalculationResult(final CalculatorResponseDTO expectedResponseBody, final CalculatorResponseDTO actualResponseBody) {
+        assertThat(actualResponseBody.getId(), is(expectedResponseBody.getId()));
+        assertThat(actualResponseBody.getEquation(), is(expectedResponseBody.getEquation()));
+        assertThat(actualResponseBody.getResponseMsg(), is(expectedResponseBody.getResponseMsg()));
+        assertThat(actualResponseBody.getTimeOfCreation(),is(expectedResponseBody.getTimeOfCreation()));
     }
 
-    private void verifyCalculationError(final CalculationError expectedError, final CalculationError actualError) {
-        assertThat(actualError.getErrorCode(),is(expectedError.getErrorCode()));
-        assertThat(actualError.getMessage(), is(expectedError.getMessage()));
-    }
 
 }
