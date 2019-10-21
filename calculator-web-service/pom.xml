@@ -26,6 +26,7 @@
     <derby.version>10.14.2.0</derby.version>
     <cors.filter.version>2.8</cors.filter.version>
     <neo.maven.plugin.version>3.83.3</neo.maven.plugin.version>
+    <quartz.scheduler.version>2.3.1</quartz.scheduler.version>
   </properties>
 
   <dependencies>
@@ -120,6 +121,22 @@
       <artifactId>liquibase-hanadb</artifactId>
       <version>${liquibase.hana.version}</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
+    <dependency>
+      <groupId>org.quartz-scheduler</groupId>
+      <artifactId>quartz</artifactId>
+      <version>${quartz.scheduler.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+    </dependency>
+
+
   </dependencies>
 
   <build>
