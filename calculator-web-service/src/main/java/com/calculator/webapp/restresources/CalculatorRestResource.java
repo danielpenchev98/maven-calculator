@@ -17,6 +17,7 @@ import java.util.List;
 
 @Path("/calculator")
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class CalculatorRestResource {
 
     private static final Logger logger = LogManager.getLogger(CalculatorRestResource.class);
@@ -36,7 +37,7 @@ public class CalculatorRestResource {
 
     @POST
     @Path("/calculate")
-    public Response doGetCalculationId(@NotNull @QueryParam("equation") String equation) {
+    public Response doGetCalculationId(String equation) {
         Long itemId = saveCalculationRequest(equation);
         return createResponseWithPayload(ACCEPTED,itemId);
     }
