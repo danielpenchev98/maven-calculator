@@ -1,6 +1,7 @@
 package com.calculator.webapp.db;
 
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
+import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
 import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;
@@ -36,8 +37,8 @@ public class CalculatorDaoImplTest {
     @BeforeClass
     public static void setUpDB() throws Exception {
         databaseConnection = new DatabaseConnection(DriverManager.getConnection(DerbyConfiguration.CONNECTION_URL,
-                                                                                DerbyConfiguration.DB_USERNAME,
-                                                                                DerbyConfiguration.DB_PASSWORD));
+                DerbyConfiguration.DB_USERNAME,
+                DerbyConfiguration.DB_PASSWORD));
     }
 
     @AfterClass
@@ -70,7 +71,18 @@ public class CalculatorDaoImplTest {
     }
 
     @Test
-    public void getItem_populatedDataSet_expectedItem() throws Exception {
+    public void getAllPendingCalculations_populatedDataSet() throws Exception {
+        resetStateOfDatabase();
+        setInitialTableInDataBase(DatasetPaths.MULTIPLE_ENTITIES_DATASET_PATH);
+        final int expectedNumberOfEntities = 2;
+        List<CalculatorResponseDTO> pendingItems = dao.getAllPendingCalculations();
+
+        assertThat(pendingItems,is(notNullValue()));
+        assertThat(pendingItems.size(),is(equalTo(expectedNumberOfEntities)));
+    }
+
+    @Test
+    public void getItem_populatedDataSet_ItemFound() throws Exception {
         resetStateOfDatabase();
         setInitialTableInDataBase(DatasetPaths.MULTIPLE_ENTITIES_DATASET_PATH);
 
@@ -79,6 +91,16 @@ public class CalculatorDaoImplTest {
         assertThat(actualItem, is(notNullValue()));
         assertThat(actualItem.getId(), is(equalTo(6L)));
     }
+
+    @Test(expected = ItemDoesNotExistException.class)
+    public void getItem_populatedDataSet_ItemNotFound() throws Exception {
+        resetStateOfDatabase();
+        setInitialTableInDataBase(DatasetPaths.MULTIPLE_ENTITIES_DATASET_PATH);
+
+        CalculatorResponseDTO actualItem = dao.getItem(7L);
+    }
+
+
 
     @Test
     public void saveItem_emptyDataSet_tableSize1() throws Exception {
