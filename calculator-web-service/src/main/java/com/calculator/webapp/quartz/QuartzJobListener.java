@@ -51,6 +51,7 @@ public class QuartzJobListener implements ServletContextListener {
     private Trigger getPendingCalculationTrigger() {
         return TriggerBuilder.newTrigger()
                 .withIdentity(TRIGGER_NAME, TRIGGER_GROUP)
+                .startNow()
                 .withSchedule(getTriggerInterval())
                 .build();
     }

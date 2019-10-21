@@ -135,6 +135,23 @@ public class CalculatorDaoImplTest {
         assertThat(actualTable.getRowCount(), is(emptyTableSize));
     }
 
+    @Test
+    public void update_populatedDataSet() throws Exception {
+        resetStateOfDatabase();
+        setInitialTableInDataBase(DatasetPaths.MULTIPLE_ENTITIES_DATASET_PATH);
+
+        Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:01");
+        CalculatorResponseDTO entity = new CalculatorResponseDTO("1/0","Division by zero",currentDateTime);
+        entity.setId(2);
+
+        dao.update(entity);
+
+        ITable actualTable = getActualTable(responseTableName);
+        assertThat(actualTable.getValue(1,"responseMsg"),is("Division by zero"));
+    }
+
+
+
     private void resetStateOfDatabase() throws SQLException {
         PreparedStatement statement = databaseConnection.getConnection().prepareStatement(DerbyConfiguration.RESTART_IDENTITY_COUNTER);
         statement.executeUpdate();
