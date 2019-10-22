@@ -9,17 +9,24 @@ import java.util.List;
 
 public class PendingCalculationJob implements Job {
 
-    private final CalculatorDaoImpl dao = new CalculatorDaoImpl();
-    private final CalculatorApp calculator = new CalculatorApp();
+    private CalculatorDaoImpl dao;
+    private CalculatorApp calculator;
 
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        setUpJob(jobExecutionContext);
         List<CalculatorResponseDTO> pendingCalculations = dao.getAllPendingCalculations();
 
         for(CalculatorResponseDTO pendingCalculation : pendingCalculations){
             completeCalculation(pendingCalculation);
         }
+    }
+
+    private void setUpJob(final JobExecutionContext jobExecutionContext){
+        JobDataMap map = jobExecutionContext.getMergedJobDataMap();
+        dao=(CalculatorDaoImpl) map.get("dao");
+        calculator=(CalculatorApp) map.get("calculator");
     }
 
     private void completeCalculation(final CalculatorResponseDTO calculation){
