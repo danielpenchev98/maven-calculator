@@ -5,6 +5,7 @@ import com.calculator.webapp.db.dao.CalculatorDaoImpl;
 import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
 import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import com.calculator.webapp.restresources.CalculatorRestResource;
+import com.calculator.webapp.restresources.EquationRequestBody;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +42,7 @@ public class CalculatorRestResourceTest {
 
     @Test
     public void doGetCalculationId_idOfJob(){
-        Response response=resource.doGetCalculationId("1+1");
+        Response response=resource.doGetCalculationId(new EquationRequestBody("1+1"));
 
         assertThat(response.getEntity(),is(instanceOf(Long.class)));
         verifyResponseCode(response,Response.Status.ACCEPTED.getStatusCode());
