@@ -37,8 +37,8 @@ public class CalculatorRestResource {
 
     @POST
     @Path("/calculate")
-    public Response doGetCalculationId(String equation) {
-        Long itemId = saveCalculationRequest(equation);
+    public Response doGetCalculationId(EquationRequestBody body) {
+        Long itemId = saveCalculationRequest(body.getEquation());
         return createResponseWithPayload(ACCEPTED,itemId);
     }
 
