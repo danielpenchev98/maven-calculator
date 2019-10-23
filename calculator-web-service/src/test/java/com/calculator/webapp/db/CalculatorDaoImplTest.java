@@ -136,7 +136,6 @@ public class CalculatorDaoImplTest {
     }
 
     @Test
-
     public void update_populatedDataSet() throws Exception {
         resetStateOfDatabase();
         setInitialTableInDataBase(DatasetPaths.MULTIPLE_ENTITIES_DATASET_PATH);

@@ -10,6 +10,10 @@ import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.util.fileloader.FlatXmlDataFileLoader;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.swing.text.html.parser.Entity;
+import javax.xml.crypto.Data;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

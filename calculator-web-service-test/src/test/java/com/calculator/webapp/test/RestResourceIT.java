@@ -15,6 +15,9 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.io.File;
 import java.net.URL;
 
@@ -58,8 +61,8 @@ public class RestResourceIT {
     @Before
     public void setUp() throws Exception{
         calculationResultPage = new CalculationResultPage(baseUrl,VALID_USERNAME,VALID_PASSWORD);
-        dbPage.resetStateOfDatabase();
         dbPage.setInitialTableInDataBase(DatasetPaths.EMPTY_DATASET_PATH);
+        dbPage.resetStateOfDatabase();
         calculationHistoryPage = new CalculationHistoryPage(baseUrl,VALID_USERNAME,VALID_PASSWORD);
     }
 

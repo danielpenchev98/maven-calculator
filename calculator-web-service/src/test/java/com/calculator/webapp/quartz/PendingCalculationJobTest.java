@@ -4,6 +4,7 @@ import com.calculator.core.CalculatorApp;
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
 import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -37,7 +38,6 @@ public class PendingCalculationJobTest {
         job=new PendingCalculationJob();
         setBehaviourOfMockedDependencies();
     }
-
 
     @Test
     public void execute_completedCalculation() throws Exception{

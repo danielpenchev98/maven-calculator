@@ -1,35 +1,47 @@
 package com.calculator.webapp.test.pageobjects.webclient;
 
-import com.calculator.webapp.restresponse.CalculationResult;
+import com.calculator.webapp.db.dto.CalculatorResponseDTO;
+import com.calculator.webapp.restresources.EquationRequestBody;
 import com.calculator.webapp.test.pageobjects.webclient.requestexecutor.HttpRequestExecutor;
 
-import java.io.IOException;
+import javax.ws.rs.core.Response;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 
 public class CalculationResultPage extends CalculatorRestPage {
 
-    static final String ENCODING = "UTF-8";
     static final String CALCULATE_EQUATION_URL = "/calculate";
-    static final String REQUEST_PARAMETER="equation";
+    static final String GET_CALCULATION_URL = "/calculations";
+
+    private static final int TIME_TO_WAIT_IN_MILLISECONDS = 7000;
 
     public CalculationResultPage(final URL baseUrl,final String username,final String password) {
         super(baseUrl,new HttpRequestExecutor(username,password));
     }
 
-    public CalculationResult calculate(final String equation) throws Exception {
-        String encodedEquation = getUrlEncodedInput(equation);
-        URL requestUrl = getResultRequestUrl(encodedEquation);
-        return requestExecutor.executeGetRequest(requestUrl).readEntity(CalculationResult.class);
+    public CalculatorResponseDTO calculate(final String equation) throws Exception {
+        URL requestUrl = postCalculationRequestUrl();
+        Long requestId = requestExecutor.executePostRequest(requestUrl,new EquationRequestBody(equation)).readEntity(Long.class);
+        URL getCalculationResultUrl = getCalculationResultUrl(requestId);
+        return getCalculationResult(getCalculationResultUrl);
     }
 
-    private String getUrlEncodedInput(final String unformattedInput) throws IOException {
-        return URLEncoder.encode(unformattedInput, ENCODING);
+    private CalculatorResponseDTO getCalculationResult(final URL url) throws Exception{
+        waitForCalculationToBeCompleted();
+        Response response = requestExecutor.executeGetRequest(url);
+        return response.readEntity(CalculatorResponseDTO.class);
     }
 
-    private URL getResultRequestUrl(final String encodedEquation) throws MalformedURLException {
-        return new URL(baseUrl,CALCULATOR_SERVICE_WAR + REST_URL+CALCULATE_EQUATION_URL + "?" + REQUEST_PARAMETER + "=" + encodedEquation);
+    private void waitForCalculationToBeCompleted() throws InterruptedException {
+        Thread.sleep(TIME_TO_WAIT_IN_MILLISECONDS);
+    }
+
+    private URL postCalculationRequestUrl() throws MalformedURLException {
+        return new URL(baseUrl,CALCULATOR_SERVICE_WAR+REST_URL+CALCULATE_EQUATION_URL);
+    }
+
+    private URL getCalculationResultUrl(final Long id) throws MalformedURLException {
+        return new URL(baseUrl,CALCULATOR_SERVICE_WAR + REST_URL+GET_CALCULATION_URL+"/"+id);
     }
 
 }

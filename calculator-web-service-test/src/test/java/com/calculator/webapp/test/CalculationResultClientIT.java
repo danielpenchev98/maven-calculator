@@ -1,12 +1,12 @@
 package com.calculator.webapp.test;
 
 import com.calculator.webapp.db.dto.CalculatorResponseDTO;
-import com.calculator.webapp.restresponse.CalculationResult;
-import com.calculator.webapp.test.pageobjects.webclient.exception.CalculatorRestException;
+
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -17,74 +17,54 @@ public class CalculationResultClientIT extends RestResourceIT {
 
     @Test
     public void doGetCalculationResult_legalExpression() throws Exception {
-        CalculationResult expectedResult = new CalculationResult("100.0");
-        CalculationResult actualResult = calculationResultPage.calculate("((121/(10-(-1))))-(-89)");
-
-        verifyCalculationResult(expectedResult,actualResult);
+        testRestCalculation("((121/(10-(-1))))-(-89)","100.0");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_missingBracket() throws Exception {
-        expectedException.expect(CalculatorRestException.class);
-        expectedException.expectMessage("Missing or misplaced brackets");
-
-        calculationResultPage.calculate("(-1.0/0.001");
+        testRestCalculation("(-1.0/0.001","Missing or misplaced brackets");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_sequentialComponents() throws Exception {
-        expectedException.expect(CalculatorRestException.class);
-        expectedException.expectMessage("Sequential components of the same type");
-
-        calculationResultPage.calculate("-1.0 2 + 3");
+        testRestCalculation("-1.0 2 + 3","Sequential components of the same type");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_missingOperator() throws Exception {
-        expectedException.expect(CalculatorRestException.class);
-        expectedException.expectMessage("Missing operator between a number and an opening bracket or a closing bracket and a number");
-
-        calculationResultPage.calculate("1(-1.0)/2");
+        testRestCalculation("1(-1.0)/2","Missing operator between a number and an opening bracket or a closing bracket and a number");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_emptyEquation() throws Exception {
-        expectedException.expect(CalculatorRestException.class);
-        expectedException.expectMessage("Empty equation");
-
-        calculationResultPage.calculate("     ");
+        testRestCalculation("     ","Empty equation");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_emptyBrackets() throws Exception {
-        expectedException.expect(CalculatorRestException.class);
-        expectedException.expectMessage("Empty brackets");
-
-        calculationResultPage.calculate("()");
+        testRestCalculation("()","Empty brackets");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_equationBeginningWithOperation() throws Exception {
-        expectedException.expect(CalculatorRestException.class);
-        expectedException.expectMessage("Scope of equation ending or beginning with an operator");
-
-        calculationResultPage.calculate("*1/2+3");
+        testRestCalculation("*1/2+3","Scope of equation ending or beginning with an operator");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_divisionByZero() throws Exception {
-        expectedException.expect(CalculatorRestException.class);
-        expectedException.expectMessage("Division by zero");
-
-        calculationResultPage.calculate("1/0");
+        testRestCalculation("1/0","Division by zero");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_unsupportedComponent() throws Exception {
-        expectedException.expect(CalculatorRestException.class);
-        expectedException.expectMessage("Unsupported component :#");
+       testRestCalculation("1#3","Unsupported component :#");
+    }
 
-        calculationResultPage.calculate("1#3");
+    private void testRestCalculation(final String equation,final String responseMsg) throws Exception {
+        CalculatorResponseDTO expectedResult = new CalculatorResponseDTO(equation,responseMsg,new Date());
+        CalculatorResponseDTO actualResult = calculationResultPage.calculate(equation);
+
+        verifyCalculationResult(expectedResult,actualResult);
     }
 
     @Test
@@ -98,8 +78,9 @@ public class CalculationResultClientIT extends RestResourceIT {
     }
 
 
-    private void verifyCalculationResult(final CalculationResult expectedResult,final CalculationResult actualResult) {
-        assertThat(actualResult.getResult(),is(expectedResult.getResult()));
+    private void verifyCalculationResult(final CalculatorResponseDTO expectedResult,final CalculatorResponseDTO actualResult) {
+        assertThat(actualResult.getEquation(),is(expectedResult.getEquation()));
+        assertThat(actualResult.getResponseMsg(),is(expectedResult.getResponseMsg()));
     }
 
 }

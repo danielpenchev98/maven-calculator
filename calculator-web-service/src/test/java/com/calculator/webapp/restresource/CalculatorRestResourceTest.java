@@ -41,8 +41,8 @@ public class CalculatorRestResourceTest {
     }
 
     @Test
-    public void doGetCalculationId_idOfJob(){
-        Response response=resource.doGetCalculationId(new EquationRequestBody("1+1"));
+    public void queueCurrentRequest_idOfJob(){
+        Response response=resource.queueCurrentRequest(new EquationRequestBody("1+1"));
 
         assertThat(response.getEntity(),is(instanceOf(Long.class)));
         verifyResponseCode(response,Response.Status.ACCEPTED.getStatusCode());
