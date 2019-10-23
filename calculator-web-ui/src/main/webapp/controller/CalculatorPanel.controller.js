@@ -12,22 +12,26 @@ sap.ui.define([
 		onCalculation: function () {
 
 			let equation = this.getView().byId("equation").getValue();
-			let encodedEquation = UrlFormatter.encodeExpresion(equation);
 
 			let ownerComponent = this.getOwnerComponent();
 			let serviceConfig = ownerComponent.getManifestEntry("/sap.app/dataSources/calculationService");
-			let url=serviceConfig.baseUrl + serviceConfig.serviceUrl +'?' + serviceConfig.queryParam +'='+ encodedEquation;
+			let postRequestUrl = serviceConfig.baseUrl + serviceConfig.serviceUrl;
 
-			let oModel = new JSONModel();
-			oModel.loadData(url).then(function () {
-				ownerComponent.showResult(oModel);
+			let postRequestBody = {
+				equation : equation
+			};
+
+			let oId = new JSONModel();
+			oId.loadData(postRequestUrl,postRequestUrl,true,)
+
+			let getRequestUrl = postRequestUrl+"\";
+
+			let oCalculationResult = new JSONModel();
+			oCalculationResult.loadData(getRequestUrl).then(function () {
+				ownerComponent.showResult(oCalculationResult);
 			}).catch(function (error) {
-				if (error.statusCode === 500 || error.statusCode === 400 ) {
-					oModel.setJSON(error.responseText);
-				} else {
-					oModel.setJSON(serviceNotFoundResponseBody);
-				}
-				ownerComponent.openErrorDialog(oModel);
+				oCalculationResult.setJSON(error.responseText);
+				ownerComponent.openErrorDialog(oCalculationResult);
 			});
 		}
 	});

@@ -20,7 +20,6 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 public class CalculatorRestResource {
 
-    private static final Logger logger = LogManager.getLogger(CalculatorRestResource.class);
     private final CalculatorApp calculator;
     private final CalculatorDaoImpl dao;
 
@@ -37,13 +36,13 @@ public class CalculatorRestResource {
 
     @POST
     @Path("/calculate")
-    public Response doGetCalculationId(EquationRequestBody body) {
+    public Response queueCurrentRequest(EquationRequestBody body) {
         Long itemId = saveCalculationRequest(body.getEquation());
         return createResponseWithPayload(ACCEPTED,itemId);
     }
 
     @GET
-    @Path("/calculate/{id}")
+    @Path("/calculations/{id}")
     public Response doGetCalculationResult(@NotNull @PathParam("id") Long id) {
         try{
             CalculatorResponseDTO calculation = dao.getItem(id);
