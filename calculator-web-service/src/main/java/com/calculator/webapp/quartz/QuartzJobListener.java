@@ -20,7 +20,7 @@ public class QuartzJobListener implements ServletContextListener {
     private static final String TRIGGER_GROUP = "CalculatorTriggers";
     private static final int INTERVAL_DURATION=5;
 
-    private static final Logger logger = LogManager.getLogger(CalculatorRestResource.class);
+    private static final Logger logger = LogManager.getLogger(QuartzJobListener.class);
     private Scheduler scheduler;
 
     public void contextDestroyed(ServletContextEvent sce) {

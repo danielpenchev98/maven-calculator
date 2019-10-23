@@ -4,7 +4,6 @@ import com.calculator.core.CalculatorApp;
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
 import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import org.quartz.*;
-
 import java.util.List;
 
 public class PendingCalculationJob implements Job {
@@ -14,7 +13,7 @@ public class PendingCalculationJob implements Job {
 
 
     @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    public synchronized void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         setUpJob(jobExecutionContext);
         List<CalculatorResponseDTO> pendingCalculations = dao.getAllPendingCalculations();
 
@@ -26,6 +25,7 @@ public class PendingCalculationJob implements Job {
     private void setUpJob(final JobExecutionContext jobExecutionContext){
         JobDataMap map = jobExecutionContext.getMergedJobDataMap();
         dao=(CalculatorDaoImpl) map.get("dao");
+        dao.clearEntityManagerContext();
         calculator=(CalculatorApp) map.get("calculator");
     }
 
@@ -36,6 +36,7 @@ public class PendingCalculationJob implements Job {
         } catch (Exception e) {
             result = e.getMessage();
         }
+
 
         calculation.setResponseMsg(result);
         dao.update(calculation);

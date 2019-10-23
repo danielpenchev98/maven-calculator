@@ -76,10 +76,15 @@ public class CalculatorDaoImpl implements Dao<Long, CalculatorResponseDTO> {
         executeTransaction(EntityManager::merge,item);
     }
 
+    public void clearEntityManagerContext(){
+        manager.clear();
+    }
+
     private void executeTransaction(final BiConsumer<EntityManager,CalculatorResponseDTO> action, final CalculatorResponseDTO item)
     {
-        manager.getTransaction().begin();
+        EntityTransaction transaction =  manager.getTransaction();
+        transaction.begin();
         action.accept(manager,item);
-        manager.getTransaction().commit();
+        transaction.commit();
     }
 }
