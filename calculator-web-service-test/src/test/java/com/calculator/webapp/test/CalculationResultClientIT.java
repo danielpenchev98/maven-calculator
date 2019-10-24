@@ -1,13 +1,13 @@
 package com.calculator.webapp.test;
 
-import com.calculator.webapp.db.dto.CalculatorResponseDTO;
+import com.calculator.webapp.db.dto.CalculationRequestDTO;
 
+import com.calculator.webapp.restresponses.CalculationResult;
+import com.calculator.webapp.test.pageobjects.webclient.exception.CalculatorRestException;
 import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -18,70 +18,91 @@ public class CalculationResultClientIT extends RestResourceIT {
 
     @Test
     public void doGetCalculationResult_legalExpression() throws Exception {
-        testRestCalculation("((121/(10-(-1))))-(-89)","100.0");
+        CalculationResult expectedResult = new CalculationResult("100.0");
+        CalculationResult actualResult = calculationResultPage.calculate("((121/(10-(-1))))-(-89)");
+
+        verifyCalculationResult(expectedResult,actualResult);
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_missingBracket() throws Exception {
-        testRestCalculation("(-1.0/0.001","Missing or misplaced brackets");
+        expectedException.expect(CalculatorRestException.class);
+        expectedException.expectMessage("Missing or misplaced brackets");
+
+        calculationResultPage.calculate("(-1.0/0.001");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_sequentialComponents() throws Exception {
-        testRestCalculation("-1.0 2 + 3","Sequential components of the same type");
+        expectedException.expect(CalculatorRestException.class);
+        expectedException.expectMessage("Sequential components of the same type");
+
+        calculationResultPage.calculate("-1.0 2 + 3");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_missingOperator() throws Exception {
-        testRestCalculation("1(-1.0)/2","Missing operator between a number and an opening bracket or a closing bracket and a number");
+        expectedException.expect(CalculatorRestException.class);
+        expectedException.expectMessage("Missing operator between a number and an opening bracket or a closing bracket and a number");
+
+        calculationResultPage.calculate("1(-1.0)/2");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_emptyEquation() throws Exception {
-        testRestCalculation("     ","Empty equation");
+        expectedException.expect(CalculatorRestException.class);
+        expectedException.expectMessage("Empty equation");
+
+        calculationResultPage.calculate("     ");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_emptyBrackets() throws Exception {
-        testRestCalculation("()","Empty brackets");
+        expectedException.expect(CalculatorRestException.class);
+        expectedException.expectMessage("Empty brackets");
+
+        calculationResultPage.calculate("()");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_equationBeginningWithOperation() throws Exception {
-        testRestCalculation("*1/2+3","Scope of equation ending or beginning with an operator");
+        expectedException.expect(CalculatorRestException.class);
+        expectedException.expectMessage("Scope of equation ending or beginning with an operator");
+
+        calculationResultPage.calculate("*1/2+3");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_divisionByZero() throws Exception {
-        testRestCalculation("1/0","Division by zero");
+        expectedException.expect(CalculatorRestException.class);
+        expectedException.expectMessage("Division by zero");
+
+        calculationResultPage.calculate("1/0");
     }
 
     @Test
     public void doGetCalculationResult_illegalExpression_unsupportedComponent() throws Exception {
-       testRestCalculation("1#3","Unsupported component :#");
+        expectedException.expect(CalculatorRestException.class);
+        expectedException.expectMessage("Unsupported component :#");
+
+        calculationResultPage.calculate("1#3");
     }
 
-    private void testRestCalculation(final String equation,final String responseMsg) throws Exception {
-        CalculatorResponseDTO expectedResult = new CalculatorResponseDTO(equation,responseMsg,new Date());
-        CalculatorResponseDTO actualResult = calculationResultPage.calculate(equation);
-
-        verifyCalculationResult(expectedResult,actualResult);
-    }
 
     @Test
     public void doGetCalculationHistory_requestWholeHistory() throws Exception {
         dbPage.setInitialTableInDataBase(DatasetPaths.CALCULATION_HISTORY_DATASET_PATH);
         final int HISTORY_RECORDS_COUNT = 6;
 
-        List<CalculatorResponseDTO> history = calculationHistoryPage.getCalculationHistory();
+        List<CalculationRequestDTO> history = calculationHistoryPage.getCalculationHistory();
 
         assertThat(history.size(),is(HISTORY_RECORDS_COUNT));
     }
 
 
-    private void verifyCalculationResult(final CalculatorResponseDTO expectedResult,final CalculatorResponseDTO actualResult) {
-        assertThat(actualResult.getEquation(),is(expectedResult.getEquation()));
-        assertThat(actualResult.getResponseMsg(),is(expectedResult.getResponseMsg()));
+    private void verifyCalculationResult(final CalculationResult  expectedResult,final CalculationResult actualResult) {
+        assertThat(actualResult.getResult(),is(expectedResult.getResult()));
     }
+
 
 }

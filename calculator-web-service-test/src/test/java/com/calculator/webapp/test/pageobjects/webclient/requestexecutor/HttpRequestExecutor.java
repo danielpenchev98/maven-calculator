@@ -1,7 +1,7 @@
 package com.calculator.webapp.test.pageobjects.webclient.requestexecutor;
 
-import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import com.calculator.webapp.restresources.EquationRequestBody;
+import com.calculator.webapp.restresponses.CalculationError;
 import com.calculator.webapp.test.pageobjects.webclient.exception.CalculatorRestException;
 import com.calculator.webapp.test.pageobjects.webclient.exception.UnauthenticatedUserException;
 import com.calculator.webapp.test.pageobjects.webclient.exception.UnauthorizedUserException;
@@ -21,6 +21,9 @@ public class HttpRequestExecutor {
 
     private static final int UNAUTHORIZED = Response.Status.UNAUTHORIZED.getStatusCode();
     private static final int FORBIDDEN = Response.Status.FORBIDDEN.getStatusCode();
+    private static final int OK = Response.Status.OK.getStatusCode();
+    private static final int ACCEPTED = Response.Status.ACCEPTED.getStatusCode();
+
 
     private String username;
     private String password;
@@ -53,8 +56,30 @@ public class HttpRequestExecutor {
     }
 
     private void checkResponseStatusCode(final Response response) throws Exception {
+        if(isUnsuccessfulRequest(response)) {
             checkProblemWithAuthentication(response);
             checkProblemWithAuthorization(response);
+
+            String exceptionMessage = extractExceptionMessage(response);
+            throw new CalculatorRestException(exceptionMessage);
+        }
+    }
+
+    private boolean isUnsuccessfulRequest(final Response response){
+        return isNotOKResponseCode(response) && isNotAcceptedResponseCode(response);
+    }
+
+    private boolean isNotOKResponseCode(final Response response){
+        return response.getStatus()!=OK;
+    }
+
+    private boolean isNotAcceptedResponseCode(final Response response){
+        return response.getStatus()!=ACCEPTED;
+    }
+
+    private String extractExceptionMessage(final Response response) {
+        CalculationError error = response.readEntity(CalculationError.class);
+        return error.getMessage();
     }
 
     private void checkProblemWithAuthorization(final Response response) throws UnauthorizedUserException {

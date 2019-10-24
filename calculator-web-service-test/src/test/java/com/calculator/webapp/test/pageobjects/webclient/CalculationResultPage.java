@@ -1,7 +1,7 @@
 package com.calculator.webapp.test.pageobjects.webclient;
 
-import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import com.calculator.webapp.restresources.EquationRequestBody;
+import com.calculator.webapp.restresponses.CalculationResult;
 import com.calculator.webapp.test.pageobjects.webclient.requestexecutor.HttpRequestExecutor;
 
 import javax.ws.rs.core.Response;
@@ -19,17 +19,17 @@ public class CalculationResultPage extends CalculatorRestPage {
         super(baseUrl,new HttpRequestExecutor(username,password));
     }
 
-    public CalculatorResponseDTO calculate(final String equation) throws Exception {
+    public CalculationResult calculate(final String equation) throws Exception {
         URL requestUrl = postCalculationRequestUrl();
         Long requestId = requestExecutor.executePostRequest(requestUrl,new EquationRequestBody(equation)).readEntity(Long.class);
         URL getCalculationResultUrl = getCalculationResultUrl(requestId);
         return getCalculationResult(getCalculationResultUrl);
     }
 
-    private CalculatorResponseDTO getCalculationResult(final URL url) throws Exception{
+    private CalculationResult getCalculationResult(final URL url) throws Exception{
         waitForCalculationToBeCompleted();
         Response response = requestExecutor.executeGetRequest(url);
-        return response.readEntity(CalculatorResponseDTO.class);
+        return response.readEntity(CalculationResult.class);
     }
 
     private void waitForCalculationToBeCompleted() throws InterruptedException {
