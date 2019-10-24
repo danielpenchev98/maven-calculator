@@ -61,8 +61,8 @@ public class RestResourceIT {
     @Before
     public void setUp() throws Exception{
         calculationResultPage = new CalculationResultPage(baseUrl,VALID_USERNAME,VALID_PASSWORD);
-        dbPage.setInitialTableInDataBase(DatasetPaths.EMPTY_DATASET_PATH);
         dbPage.resetStateOfDatabase();
+        dbPage.setInitialTableInDataBase(DatasetPaths.EMPTY_DATASET_PATH);
         calculationHistoryPage = new CalculationHistoryPage(baseUrl,VALID_USERNAME,VALID_PASSWORD);
     }
 

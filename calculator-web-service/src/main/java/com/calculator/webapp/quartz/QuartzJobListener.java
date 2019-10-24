@@ -1,9 +1,5 @@
 package com.calculator.webapp.quartz;
 
-
-import com.calculator.core.CalculatorApp;
-import com.calculator.webapp.db.dao.CalculatorDaoImpl;
-import com.calculator.webapp.restresources.CalculatorRestResource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.*;
@@ -45,20 +41,11 @@ public class QuartzJobListener implements ServletContextListener {
         }
     }
 
-    private JobDetail getPendingCalculationJobInstance(){
-        JobDetail detail = JobBuilder.newJob(PendingCalculationJob.class)
-                .withIdentity(JOB_NAME,JOB_GROUP)
+    private JobDetail getPendingCalculationJobInstance() {
+        return JobBuilder.newJob(PendingCalculationJob.class)
+                .withIdentity(JOB_NAME, JOB_GROUP)
                 .build();
 
-        return getJobWithInjectedDependencies(detail);
-
-    }
-
-    private JobDetail getJobWithInjectedDependencies(final JobDetail detail){
-        JobDataMap map = detail.getJobDataMap();
-        map.put("dao",new CalculatorDaoImpl());
-        map.put("calculator",new CalculatorApp());
-        return detail;
     }
 
     private Trigger getPendingCalculationTrigger() {

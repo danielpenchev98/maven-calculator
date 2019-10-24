@@ -3,6 +3,7 @@ package com.calculator.webapp.test;
 import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 
 import org.jboss.arquillian.junit.Arquillian;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

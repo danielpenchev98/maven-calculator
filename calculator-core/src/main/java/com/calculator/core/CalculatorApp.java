@@ -13,7 +13,6 @@ public class CalculatorApp {
     private final InputFormatter formatter;
     private final CalculationAlgorithm algorithm;
 
-
     public CalculatorApp(final InputFormatter formatter, final CalculationAlgorithm algorithm) {
         this.formatter = formatter;
         this.algorithm = algorithm;
