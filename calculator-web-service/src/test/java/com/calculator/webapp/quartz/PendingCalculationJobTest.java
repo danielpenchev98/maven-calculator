@@ -2,7 +2,7 @@ package com.calculator.webapp.quartz;
 
 import com.calculator.core.CalculatorApp;
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
-import com.calculator.webapp.db.dto.CalculatorResponseDTO;
+import com.calculator.webapp.db.dto.CalculationRequestDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,20 +41,20 @@ public class PendingCalculationJobTest {
     public void execute_completedCalculation() throws Exception{
         job.execute(context);
 
-        ArgumentCaptor<CalculatorResponseDTO> calculationCaptor = ArgumentCaptor.forClass(CalculatorResponseDTO.class);
+        ArgumentCaptor<CalculationRequestDTO> calculationCaptor = ArgumentCaptor.forClass(CalculationRequestDTO.class);
         Mockito.verify(dao).update(calculationCaptor.capture());
 
-        CalculatorResponseDTO completedCalculation = calculationCaptor.getValue();
+        CalculationRequestDTO completedCalculation = calculationCaptor.getValue();
         verifyUpdatedResponseMessage(completedCalculation);
     }
 
     private void setBehaviourOfMockedDependencies() throws Exception{
-        List<CalculatorResponseDTO> pendingCalculations = Collections.singletonList(new CalculatorResponseDTO("1+1", "Not evaluated", new Date()));
+        List<CalculationRequestDTO> pendingCalculations = Collections.singletonList(new CalculationRequestDTO("1+1","PENDING",new Date()));
         Mockito.when(dao.getAllPendingCalculations()).thenReturn(pendingCalculations);
         Mockito.when(calculator.calculateResult("1+1")).thenReturn(2.0);
     }
 
-    private void verifyUpdatedResponseMessage(final CalculatorResponseDTO completedCalculation){
+    private void verifyUpdatedResponseMessage(final CalculationRequestDTO completedCalculation){
         assertThat(completedCalculation.getResponseMsg(),is("2.0"));
     }
 

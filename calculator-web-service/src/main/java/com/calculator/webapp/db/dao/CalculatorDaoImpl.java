@@ -2,13 +2,13 @@ package com.calculator.webapp.db.dao;
 
 
 import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
-import com.calculator.webapp.db.dto.CalculatorResponseDTO;
+import com.calculator.webapp.db.dto.CalculationRequestDTO;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-public class CalculatorDaoImpl implements Dao<Long, CalculatorResponseDTO> {
+public class CalculatorDaoImpl implements Dao<Long, CalculationRequestDTO> {
 
     private EntityManager manager;
 
@@ -29,19 +29,19 @@ public class CalculatorDaoImpl implements Dao<Long, CalculatorResponseDTO> {
     }
 
     @Override
-    public List<CalculatorResponseDTO> getAllItems()  {
-        Query query = manager.createNamedQuery("CalculatorResponses.findAll",CalculatorResponseDTO.class);
+    public List<CalculationRequestDTO> getAllItems()  {
+        Query query = manager.createNamedQuery("CalculatorResponses.findAll", CalculationRequestDTO.class);
         return query.getResultList();
     }
 
-    public List<CalculatorResponseDTO> getAllPendingCalculations() {
-        Query query = manager.createNamedQuery("CalculatorResponses.findAllNotCalculated",CalculatorResponseDTO.class);
+    public List<CalculationRequestDTO> getAllPendingCalculations() {
+        Query query = manager.createNamedQuery("CalculatorResponses.findAllNotCalculated", CalculationRequestDTO.class);
         return query.getResultList();
     }
 
     @Override
-    public CalculatorResponseDTO getItem(final Long key) throws ItemDoesNotExistException {
-        CalculatorResponseDTO result = manager.find(CalculatorResponseDTO.class,key);
+    public CalculationRequestDTO getItem(final Long key) throws ItemDoesNotExistException {
+        CalculationRequestDTO result = manager.find(CalculationRequestDTO.class,key);
 
         if(checkIfItemNotFound(result)){
             throw new ItemDoesNotExistException("Item not found");
@@ -51,18 +51,18 @@ public class CalculatorDaoImpl implements Dao<Long, CalculatorResponseDTO> {
         return result;
     }
 
-    private boolean checkIfItemNotFound(final CalculatorResponseDTO result){
+    private boolean checkIfItemNotFound(final CalculationRequestDTO result){
         return result==null;
     }
 
 
     @Override
-    public void saveItem(final CalculatorResponseDTO item) {
+    public void saveItem(final CalculationRequestDTO item) {
         executeTransaction(EntityManager::persist,item);
     }
 
     @Override
-    public void deleteItem(final CalculatorResponseDTO item) {
+    public void deleteItem(final CalculationRequestDTO item) {
         executeTransaction((entityManager,toDelete)-> {
             if(!entityManager.contains(toDelete)){
                 toDelete=manager.merge(toDelete);
@@ -72,15 +72,11 @@ public class CalculatorDaoImpl implements Dao<Long, CalculatorResponseDTO> {
     }
 
     @Override
-    public void update(CalculatorResponseDTO item) {
+    public void update(CalculationRequestDTO item) {
         executeTransaction(EntityManager::merge,item);
     }
 
-    public void clearEntityManagerContext(){
-        manager.clear();
-    }
-
-    private void executeTransaction(final BiConsumer<EntityManager,CalculatorResponseDTO> action, final CalculatorResponseDTO item)
+    private void executeTransaction(final BiConsumer<EntityManager, CalculationRequestDTO> action, final CalculationRequestDTO item)
     {
         EntityTransaction transaction =  manager.getTransaction();
         transaction.begin();

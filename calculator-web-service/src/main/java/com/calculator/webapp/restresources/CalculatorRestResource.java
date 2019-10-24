@@ -1,11 +1,10 @@
 package com.calculator.webapp.restresources;
 
-import com.calculator.core.CalculatorApp;
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
 import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
-import com.calculator.webapp.db.dto.CalculatorResponseDTO;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.calculator.webapp.db.dto.CalculationRequestDTO;
+import com.calculator.webapp.restresponses.CalculationError;
+import com.calculator.webapp.restresponses.CalculationResult;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
@@ -15,22 +14,23 @@ import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
 
+import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.COMPLETED;
+
 @Path("/calculator")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CalculatorRestResource {
 
-    private final CalculatorApp calculator;
     private final CalculatorDaoImpl dao;
 
     private static final int ACCEPTED = Response.Status.ACCEPTED.getStatusCode();
     private static final int OK = Response.Status.OK.getStatusCode();
     private static final int BAD_REQUEST = Response.Status.BAD_REQUEST.getStatusCode();
-    private static final String PENDING_REQUEST = "Not evaluated";
+    private static final int NOT_FOUND = Response.Status.NOT_FOUND.getStatusCode();
+
 
     @Inject
-    public CalculatorRestResource(final CalculatorApp calculator, final CalculatorDaoImpl dao) {
-        this.calculator = calculator;
+    public CalculatorRestResource(final CalculatorDaoImpl dao) {
         this.dao = dao;
     }
 
@@ -45,16 +45,37 @@ public class CalculatorRestResource {
     @Path("/calculations/{id}")
     public Response doGetCalculationResult(@NotNull @PathParam("id") Long id) {
         try{
-            CalculatorResponseDTO calculation = dao.getItem(id);
-            return isNotEvaluated(calculation) ? createResponseWithoutPayload(ACCEPTED) : createResponseWithPayload(OK,calculation);
+            CalculationRequestDTO calculation = dao.getItem(id);
+            return isNotEvaluated(calculation) ? getPendingCalculationResponse() : getCalculationResultResponse(calculation) ;
         }
         catch (ItemDoesNotExistException ex){
-            return createResponseWithoutPayload(BAD_REQUEST);
+            return createResponseWithoutPayload(NOT_FOUND);
         }
     }
 
-    private boolean isNotEvaluated(final CalculatorResponseDTO calculation){
-        return calculation.getResponseMsg().equals("Not evaluated");
+    private Response getPendingCalculationResponse(){
+       return createResponseWithoutPayload(ACCEPTED);
+    }
+
+    private Response getCalculationResultResponse(final CalculationRequestDTO calculation){
+        String responseMsg = calculation.getResponseMsg();
+        if(isSuccessfulCalculationResult(responseMsg)){
+            return createResponseWithPayload(OK,new CalculationResult(responseMsg));
+        } else {
+            return createResponseWithPayload(BAD_REQUEST,new CalculationError(BAD_REQUEST,responseMsg));
+        }
+    }
+
+    private boolean isSuccessfulCalculationResult(final String calculationResult){
+        return calculationResult.matches("[0-9]+\\.*[0-9]*E?-?[0-9]*");
+    }
+
+    /*private boolean isEvaluated(final CalculationRequestDTO calculation){
+        return calculation.getStatusCode()==COMPLETED.getStatusCode();
+    }*/
+
+    private boolean isNotEvaluated(final CalculationRequestDTO calculation){
+        return calculation.getResponseMsg().equals("PENDING");
     }
 
     private Response createResponseWithPayload(final int statusCode,final Object responseBody){
@@ -68,12 +89,12 @@ public class CalculatorRestResource {
     @GET
     @Path("/calculationHistory")
     public Response doGetCalculationHistory() {
-        List<CalculatorResponseDTO> calculationHistory = dao.getAllItems();
+        List<CalculationRequestDTO> calculationHistory = dao.getAllItems();
         return createResponseWithPayload(OK,calculationHistory);
     }
 
     private Long saveCalculationRequest(final String equation) {
-        CalculatorResponseDTO request  = new CalculatorResponseDTO(equation,PENDING_REQUEST, new Date());
+        CalculationRequestDTO request  = new CalculationRequestDTO(equation,"PENDING",new Date());
         dao.saveItem(request);
         return request.getId();
     }

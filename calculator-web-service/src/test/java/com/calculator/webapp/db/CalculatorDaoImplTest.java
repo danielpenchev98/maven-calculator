@@ -2,7 +2,7 @@ package com.calculator.webapp.db;
 
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
 import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
-import com.calculator.webapp.db.dto.CalculatorResponseDTO;
+import com.calculator.webapp.db.dto.CalculationRequestDTO;
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.COMPLETED;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsNull.notNullValue;
@@ -64,7 +65,7 @@ public class CalculatorDaoImplTest {
         setInitialTableInDataBase(DatasetPaths.MULTIPLE_ENTITIES_DATASET_PATH);
 
         final int expectedNumberOfEntities = 6;
-        List<CalculatorResponseDTO> actualItems = dao.getAllItems();
+        List<CalculationRequestDTO> actualItems = dao.getAllItems();
 
         assertThat(actualItems, is(notNullValue()));
         assertThat(actualItems.size(), is(equalTo(expectedNumberOfEntities)));
@@ -75,7 +76,7 @@ public class CalculatorDaoImplTest {
         resetStateOfDatabase();
         setInitialTableInDataBase(DatasetPaths.MULTIPLE_ENTITIES_DATASET_PATH);
         final int expectedNumberOfEntities = 2;
-        List<CalculatorResponseDTO> pendingItems = dao.getAllPendingCalculations();
+        List<CalculationRequestDTO> pendingItems = dao.getAllPendingCalculations();
 
         assertThat(pendingItems,is(notNullValue()));
         assertThat(pendingItems.size(),is(equalTo(expectedNumberOfEntities)));
@@ -86,7 +87,7 @@ public class CalculatorDaoImplTest {
         resetStateOfDatabase();
         setInitialTableInDataBase(DatasetPaths.MULTIPLE_ENTITIES_DATASET_PATH);
 
-        CalculatorResponseDTO actualItem = dao.getItem(6L);
+        CalculationRequestDTO actualItem = dao.getItem(6L);
 
         assertThat(actualItem, is(notNullValue()));
         assertThat(actualItem.getId(), is(equalTo(6L)));
@@ -97,7 +98,7 @@ public class CalculatorDaoImplTest {
         resetStateOfDatabase();
         setInitialTableInDataBase(DatasetPaths.MULTIPLE_ENTITIES_DATASET_PATH);
 
-        CalculatorResponseDTO actualItem = dao.getItem(7L);
+        dao.getItem(7L);
     }
 
 
@@ -110,10 +111,10 @@ public class CalculatorDaoImplTest {
         ITable expectedTable = getDataSet(DatasetPaths.ONE_ENTITY_DATASET_PATH).getTable(responseTableName);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
-        CalculatorResponseDTO entity = new CalculatorResponseDTO("1+1","2.0",currentDateTime);
+        CalculationRequestDTO entity = new CalculationRequestDTO("1+1","2.0",currentDateTime);
+        //CalculationRequestDTO entity = createCalculationRequestDTO(0,"1+1","2.0",COMPLETED.getStatusCode(),currentDateTime); new CalculationRequestDTO("1+1",currentDateTime);
 
         dao.saveItem(entity);
-
 
         ITable actualTable = getActualTable(responseTableName);
         Assertion.assertEquals(expectedTable, actualTable);
@@ -125,8 +126,9 @@ public class CalculatorDaoImplTest {
         setInitialTableInDataBase(DatasetPaths.ONE_ENTITY_DATASET_PATH);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
-        CalculatorResponseDTO entity = new CalculatorResponseDTO("1+1","2.0",currentDateTime);
-        entity.setId(1);
+        //CalculationRequestDTO entity = createCalculationRequestDTO(1,"1+1","2.0",COMPLETED.getStatusCode(),currentDateTime);
+          CalculationRequestDTO entity = new CalculationRequestDTO("1+1","2.0",currentDateTime);
+          entity.setId(1);
 
         dao.deleteItem(entity);
         final int emptyTableSize = 0;
@@ -141,13 +143,22 @@ public class CalculatorDaoImplTest {
         setInitialTableInDataBase(DatasetPaths.MULTIPLE_ENTITIES_DATASET_PATH);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:01");
-        CalculatorResponseDTO entity = new CalculatorResponseDTO("1/0","Division by zero",currentDateTime);
-        entity.setId(2);
+        //CalculationRequestDTO entity = createCalculationRequestDTO(2,"1/0","Division by zero",COMPLETED.getStatusCode(),currentDateTime);
+            CalculationRequestDTO entity = new CalculationRequestDTO("1/0","Division by zero",currentDateTime);
+            entity.setId(2);
 
         dao.update(entity);
 
         ITable actualTable = getActualTable(responseTableName);
         assertThat(actualTable.getValue(1,"responseMsg"),is("Division by zero"));
+    }
+
+    private CalculationRequestDTO createCalculationRequestDTO(final int id,final String equation,final String responseMsg,final int statusCode,final Date time){
+        CalculationRequestDTO request = new CalculationRequestDTO(equation,responseMsg,time);
+        request.setId(id);
+        //request.setStatusCode(statusCode);
+        request.setResponseMsg(responseMsg);
+        return request;
     }
 
 

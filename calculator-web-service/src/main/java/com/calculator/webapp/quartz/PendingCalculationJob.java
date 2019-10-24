@@ -2,15 +2,18 @@ package com.calculator.webapp.quartz;
 
 import com.calculator.core.CalculatorApp;
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
-import com.calculator.webapp.db.dto.CalculatorResponseDTO;
+import com.calculator.webapp.db.dto.CalculationRequestDTO;
 import org.quartz.*;
 
 import java.util.List;
+
+import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.COMPLETED;
 
 public class PendingCalculationJob implements Job {
 
     private CalculatorDaoImpl dao;
     private CalculatorApp calculator;
+
 
     public PendingCalculationJob(){
         this(new CalculatorApp(),new CalculatorDaoImpl());
@@ -24,19 +27,15 @@ public class PendingCalculationJob implements Job {
 
     @Override
     public synchronized void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        List<CalculatorResponseDTO> pendingCalculations = dao.getAllPendingCalculations();
+        List<CalculationRequestDTO> pendingCalculations = dao.getAllPendingCalculations();
 
-        for(CalculatorResponseDTO pendingCalculation : pendingCalculations){
+        for(CalculationRequestDTO pendingCalculation : pendingCalculations){
             completeCalculation(pendingCalculation);
         }
 
     }
 
-    private void setUpJob(){
-        dao.clearEntityManagerContext();
-    }
-
-    private void completeCalculation(final CalculatorResponseDTO calculation){
+    private void completeCalculation(final CalculationRequestDTO calculation){
         String result ="";
         try {
             result = calculateEquation(calculation.getEquation());
@@ -44,10 +43,11 @@ public class PendingCalculationJob implements Job {
             result = e.getMessage();
         }
 
-
         calculation.setResponseMsg(result);
+        //calculation.setStatusCode(COMPLETED.getStatusCode());
         dao.update(calculation);
     }
+
 
     private String calculateEquation(final String equation) throws Exception {
         double result = calculator.calculateResult(equation);

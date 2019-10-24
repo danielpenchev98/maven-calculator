@@ -37,7 +37,8 @@
             <column name="responseMsg" type="VARCHAR(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="time_of_creation" type="TIMESTAMP" >
+            <!--<column name="statusCode" type="INT"/>
+-->            <column name="time_of_creation" type="TIMESTAMP" >
                 <constraints nullable="false" />
             </column>
         </createTable>
