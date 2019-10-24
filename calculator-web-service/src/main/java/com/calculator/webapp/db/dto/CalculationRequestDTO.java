@@ -1,14 +1,18 @@
 package com.calculator.webapp.db.dto;
 
+import com.calculator.webapp.quartz.PendingCalculationJob;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.PENDING;
+
 @Entity
 @Table(name = "calculator_responses")
-@NamedQuery(name = "CalculatorResponses.findAll", query = "SELECT c FROM CalculatorResponseDTO c")
-@NamedQuery(name="CalculatorResponses.findAllNotCalculated", query = "SELECT c FROM CalculatorResponseDTO c WHERE responseMsg='Not evaluated'")
-public class CalculatorResponseDTO {
+@NamedQuery(name = "CalculatorResponses.findAll", query = "SELECT c FROM CalculationRequestDTO c")
+@NamedQuery(name="CalculatorResponses.findAllNotCalculated", query = "SELECT c FROM CalculationRequestDTO c WHERE responseMsg='PENDING'")
+public class CalculationRequestDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,26 +23,27 @@ public class CalculatorResponseDTO {
     @NotNull
     private String equation;
 
-
     @Column
     @NotNull
     private String responseMsg;
+
+    //@Column
+    //private int statusCode;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "time_of_creation")
     @NotNull
     private Date timeOfCreation;
 
-    public CalculatorResponseDTO(final String equation,final String responseMsg,final Date timeOfCreation)
-    {
+    public CalculationRequestDTO(final String equation,final String responseMsg,final Date timeOfCreation) {
         setEquation(equation);
         setResponseMsg(responseMsg);
         setTimeOfCreation(timeOfCreation);
     }
 
-    public CalculatorResponseDTO()
+    public CalculationRequestDTO()
     {
-        this(" ","Empty equation",new Date());
+        this("","PENDING",new Date());
     }
 
     public long getId() {
@@ -64,6 +69,14 @@ public class CalculatorResponseDTO {
     public String getResponseMsg() {
         return this.responseMsg;
     }
+
+    /*public int getStatusCode(){
+        return statusCode;
+    }
+
+    public void setStatusCode(final int statusCode) {
+        this.statusCode=statusCode;
+    }*/
 
     public Date getTimeOfCreation() {
         return this.timeOfCreation;
