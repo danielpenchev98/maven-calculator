@@ -36,6 +36,7 @@ public class CalculatorDaoImpl implements Dao<Long, CalculationRequestDTO> {
 
     public List<CalculationRequestDTO> getAllPendingCalculations() {
         Query query = manager.createNamedQuery("CalculatorResponses.findAllNotCalculated", CalculationRequestDTO.class);
+        query.setParameter("statusCode",0);
         return query.getResultList();
     }
 

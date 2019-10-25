@@ -111,8 +111,7 @@ public class CalculatorDaoImplTest {
         ITable expectedTable = getDataSet(DatasetPaths.ONE_ENTITY_DATASET_PATH).getTable(responseTableName);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
-        CalculationRequestDTO entity = new CalculationRequestDTO("1+1","2.0",currentDateTime);
-        //CalculationRequestDTO entity = createCalculationRequestDTO(0,"1+1","2.0",COMPLETED.getStatusCode(),currentDateTime); new CalculationRequestDTO("1+1",currentDateTime);
+        CalculationRequestDTO entity = createCalculationRequestDTO(0,"1+1","2.0",COMPLETED.getStatusCode(),currentDateTime);
 
         dao.saveItem(entity);
 
@@ -126,9 +125,7 @@ public class CalculatorDaoImplTest {
         setInitialTableInDataBase(DatasetPaths.ONE_ENTITY_DATASET_PATH);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
-        //CalculationRequestDTO entity = createCalculationRequestDTO(1,"1+1","2.0",COMPLETED.getStatusCode(),currentDateTime);
-          CalculationRequestDTO entity = new CalculationRequestDTO("1+1","2.0",currentDateTime);
-          entity.setId(1);
+        CalculationRequestDTO entity = createCalculationRequestDTO(1,"1+1","2.0",COMPLETED.getStatusCode(),currentDateTime);
 
         dao.deleteItem(entity);
         final int emptyTableSize = 0;
@@ -143,9 +140,7 @@ public class CalculatorDaoImplTest {
         setInitialTableInDataBase(DatasetPaths.MULTIPLE_ENTITIES_DATASET_PATH);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:01");
-        //CalculationRequestDTO entity = createCalculationRequestDTO(2,"1/0","Division by zero",COMPLETED.getStatusCode(),currentDateTime);
-            CalculationRequestDTO entity = new CalculationRequestDTO("1/0","Division by zero",currentDateTime);
-            entity.setId(2);
+        CalculationRequestDTO entity = createCalculationRequestDTO(2,"1/0","Division by zero",COMPLETED.getStatusCode(),currentDateTime);
 
         dao.update(entity);
 
@@ -154,9 +149,9 @@ public class CalculatorDaoImplTest {
     }
 
     private CalculationRequestDTO createCalculationRequestDTO(final int id,final String equation,final String responseMsg,final int statusCode,final Date time){
-        CalculationRequestDTO request = new CalculationRequestDTO(equation,responseMsg,time);
+        CalculationRequestDTO request = new CalculationRequestDTO(equation,time);
         request.setId(id);
-        //request.setStatusCode(statusCode);
+        request.setStatusCode(statusCode);
         request.setResponseMsg(responseMsg);
         return request;
     }

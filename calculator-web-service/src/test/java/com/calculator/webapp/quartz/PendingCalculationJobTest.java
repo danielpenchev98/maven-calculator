@@ -49,7 +49,7 @@ public class PendingCalculationJobTest {
     }
 
     private void setBehaviourOfMockedDependencies() throws Exception{
-        List<CalculationRequestDTO> pendingCalculations = Collections.singletonList(new CalculationRequestDTO("1+1","PENDING",new Date()));
+        List<CalculationRequestDTO> pendingCalculations = Collections.singletonList(new CalculationRequestDTO("1+1",new Date()));
         Mockito.when(dao.getAllPendingCalculations()).thenReturn(pendingCalculations);
         Mockito.when(calculator.calculateResult("1+1")).thenReturn(2.0);
     }

@@ -1,12 +1,12 @@
 package com.calculator.webapp.restresource;
 
-import com.calculator.core.CalculatorApp;
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
 import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
 import com.calculator.webapp.db.dto.CalculationRequestDTO;
 import com.calculator.webapp.restresources.CalculatorRestResource;
 import com.calculator.webapp.restresources.EquationRequestBody;
 import com.calculator.webapp.restresponses.CalculationError;
+import com.calculator.webapp.restresponses.RequestId;
 import com.calculator.webapp.restresponses.CalculationResult;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.COMPLETED;
+import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.PENDING;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -39,6 +40,9 @@ public class CalculatorRestResourceTest {
     @Mock
     private CalculatorDaoImpl mockedDao;
 
+    @Mock
+    private CalculationRequestDTO entity;
+
     @Before
     public void setUp() {
         resource = new CalculatorRestResource(mockedDao);
@@ -48,15 +52,14 @@ public class CalculatorRestResourceTest {
     public void queueCurrentRequest_idOfJob(){
         Response response=resource.queueCurrentRequest(new EquationRequestBody("1+1"));
 
-        assertThat(response.getEntity(),is(instanceOf(Long.class)));
+        assertThat(response.getEntity(),is(instanceOf(RequestId.class)));
         verifyResponseCode(response,ACCEPTED);
     }
 
     @Test
     public void doGetCalculationResult_calculationFinished_successfulCalculation() throws Exception {
-        CalculationRequestDTO entity = new CalculationRequestDTO("1+1","2.0",new Date());
-        //entity.setResponseMsg("2.0");
-        //entity.setStatusCode(COMPLETED.getStatusCode());
+        Mockito.when(entity.getResponseMsg()).thenReturn("2.0");
+        Mockito.when(entity.getStatusCode()).thenReturn(COMPLETED.getStatusCode());
 
         CalculationResult expectedResult = new CalculationResult("2.0");
         Mockito.when(mockedDao.getItem(1l)).thenReturn(entity);
@@ -70,9 +73,8 @@ public class CalculatorRestResourceTest {
 
     @Test
     public void doGetCalculationResult_calculationFinished_unsuccessfulCalculation() throws Exception {
-        CalculationRequestDTO entity = new CalculationRequestDTO("1/0","Division by zero",new Date());
-        //entity.setResponseMsg("Division by zero");
-        //entity.setStatusCode(COMPLETED.getStatusCode());
+        Mockito.when(entity.getResponseMsg()).thenReturn("Division by zero");
+        Mockito.when(entity.getStatusCode()).thenReturn(COMPLETED.getStatusCode());
 
         CalculationError expectedResult = new CalculationError(BAD_REQUEST,"Division by zero");
         Mockito.when(mockedDao.getItem(1l)).thenReturn(entity);
@@ -86,8 +88,9 @@ public class CalculatorRestResourceTest {
 
     @Test
     public void doGetCalculationResult_CalculationPending() throws Exception {
-        CalculationRequestDTO expectedResult = new CalculationRequestDTO("1+1","PENDING",new Date());
-        Mockito.when(mockedDao.getItem(1l)).thenReturn(expectedResult);
+        Mockito.when(entity.getStatusCode()).thenReturn(PENDING.getStatusCode());
+
+        Mockito.when(mockedDao.getItem(1l)).thenReturn(entity);
 
         Response response=resource.doGetCalculationResult(1l);
 

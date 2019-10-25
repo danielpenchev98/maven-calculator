@@ -44,7 +44,7 @@ public class PendingCalculationJob implements Job {
         }
 
         calculation.setResponseMsg(result);
-        //calculation.setStatusCode(COMPLETED.getStatusCode());
+        calculation.setStatusCode(COMPLETED.getStatusCode());
         dao.update(calculation);
     }
 

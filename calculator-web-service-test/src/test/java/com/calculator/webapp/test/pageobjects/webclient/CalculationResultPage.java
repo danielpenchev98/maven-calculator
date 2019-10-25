@@ -2,6 +2,7 @@ package com.calculator.webapp.test.pageobjects.webclient;
 
 import com.calculator.webapp.restresources.EquationRequestBody;
 import com.calculator.webapp.restresponses.CalculationResult;
+import com.calculator.webapp.restresponses.RequestId;
 import com.calculator.webapp.test.pageobjects.webclient.requestexecutor.HttpRequestExecutor;
 
 import javax.ws.rs.core.Response;
@@ -20,14 +21,19 @@ public class CalculationResultPage extends CalculatorRestPage {
     }
 
     public CalculationResult calculate(final String equation) throws Exception {
-        URL requestUrl = postCalculationRequestUrl();
-        Long requestId = requestExecutor.executePostRequest(requestUrl,new EquationRequestBody(equation)).readEntity(Long.class);
-        URL getCalculationResultUrl = getCalculationResultUrl(requestId);
-        return getCalculationResult(getCalculationResultUrl);
+        long requestId = sendCalculationRequest(equation);
+        return getCalculationResult(requestId);
     }
 
-    private CalculationResult getCalculationResult(final URL url) throws Exception{
+    private long sendCalculationRequest(final String equation) throws Exception {
+        URL requestUrl = postCalculationRequestUrl();
+        Response response = requestExecutor.executePostRequest(requestUrl,new EquationRequestBody(equation));
+        return response.readEntity(RequestId.class).getId();
+    }
+
+    private CalculationResult getCalculationResult(final long requestId) throws Exception{
         waitForCalculationToBeCompleted();
+        URL url = getCalculationResultUrl(requestId);
         Response response = requestExecutor.executeGetRequest(url);
         return response.readEntity(CalculationResult.class);
     }

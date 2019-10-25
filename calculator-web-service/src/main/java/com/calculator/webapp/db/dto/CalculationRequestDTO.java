@@ -11,7 +11,7 @@ import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.PENDING;
 @Entity
 @Table(name = "calculator_responses")
 @NamedQuery(name = "CalculatorResponses.findAll", query = "SELECT c FROM CalculationRequestDTO c")
-@NamedQuery(name="CalculatorResponses.findAllNotCalculated", query = "SELECT c FROM CalculationRequestDTO c WHERE responseMsg='PENDING'")
+@NamedQuery(name="CalculatorResponses.findAllNotCalculated", query = "SELECT c FROM CalculationRequestDTO c WHERE statusCode =: statusCode")
 public class CalculationRequestDTO {
 
     @Id
@@ -27,23 +27,23 @@ public class CalculationRequestDTO {
     @NotNull
     private String responseMsg;
 
-    //@Column
-    //private int statusCode;
+    @Column
+    private int statusCode;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "time_of_creation")
     @NotNull
     private Date timeOfCreation;
 
-    public CalculationRequestDTO(final String equation,final String responseMsg,final Date timeOfCreation) {
+    public CalculationRequestDTO(final String equation,final Date timeOfCreation) {
         setEquation(equation);
-        setResponseMsg(responseMsg);
+        setResponseMsg(" ");
         setTimeOfCreation(timeOfCreation);
     }
 
     public CalculationRequestDTO()
     {
-        this("","PENDING",new Date());
+        this("",new Date());
     }
 
     public long getId() {
@@ -70,13 +70,13 @@ public class CalculationRequestDTO {
         return this.responseMsg;
     }
 
-    /*public int getStatusCode(){
+    public int getStatusCode(){
         return statusCode;
     }
 
     public void setStatusCode(final int statusCode) {
         this.statusCode=statusCode;
-    }*/
+    }
 
     public Date getTimeOfCreation() {
         return this.timeOfCreation;

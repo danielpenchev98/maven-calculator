@@ -4,6 +4,7 @@ import com.calculator.webapp.db.dao.CalculatorDaoImpl;
 import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
 import com.calculator.webapp.db.dto.CalculationRequestDTO;
 import com.calculator.webapp.restresponses.CalculationError;
+import com.calculator.webapp.restresponses.RequestId;
 import com.calculator.webapp.restresponses.CalculationResult;
 
 import javax.inject.Inject;
@@ -38,7 +39,7 @@ public class CalculatorRestResource {
     @Path("/calculate")
     public Response queueCurrentRequest(EquationRequestBody body) {
         Long itemId = saveCalculationRequest(body.getEquation());
-        return createResponseWithPayload(ACCEPTED,itemId);
+        return createResponseWithPayload(ACCEPTED,new RequestId(itemId));
     }
 
     @GET
@@ -46,7 +47,7 @@ public class CalculatorRestResource {
     public Response doGetCalculationResult(@NotNull @PathParam("id") Long id) {
         try{
             CalculationRequestDTO calculation = dao.getItem(id);
-            return isNotEvaluated(calculation) ? getPendingCalculationResponse() : getCalculationResultResponse(calculation) ;
+            return isEvaluated(calculation) ? getCalculationResultResponse(calculation) : getPendingCalculationResponse();
         }
         catch (ItemDoesNotExistException ex){
             return createResponseWithoutPayload(NOT_FOUND);
@@ -70,12 +71,8 @@ public class CalculatorRestResource {
         return calculationResult.matches("[0-9]+\\.*[0-9]*E?-?[0-9]*");
     }
 
-    /*private boolean isEvaluated(final CalculationRequestDTO calculation){
+    private boolean isEvaluated(final CalculationRequestDTO calculation){
         return calculation.getStatusCode()==COMPLETED.getStatusCode();
-    }*/
-
-    private boolean isNotEvaluated(final CalculationRequestDTO calculation){
-        return calculation.getResponseMsg().equals("PENDING");
     }
 
     private Response createResponseWithPayload(final int statusCode,final Object responseBody){
@@ -94,7 +91,7 @@ public class CalculatorRestResource {
     }
 
     private Long saveCalculationRequest(final String equation) {
-        CalculationRequestDTO request  = new CalculationRequestDTO(equation,"PENDING",new Date());
+        CalculationRequestDTO request  = new CalculationRequestDTO(equation,new Date());
         dao.saveItem(request);
         return request.getId();
     }
