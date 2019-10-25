@@ -7,26 +7,28 @@ sap.ui.define(
             return server.respondWith(typeOfRequest, url, [ responseCode, headers, responseBody ] );
         };
 
-        let typeOfRequest = "GET";
         let contentTypeHeader = {"Content-Type": "application/json"};
         let badRequestCode = 400;
         let okCode = 200;
+        let acceptedCode = 202;
 
         //change the baseUrl in case the domain changes
         let baseUrl="https://calcwebservicei515142trial.hanatrial.ondemand.com/calculator-web-service";
-        let serviceUrl="/api/v1/calculator/calculate";
-        let queryParam="equation";
-        let urlWithoutQueryParamValue = baseUrl + serviceUrl + '?' + queryParam + '=';
+        let resourceUrl="/api/v1/calculator";
+        let sendCalculationRequestUrl = baseUrl + serviceUrl +"/calculate";
+        let getCalculationResult = baseUrl + serviceUrl + "/calculations";
 
-        let urlWithCorrectEquation = urlWithoutQueryParamValue + "1%2B1";
-        let urlWithEmptyEquation = urlWithoutQueryParamValue +  "";
-        let urlWithMissingOpeningBracket = urlWithoutQueryParamValue + "1%2B)";
-        let urlWithSequentialComponentsOfTheSameType = urlWithoutQueryParamValue +  "1%2B%2B2";
-        let urlWithMissingOperator = urlWithoutQueryParamValue + "2(-1)";
-        let urlWithEmptyBrackets = urlWithoutQueryParamValue + "2%2B()";
-        let urlWithEquationBeginningWithOperator = urlWithoutQueryParamValue + "%2B2%2B1";
-        let urlWithDivisionOnZeroEvent = urlWithoutQueryParamValue + "1%2F0";
-        let urlWithUnsupportedComponent = urlWithoutQueryParamValue + "1%230";
+        let correctEquation = "1+1";
+        let emptyEquation = "";
+        let missingOpeningBracket = "1+)";
+        let sequentialComponentsOfTheSameType = "1++2";
+        let missingOperator = "2(-1)";
+        let emptyBrackets = "2+()";
+        let equationBeginningWithOperator ="+2+1";
+        let divisionOnZeroEvent = "1/0";
+        let unsupportedComponent = "1#0";
+
+        let acceptedRequestResponseBody = '{"id":"1"}';
 
         let correctEquationResponseBody = '{"result":"2.0"}';
         let emptyEquationResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Empty equation"}';
@@ -55,8 +57,10 @@ sap.ui.define(
                     return !url.match(baseUrl+serviceUrl);
                 });
 
-                serverRespondWith(this.server,typeOfRequest,urlWithCorrectEquation, okCode, contentTypeHeader,
-                    correctEquationResponseBody);
+                serverRespondWith(this.server,"POST",sendCalculationRequestUrl, acceptedCode , contentTypeHeader,
+                    acceptedRequestResponseBody);
+
+                serverRespondWith(this.server,"GET",getCalculationResult,okCode)
 
                 serverRespondWith(this.server, typeOfRequest,urlWithEmptyEquation, badRequestCode, contentTypeHeader,
                     emptyEquationResponseBody);

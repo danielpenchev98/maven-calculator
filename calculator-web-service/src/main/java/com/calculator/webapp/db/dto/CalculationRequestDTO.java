@@ -6,8 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.PENDING;
-
 @Entity
 @Table(name = "calculator_responses")
 @NamedQuery(name = "CalculatorResponses.findAll", query = "SELECT c FROM CalculationRequestDTO c")

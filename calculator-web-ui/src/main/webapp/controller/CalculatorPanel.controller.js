@@ -2,10 +2,8 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
 	"../model/UrlFormatter"
-], function (Controller, JSONModel,UrlFormatter) {
+], function (Controller, JSONModel) {
 	"use strict";
-
-	let serviceNotFoundResponseBody="{\"message\": \"Service unavailable\"}";
 
 	return Controller.extend("com.calculator.web.ui.controller.CalculatorPanel", {
 
@@ -14,25 +12,48 @@ sap.ui.define([
 			let equation = this.getView().byId("equation").getValue();
 
 			let ownerComponent = this.getOwnerComponent();
-			let serviceConfig = ownerComponent.getManifestEntry("/sap.app/dataSources/calculationService");
-			let postRequestUrl = serviceConfig.baseUrl + serviceConfig.serviceUrl;
+			let oServiceConfig = ownerComponent.getManifestEntry("/sap.app/dataSources/calculationService");
+
+			let oCalculationResult;
+			try {
+				let oId = this.sendCalculationRequest(oServiceConfig, equation);
+				oCalculationResult = this.getCalculationResult(oId);
+				this.showCalculationResult(oCalculationResult);
+			}
+			catch(error) {
+			    oCalculationResult.setJSON(error.responseText);
+			    ownerComponent.openErrorDialog(oCalculationResult);
+			}
+		},
+
+		sendCalculationRequest : function (oServiceConfig,equation) {
+			let postRequestUrl = oServiceConfig.baseUrl + oServiceConfig.serviceUrl;
 
 			let postRequestBody = {
 				equation : equation
 			};
 
 			let oId = new JSONModel();
-			oId.loadData(postRequestUrl,postRequestUrl,true,)
+			oId.loadData(postRequestUrl,postRequestBody,true,"POST").then(function(){
+				return oId;
+			}).catch(function (error){
+			    throw error;
+			});
+		},
 
-			let getRequestUrl = postRequestUrl+"\";
+		getCalculationResult : function (oId) {
+			let getRequestUrl = postRequestUrl+"\\"+oId.id;
 
 			let oCalculationResult = new JSONModel();
 			oCalculationResult.loadData(getRequestUrl).then(function () {
-				ownerComponent.showResult(oCalculationResult);
+				return oCalculationResult;
 			}).catch(function (error) {
-				oCalculationResult.setJSON(error.responseText);
-				ownerComponent.openErrorDialog(oCalculationResult);
+				throw error;
 			});
+		},
+
+		showCalculationResult : function (oCalculationResult) {
+			ownerComponent.showResult(oCalculationResult);
 		}
 	});
 });
