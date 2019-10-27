@@ -3,8 +3,59 @@ sap.ui.define(
     function (sinon) {
         "use strict";
 
-        let serverRespondWith = function (server,typeOfRequest,url,responseCode,headers,responseBody){
-            return server.respondWith(typeOfRequest, url, [ responseCode, headers, responseBody ] );
+        let respondToCalculationRequest = function (server,typeOfRequest,url,responseCode,headers,responseBody){
+            return server.respondWith(typeOfRequest, url, function(request){
+                let requestBody = request.requestBody;
+                let id = getIdCorrespondingToTheRequest(requestBody.equation);
+                request.respond(responseCode,headers,responseBody);
+            });
+        };
+
+        let respondToGetCalculationResult = function (server,typeOfRequest,url,responseCode,headers,responseBody){
+          return server.respondWith(typeOfRequest,url,[responseCode,headers,responseBody]);
+        };
+
+        let correctEquation = "1+1";
+        let emptyEquation = "";
+        let missingOpeningBracket = "1+)";
+        let sequentialComponentsOfTheSameType = "1++2";
+        let missingOperator = "2(-1)";
+        let emptyBrackets = "2+()";
+        let equationBeginningWithOperator ="+2+1";
+        let divisionByZeroEvent = "1/0";
+        let unsupportedComponent = "1#0";
+
+        let getIdCorrespondingToTheRequest = function(equation){
+           switch(String(equation)){
+               case correctEquation : return 1;
+               case emptyEquation : return 2;
+               case missingOpeningBracket : return 3;
+               case sequentialComponentsOfTheSameType : return 4;
+               case missingOperator : return 5;
+               case emptyBrackets : return 6;
+               case equationBeginningWithOperator : return 7;
+               case divisionByZeroEvent : return 8;
+               case unsupportedComponent : return 9;
+           }
+        };
+
+        let createCalculationResult = function(result){
+            return {
+                "result" : result
+            };
+        };
+
+        let createCalculationError = function(errorCode,message){
+            return {
+                "errorCode" : errorCode,
+                "message" : message
+            };
+        };
+
+        let createRequestId = function(id){
+          return {
+              "id" : id
+          };
         };
 
         let contentTypeHeader = {"Content-Type": "application/json"};
@@ -15,30 +66,18 @@ sap.ui.define(
         //change the baseUrl in case the domain changes
         let baseUrl="https://calcwebservicei515142trial.hanatrial.ondemand.com/calculator-web-service";
         let resourceUrl="/api/v1/calculator";
-        let sendCalculationRequestUrl = baseUrl + serviceUrl +"/calculate";
-        let getCalculationResult = baseUrl + serviceUrl + "/calculations";
+        let sendCalculationRequestUrl = baseUrl + resourceUrl +"/calculate";
+        let getCalculationResultUrl = function(id){ return baseUrl + resourceUrl + "/calculations/"+id;};
 
-        let correctEquation = "1+1";
-        let emptyEquation = "";
-        let missingOpeningBracket = "1+)";
-        let sequentialComponentsOfTheSameType = "1++2";
-        let missingOperator = "2(-1)";
-        let emptyBrackets = "2+()";
-        let equationBeginningWithOperator ="+2+1";
-        let divisionOnZeroEvent = "1/0";
-        let unsupportedComponent = "1#0";
-
-        let acceptedRequestResponseBody = '{"id":"1"}';
-
-        let correctEquationResponseBody = '{"result":"2.0"}';
-        let emptyEquationResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Empty equation"}';
-        let missingOpeningBracketResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Missing or misplaced bracket"}';
-        let sequentialComponentsOfTheSameTypeResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Sequential components of the same type"}';
-        let missingOperatorResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Missing operator between a number and an opening bracket or a closing bracket and a number"}';
-        let emptyBracketsResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Empty brackets"}';
-        let equationBeginningWithOperatorResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Scope of equation ending or beginning with an operator"}';
-        let divisionByZeroEventResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Division by zero"}';
-        let unsupportedComponentResponseBody = '{"errorCode" : \"'+badRequestCode+'\", "message" : "Unsupported component :#"}';
+        let correctEquationResponseBody = createCalculationResult("2.0");
+        let emptyEquationResponseBody = createCalculationError(badRequestCode,"Empty equation");
+        let missingOpeningBracketResponseBody = createCalculationError(badRequestCode,"Missing or misplaced bracket");
+        let sequentialComponentsOfTheSameTypeResponseBody = createCalculationError(badRequestCode,"Sequential components of the same type");
+        let missingOperatorResponseBody = createCalculationError(badRequestCode,"Missing operator between a number and an opening bracket or a closing bracket and a number");
+        let emptyBracketsResponseBody = createCalculationError(badRequestCode,"Empty brackets");
+        let equationBeginningWithOperatorResponseBody = createCalculationError(badRequestCode,"Scope of equation ending or beginning with an operator");
+        let divisionByZeroEventResponseBody = createCalculationError(badRequestCode,"Division by zero");
+        let unsupportedComponentResponseBody = createCalculationError(badRequestCode,"Unsupported component :#");
 
 
         return {
@@ -54,36 +93,37 @@ sap.ui.define(
 
                 sinon.fakeServer.xhr.useFilters = true;
                 this.server.xhr.addFilter(function(method, url) {
-                    return !url.match(baseUrl+serviceUrl);
+                    return !url.match(baseUrl+serviceUrl+"/*");
                 });
 
-                serverRespondWith(this.server,"POST",sendCalculationRequestUrl, acceptedCode , contentTypeHeader,
-                    acceptedRequestResponseBody);
+                respondToCalculationRequest(this.server,"POST",sendCalculationRequestUrl, acceptedCode , contentTypeHeader,
+                    createRequestId());
 
-                serverRespondWith(this.server,"GET",getCalculationResult,okCode)
+                respondToGetCalculationResult(this.server,"GET",getCalculationResultUrl(1),okCode,contentTypeHeader,
+                    correctEquationResponseBody);
 
-                serverRespondWith(this.server, typeOfRequest,urlWithEmptyEquation, badRequestCode, contentTypeHeader,
+                respondToGetCalculationResult(this.server, "GET",getCalculationResultUrl(2), badRequestCode, contentTypeHeader,
                     emptyEquationResponseBody);
 
-                serverRespondWith(this.server, typeOfRequest,urlWithMissingOpeningBracket, badRequestCode, contentTypeHeader,
+                respondToGetCalculationResult(this.server, "GET",getCalculationResultUrl(3), badRequestCode, contentTypeHeader,
                     missingOpeningBracketResponseBody);
 
-                serverRespondWith(this.server,typeOfRequest, urlWithSequentialComponentsOfTheSameType, badRequestCode, contentTypeHeader,
+                respondToGetCalculationResult(this.server,"GET", getCalculationResultUrl(4), badRequestCode, contentTypeHeader,
                     sequentialComponentsOfTheSameTypeResponseBody);
 
-                serverRespondWith(this.server,typeOfRequest,urlWithMissingOperator, badRequestCode,contentTypeHeader,
+                respondToGetCalculationResult(this.server,"GET",getCalculationResultUrl(5), badRequestCode,contentTypeHeader,
                     missingOperatorResponseBody);
 
-                serverRespondWith(this.server,typeOfRequest,urlWithEmptyBrackets, badRequestCode,contentTypeHeader,
+                respondToGetCalculationResult(this.server,"GET",getCalculationResultUrl(6), badRequestCode,contentTypeHeader,
                     emptyBracketsResponseBody);
 
-                serverRespondWith(this.server,typeOfRequest,urlWithEquationBeginningWithOperator, badRequestCode,contentTypeHeader,
+                respondToGetCalculationResult(this.server,"GET",getCalculationResultUrl(7), badRequestCode,contentTypeHeader,
                     equationBeginningWithOperatorResponseBody);
 
-                serverRespondWith(this.server,typeOfRequest,urlWithDivisionOnZeroEvent, badRequestCode,contentTypeHeader,
+                respondToGetCalculationResult(this.server,"GET",getCalculationResultUrl(8), badRequestCode,contentTypeHeader,
                     divisionByZeroEventResponseBody);
 
-                serverRespondWith(this.server,typeOfRequest,urlWithUnsupportedComponent, badRequestCode,contentTypeHeader,
+                respondToGetCalculationResult(this.server,"GET",getCalculationResultUrl(9), badRequestCode,contentTypeHeader,
                     unsupportedComponentResponseBody);
             }
         };
