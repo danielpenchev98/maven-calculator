@@ -11,6 +11,7 @@
 
     <groupId>com.calculator.webapp.ui</groupId>
     <artifactId>calculator-web-ui</artifactId>
+    <packaging>war</packaging>
 
     <profiles>
         <profile>

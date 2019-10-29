@@ -93,7 +93,7 @@ sap.ui.define(
 
                 sinon.fakeServer.xhr.useFilters = true;
                 this.server.xhr.addFilter(function(method, url) {
-                    return !url.match(baseUrl+serviceUrl+"/*");
+                    return !url.match(baseUrl+resourceUrl+"/*");
                 });
 
                 respondToCalculationRequest(this.server,"POST",sendCalculationRequestUrl, acceptedCode , contentTypeHeader,
