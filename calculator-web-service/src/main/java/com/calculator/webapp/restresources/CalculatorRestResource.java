@@ -55,7 +55,7 @@ public class CalculatorRestResource {
     }
 
     private Response getPendingCalculationResponse(){
-       return createResponseWithoutPayload(ACCEPTED);
+       return createResponseWithPayload(ACCEPTED, new CalculationError(ACCEPTED,"Calculation pending"));
     }
 
     private Response getCalculationResultResponse(final CalculationRequestDTO calculation){

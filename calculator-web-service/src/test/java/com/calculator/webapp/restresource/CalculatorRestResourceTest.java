@@ -19,7 +19,6 @@ import javax.ws.rs.core.Response;
 
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.COMPLETED;
@@ -94,7 +93,7 @@ public class CalculatorRestResourceTest {
 
         Response response=resource.doGetCalculationResult(1l);
 
-        assertThat(response.hasEntity(),is(false));
+        assertThat(response.hasEntity(),is(true));
         verifyResponseCode(response,ACCEPTED);
     }
 
