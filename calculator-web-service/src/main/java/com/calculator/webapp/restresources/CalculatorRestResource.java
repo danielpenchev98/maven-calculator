@@ -17,6 +17,8 @@ import java.util.List;
 
 import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.COMPLETED;
 
+//TODO FIX CORS
+
 @Path("/calculator")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -55,7 +57,7 @@ public class CalculatorRestResource {
     }
 
     private Response getPendingCalculationResponse(){
-       return createResponseWithPayload(ACCEPTED, new CalculationError(ACCEPTED,"Calculation pending"));
+       return createResponseWithPayload(ACCEPTED, new CalculationResult("Calculation pending"));
     }
 
     private Response getCalculationResultResponse(final CalculationRequestDTO calculation){
