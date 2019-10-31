@@ -41,7 +41,7 @@ sap.ui.define([
 
 		onCalculationRequestQueued : function(xhr,oServiceConfig){
 			if(this.isRequestDone(xhr.readyState)) {
-				let oId = JSON.parse(xhr.response);
+				let oId = JSON.parse(xhr.responseText);
 				let processId = setInterval(() => {
 					this.getCalculationResult(oServiceConfig, oId, processId)
 				}, 1000);
@@ -62,8 +62,7 @@ sap.ui.define([
 
 		onCalculationResultCompleted : function(xhr,processId) {
 		   if(this.isRequestDone(xhr.readyState)&&this.isCompletedCalculation(xhr.status)){
-		   	    let oResponse = JSON.parse(xhr.response);
-		   	    console.log(oResponse);
+		   	    let oResponse = JSON.parse(xhr.responseText);
 		   	    this.isSuccessfulCalculation(xhr.status) ? this.showCalculationResult(oResponse) : this.showCalculationError(oResponse);
 			    clearInterval(processId);
 		   }
