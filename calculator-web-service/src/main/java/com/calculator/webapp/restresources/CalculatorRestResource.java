@@ -57,20 +57,20 @@ public class CalculatorRestResource {
     }
 
     private Response getPendingCalculationResponse(){
-       return createResponseWithPayload(ACCEPTED, new CalculationResult("Calculation pending"));
+       return createResponseWithoutPayload(ACCEPTED);
     }
 
     private Response getCalculationResultResponse(final CalculationRequestDTO calculation){
-        String responseMsg = calculation.getResponseMsg();
-        if(isSuccessfulCalculationResult(responseMsg)){
-            return createResponseWithPayload(OK,new CalculationResult(responseMsg));
+        String errorMsg = calculation.getErrorMsg();
+        if(isSuccessfulCalculationResult(errorMsg)){
+            return createResponseWithPayload(OK,new CalculationResult(calculation.getResult()));
         } else {
-            return createResponseWithPayload(BAD_REQUEST,new CalculationError(BAD_REQUEST,responseMsg));
+            return createResponseWithPayload(BAD_REQUEST,new CalculationError(BAD_REQUEST,errorMsg));
         }
     }
 
     private boolean isSuccessfulCalculationResult(final String calculationResult){
-        return calculationResult.matches("[0-9]+\\.*[0-9]*E?-?[0-9]*");
+        return calculationResult == null;
     }
 
     private boolean isEvaluated(final CalculationRequestDTO calculation){

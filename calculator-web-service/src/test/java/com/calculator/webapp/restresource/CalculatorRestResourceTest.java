@@ -57,10 +57,10 @@ public class CalculatorRestResourceTest {
 
     @Test
     public void doGetCalculationResult_calculationFinished_successfulCalculation() throws Exception {
-        Mockito.when(entity.getResponseMsg()).thenReturn("2.0");
+        Mockito.when(entity.getResult()).thenReturn(2.0);
         Mockito.when(entity.getStatusCode()).thenReturn(COMPLETED.getStatusCode());
 
-        CalculationResult expectedResult = new CalculationResult("2.0");
+        CalculationResult expectedResult = new CalculationResult(2.0);
         Mockito.when(mockedDao.getItem(1l)).thenReturn(entity);
 
         Response response=resource.doGetCalculationResult(1l);
@@ -72,7 +72,7 @@ public class CalculatorRestResourceTest {
 
     @Test
     public void doGetCalculationResult_calculationFinished_unsuccessfulCalculation() throws Exception {
-        Mockito.when(entity.getResponseMsg()).thenReturn("Division by zero");
+        Mockito.when(entity.getErrorMsg()).thenReturn("Division by zero");
         Mockito.when(entity.getStatusCode()).thenReturn(COMPLETED.getStatusCode());
 
         CalculationError expectedResult = new CalculationError(BAD_REQUEST,"Division by zero");
@@ -93,7 +93,7 @@ public class CalculatorRestResourceTest {
 
         Response response=resource.doGetCalculationResult(1l);
 
-        assertThat(response.hasEntity(),is(true));
+        assertThat(response.hasEntity(),is(false));
         verifyResponseCode(response,ACCEPTED);
     }
 

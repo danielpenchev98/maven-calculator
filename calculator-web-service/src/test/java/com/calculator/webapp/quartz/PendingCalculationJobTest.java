@@ -55,7 +55,7 @@ public class PendingCalculationJobTest {
     }
 
     private void verifyUpdatedResponseMessage(final CalculationRequestDTO completedCalculation){
-        assertThat(completedCalculation.getResponseMsg(),is("2.0"));
+        assertThat(completedCalculation.getResult(),is(2.0));
     }
 
 }

@@ -235,8 +235,8 @@
               <dbUser>i515142</dbUser>
               <dbPassword>Dp280898</dbPassword>
               <source>
-                ${project.build.directory}/${project.artifactId}.war,
-                ${project.build.directory}/lib/calculator-web-ui-1.0-SNAPSHOT.war
+                ${project.build.directory}/${project.artifactId}.war<!--,
+                ${project.build.directory}/lib/calculator-web-ui-1.0-SNAPSHOT.war-->
               </source>
             </configuration>
             <executions>

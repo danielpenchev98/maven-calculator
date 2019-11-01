@@ -4,6 +4,7 @@ import com.calculator.webapp.db.dao.CalculatorDaoImpl;
 import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
 import com.calculator.webapp.db.dto.CalculationRequestDTO;
 import org.dbunit.Assertion;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
@@ -40,6 +41,8 @@ public class CalculatorDaoImplTest {
         databaseConnection = new DatabaseConnection(DriverManager.getConnection(DerbyConfiguration.CONNECTION_URL,
                 DerbyConfiguration.DB_USERNAME,
                 DerbyConfiguration.DB_PASSWORD));
+        DatabaseConfig config = databaseConnection.getConfig();
+        config.setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS,true);
     }
 
     @AfterClass
@@ -111,7 +114,7 @@ public class CalculatorDaoImplTest {
         ITable expectedTable = getDataSet(DatasetPaths.ONE_ENTITY_DATASET_PATH).getTable(responseTableName);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
-        CalculationRequestDTO entity = createCalculationRequestDTO(0,"1+1","2.0",COMPLETED.getStatusCode(),currentDateTime);
+        CalculationRequestDTO entity = createCalculationRequestDTO(0,"1+1",2.0,null,COMPLETED.getStatusCode(),currentDateTime);
 
         dao.saveItem(entity);
 
@@ -125,7 +128,7 @@ public class CalculatorDaoImplTest {
         setInitialTableInDataBase(DatasetPaths.ONE_ENTITY_DATASET_PATH);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
-        CalculationRequestDTO entity = createCalculationRequestDTO(1,"1+1","2.0",COMPLETED.getStatusCode(),currentDateTime);
+        CalculationRequestDTO entity = createCalculationRequestDTO(1,"1+1",2.0,null,COMPLETED.getStatusCode(),currentDateTime);
 
         dao.deleteItem(entity);
         final int emptyTableSize = 0;
@@ -140,19 +143,20 @@ public class CalculatorDaoImplTest {
         setInitialTableInDataBase(DatasetPaths.MULTIPLE_ENTITIES_DATASET_PATH);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:01");
-        CalculationRequestDTO entity = createCalculationRequestDTO(2,"1/0","Division by zero",COMPLETED.getStatusCode(),currentDateTime);
+        CalculationRequestDTO entity = createCalculationRequestDTO(2,"1/0",0.0,"Division by zero",COMPLETED.getStatusCode(),currentDateTime);
 
         dao.update(entity);
 
         ITable actualTable = getActualTable(responseTableName);
-        assertThat(actualTable.getValue(1,"responseMsg"),is("Division by zero"));
+        assertThat(actualTable.getValue(1,"errorMsg"),is("Division by zero"));
     }
 
-    private CalculationRequestDTO createCalculationRequestDTO(final int id,final String equation,final String responseMsg,final int statusCode,final Date time){
+    private CalculationRequestDTO createCalculationRequestDTO(final int id,final String equation,final double result,final String errorMsg,final int statusCode,final Date time){
         CalculationRequestDTO request = new CalculationRequestDTO(equation,time);
         request.setId(id);
         request.setStatusCode(statusCode);
-        request.setResponseMsg(responseMsg);
+        request.setResult(result);
+        request.setErrorMsg(errorMsg);
         return request;
     }
 

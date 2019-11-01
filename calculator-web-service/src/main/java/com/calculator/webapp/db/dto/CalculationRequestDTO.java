@@ -22,8 +22,10 @@ public class CalculationRequestDTO {
     private String equation;
 
     @Column
-    @NotNull
-    private String responseMsg;
+    private double result;
+
+    @Column
+    private String errorMsg;
 
     @Column
     private int statusCode;
@@ -35,7 +37,6 @@ public class CalculationRequestDTO {
 
     public CalculationRequestDTO(final String equation,final Date timeOfCreation) {
         setEquation(equation);
-        setResponseMsg(" ");
         setTimeOfCreation(timeOfCreation);
     }
 
@@ -60,12 +61,16 @@ public class CalculationRequestDTO {
         return this.equation;
     }
 
-    public void setResponseMsg(final String responseMsg) {
-        this.responseMsg = responseMsg;
+    public void setResult(final double result) { this.result=result; }
+
+    public double getResult() { return this.result; }
+
+    public void setErrorMsg(final String responseMsg) {
+        this.errorMsg = responseMsg;
     }
 
-    public String getResponseMsg() {
-        return this.responseMsg;
+    public String getErrorMsg() {
+        return this.errorMsg;
     }
 
     public int getStatusCode(){

@@ -36,21 +36,20 @@ public class PendingCalculationJob implements Job {
     }
 
     private void completeCalculation(final CalculationRequestDTO calculation){
-        String result ="";
         try {
-            result = calculateEquation(calculation.getEquation());
+            double result = calculateEquation(calculation.getEquation());
+            calculation.setResult(result);
         } catch (Exception e) {
-            result = e.getMessage();
+            String errorMsg = e.getMessage();
+            calculation.setErrorMsg(errorMsg);
         }
 
-        calculation.setResponseMsg(result);
         calculation.setStatusCode(COMPLETED.getStatusCode());
         dao.update(calculation);
     }
 
 
-    private String calculateEquation(final String equation) throws Exception {
-        double result = calculator.calculateResult(equation);
-        return String.valueOf(result);
+    private double calculateEquation(final String equation) throws Exception {
+        return calculator.calculateResult(equation);
     }
 }

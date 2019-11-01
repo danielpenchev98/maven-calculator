@@ -7,20 +7,20 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class CalculationResult {
 
-    private String result;
+    private double result;
 
     @JsonCreator
-    public CalculationResult(@JsonProperty("result") final String result) {
+    public CalculationResult(@JsonProperty("result") final double result) {
         setResult(result);
     }
 
     @JsonSetter("result")
-    public void setResult(final String result) {
+    public void setResult(final double result) {
         this.result=result;
     }
 
     @JsonGetter("result")
-    public String getResult() {
+    public double getResult() {
         return this.result;
     }
 }
