@@ -10,6 +10,7 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.util.TableFormatter;
 import org.dbunit.util.fileloader.FlatXmlDataFileLoader;
 import org.junit.*;
 
@@ -41,6 +42,10 @@ public class CalculatorDaoImplTest {
         databaseConnection = new DatabaseConnection(DriverManager.getConnection(DerbyConfiguration.CONNECTION_URL,
                 DerbyConfiguration.DB_USERNAME,
                 DerbyConfiguration.DB_PASSWORD));
+        allowEmptyValuesInColumns(databaseConnection);
+    }
+
+    private static void allowEmptyValuesInColumns(final IDatabaseConnection databaseConnection){
         DatabaseConfig config = databaseConnection.getConfig();
         config.setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS,true);
     }
@@ -155,7 +160,7 @@ public class CalculatorDaoImplTest {
         CalculationRequestDTO request = new CalculationRequestDTO(equation,time);
         request.setId(id);
         request.setStatusCode(statusCode);
-        request.setResult(result);
+        request.setCalculationResult(result);
         request.setErrorMsg(errorMsg);
         return request;
     }

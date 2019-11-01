@@ -1,4 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE dataset [
+        <!ELEMENT dataset (calculator_responses*)>
+        <!ELEMENT calculator_responses EMPTY>
+        <!ATTLIST calculator_responses id CDATA #REQUIRED>
+        <!ATTLIST calculator_responses equation CDATA #REQUIRED>
+        <!ATTLIST calculator_responses calculationResult CDATA #REQUIRED>
+        <!ATTLIST calculator_responses errorMsg CDATA #IMPLIED>
+        <!ATTLIST calculator_responses statusCode CDATA #REQUIRED>
+        <!ATTLIST calculator_responses time_of_creation CDATA #REQUIRED>
+        ]>
 <dataset>
-    <calculator_responses id="1" equation="1+1" result="2.0" statusCode="1"  time_of_creation="2019-09-09 15:00:00"/>
+    <calculator_responses id="1" equation="1+1" calculationResult="2.0" statusCode="1"  time_of_creation="2019-09-09 15:00:00"/>
 </dataset>

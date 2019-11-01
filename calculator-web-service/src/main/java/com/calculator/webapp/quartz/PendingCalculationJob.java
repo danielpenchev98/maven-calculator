@@ -38,7 +38,7 @@ public class PendingCalculationJob implements Job {
     private void completeCalculation(final CalculationRequestDTO calculation){
         try {
             double result = calculateEquation(calculation.getEquation());
-            calculation.setResult(result);
+            calculation.setCalculationResult(result);
         } catch (Exception e) {
             String errorMsg = e.getMessage();
             calculation.setErrorMsg(errorMsg);

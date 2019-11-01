@@ -63,7 +63,7 @@ public class CalculatorRestResource {
     private Response getCalculationResultResponse(final CalculationRequestDTO calculation){
         String errorMsg = calculation.getErrorMsg();
         if(isSuccessfulCalculationResult(errorMsg)){
-            return createResponseWithPayload(OK,new CalculationResult(calculation.getResult()));
+            return createResponseWithPayload(OK,new CalculationResult(calculation.getCalculationResult()));
         } else {
             return createResponseWithPayload(BAD_REQUEST,new CalculationError(BAD_REQUEST,errorMsg));
         }

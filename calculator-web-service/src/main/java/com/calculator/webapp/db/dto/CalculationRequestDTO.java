@@ -1,7 +1,5 @@
 package com.calculator.webapp.db.dto;
 
-import com.calculator.webapp.quartz.PendingCalculationJob;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -22,7 +20,7 @@ public class CalculationRequestDTO {
     private String equation;
 
     @Column
-    private double result;
+    private double calculationResult;
 
     @Column
     private String errorMsg;
@@ -61,9 +59,9 @@ public class CalculationRequestDTO {
         return this.equation;
     }
 
-    public void setResult(final double result) { this.result=result; }
+    public void setCalculationResult(final double calculationResult) { this.calculationResult=calculationResult; }
 
-    public double getResult() { return this.result; }
+    public double getCalculationResult() { return this.calculationResult; }
 
     public void setErrorMsg(final String responseMsg) {
         this.errorMsg = responseMsg;

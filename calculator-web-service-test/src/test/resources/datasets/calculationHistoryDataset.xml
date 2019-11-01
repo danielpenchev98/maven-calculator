@@ -1,10 +1,20 @@
 <?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE dataset [
+        <!ELEMENT dataset (calculator_responses*)>
+        <!ELEMENT calculator_responses EMPTY>
+        <!ATTLIST calculator_responses id CDATA #REQUIRED>
+        <!ATTLIST calculator_responses equation CDATA #REQUIRED>
+        <!ATTLIST calculator_responses calculationResult CDATA #REQUIRED>
+        <!ATTLIST calculator_responses errorMsg CDATA #IMPLIED>
+        <!ATTLIST calculator_responses statusCode CDATA #REQUIRED>
+        <!ATTLIST calculator_responses time_of_creation CDATA #REQUIRED>
+        ]>
 <dataset>
-    <calculator_responses id="1" equation="1+1" responseMsg="2.0" statusCode="1" time_of_creation="2019-09-09 15:00:00"/>
-    <calculator_responses id="2" equation="1/0" responseMsg="Division by zero" statusCode="1"   time_of_creation="2019-09-09 15:00:01"/>
-    <calculator_responses id="3" equation="2+1)" responseMsg="Missing or misplaced brackets" statusCode="1" time_of_creation="2019-09-09 15:00:03"/>
-    <calculator_responses id="4" equation="1..0" responseMsg="Unsupported component :1..0" statusCode="1" time_of_creation="2019-09-09 15:00:04"/>
-    <calculator_responses id="5" equation="1++2" responseMsg="Sequential components of the same type" statusCode="1" time_of_creation="2019-09-09 15:00:05"/>
-    <calculator_responses id="6" equation=" " responseMsg="Empty equation" statusCode="1" time_of_creation="1970-01-01 00:00:00"/>
+    <calculator_responses id="1" equation="1+1" calculationResult="2.0" statusCode="1" time_of_creation="2019-09-09 15:00:00"/>
+    <calculator_responses id="2" equation="1/0" calculationResult="0.0" errorMsg="Division by zero" statusCode="1"   time_of_creation="2019-09-09 15:00:01"/>
+    <calculator_responses id="3" equation="2+1)" calculationResult="0.0" errorMsg="Missing or misplaced brackets" statusCode="1" time_of_creation="2019-09-09 15:00:03"/>
+    <calculator_responses id="4" equation="1..0" calculationResult="0.0" errorMsg="Unsupported component :1..0" statusCode="1" time_of_creation="2019-09-09 15:00:04"/>
+    <calculator_responses id="5" equation="1++2" calculationResult="0.0" errorMsg="Sequential components of the same type" statusCode="1" time_of_creation="2019-09-09 15:00:05"/>
+    <calculator_responses id="6" equation=" " calculationResult="0.0" errorMsg="Empty equation" statusCode="1" time_of_creation="1970-01-01 00:00:00"/>
 </dataset>
 

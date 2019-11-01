@@ -57,7 +57,7 @@ public class CalculatorRestResourceTest {
 
     @Test
     public void doGetCalculationResult_calculationFinished_successfulCalculation() throws Exception {
-        Mockito.when(entity.getResult()).thenReturn(2.0);
+        Mockito.when(entity.getCalculationResult()).thenReturn(2.0);
         Mockito.when(entity.getStatusCode()).thenReturn(COMPLETED.getStatusCode());
 
         CalculationResult expectedResult = new CalculationResult(2.0);

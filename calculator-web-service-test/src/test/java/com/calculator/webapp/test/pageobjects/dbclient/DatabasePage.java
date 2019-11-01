@@ -1,6 +1,7 @@
 package com.calculator.webapp.test.pageobjects.dbclient;
 
 import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
@@ -31,6 +32,12 @@ public class DatabasePage {
 
     public DatabasePage() throws Exception {
         databaseConnection = new DatabaseConnection(DriverManager.getConnection(CONNECTION_URL,DB_USERNAME,DB_PASSWORD));
+        allowEmptyValuesInColumns(databaseConnection);
+    }
+
+    private void allowEmptyValuesInColumns(final IDatabaseConnection databaseConnection){
+        DatabaseConfig config = databaseConnection.getConfig();
+        config.setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS,true);
     }
 
     public void closeDbConnection() throws SQLException {

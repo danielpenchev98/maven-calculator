@@ -14,8 +14,7 @@ public class CalculationResultPage extends CalculatorRestPage {
     static final String CALCULATE_EQUATION_URL = "/calculate";
     static final String GET_CALCULATION_URL = "/calculations";
 
-    private static final int TIME_TO_WAIT_IN_MILLISECONDS = 1000;
-    private static final int TIMEOUT_IN_SECONDS = 10;
+    private static final int TIME_TO_WAIT_IN_MILLISECONDS = 7000;
 
     public CalculationResultPage(final URL baseUrl,final String username,final String password) {
         super(baseUrl,new HttpRequestExecutor(username,password));
@@ -33,15 +32,10 @@ public class CalculationResultPage extends CalculatorRestPage {
     }
 
     private CalculationResult getCalculationResult(final long requestId) throws Exception{
+        waitForCalculationToBeCompleted();
         URL url = getCalculationResultUrl(requestId);
-        Date startRequest =
-        while(true) {
-            Response response = requestExecutor.executeGetRequest(url);
-            if(response.getStatus()!=202){
-                return response.readEntity(CalculationResult.class);
-            }
-            waitForCalculationToBeCompleted();
-        }
+        Response response = requestExecutor.executeGetRequest(url);
+        return response.readEntity(CalculationResult.class);
     }
 
 

@@ -44,7 +44,6 @@ public class RestResourceIT {
                 .as(WebArchive.class)
                 .addAsResource("arquillian.xml")
                 .addAsManifestResource("context.xml", "context.xml");
-        System.out.println(archive.toString(true));
         return archive;
     }
 

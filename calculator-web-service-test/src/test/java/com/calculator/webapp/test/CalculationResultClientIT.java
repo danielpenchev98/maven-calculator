@@ -18,7 +18,7 @@ public class CalculationResultClientIT extends RestResourceIT {
 
     @Test
     public void doGetCalculationResult_legalExpression() throws Exception {
-        CalculationResult expectedResult = new CalculationResult("100.0");
+        CalculationResult expectedResult = new CalculationResult(100.0);
         CalculationResult actualResult = calculationResultPage.calculate("((121/(10-(-1))))-(-89)");
 
         verifyCalculationResult(expectedResult,actualResult);
