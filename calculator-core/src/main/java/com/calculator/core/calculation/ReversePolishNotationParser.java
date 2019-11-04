@@ -33,7 +33,7 @@ public class ReversePolishNotationParser {
      * @param equation in infix notation
      * @return equation in reverse polish notation
      */
-    public List<EquationComponent> formatFromInfixToReversedPolishNotation(final List<EquationComponent> equation) throws EmptyStackException {
+    public List<EquationComponent> formatFromInfixToReversedPolishNotation(final List<EquationComponent> equation) {
 
         for (EquationComponent component : equation) {
             processComponent(component);
