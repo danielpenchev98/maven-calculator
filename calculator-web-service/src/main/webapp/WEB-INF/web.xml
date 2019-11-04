@@ -52,7 +52,7 @@
     </listener>
 
     <listener>
-        <listener-class>com.calculator.webapp.quartz.QuartzJobListener</listener-class>
+        <listener-class>com.calculator.webapp.scheduler.QuartzJobListener</listener-class>
     </listener>
 
     <!--<listener>

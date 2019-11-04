@@ -1,4 +1,4 @@
-package com.calculator.webapp.quartz;
+package com.calculator.webapp.scheduler;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
