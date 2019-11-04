@@ -17,7 +17,6 @@ import java.util.List;
 
 import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.COMPLETED;
 
-//TODO FIX CORS
 
 @Path("/calculator")
 @Produces(MediaType.APPLICATION_JSON)

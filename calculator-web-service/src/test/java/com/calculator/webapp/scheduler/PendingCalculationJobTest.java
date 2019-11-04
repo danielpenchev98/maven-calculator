@@ -1,8 +1,9 @@
-package com.calculator.webapp.quartz;
+package com.calculator.webapp.scheduler;
 
 import com.calculator.core.CalculatorApp;
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
 import com.calculator.webapp.db.dto.CalculationRequestDTO;
+import com.calculator.webapp.scheduler.PendingCalculationJob;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
