@@ -14,7 +14,7 @@ public class QuartzJobListener implements ServletContextListener {
     private static final String JOB_GROUP = "CalculatorJobs";
     private static final String TRIGGER_NAME = "pendingCalculationTrigger";
     private static final String TRIGGER_GROUP = "CalculatorTriggers";
-    private static final int INTERVAL_DURATION=5;
+    private static final int INTERVAL_DURATION=3;
 
     private static final Logger logger = LogManager.getLogger(QuartzJobListener.class);
     private Scheduler scheduler;
