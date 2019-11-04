@@ -6,6 +6,8 @@ import com.calculator.webapp.db.dto.CalculationRequestDTO;
 import com.calculator.webapp.restresponses.CalculationError;
 import com.calculator.webapp.restresponses.RequestId;
 import com.calculator.webapp.restresponses.CalculationResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
@@ -29,7 +31,7 @@ public class CalculatorRestResource {
     private static final int OK = Response.Status.OK.getStatusCode();
     private static final int BAD_REQUEST = Response.Status.BAD_REQUEST.getStatusCode();
     private static final int NOT_FOUND = Response.Status.NOT_FOUND.getStatusCode();
-
+    private static final Logger logger = LoggerFactory.getLogger(CalculatorRestResource.class);
 
     @Inject
     public CalculatorRestResource(final CalculatorDaoImpl dao) {
@@ -51,6 +53,7 @@ public class CalculatorRestResource {
             return isEvaluated(calculation) ? getCalculationResultResponse(calculation) : getPendingCalculationResponse();
         }
         catch (ItemDoesNotExistException ex){
+            logger.warn("Item with id :"+id+" hasn't been found");
             return createResponseWithoutPayload(NOT_FOUND);
         }
     }
