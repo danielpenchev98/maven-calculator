@@ -50,6 +50,7 @@ public class PendingCalculationJob implements Job {
             calculation.setErrorMsg(userError);
         } catch(Exception ex){
             logger.error("System error :" + ex.getStackTrace());
+            return;
         }
 
         calculation.setStatusCode(COMPLETED.getStatusCode());
