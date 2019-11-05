@@ -30,14 +30,12 @@
         <servlet-name>CalculatorServlet</servlet-name>
     </filter-mapping>
 
-    <!-- for connecting the rest service to DB -->
     <resource-ref>
         <res-ref-name>jdbc/DefaultDB</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
     </resource-ref>
 
-    <!-- for liquibase - automate the migration of the schema on deployment -->
     <context-param>
         <param-name>liquibase.changelog</param-name>
         <param-value>META-INF/changelog-V1.xml</param-value>
