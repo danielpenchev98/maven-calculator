@@ -53,7 +53,7 @@ public class CalculatorRestResource {
             return isEvaluated(calculation) ? getCalculationResultResponse(calculation) : getPendingCalculationResponse();
         }
         catch (ItemDoesNotExistException ex){
-            logger.warn("Item with id :"+id+" hasn't been found");
+            logger.warn("Item with id :"+id+" hasn't been found.\nStack Trace :"+ex.getStackTrace());
             return createResponseWithoutPayload(NOT_FOUND);
         }
     }
