@@ -2,6 +2,7 @@ package com.calculator.core;
 
 import com.calculator.core.calculation.CalculationAlgorithm;
 import com.calculator.core.calculation.ReversePolishCalculationAlgorithm;
+import com.calculator.core.exceptions.BadInputException;
 import com.calculator.core.inputformatting.EquationFormatter;
 import com.calculator.core.inputformatting.InputFormatter;
 import com.calculator.core.operators.EquationComponent;
@@ -22,7 +23,7 @@ public class CalculatorApp {
         this(new EquationFormatter(), new ReversePolishCalculationAlgorithm());
     }
 
-    public double calculateResult(final String equation) throws Exception {
+    public double calculateResult(final String equation) throws BadInputException {
         List<EquationComponent> formattedInput = formatter.doFormat(equation);
         return algorithm.calculateEquation(formattedInput);
     }

@@ -10,7 +10,6 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.operation.DatabaseOperation;
-import org.dbunit.util.TableFormatter;
 import org.dbunit.util.fileloader.FlatXmlDataFileLoader;
 import org.junit.*;
 
