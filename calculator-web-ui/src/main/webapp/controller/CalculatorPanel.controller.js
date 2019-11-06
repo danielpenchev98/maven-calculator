@@ -34,18 +34,27 @@ sap.ui.define([
 
 			let xhr = new XMLHttpRequest();
 			let onloadEventListener = function(){
-				this.onCalculationRequestQueued(xhr,oServiceConfig);
+				this.onCalculationRequestQueued(xhr,oServiceConfig,equation);
 			}.bind(this);
 			this.doXMLHttpRequest(xhr,"POST",postRequestUrl,onloadEventListener,JSON.stringify(postRequestBody));
 		},
 
-		onCalculationRequestQueued : function(xhr,oServiceConfig){
-			if(this.isRequestDone(xhr.readyState)) {
-				let oId = JSON.parse(xhr.responseText);
-				let processId = setInterval(() => {
-					this.getCalculationResult(oServiceConfig, oId, processId)
-				}, 1000);
+		onCalculationRequestQueued : function(xhr,oServiceConfig,equation){
+			let oId = JSON.parse(xhr.responseText);
+
+			let calculationHistoryJSONString = sessionStorage.getItem("calculationHistory");
+			let calculationHistory = null;
+			if(calculationHistoryJSONString === null){
+				calculationHistory = [{ id:oId.id, equation : equation}]
+			} else{
+			    calculationHistory = JSON.parse(calculationHistoryJSONString);
+				calculationHistory.push({ id:oId.id, equation : equation})
 			}
+			sessionStorage.setItem("calculationHistory",JSON.stringify(calculationHistory));
+
+			let processId = setInterval(() => {
+				this.getCalculationResult(oServiceConfig, oId, processId)
+			}, 1000);
 		},
 
 
@@ -61,15 +70,11 @@ sap.ui.define([
 		},
 
 		onCalculationResultCompleted : function(xhr,processId) {
-		   if(this.isRequestDone(xhr.readyState)&&this.isCompletedCalculation(xhr.status)){
+		   if(this.isCompletedCalculation(xhr.status)){
 		   	    let oResponse = JSON.parse(xhr.responseText);
 		   	    this.isSuccessfulCalculation(xhr.status) ? this.showCalculationResult(oResponse) : this.showCalculationError(oResponse);
 			    clearInterval(processId);
 		   }
-		},
-
-		isRequestDone : function(readyState){
-			return readyState === 4;
 		},
 
 		isCompletedCalculation : function(statusCode){

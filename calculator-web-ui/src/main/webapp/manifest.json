@@ -14,6 +14,7 @@
 				"baseUrl": "https://calcwebservicei515142trial.hanatrial.ondemand.com/calculator-web-service",
 				"sendCalculationRequestUrl": "/api/v1/calculator/calculate",
 				"getCalculationResultUrl" : "/api/v1/calculator/calculations",
+				"getCalculationHistoryUrl" : "/api/v1/calculator/calculationHistory",
 				"type": "JSON"
 			}
 		}

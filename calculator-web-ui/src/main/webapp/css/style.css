@@ -18,3 +18,7 @@ html[dir="rtl"] .myAppDemoWT .myCustomButton.sapMBtn {
 .resultColor {
 	color : limegreen;
 }
+
+.sapMListTblCell{
+	border-left: 1px solid #ccc;
+}
