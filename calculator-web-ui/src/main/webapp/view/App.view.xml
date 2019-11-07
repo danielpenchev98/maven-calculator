@@ -11,7 +11,7 @@
 						<mvc:XMLView viewName="com.calculator.web.ui.view.IntroductionPanel"/>
 						<mvc:XMLView viewName="com.calculator.web.ui.view.RulesPanel"/>
 						<mvc:XMLView viewName="com.calculator.web.ui.view.CalculatorPanel"/>
-						<mvc:XMLView viewName="com.calculator.web.ui.view.CalculationList"/>
+						<mvc:XMLView viewName="com.calculator.web.ui.view.CalculationsTable"/>
 					</content>
 				</Page>
 			</pages>

@@ -1,6 +1,7 @@
 package com.calculator.webapp.scheduler;
 
 import com.calculator.core.CalculatorApp;
+import com.calculator.core.exceptions.BadInputException;
 import com.calculator.webapp.db.dao.CalculatorDaoImpl;
 import com.calculator.webapp.db.dto.CalculationRequestDTO;
 import org.quartz.*;
@@ -44,7 +45,7 @@ public class PendingCalculationJob implements Job {
         try {
             double result = calculateEquation(calculation.getEquation());
             calculation.setCalculationResult(result);
-        } catch (BadRequestException badRequest) {
+        } catch (BadInputException badRequest) {
             logger.warn("User error :" + badRequest.getStackTrace());
             String userError = badRequest.getMessage();
             calculation.setErrorMsg(userError);
