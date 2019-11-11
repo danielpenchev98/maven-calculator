@@ -27,8 +27,8 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
         this.supplier= new Stack<>();
     }
 
-
     public double calculateEquation(final List<EquationComponent> equation) throws BadInputException {
+        this.supplier.clear();
         List<EquationComponent> equationInRPN = formatToReversePolishNotation(equation);
 
         for (EquationComponent component : equationInRPN) {
