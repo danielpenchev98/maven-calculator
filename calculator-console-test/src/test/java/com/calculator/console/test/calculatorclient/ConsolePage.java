@@ -2,7 +2,6 @@ package com.calculator.console.test.calculatorclient;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.Arrays;

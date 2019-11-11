@@ -27,6 +27,7 @@ class EquationStructureValidator {
             } else if (symbol == ')') {
                 if (bracketBalance == 0) {
                     hasError = true;
+                    break;
                 }
                 bracketBalance--;
             }

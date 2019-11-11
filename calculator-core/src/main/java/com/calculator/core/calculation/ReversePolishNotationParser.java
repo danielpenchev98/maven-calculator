@@ -13,9 +13,7 @@ public class ReversePolishNotationParser {
 
     private List<EquationComponent> reversedPolishEquation;
 
-    public ReversePolishNotationParser()
-    {
-        reversedPolishEquation=new LinkedList<>();
+    public ReversePolishNotationParser() {
         operatorContainer=new Stack<>();
     }
 
@@ -34,6 +32,7 @@ public class ReversePolishNotationParser {
      * @return equation in reverse polish notation
      */
     public List<EquationComponent> formatFromInfixToReversedPolishNotation(final List<EquationComponent> equation) {
+        reversedPolishEquation=new LinkedList<>();
 
         for (EquationComponent component : equation) {
             processComponent(component);
