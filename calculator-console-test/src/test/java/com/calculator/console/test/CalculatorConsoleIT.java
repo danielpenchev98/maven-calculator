@@ -53,20 +53,20 @@ public class CalculatorConsoleIT {
     @Test
     @UseDataProvider("correctExpressionSupplier")
     public void calculate_ReturnCorrectResultOfEquation(final String equation, final Double expectedResult) throws Exception {
-        String actualResult = calculator.getResultFromCalculatorConsole(Arrays.asList(equation));
+        String actualResult = calculator.calculateEquation(Arrays.asList(equation));
         assertEquals(expectedResult,Double.valueOf(actualResult),DELTA);
     }
 
     @Test
     @UseDataProvider("illegalExpressionSupplier")
     public void calculate_WrongStructuredExpression(final String equation, final String exceptionMessage) throws Exception {
-        String actualResult = calculator.getResultFromCalculatorConsole(Arrays.asList(equation));
+        String actualResult = calculator.calculateEquation(Arrays.asList(equation));
         assertThat(actualResult,is(exceptionMessage));
     }
 
     @Test
     public void calculate_InvalidNumberOfArguments() throws Exception {
-        String actualResult = calculator.getResultFromCalculatorConsole(Arrays.asList("1", "+", "1"));
+        String actualResult = calculator.calculateEquation(Arrays.asList("1", "+", "1"));
         assertThat(actualResult,is("Invalid number of arguments"));
     }
 
