@@ -1,4 +1,3 @@
-/*global QUnit, opaTest*/
 sap.ui.define([
     "sap/ui/test/opaQunit",
     "./pages/App"
@@ -20,7 +19,7 @@ sap.ui.define([
             .iShouldSeeTheCloseButton(textOfCloseButton);
     };
 
-    QUnit.module("Navigation");
+    QUnit.module("Calculation");
 
     opaTest("Should open result dialog with the result", function (Given, When, Then) {
 
@@ -31,7 +30,6 @@ sap.ui.define([
         Then.onTheAppPage.iShouldSeeTheCalculationResult("2.0");
 
         Then.onTheAppPage.iTeardownMyApp();
-
     });
 
     opaTest("Should open error dialog with \"Empty equation\" message", function (Given, When, Then) {
@@ -130,6 +128,7 @@ sap.ui.define([
         Then.onTheAppPage.iShouldSeeTheDialog("Error");
 
         When.onTheAppPage.iPressTheCloseDialogButton();
+
         Then.onTheAppPage.iShouldSeeTheView().iTeardownMyApp();
     });
 

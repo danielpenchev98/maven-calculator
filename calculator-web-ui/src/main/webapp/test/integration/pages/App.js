@@ -22,7 +22,7 @@ sap.ui.define([
                          id: "calculateButton",
                          viewName: sViewName,
                          actions: new Press(),
-                         errorMessage: "Couldnt find the calculateButton on the CalculatorPanel view"
+                         errorMessage: "Couldn't find the calculateButton on the CalculatorPanel view"
                      });
                 },
                 iEnterInputInInputControl: function (equation) {
@@ -30,7 +30,7 @@ sap.ui.define([
                         id: "equation",
                         viewName: sViewName,
                         actions: new EnterText({text: equation}),
-                        errorMessage: "Couldnt enter the equation in the input box"
+                        errorMessage: "Couldn't enter the equation in the input box"
                     });
                 },
                 iPressTheCloseDialogButton: function() {
@@ -38,7 +38,7 @@ sap.ui.define([
                         searchOpenDialogs: true,
                         controlType: "sap.m.Button",
                         actions: new Press(),
-                        errorMessage: "Couldnt close the dialog"
+                        errorMessage: "Couldn't close the dialog"
                     })
                 }
             },
@@ -110,7 +110,21 @@ sap.ui.define([
                         },
                         errorMessage: "The View is not to be seen"
                     })
-                }
+                },
+                /*iShouldSeePendingCalculationRecordInTable:function(){
+                    return this.waitFor({
+                        id: "calculationsTable",
+                        viewName : "CalculationsTable",
+                        matchers : new AggregationLengthEquals({
+                            name: "items",
+                            length: 1
+                        }),
+                        success: function () {
+                            Opa5.assert.ok(true, "The table has 1 items");
+                        },
+                        errorMessage: "Table does not have all entries."
+                        })
+                }*/
             }
         }
     })
