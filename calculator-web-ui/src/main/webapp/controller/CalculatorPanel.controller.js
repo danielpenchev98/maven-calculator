@@ -6,16 +6,21 @@ sap.ui.define([
 
 	return Controller.extend("com.calculator.web.ui.controller.CalculatorPanel", {
 
+		onInit: function(){
+			let oData = { result : "0" };
+			this.showResultInInputBox(oData);
+		},
+
 		onCalculation: function () {
-
 			let equation = this.getView().byId("equation").getValue();
-
-			let ownerComponent = this.getOwnerComponent();
-			let oServiceConfig =  ownerComponent.getManifestEntry("/sap.app/dataSources/calculationService");
+			let oServiceConfig = this.getRequiredUrls();
 
 			this.sendCalculationRequest(oServiceConfig, equation);
 		},
 
+		getRequiredUrls : function() {
+		    return this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/calculationService");
+		},
 
 		doXMLHttpRequest:function(xhr,method,url,onloadEventListener,data){
 			xhr.open(method,url);
@@ -42,39 +47,30 @@ sap.ui.define([
 		onCalculationRequestQueued : function(xhr,oServiceConfig,equation){
 			let oId = JSON.parse(xhr.responseText);
 
-			let calculationHistoryJSONString = sessionStorage.getItem("calculationHistory");
-			let calculationHistory = null;
-			if(calculationHistoryJSONString === null){
-				calculationHistory = [{ id:oId.id, equation : equation}]
-			} else{
-			    calculationHistory = JSON.parse(calculationHistoryJSONString);
-				calculationHistory.push({ id:oId.id, equation : equation})
-			}
-			sessionStorage.setItem("calculationHistory",JSON.stringify(calculationHistory));
+            this.notifyOtherControllers("updateChannel","pendingCalculation", {id:oId.id,equation:equation});
 
 			let processId = setInterval(() => {
 				this.getCalculationResult(oServiceConfig, oId, processId)
 			}, 1000);
 		},
 
-
 		getCalculationResult : function (oServiceConfig,oId,processId) {
 			let getCalculationResultUrl = oServiceConfig.baseUrl + oServiceConfig.getCalculationResultUrl + "/" + oId.id;
 
 			let xhr = new XMLHttpRequest();
 			let onloadEventListener = function() {
-				this.onCalculationResultCompleted(xhr, processId);
+				this.onCalculationResultCompleted(xhr, processId,oId);
 			}.bind(this);
 			this.doXMLHttpRequest(xhr,"GET",getCalculationResultUrl,onloadEventListener,null);
 
 		},
 
-		onCalculationResultCompleted : function(xhr,processId) {
-		   if(this.isCompletedCalculation(xhr.status)){
-		   	    let oResponse = JSON.parse(xhr.responseText);
-		   	    this.isSuccessfulCalculation(xhr.status) ? this.showCalculationResult(oResponse) : this.showCalculationError(oResponse);
-			    clearInterval(processId);
-		   }
+		onCalculationResultCompleted : function(xhr,processId,oId) {
+			if (this.isCompletedCalculation(xhr.status)) {
+				let oResponse = JSON.parse(xhr.responseText);
+				this.isSuccessfulCalculation(xhr.status) ? this.showCalculationResult(oResponse,oId) : this.showCalculationError(oResponse,oId);
+				clearInterval(processId);
+			}
 		},
 
 		isCompletedCalculation : function(statusCode){
@@ -85,16 +81,29 @@ sap.ui.define([
 			return statusCode === 200;
 		},
 
-		showCalculationResult : function (CalculationResult) {
-			let mCalculationResult = new JSONModel();
-			mCalculationResult.setJSON(JSON.stringify(CalculationResult));
-			this.getOwnerComponent().showResult(mCalculationResult);
+		showCalculationResult : function (oCalculationResult,oId) {
+		    this.notifyOtherControllers("updateChannel","completedCalculation",{id:oId.id,result:oCalculationResult.result});
+			this.showResultInInputBox(oCalculationResult);
 		},
 
-		showCalculationError : function (errorMessage) {
+		showCalculationError : function (errorMessage,oId) {
+			this.notifyOtherControllers("updateChannel","completedCalculation",{id:oId.id,result:errorMessage.message});
 			let mError = new JSONModel();
 			mError.setJSON(JSON.stringify(errorMessage));
 			this.getOwnerComponent().openErrorDialog(mError);
+		},
+
+		notifyOtherControllers: function (channelName,idEvent,data) {
+			sap.ui.getCore().getEventBus().publish(
+				channelName,
+				idEvent,
+				data
+			);
+		},
+
+		showResultInInputBox : function (oCalculationResult) {
+			let oResultModel= new JSONModel(oCalculationResult);
+			this.getView().setModel(oResultModel);
 		}
 	});
 });
