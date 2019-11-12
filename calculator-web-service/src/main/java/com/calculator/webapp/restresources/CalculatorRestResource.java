@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class CalculatorRestResource {
             return isEvaluated(calculation) ? getCalculationResultResponse(calculation) : getPendingCalculationResponse();
         }
         catch (ItemDoesNotExistException ex){
-            logger.warn("Item with id :"+id+" hasn't been found.\nStack Trace :"+ex.getStackTrace());
+            logger.warn("Item with id :"+id+" hasn't been found.\nStack Trace :"+ Arrays.toString(ex.getStackTrace()));
             return createResponseWithoutPayload(NOT_FOUND);
         }
     }

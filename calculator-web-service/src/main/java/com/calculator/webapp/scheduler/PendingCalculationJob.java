@@ -8,7 +8,7 @@ import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.BadRequestException;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.COMPLETED;
@@ -30,9 +30,8 @@ public class PendingCalculationJob implements Job {
         this.dao=dao;
     }
 
-
     @Override
-    public synchronized void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    public synchronized void execute(JobExecutionContext jobExecutionContext) {
         List<CalculationRequestDTO> pendingCalculations = dao.getAllPendingCalculations();
 
         for(CalculationRequestDTO pendingCalculation : pendingCalculations){
@@ -46,18 +45,17 @@ public class PendingCalculationJob implements Job {
             double result = calculateEquation(calculation.getEquation());
             calculation.setCalculationResult(result);
         } catch (BadInputException badRequest) {
-            logger.warn("User error :" + badRequest.getStackTrace());
+            logger.warn("User error :" + Arrays.toString(badRequest.getStackTrace()));
             String userError = badRequest.getMessage();
             calculation.setErrorMsg(userError);
         } catch(Exception ex){
-            logger.error("System error :" + ex.getStackTrace());
+            logger.error("System error :" + Arrays.toString(ex.getStackTrace()));
             return;
         }
 
         calculation.setStatusCode(COMPLETED.getStatusCode());
         dao.update(calculation);
     }
-
 
     private double calculateEquation(final String equation) throws Exception {
         return calculator.calculateResult(equation);
