@@ -23,16 +23,12 @@
                 <Column id="result">
                     <Text text="{i18n>columnResult}"/>
                 </Column>
-                <Column id="errorMsg">
-                    <Text text="{i18n>columnErrorMsg}"/>
-                </Column>
             </columns>
             <items>
                 <ColumnListItem>
                     <cells class="sapMListTblCell">
                         <ObjectIdentifier title="{equation}"/>
-                        <ObjectIdentifier title="{calculationResult}"/>
-                        <ObjectIdentifier title="{errorMsg}"/>
+                        <ObjectIdentifier title="{result}"/>
                     </cells>
                 </ColumnListItem>
             </items>
