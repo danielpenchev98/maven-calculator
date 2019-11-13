@@ -4,7 +4,7 @@ sap.ui.define([
 ], function (Controller,JSONModel) {
     "use strict";
 
-    return Controller.extend("com.calculator.web.ui.controller.CalculationsTable", {
+    return Controller.extend("com.calculator.web.ui.controller.CalculationHistory", {
 
         calculationHistoryKeyInSessionStorage : "calculationHistory",
 
@@ -14,6 +14,8 @@ sap.ui.define([
             let eventBus = sap.ui.getCore().getEventBus();
             eventBus.subscribe("updateChannel", "completedCalculation", this.onCompletedCalculation, this);
             eventBus.subscribe("updateChannel", "pendingCalculation", this.onNewRecord, this);
+            this.updateCalculationHistoryFromSessionStorage();
+            this.updateTable();
         },
 
         onNewRecord : function(ChannelId, EventId, data){
