@@ -68,7 +68,7 @@ sap.ui.define([
 		onCalculationResultCompleted : function(xhr,processId,oId) {
 			if (this.isCompletedCalculation(xhr.status)) {
 				let oResponse = JSON.parse(xhr.responseText);
-				this.isSuccessfulCalculation(xhr.status) ? this.showCalculationResult(oResponse,oId) : this.showCalculationError(oResponse,oId);
+				this.isSuccessfulCalculation(xhr.status) ? this.showCalculationResult(oId,oResponse) : this.showCalculationError(oId,oResponse);
 				clearInterval(processId);
 			}
 		},
@@ -81,12 +81,12 @@ sap.ui.define([
 			return statusCode === 200;
 		},
 
-		showCalculationResult : function (oCalculationResult,oId) {
+		showCalculationResult : function (oId,oCalculationResult) {
 		    this.notifyOtherControllers("updateChannel","completedCalculation",{id:oId.id,result:oCalculationResult.result});
 			this.showResultInInputBox(oCalculationResult);
 		},
 
-		showCalculationError : function (errorMessage,oId) {
+		showCalculationError : function (oId,errorMessage) {
 			this.notifyOtherControllers("updateChannel","completedCalculation",{id:oId.id,result:errorMessage.message});
 			let mError = new JSONModel();
 			mError.setJSON(JSON.stringify(errorMessage));

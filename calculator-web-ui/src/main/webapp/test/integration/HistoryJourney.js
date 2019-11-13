@@ -15,17 +15,26 @@ sap.ui.define([
 
     QUnit.module("History");
 
+    opaTest("Should see table in the history view", function(Given, When, Then) {
+        startUiComponent(Given);
+
+        Then.onTheAppPage.iShouldSeeTable();
+
+        Then.onTheAppPage.iTeardownMyUIComponent();
+    });
+
     opaTest("Should see new record in the history table", function (Given, When, Then) {
 
         startUiComponent(Given);
 
+        When.onTheAppPage.iClearSessionStorage();
         When.onTheAppPage.iEnterInputInInputControl("1+1").and.iPressTheCalculateButton();
 
-        //Then.onTheAppPage.iShouldSeePendingCalculationRecordInTable("1+1","Pending calculation");
+        Then.onTheAppPage.iShouldSeeTable().and.iShouldSeeCalculationRecordInTable("1","1+1","Pending calculation");
 
-        //Then.onTheAppPage.iShouldSeeCompletedCalculationRecordInTable("1+1","2.0");
+        Then.onTheAppPage.iShouldSeeCalculationRecordInTable("1","1+1",2.0);
 
-        Then.onTheAppPage.iTeardownMyApp();
+        Then.onTheAppPage.iTeardownMyUIComponent();
 
     });
 

@@ -2,8 +2,9 @@ sap.ui.define([
     "sap/ui/test/Opa5",
     "sap/ui/test/actions/Press",
     "sap/ui/test/actions/EnterText",
-    "sap/ui/test/matchers/Properties"
-], function (Opa5, Press, EnterText,Properties) {
+    "sap/ui/test/matchers/Properties",
+    "sap/ui/test/matchers/AggregationLengthEquals"
+], function (Opa5, Press, EnterText,Properties,AggregationLengthEquals) {
     "use strict";
 
     var sViewName = "CalculatorPanel";
@@ -40,6 +41,9 @@ sap.ui.define([
                         actions: new Press(),
                         errorMessage: "Couldn't close the dialog"
                     })
+                },
+                iClearSessionStorage : function(){
+                    return sessionStorage.clear();
                 }
             },
 
@@ -48,8 +52,8 @@ sap.ui.define([
                 iShouldSeeTheCalculationResult: function(result)
                 {
                     return this.waitFor({
+                        id: "equation",
                         viewName : sViewName,
-                        controlType: "sap.m.Input",
                         matchers: new Properties({
                             value : result
                         }),
@@ -102,29 +106,34 @@ sap.ui.define([
                         errorMessage: "Did not find the close button"
                     })
                 },
-                iShouldSeeTheView: function () {
+                iShouldSeeCalculationRecordInTable:function(id,equation,result){
                     return this.waitFor({
-                        controlType: "sap.ui.core.mvc.XMLView",
-                        success: function () {
-                            Opa5.assert.ok(true, "The View is to be seen");
-                        },
-                        errorMessage: "The View is not to be seen"
-                    })
-                },
-                /*iShouldSeePendingCalculationRecordInTable:function(){
-                    return this.waitFor({
-                        id: "calculationsTable",
-                        viewName : "CalculationsTable",
-                        matchers : new AggregationLengthEquals({
+                        id:"calculationsTable",
+                        viewName : "CalculationHistory",
+                        matchers:  new AggregationLengthEquals({
                             name: "items",
                             length: 1
                         }),
-                        success: function () {
-                            Opa5.assert.ok(true, "The table has 1 items");
+                        check : function(oTable){
+                            let historyRecordsJSON=JSON.parse(oTable.getModel().getJSON());
+                            return historyRecordsJSON[id].equation===equation&&historyRecordsJSON[id].result==result;
                         },
-                        errorMessage: "Table does not have all entries."
+                        success: function () {
+                            Opa5.assert.ok(true, "The table has the expected 1 item");
+                        },
+                        errorMessage: "Table does not have entries or the entry wasn't with the expected values"
                         })
-                }*/
+                },
+                iShouldSeeTable:function(){
+                    return this.waitFor({
+                        id:"calculationsTable",
+                        viewName : "CalculationHistory",
+                        success: function () {
+                            Opa5.assert.ok(true, "The table is there");
+                        },
+                        errorMessage: "The table is not there."
+                    })
+                }
             }
         }
     })

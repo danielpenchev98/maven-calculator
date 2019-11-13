@@ -1,5 +1,5 @@
 <mvc:View
-        controllerName="com.calculator.web.ui.controller.CalculationsTable"
+        controllerName="com.calculator.web.ui.controller.CalculationHistory"
         xmlns="sap.m"
         xmlns:mvc="sap.ui.core.mvc">
     <ScrollContainer
