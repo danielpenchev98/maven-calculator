@@ -29,7 +29,7 @@ sap.ui.define([
 
         Then.onTheAppPage.iShouldSeeTheCalculationResult("2.0");
 
-        Then.onTheAppPage.iTeardownMyApp();
+        Then.onTheAppPage.iTeardownMyUIComponent();
     });
 
     opaTest("Should open error dialog with \"Empty equation\" message", function (Given, When, Then) {
@@ -40,7 +40,7 @@ sap.ui.define([
 
         assertAppearanceOfDialog(Then, "Error", "Empty equation", "Ok");
 
-        Then.onTheAppPage.iTeardownMyApp();
+        Then.onTheAppPage.iTeardownMyUIComponent();
 
     });
 
@@ -52,7 +52,7 @@ sap.ui.define([
 
         assertAppearanceOfDialog(Then, "Error", "Missing or misplaced bracket", "Ok");
 
-        Then.onTheAppPage.iTeardownMyApp();
+        Then.onTheAppPage.iTeardownMyUIComponent();
     });
 
 
@@ -64,7 +64,7 @@ sap.ui.define([
 
         assertAppearanceOfDialog(Then, "Error", "Sequential components of the same type", "Ok");
 
-        Then.onTheAppPage.iTeardownMyApp();
+        Then.onTheAppPage.iTeardownMyUIComponent();
     });
 
     opaTest("Should open error dialog with \"Missing operator between a number and an opening bracket or a closing bracket and a number\" message", function (Given, When, Then) {
@@ -75,7 +75,7 @@ sap.ui.define([
 
         assertAppearanceOfDialog(Then, "Error", "Missing operator between a number and an opening bracket or a closing bracket and a number", "Ok");
 
-        Then.onTheAppPage.iTeardownMyApp();
+        Then.onTheAppPage.iTeardownMyUIComponent();
     });
 
     opaTest("Should open error dialog with \"Empty brackets\" message", function (Given, When, Then) {
@@ -86,7 +86,7 @@ sap.ui.define([
 
         assertAppearanceOfDialog(Then, "Error", "Empty brackets", "Ok");
 
-        Then.onTheAppPage.iTeardownMyApp();
+        Then.onTheAppPage.iTeardownMyUIComponent();
     });
 
     opaTest("Should open error dialog with \"Scope of equation ending or beginning with an operator\" message", function (Given, When, Then) {
@@ -97,7 +97,7 @@ sap.ui.define([
 
         assertAppearanceOfDialog(Then, "Error", "Scope of equation ending or beginning with an operator", "Ok");
 
-        Then.onTheAppPage.iTeardownMyApp();
+        Then.onTheAppPage.iTeardownMyUIComponent();
     });
 
     opaTest("Should open error dialog with \"Division by zero\" message", function (Given, When, Then) {
@@ -107,7 +107,7 @@ sap.ui.define([
 
         assertAppearanceOfDialog(Then, "Error", "Division by zero", "Ok");
 
-        Then.onTheAppPage.iTeardownMyApp();
+        Then.onTheAppPage.iTeardownMyUIComponent();
     });
 
     opaTest("Should open error dialog with \"Unsupported component :#\" message", function (Given, When, Then) {
@@ -117,7 +117,7 @@ sap.ui.define([
 
         assertAppearanceOfDialog(Then, "Error", "Unsupported component :#", "Ok");
 
-        Then.onTheAppPage.iTeardownMyApp();
+        Then.onTheAppPage.iTeardownMyUIComponent();
     });
 
     opaTest("Should open ErrorDialog and close it", function(Given, When, Then) {
@@ -129,7 +129,7 @@ sap.ui.define([
 
         When.onTheAppPage.iPressTheCloseDialogButton();
 
-        Then.onTheAppPage.iShouldSeeTheView().iTeardownMyApp();
+        Then.onTheAppPage.iTeardownMyUIComponent();
     });
 
 
