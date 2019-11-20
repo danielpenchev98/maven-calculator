@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <calculation_requests id="1" equation="1+1"  statusCode="1" time_of_creation="2019-09-09 15:00:00"/>
+    <calculation_requests id="2" equation="1/0" statusCode="0"  time_of_creation="2019-09-09 15:00:01"/>
+    <calculation_requests id="3" equation="2+1)"  statusCode="1" time_of_creation="2019-09-09 15:00:03"/>
+    <calculation_requests id="4" equation="1..0"  statusCode="0"  time_of_creation="2019-09-09 15:00:04"/>
+    <calculation_requests id="5" equation="1++2"  statusCode="1"  time_of_creation="2019-09-09 15:00:05"/>
+    <calculation_requests id="6" equation=" " statusCode="1" time_of_creation="1970-01-01 00:00:00"/>
+</dataset>
+

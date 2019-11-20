@@ -1,8 +1,10 @@
 package com.calculator.webapp.restresources;
 
-import com.calculator.webapp.db.dao.CalculatorDaoImpl;
+import com.calculator.webapp.db.dao.EquationDaoImpl;
+import com.calculator.webapp.db.dao.RequestDaoImpl;
 import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
 import com.calculator.webapp.db.dto.CalculationRequestDTO;
+import com.calculator.webapp.db.dto.CalculatorResponseDTO;
 import com.calculator.webapp.restresponses.CalculationError;
 import com.calculator.webapp.restresponses.RequestId;
 import com.calculator.webapp.restresponses.CalculationResult;
@@ -26,7 +28,8 @@ import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.COMPLETED
 @Consumes(MediaType.APPLICATION_JSON)
 public class CalculatorRestResource {
 
-    private final CalculatorDaoImpl dao;
+    private final RequestDaoImpl requestDao;
+    private final EquationDaoImpl equationDao;
 
     private static final int ACCEPTED = Response.Status.ACCEPTED.getStatusCode();
     private static final int OK = Response.Status.OK.getStatusCode();
@@ -35,8 +38,9 @@ public class CalculatorRestResource {
     private static final Logger logger = LoggerFactory.getLogger(CalculatorRestResource.class);
 
     @Inject
-    public CalculatorRestResource(final CalculatorDaoImpl dao) {
-        this.dao = dao;
+    public CalculatorRestResource(final RequestDaoImpl requestDao,final EquationDaoImpl equationDao) {
+        this.requestDao = requestDao;
+        this.equationDao=equationDao;
     }
 
     @POST
@@ -50,7 +54,7 @@ public class CalculatorRestResource {
     @Path("/calculations/{id}")
     public Response doGetCalculationResult(@NotNull @PathParam("id") Long id) {
         try{
-            CalculationRequestDTO calculation = dao.getItem(id);
+            CalculationRequestDTO calculation = requestDao.getItem(id);
             return isEvaluated(calculation) ? getCalculationResultResponse(calculation) : getPendingCalculationResponse();
         }
         catch (ItemDoesNotExistException ex){
@@ -64,11 +68,17 @@ public class CalculatorRestResource {
     }
 
     private Response getCalculationResultResponse(final CalculationRequestDTO calculation){
-        String errorMsg = calculation.getErrorMsg();
-        if(isSuccessfulCalculationResult(errorMsg)){
-            return createResponseWithPayload(OK,new CalculationResult(calculation.getCalculationResult()));
-        } else {
-            return createResponseWithPayload(BAD_REQUEST,new CalculationError(BAD_REQUEST,errorMsg));
+        try {
+            CalculatorResponseDTO result = equationDao.getItem(calculation.getEquation());
+            String errorMsg = result.getErrorMsg();
+            if (isSuccessfulCalculationResult(errorMsg)) {
+                return createResponseWithPayload(OK, new CalculationResult(result.getCalculationResult()));
+            } else {
+                return createResponseWithPayload(BAD_REQUEST, new CalculationError(BAD_REQUEST, errorMsg));
+            }
+        } catch (ItemDoesNotExistException ex){
+            logger.error("hasn't been found.\nStack Trace :"+ Arrays.toString(ex.getStackTrace()));
+            return createResponseWithoutPayload(NOT_FOUND);
         }
     }
 
@@ -88,16 +98,9 @@ public class CalculatorRestResource {
         return Response.status(statusCode).build();
     }
 
-    @GET
-    @Path("/calculationHistory")
-    public Response doGetCalculationHistory() {
-        List<CalculationRequestDTO> calculationHistory = dao.getAllItems();
-        return createResponseWithPayload(OK,calculationHistory);
-    }
-
     private Long saveCalculationRequest(final String equation) {
         CalculationRequestDTO request  = new CalculationRequestDTO(equation,new Date());
-        dao.saveItem(request);
+        requestDao.saveItem(request);
         return request.getId();
     }
 }

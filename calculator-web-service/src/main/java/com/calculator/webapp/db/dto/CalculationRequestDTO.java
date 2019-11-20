@@ -5,10 +5,10 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-@Table(name = "calculator_responses")
-@NamedQuery(name = "CalculatorResponses.findAll", query = "SELECT c FROM CalculationRequestDTO c")
-@NamedQuery(name="CalculatorResponses.findAllNotCalculated", query = "SELECT c FROM CalculationRequestDTO c WHERE statusCode =: statusCode")
-public class CalculationRequestDTO {
+@Table(name = "calculation_requests")
+@NamedQuery(name = "CalculationRequests.findAll", query = "SELECT c FROM CalculationRequestDTO c")
+@NamedQuery(name="CalculationRequests.findAllNotCalculated", query = "SELECT c FROM CalculationRequestDTO c WHERE statusCode =: statusCode")
+public class CalculationRequestDTO{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,12 +18,6 @@ public class CalculationRequestDTO {
     @Column
     @NotNull
     private String equation;
-
-    @Column
-    private double calculationResult;
-
-    @Column
-    private String errorMsg;
 
     @Column
     private int statusCode;
@@ -57,18 +51,6 @@ public class CalculationRequestDTO {
 
     public String getEquation() {
         return this.equation;
-    }
-
-    public void setCalculationResult(final double calculationResult) { this.calculationResult=calculationResult; }
-
-    public double getCalculationResult() { return this.calculationResult; }
-
-    public void setErrorMsg(final String responseMsg) {
-        this.errorMsg = responseMsg;
-    }
-
-    public String getErrorMsg() {
-        return this.errorMsg;
     }
 
     public int getStatusCode(){
