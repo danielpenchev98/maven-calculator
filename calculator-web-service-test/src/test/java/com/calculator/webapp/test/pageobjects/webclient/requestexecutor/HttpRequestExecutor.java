@@ -1,6 +1,6 @@
 package com.calculator.webapp.test.pageobjects.webclient.requestexecutor;
 
-import com.calculator.webapp.restresources.EquationRequestBody;
+import com.calculator.webapp.restresources.ExpressionRequestBody;
 import com.calculator.webapp.restresponses.CalculationError;
 import com.calculator.webapp.test.pageobjects.webclient.exception.CalculatorRestException;
 import com.calculator.webapp.test.pageobjects.webclient.exception.UnauthenticatedUserException;
@@ -41,7 +41,7 @@ public class HttpRequestExecutor {
         return restResponse;
     }
 
-    public Response executePostRequest(final URL url,final EquationRequestBody payload) throws Exception {
+    public Response executePostRequest(final URL url,final ExpressionRequestBody payload) throws Exception {
         WebTarget webTarget = getWebTarget(url);
         Response restResponse = webTarget.request(MediaType.APPLICATION_JSON).post(Entity.entity(payload, MediaType.APPLICATION_JSON));
         checkResponseStatusCode(restResponse);

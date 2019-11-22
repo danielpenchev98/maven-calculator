@@ -29,7 +29,7 @@ public class RestResourceIT {
 
     protected static DatabasePage dbPage;
     protected CalculationResultPage calculationResultPage;
-    protected CalculationHistoryPage calculationHistoryPage;
+ //   protected CalculationHistoryPage calculationHistoryPage;
 
     private static String VALID_USERNAME="admin";
     private static String VALID_PASSWORD="admin";
@@ -62,7 +62,7 @@ public class RestResourceIT {
         calculationResultPage = new CalculationResultPage(baseUrl,VALID_USERNAME,VALID_PASSWORD);
         dbPage.resetStateOfDatabase();
         dbPage.setInitialTableInDataBase(DatasetPaths.EMPTY_DATASET_PATH);
-        calculationHistoryPage = new CalculationHistoryPage(baseUrl,VALID_USERNAME,VALID_PASSWORD);
+      //  calculationHistoryPage = new CalculationHistoryPage(baseUrl,VALID_USERNAME,VALID_PASSWORD);
     }
 
 }

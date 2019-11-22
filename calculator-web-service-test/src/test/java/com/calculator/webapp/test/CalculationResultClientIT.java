@@ -1,6 +1,6 @@
 package com.calculator.webapp.test;
 
-import com.calculator.webapp.db.dto.CalculationRequestDTO;
+import com.calculator.webapp.db.dto.RequestDTO;
 
 import com.calculator.webapp.restresponses.CalculationResult;
 import com.calculator.webapp.test.pageobjects.webclient.exception.CalculatorRestException;
@@ -49,9 +49,9 @@ public class CalculationResultClientIT extends RestResourceIT {
     }
 
     @Test
-    public void doGetCalculationResult_illegalExpression_emptyEquation() throws Exception {
+    public void doGetCalculationResult_illegalExpression_emptyExpression() throws Exception {
         expectedException.expect(CalculatorRestException.class);
-        expectedException.expectMessage("Empty equation");
+        expectedException.expectMessage("Empty expression");
 
         calculationResultPage.calculate("     ");
     }
@@ -65,9 +65,9 @@ public class CalculationResultClientIT extends RestResourceIT {
     }
 
     @Test
-    public void doGetCalculationResult_illegalExpression_equationBeginningWithOperation() throws Exception {
+    public void doGetCalculationResult_illegalExpression_expressionBeginningWithOperation() throws Exception {
         expectedException.expect(CalculatorRestException.class);
-        expectedException.expectMessage("Scope of equation ending or beginning with an operator");
+        expectedException.expectMessage("Scope of expression ending or beginning with an operator");
 
         calculationResultPage.calculate("*1/2+3");
     }
@@ -89,15 +89,15 @@ public class CalculationResultClientIT extends RestResourceIT {
     }
 
 
-    @Test
+    /*@Test
     public void doGetCalculationHistory_requestWholeHistory() throws Exception {
         dbPage.setInitialTableInDataBase(DatasetPaths.CALCULATION_HISTORY_DATASET_PATH);
         final int HISTORY_RECORDS_COUNT = 6;
 
-        List<CalculationRequestDTO> history = calculationHistoryPage.getCalculationHistory();
+        List<RequestDTO> history = calculationHistoryPage.getCalculationHistory();
 
         assertThat(history.size(),is(HISTORY_RECORDS_COUNT));
-    }
+    }*/
 
 
     private void verifyCalculationResult(final CalculationResult  expectedResult,final CalculationResult actualResult) {

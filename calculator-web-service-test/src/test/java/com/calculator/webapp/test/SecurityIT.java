@@ -32,7 +32,7 @@ public class SecurityIT extends RestResourceIT {
         calculationResultPage.calculate("1+1");
     }
 
-    @Test
+    /*@Test
     public void givenInvalidCredentialsWhenGettingHistoryThenError401() throws Exception {
         calculationHistoryPage = new CalculationHistoryPage(baseUrl,INVALID_USERNAME,INVALID_PASSWORD);
         expectedException.expect(UnauthenticatedUserException.class);
@@ -46,5 +46,5 @@ public class SecurityIT extends RestResourceIT {
         expectedException.expect(UnauthorizedUserException.class);
 
         calculationHistoryPage.getCalculationHistory();
-    }
+    }*/
 }

@@ -1,6 +1,6 @@
 package com.calculator.webapp.test.pageobjects.webclient;
 
-import com.calculator.webapp.restresources.EquationRequestBody;
+import com.calculator.webapp.restresources.ExpressionRequestBody;
 import com.calculator.webapp.restresponses.CalculationResult;
 import com.calculator.webapp.restresponses.RequestId;
 import com.calculator.webapp.test.pageobjects.webclient.requestexecutor.HttpRequestExecutor;
@@ -22,14 +22,14 @@ public class CalculationResultPage extends CalculatorRestPage {
         super(baseUrl,new HttpRequestExecutor(username,password));
     }
 
-    public CalculationResult calculate(final String equation) throws Exception {
-        long requestId = sendCalculationRequest(equation);
+    public CalculationResult calculate(final String expression) throws Exception {
+        long requestId = sendCalculationRequest(expression);
         return getCalculationResult(requestId);
     }
 
-    private long sendCalculationRequest(final String equation) throws Exception {
+    private long sendCalculationRequest(final String expression) throws Exception {
         URL requestUrl = postCalculationRequestUrl();
-        Response response = requestExecutor.executePostRequest(requestUrl,new EquationRequestBody(equation));
+        Response response = requestExecutor.executePostRequest(requestUrl,new ExpressionRequestBody(expression));
         return response.readEntity(RequestId.class).getId();
     }
 

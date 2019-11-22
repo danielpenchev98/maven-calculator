@@ -1,6 +1,6 @@
 package com.calculator.webapp.test.pageobjects.webclient;
 
-import com.calculator.webapp.db.dto.CalculationRequestDTO;
+import com.calculator.webapp.db.dto.RequestDTO;
 import com.calculator.webapp.test.pageobjects.webclient.requestexecutor.HttpRequestExecutor;
 
 import java.net.MalformedURLException;
@@ -15,7 +15,7 @@ public class CalculationHistoryPage extends CalculatorRestPage {
         super(baseUrl,new HttpRequestExecutor(username,password));
     }
 
-    public List<CalculationRequestDTO> getCalculationHistory() throws Exception {
+    public List<RequestDTO> getCalculationHistory() throws Exception {
         URL requestUrl = getHistoryRequestUrl();
         return requestExecutor.executeGetRequest(requestUrl).readEntity(List.class);
     }

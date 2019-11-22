@@ -1,10 +1,10 @@
 package com.calculator.webapp.restresources;
 
-import com.calculator.webapp.db.dao.EquationDaoImpl;
+import com.calculator.webapp.db.dao.ExpressionDaoImpl;
 import com.calculator.webapp.db.dao.RequestDaoImpl;
 import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
-import com.calculator.webapp.db.dto.CalculationRequestDTO;
-import com.calculator.webapp.db.dto.CalculatorResponseDTO;
+import com.calculator.webapp.db.dto.RequestDTO;
+import com.calculator.webapp.db.dto.ExpressionDTO;
 import com.calculator.webapp.restresponses.CalculationError;
 import com.calculator.webapp.restresponses.RequestId;
 import com.calculator.webapp.restresponses.CalculationResult;
@@ -18,7 +18,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.COMPLETED;
 
@@ -29,7 +28,7 @@ import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.COMPLETED
 public class CalculatorRestResource {
 
     private final RequestDaoImpl requestDao;
-    private final EquationDaoImpl equationDao;
+    private final ExpressionDaoImpl expressionDao;
 
     private static final int ACCEPTED = Response.Status.ACCEPTED.getStatusCode();
     private static final int OK = Response.Status.OK.getStatusCode();
@@ -38,15 +37,15 @@ public class CalculatorRestResource {
     private static final Logger logger = LoggerFactory.getLogger(CalculatorRestResource.class);
 
     @Inject
-    public CalculatorRestResource(final RequestDaoImpl requestDao,final EquationDaoImpl equationDao) {
+    public CalculatorRestResource(final RequestDaoImpl requestDao, final ExpressionDaoImpl expressionDao) {
         this.requestDao = requestDao;
-        this.equationDao=equationDao;
+        this.expressionDao=expressionDao;
     }
 
     @POST
     @Path("/calculate")
-    public Response queueCurrentRequest(EquationRequestBody body) {
-        Long itemId = saveCalculationRequest(body.getEquation());
+    public Response queueCurrentRequest(final ExpressionRequestBody body) {
+        Long itemId = saveCalculationRequest(body.getExpression());
         return createResponseWithPayload(ACCEPTED,new RequestId(itemId));
     }
 
@@ -54,11 +53,11 @@ public class CalculatorRestResource {
     @Path("/calculations/{id}")
     public Response doGetCalculationResult(@NotNull @PathParam("id") Long id) {
         try{
-            CalculationRequestDTO calculation = requestDao.getItem(id);
+            RequestDTO calculation = requestDao.getItem(id);
             return isEvaluated(calculation) ? getCalculationResultResponse(calculation) : getPendingCalculationResponse();
         }
         catch (ItemDoesNotExistException ex){
-            logger.warn("Item with id :"+id+" hasn't been found.\nStack Trace :"+ Arrays.toString(ex.getStackTrace()));
+            logger.warn(ex.getMessage()+"\nStack Trace :"+ Arrays.toString(ex.getStackTrace()));
             return createResponseWithoutPayload(NOT_FOUND);
         }
     }
@@ -67,26 +66,21 @@ public class CalculatorRestResource {
        return createResponseWithoutPayload(ACCEPTED);
     }
 
-    private Response getCalculationResultResponse(final CalculationRequestDTO calculation){
-        try {
-            CalculatorResponseDTO result = equationDao.getItem(calculation.getEquation());
-            String errorMsg = result.getErrorMsg();
-            if (isSuccessfulCalculationResult(errorMsg)) {
-                return createResponseWithPayload(OK, new CalculationResult(result.getCalculationResult()));
-            } else {
-                return createResponseWithPayload(BAD_REQUEST, new CalculationError(BAD_REQUEST, errorMsg));
-            }
-        } catch (ItemDoesNotExistException ex){
-            logger.error("hasn't been found.\nStack Trace :"+ Arrays.toString(ex.getStackTrace()));
-            return createResponseWithoutPayload(NOT_FOUND);
+    private Response getCalculationResultResponse(final RequestDTO calculation) throws ItemDoesNotExistException {
+        ExpressionDTO result = expressionDao.getItem(calculation.getExpression());
+        if (isSuccessfulCalculationResult(result.getErrorMsg())) {
+            return createResponseWithPayload(OK, new CalculationResult(result.getCalculationResult()));
+        } else {
+            return createResponseWithPayload(BAD_REQUEST, new CalculationError(BAD_REQUEST, result.getErrorMsg()));
         }
     }
+
 
     private boolean isSuccessfulCalculationResult(final String calculationResult){
         return calculationResult == null;
     }
 
-    private boolean isEvaluated(final CalculationRequestDTO calculation){
+    private boolean isEvaluated(final RequestDTO calculation){
         return calculation.getStatusCode()==COMPLETED.getStatusCode();
     }
 
@@ -98,8 +92,8 @@ public class CalculatorRestResource {
         return Response.status(statusCode).build();
     }
 
-    private Long saveCalculationRequest(final String equation) {
-        CalculationRequestDTO request  = new CalculationRequestDTO(equation,new Date());
+    private Long saveCalculationRequest(final String expression) {
+        RequestDTO request  = new RequestDTO(expression,new Date());
         requestDao.saveItem(request);
         return request.getId();
     }
