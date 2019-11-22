@@ -1,9 +1,8 @@
 package com.calculator.webapp.db;
 
-import com.calculator.webapp.db.dao.EquationDaoImpl;
+import com.calculator.webapp.db.dao.ExpressionDaoImpl;
 import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
-import com.calculator.webapp.db.dto.CalculationRequestDTO;
-import com.calculator.webapp.db.dto.CalculatorResponseDTO;
+import com.calculator.webapp.db.dto.ExpressionDTO;
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
@@ -26,14 +25,14 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 
-@Ignore
-public class EquationDaoImplTest {
+
+public class ExpressionDaoImplTest {
 
     private static IDatabaseConnection databaseConnection;
     private EntityManager manager;
-    private EquationDaoImpl equationDao;
+    private ExpressionDaoImpl expressionDao;
 
-    private static final String responseTableName = "calculator_responses";
+    private static final String responseTableName = "calculator_expressions";
 
     @BeforeClass
     public static void setUpDB() throws Exception {
@@ -67,10 +66,10 @@ public class EquationDaoImplTest {
 
     @Test
     public void getAllItems_populatedDataSet_expectedSize() throws Exception {
-        setInitialTableInDataBase(DatasetPaths.MULTIPLE_RESPONSES_DATASET_PATH);
+        setInitialTableInDataBase(DatasetPaths.MULTIPLE_EXPRESSIONS_DATASET_PATH);
 
         final int expectedNumberOfEntities = 5;
-        List<CalculatorResponseDTO> actualItems = equationDao.getAllItems();
+        List<ExpressionDTO> actualItems = expressionDao.getAllItems();
 
         assertThat(actualItems, is(notNullValue()));
         assertThat(actualItems.size(), is(equalTo(expectedNumberOfEntities)));
@@ -78,9 +77,9 @@ public class EquationDaoImplTest {
 
     @Test
     public void getItem_populatedDataSet_ItemFound() throws Exception {
-        setInitialTableInDataBase(DatasetPaths.MULTIPLE_RESPONSES_DATASET_PATH);
+        setInitialTableInDataBase(DatasetPaths.MULTIPLE_EXPRESSIONS_DATASET_PATH);
 
-        CalculatorResponseDTO actualItem = equationDao.getItem("1+1");
+        ExpressionDTO actualItem = expressionDao.getItem("1+1");
 
         assertThat(actualItem, is(notNullValue()));
         assertThat(actualItem.getCalculationResult(), is(equalTo(2.0)));
@@ -88,20 +87,20 @@ public class EquationDaoImplTest {
 
     @Test(expected = ItemDoesNotExistException.class)
     public void getItem_populatedDataSet_ItemNotFound() throws Exception {
-        setInitialTableInDataBase(DatasetPaths.MULTIPLE_RESPONSES_DATASET_PATH);
+        setInitialTableInDataBase(DatasetPaths.MULTIPLE_EXPRESSIONS_DATASET_PATH);
 
-        equationDao.getItem("1..0");
+        expressionDao.getItem("1..0");
     }
 
     @Test
     public void saveItem_emptyDataSet_tableSize1() throws Exception {
-        setInitialTableInDataBase(DatasetPaths.EMPTY_RESPONSE_DATASET_PATH);
+        setInitialTableInDataBase(DatasetPaths.NO_EXPRESSIONS_DATASET_PATH);
 
-        ITable expectedTable = getDataSet(DatasetPaths.ONE_RESPONSE_DATASET_PATH).getTable(responseTableName);
+        ITable expectedTable = getDataSet(DatasetPaths.ONE_EXPRESSION_DATASET_PATH).getTable(responseTableName);
 
-        CalculatorResponseDTO entity =createCalculationRequestDTO("1+1",2.0,null);
+        ExpressionDTO entity =createCalculationRequestDTO("1+1",2.0,null);
 
-        equationDao.saveItem(entity);
+        expressionDao.saveItem(entity);
 
         ITable actualTable = getActualTable(responseTableName);
         Assertion.assertEquals(expectedTable, actualTable);
@@ -109,11 +108,11 @@ public class EquationDaoImplTest {
 
     @Test
     public void deleteItem_oneEntityDataSet_emptyTable() throws Exception {
-        setInitialTableInDataBase(DatasetPaths.ONE_RESPONSE_DATASET_PATH);
+        setInitialTableInDataBase(DatasetPaths.ONE_EXPRESSION_DATASET_PATH);
 
-        CalculatorResponseDTO entity = createCalculationRequestDTO("1+1",2.0,null);
+        ExpressionDTO entity = createCalculationRequestDTO("1+1",2.0,null);
 
-        equationDao.deleteItem(entity);
+        expressionDao.deleteItem(entity);
         final int emptyTableSize = 0;
 
         ITable actualTable = getActualTable(responseTableName);
@@ -122,19 +121,19 @@ public class EquationDaoImplTest {
 
     @Test
     public void update_populatedDataSet() throws Exception {
-        setInitialTableInDataBase(DatasetPaths.MULTIPLE_RESPONSES_DATASET_PATH);
+        setInitialTableInDataBase(DatasetPaths.MULTIPLE_EXPRESSIONS_DATASET_PATH);
 
-        CalculatorResponseDTO entity = createCalculationRequestDTO("1/0",0.0,"Division by zero");
+        ExpressionDTO entity = createCalculationRequestDTO("1/0",0.0,"Division by zero");
 
-        equationDao.update(entity);
+        expressionDao.update(entity);
 
         ITable actualTable = getActualTable(responseTableName);
         System.out.println(new TableFormatter().format(actualTable));
         assertThat(actualTable.getValue(3,"errorMsg"),is("Division by zero"));
     }
 
-    private CalculatorResponseDTO createCalculationRequestDTO(final String equation,final double calculationResult,final String errorMsg){
-        CalculatorResponseDTO request = new CalculatorResponseDTO(equation);
+    private ExpressionDTO createCalculationRequestDTO(final String expression, final double calculationResult, final String errorMsg){
+        ExpressionDTO request = new ExpressionDTO(expression);
         request.setCalculationResult(calculationResult);
         request.setErrorMsg(errorMsg);
         return request;
@@ -146,7 +145,7 @@ public class EquationDaoImplTest {
     }
 
     private void setUpDao(final EntityManager entityManager) {
-        equationDao=new EquationDaoImpl(entityManager);
+        expressionDao=new ExpressionDaoImpl(entityManager);
     }
 
     private void setInitialTableInDataBase(final String pathToDataSet) throws Exception {

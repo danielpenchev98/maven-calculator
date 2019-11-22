@@ -2,9 +2,8 @@ package com.calculator.webapp.db;
 
 import com.calculator.webapp.db.dao.RequestDaoImpl;
 import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
-import com.calculator.webapp.db.dto.CalculationRequestDTO;
+import com.calculator.webapp.db.dto.RequestDTO;
 import org.dbunit.Assertion;
-import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
@@ -28,7 +27,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsNull.notNullValue;
 
-@Ignore
 public class RequestDaoImplTest {
 
     private static IDatabaseConnection databaseConnection;
@@ -67,7 +65,7 @@ public class RequestDaoImplTest {
         setInitialTableInDataBase(DatasetPaths.MULTIPLE_REQUESTS_DATASET_PATH);
 
         final int expectedNumberOfEntities = 6;
-        List<CalculationRequestDTO> actualItems = requestDao.getAllItems();
+        List<RequestDTO> actualItems = requestDao.getAllItems();
 
         assertThat(actualItems, is(notNullValue()));
         assertThat(actualItems.size(), is(equalTo(expectedNumberOfEntities)));
@@ -78,7 +76,7 @@ public class RequestDaoImplTest {
         resetStateOfDatabase();
         setInitialTableInDataBase(DatasetPaths.MULTIPLE_REQUESTS_DATASET_PATH);
         final int expectedNumberOfEntities = 2;
-        List<CalculationRequestDTO> pendingItems = requestDao.getAllPendingRequests();
+        List<RequestDTO> pendingItems = requestDao.getAllPendingRequests();
 
         assertThat(pendingItems,is(notNullValue()));
         assertThat(pendingItems.size(),is(equalTo(expectedNumberOfEntities)));
@@ -89,7 +87,7 @@ public class RequestDaoImplTest {
         resetStateOfDatabase();
         setInitialTableInDataBase(DatasetPaths.MULTIPLE_REQUESTS_DATASET_PATH);
 
-        CalculationRequestDTO actualItem = requestDao.getItem(6L);
+        RequestDTO actualItem = requestDao.getItem(6L);
 
         assertThat(actualItem, is(notNullValue()));
         assertThat(actualItem.getId(), is(equalTo(6L)));
@@ -106,12 +104,12 @@ public class RequestDaoImplTest {
     @Test
     public void saveItem_emptyDataSet_tableSize1() throws Exception {
         resetStateOfDatabase();
-        setInitialTableInDataBase(DatasetPaths.EMPTY_REQUEST_DATASET_PATH);
+        setInitialTableInDataBase(DatasetPaths.NO_REQUESTS_DATASET_PATH);
 
         ITable expectedTable = getDataSet(DatasetPaths.ONE_REQUEST_DATASET_PATH).getTable(responseTableName);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
-        CalculationRequestDTO entity = createCalculationRequestDTO(0,"1+1",COMPLETED.getStatusCode(),currentDateTime);
+        RequestDTO entity = createCalculationRequestDTO(0,"1+1",COMPLETED.getStatusCode(),currentDateTime);
 
         requestDao.saveItem(entity);
 
@@ -125,7 +123,7 @@ public class RequestDaoImplTest {
         setInitialTableInDataBase(DatasetPaths.ONE_REQUEST_DATASET_PATH);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:00");
-        CalculationRequestDTO entity = createCalculationRequestDTO(1,"1+1",COMPLETED.getStatusCode(),currentDateTime);
+        RequestDTO entity = createCalculationRequestDTO(1,"1+1",COMPLETED.getStatusCode(),currentDateTime);
 
         requestDao.deleteItem(entity);
         final int emptyTableSize = 0;
@@ -140,7 +138,7 @@ public class RequestDaoImplTest {
         setInitialTableInDataBase(DatasetPaths.MULTIPLE_REQUESTS_DATASET_PATH);
 
         Date currentDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-09-09 15:00:01");
-        CalculationRequestDTO entity = createCalculationRequestDTO(2,"1/0",COMPLETED.getStatusCode(),currentDateTime);
+        RequestDTO entity = createCalculationRequestDTO(2,"1/0",COMPLETED.getStatusCode(),currentDateTime);
 
         requestDao.update(entity);
 
@@ -148,8 +146,8 @@ public class RequestDaoImplTest {
         assertThat(actualTable.getValue(1,"statusCode"),is(COMPLETED.getStatusCode()));
     }
 
-    private CalculationRequestDTO createCalculationRequestDTO(final int id,final String equation,final int statusCode,final Date time){
-        CalculationRequestDTO request = new CalculationRequestDTO(equation,time);
+    private RequestDTO createCalculationRequestDTO(final int id, final String expression, final int statusCode, final Date time){
+        RequestDTO request = new RequestDTO(expression,time);
         request.setId(id);
         request.setStatusCode(statusCode);
         return request;

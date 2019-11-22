@@ -3,10 +3,10 @@
         <!ELEMENT dataset (calculation_requests*)>
         <!ELEMENT calculation_requests EMPTY>
         <!ATTLIST calculation_requests id CDATA #REQUIRED>
-        <!ATTLIST calculation_requests equation CDATA #REQUIRED>
+        <!ATTLIST calculation_requests expression CDATA #REQUIRED>
         <!ATTLIST calculation_requests statusCode CDATA #REQUIRED>
         <!ATTLIST calculation_requests time_of_creation CDATA #REQUIRED>
         ]>
 <dataset>
-    <calculation_requests id="1" equation="1+1"  statusCode="1"  time_of_creation="2019-09-09 15:00:00"/>
+    <calculation_requests id="1" expression="1+1"  statusCode="1"  time_of_creation="2019-09-09 15:00:00"/>
 </dataset>

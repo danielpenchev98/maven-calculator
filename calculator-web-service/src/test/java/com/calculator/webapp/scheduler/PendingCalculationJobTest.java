@@ -2,17 +2,17 @@ package com.calculator.webapp.scheduler;
 
 import com.calculator.core.CalculatorApp;
 import com.calculator.core.exceptions.DivisionByZeroException;
-import com.calculator.webapp.db.dao.EquationDaoImpl;
+import com.calculator.webapp.db.dao.ExpressionDaoImpl;
 import com.calculator.webapp.db.dao.RequestDaoImpl;
-import com.calculator.webapp.db.dto.CalculationRequestDTO;
-import com.calculator.webapp.db.dto.CalculatorResponseDTO;
+import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
+import com.calculator.webapp.db.dto.RequestDTO;
+import com.calculator.webapp.db.dto.ExpressionDTO;
 import com.calculator.webapp.db.dto.requeststatus.RequestStatus;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -35,67 +35,63 @@ public class PendingCalculationJobTest {
     private RequestDaoImpl requestDao;
 
     @Mock
-    private EquationDaoImpl equationDao;
+    private ExpressionDaoImpl expressionDao;
 
     @Mock
     private JobExecutionContext context;
 
+    private String testExpression = "1+1";
+    private double testResult = 2.0;
+
     @Before
-    public void setUp() {
-        job=new PendingCalculationJob(calculator,requestDao,equationDao);
+    public void setUp() throws Exception {
+        setDaoBehaviour(testExpression);
+        Mockito.when(calculator.calculateResult(testExpression)).thenReturn(testResult);
+        job=new PendingCalculationJob(calculator,requestDao,expressionDao);
     }
 
-    @Ignore
     @Test
-    public void execute_completedLegalCalculation() throws Exception{
-        setDaoBehaviour("1+1");
-        Mockito.when(calculator.calculateResult("1+1")).thenReturn(2.0);
-
-        ArgumentCaptor<CalculatorResponseDTO> responseCaptor = ArgumentCaptor.forClass(CalculatorResponseDTO.class);
-        Mockito.verify(equationDao).update(responseCaptor.capture());
-
-        ArgumentCaptor<CalculationRequestDTO> requestCaptor = ArgumentCaptor.forClass(CalculationRequestDTO.class);
-        Mockito.verify(requestDao).update(requestCaptor.capture());
+    public void execute_unknownExpression_expressionSavedInDB() throws Exception{
+        Mockito.when(expressionDao.getItem(testExpression)).thenThrow(new ItemDoesNotExistException("does not exist"));
 
         job.execute(context);
 
-        CalculationRequestDTO completedRequest = requestCaptor.getValue();
-        CalculatorResponseDTO calculatorResponse = responseCaptor.getValue();
-        verifyUpdatedCalculation(calculatorResponse,2.0,null);
-        verifyUpdatedRequestStatus(completedRequest, RequestStatus.COMPLETED.getStatusCode());
+        ArgumentCaptor<ExpressionDTO> expressionCaptor = ArgumentCaptor.forClass(ExpressionDTO.class);
+        Mockito.verify(expressionDao).saveItem(expressionCaptor.capture());
+
+        verifyUpdatedCalculation(expressionCaptor.getValue(),testResult,null);
     }
 
-    private void verifyUpdatedRequestStatus(final CalculationRequestDTO completedRequest,final int statusCode) {
+    @Test
+    public void execute_knownExpression_expressionNotSavedInDB() throws Exception{
+        Mockito.when(expressionDao.getItem(testExpression)).thenReturn(new ExpressionDTO(testExpression,testResult,null));
+
+        job.execute(context);
+
+        Mockito.verify(expressionDao,Mockito.never()).update(Mockito.any());
+    }
+
+    @Test
+    public void execute_processRequest_updateStatusInDB(){
+
+        job.execute(context);
+
+        ArgumentCaptor<RequestDTO> requestCaptor = ArgumentCaptor.forClass(RequestDTO.class);
+        Mockito.verify(requestDao).update(requestCaptor.capture());
+
+        verifyUpdatedRequestStatus(requestCaptor.getValue(), RequestStatus.COMPLETED.getStatusCode());
+    }
+
+    private void verifyUpdatedRequestStatus(final RequestDTO completedRequest, final int statusCode) {
         assertThat(completedRequest.getStatusCode(),is(statusCode));
     }
 
-    @Test
-    public void execute_completedIllegalCalculation() throws Exception {
-        setDaoBehaviour("1/0");
-        Mockito.when(calculator.calculateResult("1/0")).thenThrow(new DivisionByZeroException("Division by zero"));
-        Mockito.when(equationDao.getItem("1/0")).thenReturn(null);
-
-        ArgumentCaptor<CalculationRequestDTO> requestCaptor = ArgumentCaptor.forClass(CalculationRequestDTO.class);
-        Mockito.verify(requestDao).update(requestCaptor.capture());
-
-       // ArgumentCaptor<CalculatorResponseDTO> responseCaptor = ArgumentCaptor.forClass(CalculatorResponseDTO.class);
-       //Mockito.verify(equationDao).update(responseCaptor.capture());
-
-        job.execute(context);
-
-
-        CalculationRequestDTO completedRequest = requestCaptor.getValue();
-        //CalculatorResponseDTO calculatorResponse = responseCaptor.getValue();
-        //verifyUpdatedCalculation(calculatorResponse,0.0,"Division by zero");
-        verifyUpdatedRequestStatus(completedRequest, RequestStatus.COMPLETED.getStatusCode());
-    }
-
-    private void setDaoBehaviour(final String equation){
-        List<CalculationRequestDTO> pendingCalculations = Collections.singletonList(new CalculationRequestDTO(equation,new Date()));
+    private void setDaoBehaviour(final String expression) {
+        List<RequestDTO> pendingCalculations = Collections.singletonList(new RequestDTO(expression,new Date()));
         Mockito.when(requestDao.getAllPendingRequests()).thenReturn(pendingCalculations);
     }
 
-    private void verifyUpdatedCalculation(final CalculatorResponseDTO completedCalculation,final double calculationResult,final String errorMsg){
+    private void verifyUpdatedCalculation(final ExpressionDTO completedCalculation, final double calculationResult, final String errorMsg){
         assertThat(completedCalculation.getCalculationResult(),is(calculationResult));
         assertThat(completedCalculation.getErrorMsg(),is(errorMsg));
     }

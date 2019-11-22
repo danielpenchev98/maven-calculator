@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE dataset [
+        <!ELEMENT dataset (calculator_expressions*)>
+        <!ELEMENT calculator_expressions EMPTY>
+        <!ATTLIST calculator_expressions expression CDATA #REQUIRED>
+        <!ATTLIST calculator_expressions calculationResult CDATA #REQUIRED>
+        <!ATTLIST calculator_expressions errorMsg CDATA #IMPLIED>
+        ]>
+<dataset>
+    <calculator_expressions expression="1+1" calculationResult="2.0"/>
+</dataset>

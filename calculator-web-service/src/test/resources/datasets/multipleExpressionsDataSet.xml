@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE dataset [
+        <!ELEMENT dataset (calculator_expressions*)>
+        <!ELEMENT calculator_expressions EMPTY>
+        <!ATTLIST calculator_expressions expression CDATA #REQUIRED>
+        <!ATTLIST calculator_expressions calculationResult CDATA #REQUIRED>
+        <!ATTLIST calculator_expressions errorMsg CDATA #IMPLIED>
+        ]>
+<dataset>
+    <calculator_expressions expression="1+1" calculationResult="2.0"/>
+    <calculator_expressions expression="1/0" calculationResult="0.0"/>
+    <calculator_expressions expression="2+1)" calculationResult="0.0" errorMsg="Missing or misplaced brackets"/>
+    <calculator_expressions expression="1++2"  calculationResult="0.0" errorMsg="Sequential components of the same type"/>
+    <calculator_expressions expression=" " calculationResult="0.0" errorMsg="Empty expression"/>
+</dataset>
+
