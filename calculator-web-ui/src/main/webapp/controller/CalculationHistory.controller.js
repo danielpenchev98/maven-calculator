@@ -35,8 +35,7 @@ sap.ui.define([
 
         updateTable : function(){
             let oModel = new JSONModel();
-          //  console.log(Object.values(this.calculationHistory));
-            oModel.setData(this.calculationHistory);
+            oModel.setData(Array.prototype.reverse.call(Object.values(this.calculationHistory)));
             this.getView().setModel(oModel);
         },
 
