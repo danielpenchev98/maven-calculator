@@ -26,12 +26,12 @@ sap.ui.define([
                          errorMessage: "Couldn't find the calculateButton on the CalculatorPanel view"
                      });
                 },
-                iEnterInputInInputControl: function (equation) {
+                iEnterInputInInputControl: function (expression) {
                     return this.waitFor({
-                        id: "equation",
+                        id: "expression",
                         viewName: sViewName,
-                        actions: new EnterText({text: equation}),
-                        errorMessage: "Couldn't enter the equation in the input box"
+                        actions: new EnterText({text: expression}),
+                        errorMessage: "Couldn't enter the expression in the input box"
                     });
                 },
                 iPressTheCloseDialogButton: function() {
@@ -52,7 +52,7 @@ sap.ui.define([
                 iShouldSeeTheCalculationResult: function(result)
                 {
                     return this.waitFor({
-                        id: "equation",
+                        id: "expression",
                         viewName : sViewName,
                         matchers: new Properties({
                             value : result
@@ -106,7 +106,7 @@ sap.ui.define([
                         errorMessage: "Did not find the close button"
                     })
                 },
-                iShouldSeeCalculationRecordInTable:function(id,equation,result){
+                iShouldSeeCalculationRecordInTable:function(id,expression,result){
                     return this.waitFor({
                         id:"calculationsTable",
                         viewName : "CalculationHistory",
@@ -116,7 +116,7 @@ sap.ui.define([
                         }),
                         check : function(oTable){
                             let historyRecordsJSON=JSON.parse(oTable.getModel().getJSON());
-                            return historyRecordsJSON[id].equation===equation&&historyRecordsJSON[id].result==result;
+                            return historyRecordsJSON[id].expression===expression&&historyRecordsJSON[id].result==result;
                         },
                         success: function () {
                             Opa5.assert.ok(true, "The table has the expected 1 item");

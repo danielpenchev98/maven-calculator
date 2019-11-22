@@ -8,7 +8,7 @@
 		<content>
 			<Text text="Enter equation:" class="sapUiSmallMarginEnd sapUiSmallMarginTop"/>
 			<Input
-                id="equation"
+                id="expression"
 				value="{/result}"
 				width="60%"
 				maxLength="500"/>

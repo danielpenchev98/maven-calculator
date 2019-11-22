@@ -35,12 +35,13 @@ sap.ui.define([
 
         updateTable : function(){
             let oModel = new JSONModel();
+          //  console.log(Object.values(this.calculationHistory));
             oModel.setData(this.calculationHistory);
             this.getView().setModel(oModel);
         },
 
         createNewPendingCalculationInHistory : function(data){
-            this.calculationHistory[data.id]= { equation : data.equation, result : "Pending calculation"};
+            this.calculationHistory[data.id]= { expression : data.expression, result : "Pending calculation"};
         },
 
         updateCalculationResult : function(data){

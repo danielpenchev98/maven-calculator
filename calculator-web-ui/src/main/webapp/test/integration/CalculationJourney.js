@@ -32,13 +32,13 @@ sap.ui.define([
         Then.onTheAppPage.iTeardownMyUIComponent();
     });
 
-    opaTest("Should open error dialog with \"Empty equation\" message", function (Given, When, Then) {
+    opaTest("Should open error dialog with \"Empty expression\" message", function (Given, When, Then) {
 
         startUiComponent(Given);
 
         When.onTheAppPage.iEnterInputInInputControl("").and.iPressTheCalculateButton();
 
-        assertAppearanceOfDialog(Then, "Error", "Empty equation", "Ok");
+        assertAppearanceOfDialog(Then, "Error", "Empty expression", "Ok");
 
         Then.onTheAppPage.iTeardownMyUIComponent();
 
@@ -89,13 +89,13 @@ sap.ui.define([
         Then.onTheAppPage.iTeardownMyUIComponent();
     });
 
-    opaTest("Should open error dialog with \"Scope of equation ending or beginning with an operator\" message", function (Given, When, Then) {
+    opaTest("Should open error dialog with \"Scope of expression ending or beginning with an operator\" message", function (Given, When, Then) {
 
         startUiComponent(Given);
 
         When.onTheAppPage.iEnterInputInInputControl("+2+1").and.iPressTheCalculateButton();
 
-        assertAppearanceOfDialog(Then, "Error", "Scope of equation ending or beginning with an operator", "Ok");
+        assertAppearanceOfDialog(Then, "Error", "Scope of expression ending or beginning with an operator", "Ok");
 
         Then.onTheAppPage.iTeardownMyUIComponent();
     });

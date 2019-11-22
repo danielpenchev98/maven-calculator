@@ -17,8 +17,8 @@
                 </Toolbar>
             </headerToolbar>
             <columns>
-                <Column id="equation">
-                    <Text text="{i18n>columnEquation}"/>
+                <Column id="expression">
+                    <Text text="{i18n>columnExpression}"/>
                 </Column>
                 <Column id="result">
                     <Text text="{i18n>columnResult}"/>
@@ -27,7 +27,7 @@
             <items>
                 <ColumnListItem>
                     <cells class="sapMListTblCell">
-                        <ObjectIdentifier title="{equation}"/>
+                        <ObjectIdentifier title="{expression}"/>
                         <ObjectIdentifier title="{result}"/>
                     </cells>
                 </ColumnListItem>

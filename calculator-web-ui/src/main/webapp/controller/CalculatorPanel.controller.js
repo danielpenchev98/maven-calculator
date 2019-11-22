@@ -12,10 +12,10 @@ sap.ui.define([
 		},
 
 		onCalculation: function () {
-			let equation = this.getView().byId("equation").getValue();
+			let expression = this.getView().byId("expression").getValue();
 			let oServiceConfig = this.getRequiredUrls();
 
-			this.sendCalculationRequest(oServiceConfig, equation);
+			this.sendCalculationRequest(oServiceConfig, expression);
 		},
 
 		getRequiredUrls : function() {
@@ -30,24 +30,24 @@ sap.ui.define([
 			xhr.send(data);
 		},
 
-		sendCalculationRequest : function (oServiceConfig,equation) {
+		sendCalculationRequest : function (oServiceConfig,expression) {
 			let postRequestUrl = oServiceConfig.baseUrl + oServiceConfig.sendCalculationRequestUrl;
 
 			let postRequestBody = {
-				equation : equation
+				expression : expression
 			};
 
 			let xhr = new XMLHttpRequest();
 			let onloadEventListener = function(){
-				this.onCalculationRequestQueued(xhr,oServiceConfig,equation);
+				this.onCalculationRequestQueued(xhr,oServiceConfig,expression);
 			}.bind(this);
 			this.doXMLHttpRequest(xhr,"POST",postRequestUrl,onloadEventListener,JSON.stringify(postRequestBody));
 		},
 
-		onCalculationRequestQueued : function(xhr,oServiceConfig,equation){
+		onCalculationRequestQueued : function(xhr,oServiceConfig,expression){
 			let oId = JSON.parse(xhr.responseText);
 
-            this.notifyOtherControllers("updateChannel","pendingCalculation", {id:oId.id,equation:equation});
+            this.notifyOtherControllers("updateChannel","pendingCalculation", {id:oId.id,expression:expression});
 
 			let processId = setInterval(() => {
 				this.getCalculationResult(oServiceConfig, oId, processId)

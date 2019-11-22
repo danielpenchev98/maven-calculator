@@ -17,7 +17,7 @@ sap.ui.define(
         let sequentialComponentsOfTheSameType = "1++2";
         let missingOperator = "2(-1)";
         let emptyBrackets = "2+()";
-        let equationBeginningWithOperator ="+2+1";
+        let expressionBeginningWithOperator ="+2+1";
         let divisionByZeroEvent = "1/0";
         let unsupportedComponent = "1#0";
 
@@ -46,24 +46,24 @@ sap.ui.define(
         };
 
         let correctEquationResponseBody = createCalculationResult("2.0");
-        let emptyEquationResponseBody = createCalculationError(badRequestCode,"Empty equation");
+        let emptyEquationResponseBody = createCalculationError(badRequestCode,"Empty expression");
         let missingOpeningBracketResponseBody = createCalculationError(badRequestCode,"Missing or misplaced bracket");
         let sequentialComponentsOfTheSameTypeResponseBody = createCalculationError(badRequestCode,"Sequential components of the same type");
         let missingOperatorResponseBody = createCalculationError(badRequestCode,"Missing operator between a number and an opening bracket or a closing bracket and a number");
         let emptyBracketsResponseBody = createCalculationError(badRequestCode,"Empty brackets");
-        let equationBeginningWithOperatorResponseBody = createCalculationError(badRequestCode,"Scope of equation ending or beginning with an operator");
+        let expressionBeginningWithOperatorResponseBody = createCalculationError(badRequestCode,"Scope of expression ending or beginning with an operator");
         let divisionByZeroEventResponseBody = createCalculationError(badRequestCode,"Division by zero");
         let unsupportedComponentResponseBody = createCalculationError(badRequestCode,"Unsupported component :#");
 
-        let getIdCorrespondingToTheRequest = function(equation){
-           switch(String(equation)){
+        let getIdCorrespondingToTheRequest = function(expression){
+           switch(String(expression)){
                case correctEquation : return 1;
                case emptyEquation : return 2;
                case missingOpeningBracket : return 3;
                case sequentialComponentsOfTheSameType : return 4;
                case missingOperator : return 5;
                case emptyBrackets : return 6;
-               case equationBeginningWithOperator : return 7;
+               case expressionBeginningWithOperator : return 7;
                case divisionByZeroEvent : return 8;
                case unsupportedComponent : return 9;
            }
@@ -72,7 +72,7 @@ sap.ui.define(
         let respondToCalculationRequest = function (server,typeOfRequest,url,responseCode,headers){
             return server.respondWith(typeOfRequest, url, function(request){
                 let oCalculationRequest = JSON.parse(request.requestBody);
-                let id = getIdCorrespondingToTheRequest(oCalculationRequest.equation);
+                let id = getIdCorrespondingToTheRequest(oCalculationRequest.expression);
                 let oRequestId = createRequestId(id);
                 request.respond(responseCode,headers,JSON.stringify(oRequestId));
             });
@@ -119,7 +119,7 @@ sap.ui.define(
                     emptyBracketsResponseBody);
 
                 respondToGetCalculationResult(this.server,"GET",getCalculationResultUrl(7), badRequestCode,responseHeaders,
-                    equationBeginningWithOperatorResponseBody);
+                    expressionBeginningWithOperatorResponseBody);
 
                 respondToGetCalculationResult(this.server,"GET",getCalculationResultUrl(8), badRequestCode,responseHeaders,
                     divisionByZeroEventResponseBody);
