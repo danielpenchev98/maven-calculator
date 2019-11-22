@@ -6,9 +6,9 @@ import java.util.Date;
 
 @Entity
 @Table(name = "calculation_requests")
-@NamedQuery(name = "CalculationRequests.findAll", query = "SELECT c FROM CalculationRequestDTO c")
-@NamedQuery(name="CalculationRequests.findAllNotCalculated", query = "SELECT c FROM CalculationRequestDTO c WHERE statusCode =: statusCode")
-public class CalculationRequestDTO{
+@NamedQuery(name = "Requests.findAll", query = "SELECT c FROM RequestDTO c")
+@NamedQuery(name="Requests.findAllPending", query = "SELECT c FROM RequestDTO c WHERE statusCode =: statusCode")
+public class RequestDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ public class CalculationRequestDTO{
 
     @Column
     @NotNull
-    private String equation;
+    private String expression;
 
     @Column
     private int statusCode;
@@ -27,12 +27,12 @@ public class CalculationRequestDTO{
     @NotNull
     private Date timeOfCreation;
 
-    public CalculationRequestDTO(final String equation,final Date timeOfCreation) {
-        setEquation(equation);
+    public RequestDTO(final String expression, final Date timeOfCreation) {
+        setExpression(expression);
         setTimeOfCreation(timeOfCreation);
     }
 
-    public CalculationRequestDTO()
+    public RequestDTO()
     {
         this("",new Date());
     }
@@ -45,12 +45,12 @@ public class CalculationRequestDTO{
         this.id=id;
     }
 
-    public void setEquation(final String equation) {
-        this.equation = equation;
+    public void setExpression(final String expression) {
+        this.expression = expression;
     }
 
-    public String getEquation() {
-        return this.equation;
+    public String getExpression() {
+        return this.expression;
     }
 
     public int getStatusCode(){

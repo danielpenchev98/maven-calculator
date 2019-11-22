@@ -1,7 +1,6 @@
 package com.calculator.webapp.db.dao;
 
 import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
-import com.calculator.webapp.db.dto.CalculationRequestDTO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -10,7 +9,7 @@ import javax.persistence.Persistence;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-public abstract class Dao<K,V> {
+public abstract class Dao<K,V>{
 
      protected final EntityManager manager;
 
@@ -28,7 +27,7 @@ public abstract class Dao<K,V> {
 
      public abstract V getItem(final K key) throws ItemDoesNotExistException;
 
-     public void saveItem(final V item) {
+     public  void saveItem(final V item) {
           executeTransaction(EntityManager::persist,item);
      }
 

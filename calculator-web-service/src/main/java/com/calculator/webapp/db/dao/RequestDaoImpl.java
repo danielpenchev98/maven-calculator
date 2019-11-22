@@ -2,14 +2,12 @@ package com.calculator.webapp.db.dao;
 
 
 import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
-import com.calculator.webapp.db.dto.CalculationRequestDTO;
-import com.calculator.webapp.db.dto.CalculatorResponseDTO;
+import com.calculator.webapp.db.dto.RequestDTO;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.function.BiConsumer;
 
-public class RequestDaoImpl extends Dao<Long, CalculationRequestDTO> {
+public class RequestDaoImpl extends Dao<Long, RequestDTO> {
 
     public RequestDaoImpl(final EntityManager manager) {
         super(manager);
@@ -18,31 +16,31 @@ public class RequestDaoImpl extends Dao<Long, CalculationRequestDTO> {
     public RequestDaoImpl() { super(); }
 
     @Override
-    public List<CalculationRequestDTO> getAllItems() {
-        Query query = manager.createNamedQuery("CalculationRequests.findAll", CalculationRequestDTO.class);
+    public List<RequestDTO> getAllItems() {
+        Query query = manager.createNamedQuery("Requests.findAll", RequestDTO.class);
         return query.getResultList();
     }
 
 
-    public List<CalculationRequestDTO> getAllPendingRequests() {
-        Query query = manager.createNamedQuery("CalculationRequests.findAllNotCalculated", CalculationRequestDTO.class);
+    public List<RequestDTO> getAllPendingRequests() {
+        Query query = manager.createNamedQuery("Requests.findAllPending", RequestDTO.class);
         query.setParameter("statusCode",0);
         return query.getResultList();
     }
 
     @Override
-    public CalculationRequestDTO getItem(final Long key) throws ItemDoesNotExistException {
-        CalculationRequestDTO result = manager.find(CalculationRequestDTO.class,key);
+    public RequestDTO getItem(final Long key) throws ItemDoesNotExistException {
+        RequestDTO result = manager.find(RequestDTO.class,key);
 
         if(checkIfItemNotFound(result)){
-            throw new ItemDoesNotExistException("Item not found");
+            throw new ItemDoesNotExistException("Request with id :"+key+" hasn't been not found");
         }
 
         manager.detach(result);
         return result;
     }
 
-    private boolean checkIfItemNotFound(final CalculationRequestDTO result){
+    private boolean checkIfItemNotFound(final RequestDTO result){
         return result==null;
     }
 }
