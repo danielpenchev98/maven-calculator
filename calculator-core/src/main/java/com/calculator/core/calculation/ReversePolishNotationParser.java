@@ -2,16 +2,15 @@ package com.calculator.core.calculation;
 
 import com.calculator.core.operators.*;
 
-import java.util.EmptyStackException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
 public class ReversePolishNotationParser {
 
-    private Stack<EquationComponent> operatorContainer;
+    private Stack<ExpressionComponent> operatorContainer;
 
-    private List<EquationComponent> reversedPolishEquation;
+    private List<ExpressionComponent> reversedPolishExpression;
 
     public ReversePolishNotationParser() {
         operatorContainer=new Stack<>();
@@ -28,38 +27,38 @@ public class ReversePolishNotationParser {
      * 4) if it's closing bracket - add operators from the stack to equation, till you find opening bracket in the stack
      * 5) In the end add everything from the stack to equation
      *
-     * @param equation in infix notation
-     * @return equation in reverse polish notation
+     * @param expression in infix notation
+     * @return expression in reverse polish notation
      */
-    public List<EquationComponent> formatFromInfixToReversedPolishNotation(final List<EquationComponent> equation) {
-        reversedPolishEquation=new LinkedList<>();
+    public List<ExpressionComponent> formatFromInfixToReversedPolishNotation(final List<ExpressionComponent> expression) {
+        reversedPolishExpression=new LinkedList<>();
 
-        for (EquationComponent component : equation) {
+        for (ExpressionComponent component : expression) {
             processComponent(component);
         }
         addAllOperatorsLeftInTheContainerToEquation();
 
-        return reversedPolishEquation;
+        return reversedPolishExpression;
     }
 
-    private void processComponent(final EquationComponent component) {
+    private void processComponent(final ExpressionComponent component) {
         if (component instanceof NumberComponent) {
-            addComponentToEquation(component);
+            addComponentToExpression(component);
         } else if (component instanceof ClosingBracket) {
-            addOperatorsFromContainerToEquationTillOpeningBracketIsFound();
+            addOperatorsFromContainerToExpressionTillOpeningBracketIsFound();
         } else if (component instanceof MathArithmeticOperator) {
-            addOperatorsToEquationDependingOnPriorityAndAssociativity((MathArithmeticOperator) component);
+            addOperatorsToExpressionDependingOnPriorityAndAssociativity((MathArithmeticOperator) component);
         } else {
             addComponentToContainer(component);
         }
 
     }
 
-    private void addComponentToEquation(final EquationComponent component) {
-        reversedPolishEquation.add(component);
+    private void addComponentToExpression(final ExpressionComponent component) {
+        reversedPolishExpression.add(component);
     }
 
-    private void addComponentToContainer(final EquationComponent component) {
+    private void addComponentToContainer(final ExpressionComponent component) {
         operatorContainer.push(component);
     }
 
@@ -67,14 +66,14 @@ public class ReversePolishNotationParser {
         return operatorContainer.size() > 0;
     }
 
-    private void addOperatorsToEquationDependingOnPriorityAndAssociativity(final MathArithmeticOperator component) {
-        while (hasSpareOperators() && shouldTransferOperatorsFromContainerToEquation(component)) {
-            addComponentToEquation(operatorContainer.pop());
+    private void addOperatorsToExpressionDependingOnPriorityAndAssociativity(final MathArithmeticOperator component) {
+        while (hasSpareOperators() && shouldTransferOperatorsFromContainerToExpression(component)) {
+            addComponentToExpression(operatorContainer.pop());
         }
         addComponentToContainer(component);
     }
 
-    private boolean shouldTransferOperatorsFromContainerToEquation(final MathArithmeticOperator component) {
+    private boolean shouldTransferOperatorsFromContainerToExpression(final MathArithmeticOperator component) {
 
         if (operatorContainer.peek() instanceof OpeningBracket) {
             return false;
@@ -92,22 +91,22 @@ public class ReversePolishNotationParser {
         return leftOperator.getPriority() - rightOperator.getPriority();
     }
 
-    private void addOperatorsFromContainerToEquationTillOpeningBracketIsFound() {
+    private void addOperatorsFromContainerToExpressionTillOpeningBracketIsFound() {
 
         while (hasSpareOperators() && isNotOpeningBracket(operatorContainer.peek())) {
-            addComponentToEquation(operatorContainer.pop());
+            addComponentToExpression(operatorContainer.pop());
         }
         operatorContainer.pop();
     }
 
-    private boolean isNotOpeningBracket(final EquationComponent component) {
+    private boolean isNotOpeningBracket(final ExpressionComponent component) {
         return !(component instanceof OpeningBracket);
     }
 
     private void addAllOperatorsLeftInTheContainerToEquation() {
 
         while (hasSpareOperators()) {
-            addComponentToEquation(operatorContainer.pop());
+            addComponentToExpression(operatorContainer.pop());
         }
     }
 }

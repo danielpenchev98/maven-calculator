@@ -5,10 +5,10 @@ import com.calculator.core.exceptions.InvalidComponentException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EquationComponentProvider {
+public class ExpressionComponentProvider {
 
     private final static String validNumberRegex = "-?[0-9]+(.[0-9]+)?";
-    private final static Map<String,EquationComponent> validOperators = new HashMap<String,EquationComponent>() {{
+    private final static Map<String, ExpressionComponent> validOperators = new HashMap<String, ExpressionComponent>() {{
                                                                             put(OpeningBracket.SYMBOL, new OpeningBracket());
                                                                             put(ClosingBracket.SYMBOL, new ClosingBracket());
                                                                             put(Addition.SYMBOL, new Addition());
@@ -17,7 +17,7 @@ public class EquationComponentProvider {
                                                                             put(Division.SYMBOL, new Division());
                                                                         }};
 
-    public EquationComponent getComponent(final String component) throws InvalidComponentException
+    public ExpressionComponent getComponent(final String component) throws InvalidComponentException
     {
         if(isValidNumber(component))
         {

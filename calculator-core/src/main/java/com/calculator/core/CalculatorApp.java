@@ -3,9 +3,9 @@ package com.calculator.core;
 import com.calculator.core.calculation.CalculationAlgorithm;
 import com.calculator.core.calculation.ReversePolishCalculationAlgorithm;
 import com.calculator.core.exceptions.BadInputException;
-import com.calculator.core.inputformatting.EquationFormatter;
+import com.calculator.core.inputformatting.ExpressionFormatter;
 import com.calculator.core.inputformatting.InputFormatter;
-import com.calculator.core.operators.EquationComponent;
+import com.calculator.core.operators.ExpressionComponent;
 
 import java.util.List;
 
@@ -20,11 +20,11 @@ public class CalculatorApp {
     }
 
     public CalculatorApp() {
-        this(new EquationFormatter(), new ReversePolishCalculationAlgorithm());
+        this(new ExpressionFormatter(), new ReversePolishCalculationAlgorithm());
     }
 
     public double calculateResult(final String equation) throws BadInputException {
-        List<EquationComponent> formattedInput = formatter.doFormat(equation);
-        return algorithm.calculateEquation(formattedInput);
+        List<ExpressionComponent> formattedInput = formatter.doFormat(equation);
+        return algorithm.calculateExpression(formattedInput);
     }
 }

@@ -12,10 +12,10 @@ public class ConsolePage {
 
     private final static String PATH = MessageFormat.format(".{0}target{0}lib{0}calculator-console-1.0-SNAPSHOT.jar",File.separator);
 
-    public String calculateEquation(final List<String> equation) throws Exception
+    public String calculateExpression(final List<String> expression) throws Exception
     {
         List<String> command=new LinkedList<>(Arrays.asList("java","-jar",PATH));
-        command.addAll(equation);
+        command.addAll(expression);
         final Process process = new ProcessBuilder(command).start();
         return getCalculationResult(process);
     }

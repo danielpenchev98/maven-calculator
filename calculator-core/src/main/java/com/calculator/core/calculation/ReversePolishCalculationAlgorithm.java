@@ -1,9 +1,9 @@
 package com.calculator.core.calculation;
 
 import com.calculator.core.exceptions.BadInputException;
-import com.calculator.core.exceptions.InvalidEquationException;
+import com.calculator.core.exceptions.InvalidExpressionException;
 import com.calculator.core.exceptions.InvalidParameterException;
-import com.calculator.core.operators.EquationComponent;
+import com.calculator.core.operators.ExpressionComponent;
 import com.calculator.core.operators.MathArithmeticOperator;
 import com.calculator.core.operators.NumberComponent;
 
@@ -27,25 +27,25 @@ public class ReversePolishCalculationAlgorithm implements CalculationAlgorithm {
         this.supplier= new Stack<>();
     }
 
-    public double calculateEquation(final List<EquationComponent> equation) throws BadInputException {
+    public double calculateExpression(final List<ExpressionComponent> expression) throws BadInputException {
         this.supplier.clear();
-        List<EquationComponent> equationInRPN = formatToReversePolishNotation(equation);
+        List<ExpressionComponent> equationInRPN = formatToReversePolishNotation(expression);
 
-        for (EquationComponent component : equationInRPN) {
+        for (ExpressionComponent component : equationInRPN) {
             process(component);
         }
 
         if (hasErrorInTheCalculation()) {
-            throw new InvalidEquationException("Invalid equation. Logical error. There aren't enough operators");
+            throw new InvalidExpressionException("Invalid equation. Logical error. There aren't enough operators");
         }
         return getNextNumberFromSupplier();
     }
 
-    private List<EquationComponent> formatToReversePolishNotation(final List<EquationComponent> equation) {
-        return parser.formatFromInfixToReversedPolishNotation(equation);
+    private List<ExpressionComponent> formatToReversePolishNotation(final List<ExpressionComponent> expression) {
+        return parser.formatFromInfixToReversedPolishNotation(expression);
     }
 
-    private void process(final EquationComponent component) throws BadInputException {
+    private void process(final ExpressionComponent component) throws BadInputException {
         if (component instanceof NumberComponent) {
             supplier.add((NumberComponent) component);
         } else if (component instanceof MathArithmeticOperator) {

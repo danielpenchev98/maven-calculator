@@ -46,38 +46,38 @@ public class ReversePolishNotationParserTest {
     }
 
     @Test
-    public void formatToReversedPolishNotation_EquationWithoutBrackets_RPNFormat()  {
+    public void formatToReversedPolishNotation_ExpressionWithoutBrackets_RPNFormat()  {
 
         Mockito.when(addition.getPriority()).thenReturn(2);
         Mockito.when(multiplication.getPriority()).thenReturn(3);
 
-        List<EquationComponent> input=Arrays.asList(firstNumber,addition,secondNumber,multiplication,thirdNumber);
-        List<EquationComponent> expected=Arrays.asList(firstNumber,secondNumber,thirdNumber,multiplication,addition);
-        List<EquationComponent> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
+        List<ExpressionComponent> input=Arrays.asList(firstNumber,addition,secondNumber,multiplication,thirdNumber);
+        List<ExpressionComponent> expected=Arrays.asList(firstNumber,secondNumber,thirdNumber,multiplication,addition);
+        List<ExpressionComponent> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
 
         assertThat(realResult,is(expected));
     }
 
     @Test
-    public void formatToReversedPolishNotation_EquationWithEqualPriorityLeftAssociativeOperators_RPNFormat()
+    public void formatToReversedPolishNotation_ExpressionWithEqualPriorityLeftAssociativeOperators_RPNFormat()
     {
         Mockito.when(multiplication.getPriority()).thenReturn(3);
         Mockito.when(multiplication.isLeftAssociative()).thenReturn(true);
 
-        List<EquationComponent> input=Arrays.asList(firstNumber,multiplication,thirdNumber,multiplication,secondNumber);
-        List<EquationComponent> expected=Arrays.asList(firstNumber,thirdNumber,multiplication,secondNumber,multiplication);
-        List<EquationComponent> realResult = parserRPN.formatFromInfixToReversedPolishNotation(input);
+        List<ExpressionComponent> input=Arrays.asList(firstNumber,multiplication,thirdNumber,multiplication,secondNumber);
+        List<ExpressionComponent> expected=Arrays.asList(firstNumber,thirdNumber,multiplication,secondNumber,multiplication);
+        List<ExpressionComponent> realResult = parserRPN.formatFromInfixToReversedPolishNotation(input);
 
         assertThat(realResult,is(expected));
     }
 
     @Test
-    public void formatToReversedPolishNotation_EquationWithBrackets_RPNFormat()
+    public void formatToReversedPolishNotation_ExpressionWithBrackets_RPNFormat()
     {
 
-        List<EquationComponent> input=Arrays.asList(openingBracket,firstNumber,addition,secondNumber,closingBracket,multiplication,thirdNumber);
-        List<EquationComponent> expected=Arrays.asList(firstNumber,secondNumber,addition,thirdNumber,multiplication);
-        List<EquationComponent> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
+        List<ExpressionComponent> input=Arrays.asList(openingBracket,firstNumber,addition,secondNumber,closingBracket,multiplication,thirdNumber);
+        List<ExpressionComponent> expected=Arrays.asList(firstNumber,secondNumber,addition,thirdNumber,multiplication);
+        List<ExpressionComponent> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);
 
         assertThat(realResult,is(expected));
     }

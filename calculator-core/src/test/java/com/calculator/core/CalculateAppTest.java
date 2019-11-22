@@ -1,12 +1,8 @@
 package com.calculator.core;
 
 import com.calculator.core.calculation.CalculationAlgorithm;
-import com.calculator.core.calculation.ReversePolishCalculationAlgorithm;
-import com.calculator.core.inputformatting.EquationFormatter;
-import com.calculator.core.calculation.ReversePolishNotationParser;
 import com.calculator.core.inputformatting.InputFormatter;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
@@ -38,7 +34,7 @@ public class CalculateAppTest
 
         InOrder inorder=inOrder(formatter,algorithm);
         inorder.verify(formatter).doFormat("1+1");
-        inorder.verify(algorithm).calculateEquation(ArgumentMatchers.anyList());
+        inorder.verify(algorithm).calculateExpression(ArgumentMatchers.anyList());
     }
 
 }
