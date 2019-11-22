@@ -26,7 +26,7 @@ public class DatabasePage {
     private static final String CONNECTION_URL="jdbc:derby:memory:calculator;create=true";
     private static final String DB_USERNAME="";
     private static final String DB_PASSWORD="";
-    private static final String RESTART_IDENTITY_COUNTER = "ALTER TABLE calculator_responses ALTER COLUMN id RESTART WITH 1";
+    private static final String RESTART_IDENTITY_COUNTER = "ALTER TABLE calculation_requests ALTER COLUMN id RESTART WITH 1";
 
     private IDatabaseConnection databaseConnection;
 
@@ -50,7 +50,7 @@ public class DatabasePage {
         uploadDataSet(initialDataSet);
     }
 
-    public ITable getTableFromDataset(final String datasetPath,final String nameOfTable) throws DataSetException {
+    public ITable getTableFromDataset(final String nameOfTable,final String datasetPath) throws DataSetException {
         IDataSet dataSet = getDataSet(datasetPath);
         return dataSet.getTable(nameOfTable);
     }
@@ -82,7 +82,7 @@ public class DatabasePage {
     }
 
     public ITable getFilteredTableFromDataset(final String nameOfTable,final String datasetPath, final String[] columnsToFilter) throws Exception {
-        ITable table = getTableFromDataset(datasetPath,nameOfTable);
+        ITable table = getTableFromDataset(nameOfTable,datasetPath);
         return getFilteredTable(table,columnsToFilter);
     }
 

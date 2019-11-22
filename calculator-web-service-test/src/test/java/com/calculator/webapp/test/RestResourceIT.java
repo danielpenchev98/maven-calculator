@@ -1,7 +1,6 @@
 package com.calculator.webapp.test;
 
 import com.calculator.webapp.test.pageobjects.dbclient.DatabasePage;
-import com.calculator.webapp.test.pageobjects.webclient.CalculationHistoryPage;
 import com.calculator.webapp.test.pageobjects.webclient.CalculationResultPage;
 import org.eu.ingwar.tools.arquillian.extension.suite.annotations.ArquillianSuiteDeployment;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -15,9 +14,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.io.File;
 import java.net.URL;
 
@@ -29,7 +25,6 @@ public class RestResourceIT {
 
     protected static DatabasePage dbPage;
     protected CalculationResultPage calculationResultPage;
- //   protected CalculationHistoryPage calculationHistoryPage;
 
     private static String VALID_USERNAME="admin";
     private static String VALID_PASSWORD="admin";
@@ -62,7 +57,6 @@ public class RestResourceIT {
         calculationResultPage = new CalculationResultPage(baseUrl,VALID_USERNAME,VALID_PASSWORD);
         dbPage.resetStateOfDatabase();
         dbPage.setInitialTableInDataBase(DatasetPaths.EMPTY_DATASET_PATH);
-      //  calculationHistoryPage = new CalculationHistoryPage(baseUrl,VALID_USERNAME,VALID_PASSWORD);
     }
 
 }

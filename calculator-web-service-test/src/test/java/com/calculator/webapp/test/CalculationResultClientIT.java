@@ -1,14 +1,12 @@
 package com.calculator.webapp.test;
 
-import com.calculator.webapp.db.dto.RequestDTO;
 
 import com.calculator.webapp.restresponses.CalculationResult;
 import com.calculator.webapp.test.pageobjects.webclient.exception.CalculatorRestException;
 import org.jboss.arquillian.junit.Arquillian;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -87,18 +85,6 @@ public class CalculationResultClientIT extends RestResourceIT {
 
         calculationResultPage.calculate("1#3");
     }
-
-
-    /*@Test
-    public void doGetCalculationHistory_requestWholeHistory() throws Exception {
-        dbPage.setInitialTableInDataBase(DatasetPaths.CALCULATION_HISTORY_DATASET_PATH);
-        final int HISTORY_RECORDS_COUNT = 6;
-
-        List<RequestDTO> history = calculationHistoryPage.getCalculationHistory();
-
-        assertThat(history.size(),is(HISTORY_RECORDS_COUNT));
-    }*/
-
 
     private void verifyCalculationResult(final CalculationResult  expectedResult,final CalculationResult actualResult) {
         assertThat(actualResult.getResult(),is(expectedResult.getResult()));

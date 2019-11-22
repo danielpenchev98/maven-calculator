@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE dataset [
+        <!ELEMENT dataset (calculator_expressions*,calculation_requests*)>
+        <!ELEMENT calculator_expressions EMPTY>
+        <!ATTLIST calculator_expressions expression CDATA #REQUIRED>
+        <!ATTLIST calculator_expressions calculationResult CDATA #REQUIRED>
+        <!ATTLIST calculator_expressions errorMsg CDATA #IMPLIED>
+        <!ELEMENT calculation_requests EMPTY>
+        <!ATTLIST calculation_requests id CDATA #REQUIRED>
+        <!ATTLIST calculation_requests expression CDATA #REQUIRED>
+        <!ATTLIST calculation_requests statusCode CDATA #REQUIRED>
+        <!ATTLIST calculation_requests time_of_creation CDATA #REQUIRED>
+        ]>
+<dataset>
+    <calculator_expressions expression="(-1.0/0.001" calculationResult="0.0" errorMsg="Missing or misplaced brackets"/>
+    <calculation_requests id="1" expression="(-1.0/0.001" statusCode="1" time_of_creation="2019-09-09 15:00:00"/>
+</dataset>
