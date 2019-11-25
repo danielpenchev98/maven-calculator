@@ -23,8 +23,8 @@ public class CalculatorApp {
         this(new ExpressionFormatter(), new ReversePolishCalculationAlgorithm());
     }
 
-    public double calculateResult(final String equation) throws BadInputException {
-        List<ExpressionComponent> formattedInput = formatter.doFormat(equation);
+    public double calculateResult(final String expression) throws BadInputException {
+        List<ExpressionComponent> formattedInput = formatter.doFormat(expression);
         return algorithm.calculateExpression(formattedInput);
     }
 }

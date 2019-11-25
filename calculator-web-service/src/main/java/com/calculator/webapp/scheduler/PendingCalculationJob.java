@@ -8,10 +8,7 @@ import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
 import com.calculator.webapp.db.dto.RequestDTO;
 import com.calculator.webapp.db.dto.ExpressionDTO;
 import org.quartz.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.COMPLETED;
@@ -21,9 +18,6 @@ public class PendingCalculationJob implements Job {
     private RequestDaoImpl requestDao;
     private ExpressionDaoImpl expressionDao;
     private CalculatorApp calculator;
-
-    private Logger logger = LoggerFactory.getLogger(PendingCalculationJob.class);
-
 
     public PendingCalculationJob(){
         this(new CalculatorApp(),new RequestDaoImpl(),new ExpressionDaoImpl());
@@ -57,7 +51,6 @@ public class PendingCalculationJob implements Job {
             expressionDao.getItem(expression);
             return false;
         } catch(ItemDoesNotExistException ex){
-            logger.warn(ex.getMessage()+"\nStack trace :" + Arrays.toString(ex.getStackTrace()));
             return true;
         }
     }
@@ -68,17 +61,15 @@ public class PendingCalculationJob implements Job {
             double result = calculateExpression(expression);
             expressionRecord.setCalculationResult(result);
         } catch (BadInputException badRequest) {
-            logger.warn("User error :" + Arrays.toString(badRequest.getStackTrace()));
             String userError = badRequest.getMessage();
             expressionRecord.setErrorMsg(userError);
         } catch(Exception ex){
-            logger.error("System error :" + Arrays.toString(ex.getStackTrace()));
             return;
         }
         expressionDao.saveItem(expressionRecord);
     }
 
-    private double calculateExpression(final String expression) throws Exception {
+    public double calculateExpression(final String expression) throws Exception {
         return calculator.calculateResult(expression);
     }
 }

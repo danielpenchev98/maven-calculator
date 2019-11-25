@@ -139,13 +139,13 @@
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjrt</artifactId>
-      <version>1.8.9</version>
+      <version>1.8.13</version>
     </dependency>
 
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjweaver</artifactId>
-      <version>1.8.9</version>
+      <version>1.8.13</version>
     </dependency>
   </dependencies>
 
@@ -205,7 +205,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>aspectj-maven-plugin</artifactId>
-        <version>1.10</version>
+        <version>1.11</version>
         <configuration>
           <complianceLevel>1.8</complianceLevel>
           <source>1.8</source>

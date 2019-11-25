@@ -34,7 +34,6 @@ public class CalculatorRestResource {
     private static final int OK = Response.Status.OK.getStatusCode();
     private static final int BAD_REQUEST = Response.Status.BAD_REQUEST.getStatusCode();
     private static final int NOT_FOUND = Response.Status.NOT_FOUND.getStatusCode();
-    private static final Logger logger = LoggerFactory.getLogger(CalculatorRestResource.class);
 
     @Inject
     public CalculatorRestResource(final RequestDaoImpl requestDao, final ExpressionDaoImpl expressionDao) {
@@ -57,7 +56,6 @@ public class CalculatorRestResource {
             return isEvaluated(calculation) ? getCalculationResultResponse(calculation) : getPendingCalculationResponse();
         }
         catch (ItemDoesNotExistException ex){
-            logger.warn(ex.getMessage()+"\nStack Trace :"+ Arrays.toString(ex.getStackTrace()));
             return createResponseWithoutPayload(NOT_FOUND);
         }
     }

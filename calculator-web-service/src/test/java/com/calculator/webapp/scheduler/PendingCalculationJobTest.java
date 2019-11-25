@@ -45,8 +45,8 @@ public class PendingCalculationJobTest {
 
     @Before
     public void setUp() throws Exception {
-        setDaoBehaviour(testExpression);
-        Mockito.when(calculator.calculateResult(testExpression)).thenReturn(testResult);
+        setDaoBehaviour("1/0");
+    //    Mockito.when(calculator.calculateResult(testExpression)).thenReturn(testResult);
         job=new PendingCalculationJob(calculator,requestDao,expressionDao);
     }
 
@@ -60,6 +60,13 @@ public class PendingCalculationJobTest {
         Mockito.verify(expressionDao).saveItem(expressionCaptor.capture());
 
         verifyUpdatedCalculation(expressionCaptor.getValue(),testResult,null);
+    }
+
+    @Test
+    public void execute_illegalExpression() throws Exception{
+        Mockito.when(expressionDao.getItem("1/0")).thenReturn(new ExpressionDTO("1/0",0.0,null));
+        Mockito.when(calculator.calculateResult("1/0")).thenThrow(new DivisionByZeroException("Division by zero"));
+        job.execute(context);
     }
 
     @Test
