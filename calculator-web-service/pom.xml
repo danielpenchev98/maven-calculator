@@ -136,7 +136,17 @@
       <version>4.0.1</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+      <version>1.8.9</version>
+    </dependency>
 
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>1.8.9</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -178,7 +188,6 @@
           </execution>
         </executions>
       </plugin>
-
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
@@ -193,18 +202,37 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>aspectj-maven-plugin</artifactId>
+        <version>1.10</version>
+        <configuration>
+          <complianceLevel>1.8</complianceLevel>
+          <source>1.8</source>
+          <target>1.8</target>
+          <showWeaveInfo>true</showWeaveInfo>
+          <verbose>true</verbose>
+          <Xlint>ignore</Xlint>
+          <encoding>UTF-8 </encoding>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
-
-
-
   </build>
+
   <profiles>
     <profile>
       <id>neo-push</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
-
       <dependencies>
         <dependency>
           <groupId>com.calculator.webapp.ui</groupId>
@@ -228,13 +256,13 @@
               <!--Configuration for the above deploy goal-->
               <host>https://hanatrial.ondemand.com</host>
 
-              <user>${env.NEO_USER}</user>
-              <password>${env.NEO_PASSWORD}</password>
-              <account>${env.NEO_ACCOUNT}</account>
+              <user>i515142</user>
+              <password>Dp280898</password>
+              <account>i515142trial</account>
               <application>calcwebservice</application>
-              <id>${env.HANADB_DATABASE_ID}</id>
-              <dbUser>${env.HANADB_USER}</dbUser>
-              <dbPassword>${env.HANADB_PASSWORD}</dbPassword>
+              <id>testdb1</id>
+              <dbUser>i515142</dbUser>
+              <dbPassword>Dp280898</dbPassword>
               <source>
                 ${project.build.directory}/${project.artifactId}.war,
                 ${project.build.directory}/lib/calculator-web-ui-1.0-SNAPSHOT.war
@@ -293,7 +321,6 @@
         </plugins>
       </build>
     </profile>
-
   </profiles>
 
 </project>

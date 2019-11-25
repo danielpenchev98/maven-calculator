@@ -93,6 +93,7 @@ public class RequestDaoImplTest {
         assertThat(actualItem.getId(), is(equalTo(6L)));
     }
 
+
     @Test(expected = ItemDoesNotExistException.class)
     public void getItem_populatedDataSet_ItemNotFound() throws Exception {
         resetStateOfDatabase();

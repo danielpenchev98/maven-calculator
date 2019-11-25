@@ -27,7 +27,7 @@ public abstract class Dao<K,V>{
 
      public abstract V getItem(final K key) throws ItemDoesNotExistException;
 
-     public  void saveItem(final V item) {
+     public void saveItem(final V item) {
           executeTransaction(EntityManager::persist,item);
      }
 

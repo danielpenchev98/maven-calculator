@@ -25,7 +25,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 
-
 public class ExpressionDaoImplTest {
 
     private static IDatabaseConnection databaseConnection;
