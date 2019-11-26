@@ -17,19 +17,19 @@ public class LoggingAspect {
         this.logger = logger;
     }
 
-    @Pointcut("call(void com.calculator.webapp.db.dao.RequestDaoImpl.saveItem(RequestDTO)) && args(request)")
+    @Pointcut("call(void com.calculator.webapp.db.dao.Dao+.saveItem(*)) && args(request)")
     public void savingRequest(RequestDTO request) {
     }
 
-    @Pointcut("call(ExpressionDTO com.calculator.webapp.db.dao.ExpressionDaoImpl.getItem(String)) && args(key)")
+    @Pointcut("call(* com.calculator.webapp.db.dao.Dao+.getItem(*)) && args(key)")
     public void gettingExpression(String key) {
     }
 
-    @Pointcut("call(RequestDTO com.calculator.webapp.db.dao.RequestDaoImpl.getItem(Long)) && args(key)")
+    @Pointcut("call(* com.calculator.webapp.db.dao.Dao+.getItem(*)) && args(key)")
     public void gettingRequest(Long key){
     }
 
-    @Pointcut("call(ExpressionDTO com.calculator.webapp.db.dao.ExpressionDaoImpl.saveItem(ExpressionDTO)) && args(expression)")
+    @Pointcut("call(void com.calculator.webapp.db.dao.Dao+.saveItem(*)) && args(expression)")
     public void savingExpression(ExpressionDTO expression) {
     }
 
@@ -37,24 +37,24 @@ public class LoggingAspect {
     public void calculateExpressions(String expression){
     }
 
-    @Before(value = "savingRequest(request)", argNames = "request")
+    @After(value = "savingRequest(request)", argNames = "request")
     public void logSavingRequest(RequestDTO request) {
-        logger.error("Item with id :" + request.getId() + " and content :" + request.getExpression());
+        logger.error("Item with id :" + request.getId() + " and content :" + request.getExpression() +"has been saved");
     }
 
-    @Before(value = "savingExpression(expression)", argNames = "expression")
+    @After(value = "savingExpression(expression)", argNames = "expression")
     public void logSavingExpression(ExpressionDTO expression) {
-        logger.error("Expression :" + expression.getExpression() + " and content :" + expression.getCalculationResult());
+        logger.error("Expression :" + expression.getExpression() + " and content :" + expression.getCalculationResult() + "has been saved");
     }
 
     @Before(value="gettingExpression(key)",argNames="key")
     public void logGettingExpression(String key){
-        logger.error("Expression :"+key+" has been requested from the database");
+        logger.error("Expression :"+key+" has is requested from the database");
     }
 
     @Before(value = "gettingRequest(key)", argNames = "key")
-    public void logGettingDto(Long key){
-            logger.error("Request with id :"+key+" has been requested from the database");
+    public void logGettingRequest(Long key){
+        logger.error("Request with id :"+key+" is requested from the database");
     }
 
     @AfterThrowing(pointcut = "gettingRequest(key)",throwing = "error", argNames = "key,error")
@@ -75,14 +75,5 @@ public class LoggingAspect {
             logger.error("System error :" + Arrays.toString(error.getStackTrace()));
         }
     }
-
-   /* @Pointcut("call(* org.quartz.*.*(..))")
-    public void problemWithQuartz(){
-    }
-
-    @AfterThrowing(pointcut = "problemWithQuartz()",throwing = "error",argNames = "error")
-    public void logProblemWithQuartz(Throwable error){
-        logger.error("Problem with quartz  ->"+error.getMessage()+"\nStack trace :"+ Arrays.toString(error.getStackTrace()));
-    }*/
 
 }
