@@ -17,7 +17,6 @@ import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReversePolishNotationParserTest {
-
     private ReversePolishNotationParser parserRPN;
 
     @Mock
@@ -26,17 +25,14 @@ public class ReversePolishNotationParserTest {
     @Mock
     private Addition addition;
 
-
     private NumberComponent firstNumber;
     private NumberComponent secondNumber;
     private NumberComponent thirdNumber;
     private OpeningBracket openingBracket;
     private ClosingBracket closingBracket;
 
-
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         parserRPN=new ReversePolishNotationParser();
         firstNumber=new NumberComponent("15");
         secondNumber=new NumberComponent("10");
@@ -47,7 +43,6 @@ public class ReversePolishNotationParserTest {
 
     @Test
     public void formatToReversedPolishNotation_ExpressionWithoutBrackets_RPNFormat()  {
-
         Mockito.when(addition.getPriority()).thenReturn(2);
         Mockito.when(multiplication.getPriority()).thenReturn(3);
 
@@ -59,8 +54,7 @@ public class ReversePolishNotationParserTest {
     }
 
     @Test
-    public void formatToReversedPolishNotation_ExpressionWithEqualPriorityLeftAssociativeOperators_RPNFormat()
-    {
+    public void formatToReversedPolishNotation_ExpressionWithEqualPriorityLeftAssociativeOperators_RPNFormat() {
         Mockito.when(multiplication.getPriority()).thenReturn(3);
         Mockito.when(multiplication.isLeftAssociative()).thenReturn(true);
 
@@ -72,9 +66,7 @@ public class ReversePolishNotationParserTest {
     }
 
     @Test
-    public void formatToReversedPolishNotation_ExpressionWithBrackets_RPNFormat()
-    {
-
+    public void formatToReversedPolishNotation_ExpressionWithBrackets_RPNFormat() {
         List<ExpressionComponent> input=Arrays.asList(openingBracket,firstNumber,addition,secondNumber,closingBracket,multiplication,thirdNumber);
         List<ExpressionComponent> expected=Arrays.asList(firstNumber,secondNumber,addition,thirdNumber,multiplication);
         List<ExpressionComponent> realResult=parserRPN.formatFromInfixToReversedPolishNotation(input);

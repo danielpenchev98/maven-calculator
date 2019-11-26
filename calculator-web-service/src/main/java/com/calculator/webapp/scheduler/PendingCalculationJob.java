@@ -14,7 +14,6 @@ import java.util.List;
 import static com.calculator.webapp.db.dto.requeststatus.RequestStatus.COMPLETED;
 
 public class PendingCalculationJob implements Job {
-
     private RequestDaoImpl requestDao;
     private ExpressionDaoImpl expressionDao;
     private CalculatorApp calculator;

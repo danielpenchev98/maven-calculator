@@ -11,7 +11,6 @@ public class Subtraction implements MathArithmeticOperator {
      * */
     @Override
     public double compute(final double firstNumber, final double secondNumber) throws ArithmeticException {
-
         return firstNumber-secondNumber;
     }
 

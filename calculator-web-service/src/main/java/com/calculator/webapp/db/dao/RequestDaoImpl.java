@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.util.List;
 
 public class RequestDaoImpl extends Dao<Long, RequestDTO> {
-
     public RequestDaoImpl(final EntityManager manager) {
         super(manager);
     }

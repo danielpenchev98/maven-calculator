@@ -30,15 +30,9 @@ public class ExpressionFormatter implements InputFormatter {
     }
 
     public List<ExpressionComponent> doFormat(final String expression) throws InvalidComponentException, InvalidExpressionException {
-
         structureValidator.validateExpressionStructure(expression);
         List<String> components = extractComponents(expression);
         return convertToExpressionComponentObjects(components);
-    }
-
-    private String fixFormatOfExpression(final String expression) {
-        String expressionWithPaddingBetweenComponents = addSeparatorBetweenComponents(expression);
-        return removeSeparatorBetweenTheNumberAndItsSign(expressionWithPaddingBetweenComponents);
     }
 
     private List<String> extractComponents(final String expression) {
@@ -47,27 +41,26 @@ public class ExpressionFormatter implements InputFormatter {
         return Arrays.asList(components);
     }
 
-    private String removeJunkSpaces(final String expression) {
-        final String junkSpacesRegex="[ ]+";
-        return expression.replaceAll(junkSpacesRegex, " ");
+    private String fixFormatOfExpression(final String expression) {
+        String expressionWithPaddingBetweenComponents = addSeparatorBetweenComponents(expression);
+        return removeSeparatorBetweenTheNumberAndItsSign(expressionWithPaddingBetweenComponents);
     }
 
     private String addSeparatorBetweenComponents(final String expression) {
-
         final String componentsRegex="([^0-9.a-zA-Z ]|[0-9.a-zA-Z]+)";
         final String componentsPaddedWithSeparator="$1"+SEPARATOR_OF_COMPONENTS;
-
         String expressionWithPossiblyJunkSpaces = expression.replaceAll(componentsRegex, componentsPaddedWithSeparator);
-
         return removeJunkSpaces(expressionWithPossiblyJunkSpaces);
+    }
 
+    private String removeJunkSpaces(final String expression) {
+        final String junkSpacesRegex=" +";
+        return expression.replaceAll(junkSpacesRegex, " ");
     }
 
     private String removeSeparatorBetweenTheNumberAndItsSign(final String expression) {
-
         final String separatorBetweenNumberAndItsSign="(\\("+SEPARATOR_OF_COMPONENTS+ "|^)-"+SEPARATOR_OF_COMPONENTS+"([0-9]+)";
         final String removedSeparatorBetweenNumberAndItsSign="$1-$2";
-
         return expression.replaceAll(separatorBetweenNumberAndItsSign, removedSeparatorBetweenNumberAndItsSign);
     }
 

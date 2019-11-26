@@ -13,10 +13,8 @@ public class Division implements MathArithmeticOperator {
      * @return the result of the mathematical operation /
      * */
     @Override
-    public double compute(final double firstNumber, final double secondNumber) throws DivisionByZeroException
-    {
-        if(secondNumber==0)
-        {
+    public double compute(final double firstNumber, final double secondNumber) throws DivisionByZeroException {
+        if(secondNumber==0) {
             throw new DivisionByZeroException("Division by zero");
         }
         return firstNumber/secondNumber;

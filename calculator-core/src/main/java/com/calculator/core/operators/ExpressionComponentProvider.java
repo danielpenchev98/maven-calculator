@@ -17,18 +17,12 @@ public class ExpressionComponentProvider {
                                                                             put(Division.SYMBOL, new Division());
                                                                         }};
 
-    public ExpressionComponent getComponent(final String component) throws InvalidComponentException
-    {
-        if(isValidNumber(component))
-        {
+    public ExpressionComponent getComponent(final String component) throws InvalidComponentException {
+        if(isValidNumber(component)) {
             return new NumberComponent(component);
-        }
-        else if(isValidOperator(component))
-        {
+        } else if(isValidOperator(component)) {
             return validOperators.get(component);
-        }
-        else
-        {
+        } else {
             throw new InvalidComponentException("Unsupported component :"+component);
         }
     }

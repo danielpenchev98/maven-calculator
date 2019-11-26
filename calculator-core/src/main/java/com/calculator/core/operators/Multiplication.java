@@ -11,8 +11,7 @@ public class Multiplication implements MathArithmeticOperator {
      * @return the result of the mathematical operation *
      * */
     @Override
-    public double compute(final double firstNumber,final double secondNumber) throws ArithmeticException
-    {
+    public double compute(final double firstNumber,final double secondNumber) throws ArithmeticException {
         return firstNumber*secondNumber;
     }
 

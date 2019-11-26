@@ -25,7 +25,6 @@ public class QuartzJobListener implements ServletContextListener {
         } catch (SchedulerException ex) {
             logger.error("Error stopping Quartz", ex);
         }
-
     }
 
     public void contextInitialized(ServletContextEvent event) {

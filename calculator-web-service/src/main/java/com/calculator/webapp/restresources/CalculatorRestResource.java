@@ -54,8 +54,7 @@ public class CalculatorRestResource {
         try{
             RequestDTO calculation = requestDao.getItem(id);
             return isEvaluated(calculation) ? getCalculationResultResponse(calculation) : getPendingCalculationResponse();
-        }
-        catch (ItemDoesNotExistException ex){
+        } catch (ItemDoesNotExistException ex){
             return createResponseWithoutPayload(NOT_FOUND);
         }
     }
@@ -72,7 +71,6 @@ public class CalculatorRestResource {
             return createResponseWithPayload(BAD_REQUEST, new CalculationError(BAD_REQUEST, result.getErrorMsg()));
         }
     }
-
 
     private boolean isSuccessfulCalculationResult(final String calculationResult){
         return calculationResult == null;
