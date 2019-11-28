@@ -69,4 +69,8 @@ public class RequestDTO {
         this.timeOfCreation=timeOfCreation;
     }
 
+    @Override
+    public String toString(){
+        return "RequestDTO{id="+this.id+",expression='"+this.expression+"',statusCode="+this.statusCode+",timeOfCreation='"+this.timeOfCreation+"'}";
+    }
 }

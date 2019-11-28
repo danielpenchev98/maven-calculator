@@ -35,26 +35,30 @@ public class LoggingAspect {
 
     @After(value = "savingRequest(request)", argNames = "request")
     public void logSavingRequest(RequestDTO request) {
-        logger.error("Request with id :" + request.getId() + " for calculation of expression :" + request.getExpression() +" has been saved");
+        logger.error(request+" has been saved");
     }
 
     @After(value = "savingExpression(expression)", argNames = "expression")
     public void logSavingExpression(ExpressionDTO expression) {
-        logger.error("Expression :" + expression.getExpression() + " has been saved");
+        logger.error(expression + " has been saved");
     }
 
     @AfterThrowing(pointcut = "gettingItem()",throwing = "error", argNames = "error")
     public void logMissingExpressionInDB(Throwable error){
-        logger.error(error.getMessage()+"\n Stack trace :"+ Arrays.toString(error.getStackTrace()));
+        logger.error(getExceptionInfo(error));
     }
 
     @AfterThrowing(pointcut = "calculateExpressions(expression)", throwing = "error", argNames = "expression,error")
     public void logProblemWithExpression(String expression, Throwable error) {
         if (error instanceof BadInputException) {
-            logger.error("There was a problem with the expression :" + expression + "\nReason :" + error.getMessage() + "\nStack trace :" + Arrays.toString(error.getStackTrace()));
+            logger.error("There was a problem with the expression :" + expression + "\n"+getExceptionInfo(error));
         } else {
-            logger.error("System error :" + Arrays.toString(error.getStackTrace()));
+            logger.error("System error :" + getExceptionInfo(error));
         }
+    }
+
+    private String getExceptionInfo(Throwable error){
+        return error.getMessage()+"\n"+ Arrays.toString(error.getStackTrace());
     }
 
 }

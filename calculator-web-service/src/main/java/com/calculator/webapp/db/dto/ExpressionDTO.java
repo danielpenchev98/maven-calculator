@@ -51,4 +51,9 @@ public class ExpressionDTO {
     public String getErrorMsg() {
         return this.errorMsg;
     }
+
+    @Override
+    public String toString(){
+        return "ExpressionDTO{expression='"+this.expression+"',calculationResult="+this.calculationResult+",errorMsg='"+this.errorMsg+"'}";
+    }
 }

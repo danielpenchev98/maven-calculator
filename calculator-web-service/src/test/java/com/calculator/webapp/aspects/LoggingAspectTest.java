@@ -17,10 +17,12 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import static org.aspectj.lang.Aspects.aspectOf;
 import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.is;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoggingAspectTest {
@@ -49,66 +51,62 @@ public class LoggingAspectTest {
     @Test
     public void verifyWhenProblemWithCalculatorThenLog() {
         try {
-            Mockito.when(calculator.calculateResult("1/0")).thenThrow(new BadInputException("Division by zero"));
+            Exception badInput = new BadInputException("Division by zero");
+            Mockito.when(calculator.calculateResult("1/0")).thenThrow(badInput);
             calculator.calculateResult("1/0");
         } catch(BadInputException ex){
-            ArgumentCaptor<String> requestCaptor = ArgumentCaptor.forClass(String.class);
-            Mockito.verify(logger).error(requestCaptor.capture());
-
-            assertTrue(requestCaptor.getValue().contains("1/0"));
-            assertTrue(requestCaptor.getValue().contains("Division by zero"));
+            assertThat(getLoggerInput(),is("There was a problem with the expression :1/0\n"+getExceptionInfo(ex)));
         }
     }
 
     @Test
     public void verifyWhenRequestIsSavedThenLog(){
-        requestDao.saveItem(new RequestDTO("1+1",new Date()));
+        Date time = new Date();
+        RequestDTO request = new RequestDTO("1+1",time);
+        requestDao.saveItem(request);
 
-        ArgumentCaptor<String> requestCaptor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(logger).error(requestCaptor.capture());
-
-        String realLogContent =requestCaptor.getValue();
-
-        assertTrue(realLogContent.contains("Request"));
-        assertTrue(realLogContent.contains("1+1"));
-        assertTrue(realLogContent.contains("saved"));
+        assertThat(getLoggerInput(),is(request+" has been saved"));
     }
 
     @Test
     public void verifyWhenExpressionIsSavedThenLog(){
-        expressionDao.saveItem(new ExpressionDTO("1+1"));
+        ExpressionDTO expression = new ExpressionDTO("1+1");
+        expressionDao.saveItem(expression);
 
-        ArgumentCaptor<String> requestCaptor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(logger).error(requestCaptor.capture());
-
-        String realLogContent = requestCaptor.getValue();
-
-        assertTrue(realLogContent.contains("Expression"));
-        assertTrue(realLogContent.contains("1+1"));
-        assertTrue(realLogContent.contains("saved"));
+        assertThat(getLoggerInput(),is(expression+" has been saved"));
     }
 
     @Test
     public void verifyWhenNonExistingRequestIsRequiredThenLog() {
         try{
-            Mockito.when(requestDao.getItem(1L)).thenThrow(new ItemDoesNotExistException("Request not found"));
+            ItemDoesNotExistException itemNotFound = new ItemDoesNotExistException("Request not found");
+            Mockito.when(requestDao.getItem(1L)).thenThrow(itemNotFound);
             requestDao.getItem(1L);
         } catch(ItemDoesNotExistException ex){
-            ArgumentCaptor<String> requestCaptor = ArgumentCaptor.forClass(String.class);
-            Mockito.verify(logger).error(requestCaptor.capture());
-            assertTrue(requestCaptor.getValue().contains("Request not found"));
+            assertThat(getLoggerInput(),is(getExceptionInfo(ex)));
         }
     }
 
     @Test
     public void verifyWhenNonExistingExpressionIsRequiredThenLog(){
         try{
-            Mockito.when(expressionDao.getItem("1+1")).thenThrow(new ItemDoesNotExistException("Expression not found"));
+            ItemDoesNotExistException itemNotFound = new ItemDoesNotExistException("Expression not found");
+            Mockito.when(expressionDao.getItem("1+1")).thenThrow(itemNotFound);
             expressionDao.getItem("1+1");
         } catch(ItemDoesNotExistException ex){
-            ArgumentCaptor<String> requestCaptor = ArgumentCaptor.forClass(String.class);
-            Mockito.verify(logger).error(requestCaptor.capture());
-            assertTrue(requestCaptor.getValue().contains("Expression not found"));
+
+            assertThat(getLoggerInput(),is(getExceptionInfo(ex)));
         }
     }
+
+    private String getExceptionInfo(Exception ex){
+        return ex.getMessage()+"\n"+ Arrays.toString(ex.getStackTrace());
+    }
+
+    private String getLoggerInput(){
+        ArgumentCaptor<String> requestCaptor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(logger).error(requestCaptor.capture());
+        return requestCaptor.getValue();
+    }
+
 }
