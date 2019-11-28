@@ -1,7 +1,5 @@
 package com.calculator.webapp.aspects;
 
-
-
 import com.calculator.core.CalculatorApp;
 import com.calculator.core.exceptions.BadInputException;
 import com.calculator.webapp.db.dao.ExpressionDaoImpl;
@@ -22,8 +20,7 @@ import org.slf4j.Logger;
 import java.util.Date;
 
 import static org.aspectj.lang.Aspects.aspectOf;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.times;
+import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoggingAspectTest {
@@ -50,7 +47,7 @@ public class LoggingAspectTest {
     }
 
     @Test
-    public void verifyWhenProblemWithCalculatorThenLog() throws Exception {
+    public void verifyWhenProblemWithCalculatorThenLog() {
         try {
             Mockito.when(calculator.calculateResult("1/0")).thenThrow(new BadInputException("Division by zero"));
             calculator.calculateResult("1/0");
@@ -70,7 +67,11 @@ public class LoggingAspectTest {
         ArgumentCaptor<String> requestCaptor = ArgumentCaptor.forClass(String.class);
         Mockito.verify(logger).error(requestCaptor.capture());
 
-        assertTrue(requestCaptor.getValue().contains("1+1"));
+        String realLogContent =requestCaptor.getValue();
+
+        assertTrue(realLogContent.contains("Request"));
+        assertTrue(realLogContent.contains("1+1"));
+        assertTrue(realLogContent.contains("saved"));
     }
 
     @Test
@@ -80,40 +81,23 @@ public class LoggingAspectTest {
         ArgumentCaptor<String> requestCaptor = ArgumentCaptor.forClass(String.class);
         Mockito.verify(logger).error(requestCaptor.capture());
 
-        assertTrue(requestCaptor.getValue().contains("1+1"));
+        String realLogContent = requestCaptor.getValue();
+
+        assertTrue(realLogContent.contains("Expression"));
+        assertTrue(realLogContent.contains("1+1"));
+        assertTrue(realLogContent.contains("saved"));
     }
 
     @Test
-    public void verifyWhenExistingRequestIsRequiredThenLog() throws Exception{
-        requestDao.getItem(1l);
-
-        ArgumentCaptor<String> requestCaptor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(logger).error(requestCaptor.capture());
-
-        assertTrue(requestCaptor.getValue().contains("1"));
-    }
-
-    @Test
-    public void verifyWhenNonExistingRequestIsRequiredThenLog() throws Exception {
+    public void verifyWhenNonExistingRequestIsRequiredThenLog() {
         try{
             Mockito.when(requestDao.getItem(1L)).thenThrow(new ItemDoesNotExistException("Request not found"));
             requestDao.getItem(1L);
         } catch(ItemDoesNotExistException ex){
             ArgumentCaptor<String> requestCaptor = ArgumentCaptor.forClass(String.class);
-            Mockito.verify(logger,times(3)).error(requestCaptor.capture());
-
-            assertTrue(requestCaptor.getAllValues().get(2).contains("Request not found"));
+            Mockito.verify(logger).error(requestCaptor.capture());
+            assertTrue(requestCaptor.getValue().contains("Request not found"));
         }
-    }
-
-    @Test
-    public void verifyWhenExistingExpressionIsRequiredThenLog() throws Exception{
-        expressionDao.getItem("1+1");
-
-        ArgumentCaptor<String> requestCaptor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(logger).error(requestCaptor.capture());
-
-        assertTrue(requestCaptor.getValue().contains("1+1"));
     }
 
     @Test
@@ -123,8 +107,8 @@ public class LoggingAspectTest {
             expressionDao.getItem("1+1");
         } catch(ItemDoesNotExistException ex){
             ArgumentCaptor<String> requestCaptor = ArgumentCaptor.forClass(String.class);
-            Mockito.verify(logger,times(3)).error(requestCaptor.capture());
-            assertTrue(requestCaptor.getAllValues().get(2).contains("Expression not found"));
+            Mockito.verify(logger).error(requestCaptor.capture());
+            assertTrue(requestCaptor.getValue().contains("Expression not found"));
         }
     }
 }

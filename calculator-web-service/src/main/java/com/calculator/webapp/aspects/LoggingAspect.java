@@ -21,12 +21,8 @@ public class LoggingAspect {
     public void savingRequest(RequestDTO request) {
     }
 
-    @Pointcut("call(* com.calculator.webapp.db.dao.Dao+.getItem(*)) && args(key)")
-    public void gettingExpression(String key) {
-    }
-
-    @Pointcut("call(* com.calculator.webapp.db.dao.Dao+.getItem(*)) && args(key)")
-    public void gettingRequest(Long key){
+    @Pointcut("call(* com.calculator.webapp.db.dao.Dao+.getItem(*))")
+    public void gettingItem() {
     }
 
     @Pointcut("call(void com.calculator.webapp.db.dao.Dao+.saveItem(*)) && args(expression)")
@@ -39,31 +35,16 @@ public class LoggingAspect {
 
     @After(value = "savingRequest(request)", argNames = "request")
     public void logSavingRequest(RequestDTO request) {
-        logger.error("Item with id :" + request.getId() + " and content :" + request.getExpression() +"has been saved");
+        logger.error("Request with id :" + request.getId() + " for calculation of expression :" + request.getExpression() +" has been saved");
     }
 
     @After(value = "savingExpression(expression)", argNames = "expression")
     public void logSavingExpression(ExpressionDTO expression) {
-        logger.error("Expression :" + expression.getExpression() + " and content :" + expression.getCalculationResult() + "has been saved");
+        logger.error("Expression :" + expression.getExpression() + " has been saved");
     }
 
-    @Before(value="gettingExpression(key)",argNames="key")
-    public void logGettingExpression(String key){
-        logger.error("Expression :"+key+" has is requested from the database");
-    }
-
-    @Before(value = "gettingRequest(key)", argNames = "key")
-    public void logGettingRequest(Long key){
-        logger.error("Request with id :"+key+" is requested from the database");
-    }
-
-    @AfterThrowing(pointcut = "gettingRequest(key)",throwing = "error", argNames = "key,error")
-    public void logMissingRequestInDB(Long key,Throwable error){
-        logger.error(error.getMessage()+"\n Stack trace :"+ Arrays.toString(error.getStackTrace()));
-    }
-
-    @AfterThrowing(pointcut = "gettingExpression(key)",throwing = "error", argNames = "key,error")
-    public void logMissingExpressionInDB(String key,Throwable error){
+    @AfterThrowing(pointcut = "gettingItem()",throwing = "error", argNames = "error")
+    public void logMissingExpressionInDB(Throwable error){
         logger.error(error.getMessage()+"\n Stack trace :"+ Arrays.toString(error.getStackTrace()));
     }
 
