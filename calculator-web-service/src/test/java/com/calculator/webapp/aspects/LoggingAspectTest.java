@@ -8,6 +8,7 @@ import com.calculator.webapp.db.dao.exceptions.ItemDoesNotExistException;
 import com.calculator.webapp.db.dto.ExpressionDTO;
 import com.calculator.webapp.db.dto.RequestDTO;
 import com.calculator.webapp.scheduler.PendingCalculationJob;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -39,13 +42,18 @@ public class LoggingAspectTest {
     @Mock
     private PendingCalculationJob job;
 
-    @Mock
-    private Logger logger;
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
+
 
     @Before
     public void setUp(){
-        LoggingAspect aspect = aspectOf(LoggingAspect.class);
-        aspect.setLogger(logger);
+        System.setOut(new PrintStream(outContent));
+    }
+
+    @After
+    public void tearDown(){
+        System.setOut(originalOut);
     }
 
     @Test
@@ -55,7 +63,7 @@ public class LoggingAspectTest {
             Mockito.when(calculator.calculateResult("1/0")).thenThrow(badInput);
             calculator.calculateResult("1/0");
         } catch(BadInputException ex){
-            assertThat(getLoggerInput(),is("There was a problem with the expression :1/0\n"+getExceptionInfo(ex)));
+            assertTrue(outContent.toString().contains("There was a problem with the expression :1/0\n"+getExceptionInfo(ex)));
         }
     }
 
@@ -65,7 +73,7 @@ public class LoggingAspectTest {
         RequestDTO request = new RequestDTO("1+1",time);
         requestDao.saveItem(request);
 
-        assertThat(getLoggerInput(),is(request+" has been saved"));
+        assertTrue(outContent.toString().contains(request.toString()+" has been saved"));
     }
 
     @Test
@@ -73,7 +81,7 @@ public class LoggingAspectTest {
         ExpressionDTO expression = new ExpressionDTO("1+1");
         expressionDao.saveItem(expression);
 
-        assertThat(getLoggerInput(),is(expression+" has been saved"));
+        assertTrue(outContent.toString().contains(expression.toString()+" has been saved"));
     }
 
     @Test
@@ -83,7 +91,7 @@ public class LoggingAspectTest {
             Mockito.when(requestDao.getItem(1L)).thenThrow(itemNotFound);
             requestDao.getItem(1L);
         } catch(ItemDoesNotExistException ex){
-            assertThat(getLoggerInput(),is(getExceptionInfo(ex)));
+            assertTrue(outContent.toString().contains(getExceptionInfo(ex)));
         }
     }
 
@@ -94,19 +102,11 @@ public class LoggingAspectTest {
             Mockito.when(expressionDao.getItem("1+1")).thenThrow(itemNotFound);
             expressionDao.getItem("1+1");
         } catch(ItemDoesNotExistException ex){
-
-            assertThat(getLoggerInput(),is(getExceptionInfo(ex)));
+            assertTrue(outContent.toString().contains(getExceptionInfo(ex)));
         }
     }
 
     private String getExceptionInfo(Exception ex){
         return ex.getMessage()+"\n"+ Arrays.toString(ex.getStackTrace());
     }
-
-    private String getLoggerInput(){
-        ArgumentCaptor<String> requestCaptor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(logger).error(requestCaptor.capture());
-        return requestCaptor.getValue();
-    }
-
 }

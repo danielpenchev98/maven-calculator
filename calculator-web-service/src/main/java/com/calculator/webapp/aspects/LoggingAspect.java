@@ -13,10 +13,6 @@ import java.util.Arrays;
 public class LoggingAspect {
     private Logger logger =  LoggerFactory.getLogger(LoggingAspect.class);
 
-    void setLogger(final Logger logger){
-        this.logger = logger;
-    }
-
     @Pointcut("call(void com.calculator.webapp.db.dao.Dao+.saveItem(*)) && args(request)")
     public void savingRequest(RequestDTO request) {
     }
