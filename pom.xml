@@ -22,7 +22,7 @@
         <skipAllTests>false</skipAllTests>
         <skipITs>${skipAllTests}</skipITs>
         <skipUTs>${skipAllTests}</skipUTs>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <failsafe.plugin.version>2.22.2</failsafe.plugin.version>
         <surefire.plugin.version>2.22.2</surefire.plugin.version>
         <compiler.plugin.version>3.6.1</compiler.plugin.version>
