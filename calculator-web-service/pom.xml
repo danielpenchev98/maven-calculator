@@ -18,7 +18,7 @@
     <jackson.version>2.9.9</jackson.version>
     <jersey.version>2.29</jersey.version>
     <tomcat7.plugin.version>2.2</tomcat7.plugin.version>
-    <log4j.version>2.12.1</log4j.version>
+    <log4j.version>2.16.0</log4j.version>
     <jaxrs.version>2.1.1</jaxrs.version>
     <hibernate.core.version>5.4.4.Final</hibernate.core.version>
     <liquibase.hana.version>2.0</liquibase.hana.version>
