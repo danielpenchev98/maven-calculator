@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <log4j.version>2.9.1</log4j.version>
+        <log4j.version>2.16.0</log4j.version>
         <jar.pluging.version>3.1.2</jar.pluging.version>
     </properties>
 
