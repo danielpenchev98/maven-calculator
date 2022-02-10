@@ -20,7 +20,7 @@
     <tomcat7.plugin.version>2.2</tomcat7.plugin.version>
     <log4j.version>2.12.1</log4j.version>
     <jaxrs.version>2.1.1</jaxrs.version>
-    <hibernate.core.version>5.4.4.Final</hibernate.core.version>
+    <hibernate.core.version>5.4.24.Final</hibernate.core.version>
     <liquibase.hana.version>2.0</liquibase.hana.version>
     <dbunit.version>2.6.0</dbunit.version>
     <derby.version>10.14.2.0</derby.version>
