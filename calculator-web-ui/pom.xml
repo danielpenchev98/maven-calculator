@@ -13,51 +13,51 @@
     <artifactId>calculator-web-ui</artifactId>
     <packaging>war</packaging>
 
-    <profiles>
-        <profile>
-            <id>karma-ui-test</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                        <version>1.7.6</version>
-                        <executions>
-                            <execution>
-                                <id>install node and npm</id>
-                                <goals>
-                                    <goal>install-node-and-npm</goal>
-                                </goals>
-                                <configuration>
-                                    <nodeVersion>v10.16.3</nodeVersion>
-                                    <npmVersion>6.9.0</npmVersion>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>npm install</id>
-                                <goals>
-                                    <goal>npm</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>install</arguments>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>javascript tests</id>
-                                <goals>
-                                    <goal>karma</goal>
-                                </goals>
-                                <configuration>
-                                    <karmaConfPath>src/test/resources/karma/karma.conf.js</karmaConfPath>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>karma-ui-test</id>-->
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--            </activation>-->
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    <plugin>-->
+<!--                        <groupId>com.github.eirslett</groupId>-->
+<!--                        <artifactId>frontend-maven-plugin</artifactId>-->
+<!--                        <version>1.7.6</version>-->
+<!--                        <executions>-->
+<!--                            <execution>-->
+<!--                                <id>install node and npm</id>-->
+<!--                                <goals>-->
+<!--                                    <goal>install-node-and-npm</goal>-->
+<!--                                </goals>-->
+<!--                                <configuration>-->
+<!--                                    <nodeVersion>v10.16.3</nodeVersion>-->
+<!--                                    <npmVersion>6.9.0</npmVersion>-->
+<!--                                </configuration>-->
+<!--                            </execution>-->
+<!--                            <execution>-->
+<!--                                <id>npm install</id>-->
+<!--                                <goals>-->
+<!--                                    <goal>npm</goal>-->
+<!--                                </goals>-->
+<!--                                <configuration>-->
+<!--                                    <arguments>install</arguments>-->
+<!--                                </configuration>-->
+<!--                            </execution>-->
+<!--                            <execution>-->
+<!--                                <id>javascript tests</id>-->
+<!--                                <goals>-->
+<!--                                    <goal>karma</goal>-->
+<!--                                </goals>-->
+<!--                                <configuration>-->
+<!--                                    <karmaConfPath>src/test/resources/karma/karma.conf.js</karmaConfPath>-->
+<!--                                </configuration>-->
+<!--                            </execution>-->
+<!--                        </executions>-->
+<!--                    </plugin>-->
+<!--                </plugins>-->
+<!--            </build>-->
+<!--        </profile>-->
+   <!-- </profiles>-->
 </project>

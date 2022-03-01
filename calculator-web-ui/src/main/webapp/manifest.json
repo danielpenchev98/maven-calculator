@@ -11,7 +11,7 @@
 		},
 		"dataSources": {
 			"calculationService": {
-				"baseUrl": "https://calcwebservicei515142trial.hanatrial.ondemand.com/calculator-web-service",
+				"baseUrl": "http://localhost:8080/calculator-web-service",
 				"sendCalculationRequestUrl": "/api/v1/calculator/calculate",
 				"getCalculationResultUrl" : "/api/v1/calculator/calculations",
 				"getCalculationHistoryUrl" : "/api/v1/calculator/calculationHistory",

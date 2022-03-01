@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Mon Feb 28 09:58:58 EET 2022:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-017f-3f56-f68a-0000179e7620 
+on database directory memory:/Users/i515142/maven-calculator/calculator-web-service/calculator with class loader sun.misc.Launcher$AppClassLoader@3d4eac69 
+Loaded from file:/Users/i515142/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
+java.vendor=AdoptOpenJDK
+java.runtime.version=1.8.0_292-b10
+user.dir=/Users/i515142/maven-calculator/calculator-web-service
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.16
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

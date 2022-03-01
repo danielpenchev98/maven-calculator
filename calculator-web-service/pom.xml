@@ -97,7 +97,6 @@
       <groupId>org.apache.derby</groupId>
       <artifactId>derby</artifactId>
       <version>${derby.version}</version>
-      <scope>test</scope>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.apache.derby/derbyclient -->
@@ -105,7 +104,6 @@
       <groupId>org.apache.derby</groupId>
       <artifactId>derbyclient</artifactId>
       <version>${derby.version}</version>
-      <scope>test</scope>
     </dependency>
 
     <!--CORS-->
@@ -121,6 +119,14 @@
       <artifactId>liquibase-hanadb</artifactId>
       <version>${liquibase.hana.version}</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.25</version>
+    </dependency>
+
 
     <!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
     <dependency>
